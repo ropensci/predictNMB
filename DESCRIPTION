@@ -1,0 +1,23 @@
+Package: predictNMB
+Type: Package
+Title: Evaluate Clinical Prediction Models By Net Monetary Benefit
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Rex",
+           family = "Parsons",
+           role = c("aut", "cre"),
+           email = "Rex.Parsons94@gmail.com",
+           comment = c(ORCID = "0000-0002-6053-8174"))
+Maintainer: Rex Parsons <Rex.Parsons94@gmail.com>
+Description: Considers both the model performance and the event rate alongside
+    the net monetary benefit (NMB) of correct and incorrect classification to 
+    intervention groups. Requires the user to cost these decisions, with or 
+    without uncertainty, for it to be evaluated regarding the NMB.
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.0
+Imports: 
+    cutpointr,
+    pmsampsize,
+    stats
