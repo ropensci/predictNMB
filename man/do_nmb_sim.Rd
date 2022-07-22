@@ -26,7 +26,7 @@ do_nmb_sim(
 
 \item{event_rate}{Simulated event rate of the binary outcome being predicted.}
 
-\item{cutpoint_methods}{cutpoint methods to include. Defatults to use the inbuilt methods.}
+\item{cutpoint_methods}{cutpoint methods to include. Defaults to use the inbuilt methods.}
 
 \item{fx_nmb_training}{Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on training set}
 

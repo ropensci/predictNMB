@@ -5,7 +5,7 @@
 #' @param n_valid Sample size for evaluation set.
 #' @param sim_auc Simulated model discrimination (AUC).
 #' @param event_rate Simulated event rate of the binary outcome being predicted.
-#' @param cutpoint_methods cutpoint methods to include. Defatults to use the inbuilt methods.
+#' @param cutpoint_methods cutpoint methods to include. Defaults to use the inbuilt methods.
 #' @param fx_nmb_training Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on training set
 #' @param fx_nmb_evaluation Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set
 #'
@@ -23,6 +23,9 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
                        cutpoint_methods = get_inbuilt_cutpoint(return_all_methods=TRUE),
                        fx_nmb_training, fx_nmb_evaluation) {
   if (missing(sample_size)) {
+    sample_size <- NA
+  }
+  if (is.na(sample_size)) {
     pmsamp <- pmsampsize::pmsampsize(
       type = "b",
       cstatistic = sim_auc,
