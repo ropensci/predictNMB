@@ -36,19 +36,10 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
     check_events <- FALSE
   }
 
-  i <- 0
-  while (i < n_sims) {
-    train_sample <- get_sample(auc = sim_auc, n_samples = sample_size, prevalence = event_rate)
-    valid_sample <- get_sample(auc = sim_auc, n_samples = n_valid, prevalence = event_rate)
-    if (length(unique(train_sample$actual)) != 2 | length(unique(valid_sample$actual)) != 2) {
-      next
-    }
-    if (check_events) {
-      if (sum(train_sample$actual) < min_events) {
-        next
-      }
-    }
-    i <- i + 1
+  for (i in 1:n_sims) {
+    train_sample <- get_sample(auc = sim_auc, n_samples = sample_size, prevalence = event_rate, min_events=ifelse(check_events, min_events, 0))
+    valid_sample <- get_sample(auc = sim_auc, n_samples = n_valid, prevalence = event_rate, min_events=ifelse(check_events, min_events, 0))
+
     model <- stats::glm(actual ~ x, data = train_sample, family = stats::binomial())
 
     train_sample$predicted <- stats::predict(model, type = "response")
@@ -74,10 +65,7 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
       )
     }
 
-    results_i <-
-      lapply(thresholds, cost_threshold) |>
-      unlist() |>
-      t()
+    results_i <- t(unlist(lapply(thresholds, cost_threshold)))
 
     thresholds_i <- unlist(thresholds)
     if (i == 1) {
