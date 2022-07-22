@@ -22,9 +22,44 @@ list
 Gets probability thresholds given predicted probabilities, outcomes and NMB.
 }
 \examples{
+
+# get thresholds using default (all inbuilt) cutpoint methods
 get_thresholds(
   predicted = runif(1000),
   actual = sample(c(0, 1), size = 1000, replace = TRUE),
+  nmb = c("TP" = 1, "TN" = 2, "FP" = 3, "FN" = 4)
+)
+
+
+# get cutpoints using user-defined functions
+# These functions must take the \code{predicted} and \code{actual} as arguments
+# They can also take \code{nmb} (named vector containing NMB with values for TP, FP, TN, FN)
+fx_roc01 <- function(predicted, actual, ...) {
+  cutpointr::cutpointr(
+      x = predicted, class = actual, method = cutpointr::minimize_metric,
+      metric = cutpointr::roc01,
+      silent = TRUE)[['optimal_cutpoint']]
+}
+
+fx_sum_sens_spec <- function(predicted, actual, ...) {
+  cutpointr::cutpointr(
+      x = predicted, class = actual, method = cutpointr::maximize_metric,
+      metric = cutpointr::sum_sens_spec,
+      silent = TRUE)[['optimal_cutpoint']]
+}
+
+get_thresholds(
+  predicted = runif(1000),
+  actual = sample(c(0, 1), size = 1000, replace = TRUE),
+  cutpoint_methods=c("fx_roc01", "fx_sum_sens_spec"),
+  nmb = c("TP" = 1, "TN" = 2, "FP" = 3, "FN" = 4)
+)
+
+# get a combination of cutpoints from both user-defined functions and inbuilt methods
+get_thresholds(
+  predicted = runif(1000),
+  actual = sample(c(0, 1), size = 1000, replace = TRUE),
+  cutpoint_methods=c("fx_roc01", "fx_sum_sens_spec", "youden", "all", "none"),
   nmb = c("TP" = 1, "TN" = 2, "FP" = 3, "FN" = 4)
 )
 }

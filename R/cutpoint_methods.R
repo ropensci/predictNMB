@@ -142,11 +142,47 @@ get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_meth
 #' @export
 #'
 #' @examples
+#'
+#' # get thresholds using default (all inbuilt) cutpoint methods
 #' get_thresholds(
 #'   predicted = runif(1000),
 #'   actual = sample(c(0, 1), size = 1000, replace = TRUE),
 #'   nmb = c("TP" = 1, "TN" = 2, "FP" = 3, "FN" = 4)
 #' )
+#'
+#'
+#' # get cutpoints using user-defined functions
+#' # These functions must take the \code{predicted} and \code{actual} as arguments
+#' # They can also take \code{nmb} (named vector containing NMB with values for TP, FP, TN, FN)
+#' fx_roc01 <- function(predicted, actual, ...) {
+#'   cutpointr::cutpointr(
+#'       x = predicted, class = actual, method = cutpointr::minimize_metric,
+#'       metric = cutpointr::roc01,
+#'       silent = TRUE)[['optimal_cutpoint']]
+#' }
+#'
+#' fx_sum_sens_spec <- function(predicted, actual, ...) {
+#'   cutpointr::cutpointr(
+#'       x = predicted, class = actual, method = cutpointr::maximize_metric,
+#'       metric = cutpointr::sum_sens_spec,
+#'       silent = TRUE)[['optimal_cutpoint']]
+#' }
+#'
+#' get_thresholds(
+#'   predicted = runif(1000),
+#'   actual = sample(c(0, 1), size = 1000, replace = TRUE),
+#'   cutpoint_methods=c("fx_roc01", "fx_sum_sens_spec"),
+#'   nmb = c("TP" = 1, "TN" = 2, "FP" = 3, "FN" = 4)
+#' )
+#'
+#' # get a combination of cutpoints from both user-defined functions and inbuilt methods
+#' get_thresholds(
+#'   predicted = runif(1000),
+#'   actual = sample(c(0, 1), size = 1000, replace = TRUE),
+#'   cutpoint_methods=c("fx_roc01", "fx_sum_sens_spec", "youden", "all", "none"),
+#'   nmb = c("TP" = 1, "TN" = 2, "FP" = 3, "FN" = 4)
+#' )
+
 get_thresholds <- function(predicted, actual, nmb, cutpoint_methods=NULL) {
   if(is.null(cutpoint_methods)){
     cutpoint_methods <- get_inbuilt_cutpoint(return_all_methods=TRUE)
@@ -158,8 +194,23 @@ get_thresholds <- function(predicted, actual, nmb, cutpoint_methods=NULL) {
     inbuilt_methods,
     function(x) get_inbuilt_cutpoint(actual=actual, predicted=predicted, nmb=nmb, method=x)
   )
+
   names(inbuilt_cutpoints) <- inbuilt_methods
+  inbuilt_cutpoints <- unlist(inbuilt_cutpoints)
 
-  return(inbuilt_cutpoints)
+  # get cutpoints using user-provided functions
+  non_inbuilt_methods <- cutpoint_methods[!cutpoint_methods %in% get_inbuilt_cutpoint(return_all_methods=TRUE)]
+  if(length(non_inbuilt_methods)!=0){
+    non_inbuilt_cutpoints <- lapply(
+      non_inbuilt_methods,
+      function(x) do.call(x, list(predicted=predicted, actual=actual, nmb=nmb))
+    )
 
+    names(non_inbuilt_cutpoints) <- non_inbuilt_methods
+    non_inbuilt_cutpoints <- unlist(non_inbuilt_cutpoints)
+  } else {
+    non_inbuilt_cutpoints <- c()
+  }
+
+  return(c(inbuilt_cutpoints, non_inbuilt_cutpoints))
 }
