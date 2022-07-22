@@ -38,7 +38,6 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
     fx_nmb_evaluation <- list(fx_nmb_evaluation)
   }
 
-
   input_grid <- tidyr::expand_grid(
     sample_size=sample_size,
     n_sims=n_sims,
@@ -66,8 +65,40 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
                            fx_nmb_evaluation=input_grid$fx_nmb_evaluation[[i]])
   )
 
+  # record which inputs are varying across screen
+  screen_meta <- list()
+  if(length(sample_size)!=1){
+    screen_meta <- c(screen_meta, list(sample_size=sample_size))
+  }
+
+  if(length(n_sims)!=1){
+    screen_meta <- c(screen_meta, list(n_sims=n_sims))
+  }
+
+  if(length(n_valid)!=1){
+    screen_meta <- c(screen_meta, list(n_valid=n_valid))
+  }
+
+  if(length(sim_auc)!=1){
+    screen_meta <- c(screen_meta, list(sim_auc=sim_auc))
+  }
+
+  if(length(event_rate)!=1){
+    screen_meta <- c(screen_meta, list(event_rate=event_rate))
+  }
+
+  if(length(fx_nmb_training)!=1){
+    screen_meta <- c(screen_meta, list(fx_nmb_training=fx_nmb_training))
+  }
+
+  if(length(fx_nmb_evaluation)!=1){
+    screen_meta <- c(screen_meta, list(fx_nmb_evaluation=fx_nmb_evaluation))
+  }
+
+
   res <- list(
     grid=input_grid,
+    screen_meta=screen_meta,
     simulations=simulations
   )
 
@@ -76,11 +107,17 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
   res
 }
 
-
 #' @export
 print.predictNMBscreen <- function(x, digits = 2, ...) {
-  cat("predictNMBscreen object\n")
+  cat("predictNMBscreen object\n\n")
+  cat("There were", nrow(x$grid), "combinations screened\n\n")
 
-  cat("There were ", nrow(x$grid), " combinations screened\n\n")
-
+  if(length(x$screen_meta)==1){
+    cat("There was only one input (", names(x$screen_meta),") that was screened for multiple values:\n")
+    print(x$screen_meta)
+  } else {
+    cat("There were multiple inputs (", paste0(names(x$screen_meta), collapse=", "),
+        ") that was screened for multiple values:\n")
+    print(x$screen_meta)
+  }
 }
