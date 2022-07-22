@@ -1,10 +1,11 @@
-#' Title
+#' Do the predictNMB simulation, evaluating the net monetary benefit of the simulated model.
 #'
 #' @param sample_size Sample size of training set. If missing, a sample size calculation will be performed and the calculated size will be used.
 #' @param n_sims Number of simulations to run.
 #' @param n_valid Sample size for evaluation set.
 #' @param sim_auc Simulated model discrimination (AUC).
 #' @param event_rate Simulated event rate of the binary outcome being predicted.
+#' @param cutpoint_methods cutpoint methods to include. Defatults to use the inbuilt methods.
 #' @param fx_nmb_training Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on training set
 #' @param fx_nmb_evaluation Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set
 #'
@@ -19,6 +20,7 @@
 #'   fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
 #' )
 do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
+                       cutpoint_methods = get_inbuilt_cutpoint(return_all_methods=TRUE),
                        fx_nmb_training, fx_nmb_evaluation) {
   if (missing(sample_size)) {
     pmsamp <- pmsampsize::pmsampsize(
@@ -57,7 +59,8 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
     thresholds <- get_thresholds(
       predicted = train_sample$predicted,
       actual = train_sample$actual,
-      nmb = training_value_vector
+      nmb = training_value_vector,
+      cutpoint_methods = cutpoint_methods
     )
 
     evaluation_value_vector <- fx_nmb_evaluation()

@@ -2,7 +2,7 @@
 % Please edit documentation in R/do_nmb_sim.R
 \name{do_nmb_sim}
 \alias{do_nmb_sim}
-\title{Title}
+\title{Do the predictNMB simulation, evaluating the net monetary benefit of the simulated model.}
 \usage{
 do_nmb_sim(
   sample_size,
@@ -10,6 +10,7 @@ do_nmb_sim(
   n_valid,
   sim_auc,
   event_rate,
+  cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
   fx_nmb_training,
   fx_nmb_evaluation
 )
@@ -25,6 +26,8 @@ do_nmb_sim(
 
 \item{event_rate}{Simulated event rate of the binary outcome being predicted.}
 
+\item{cutpoint_methods}{cutpoint methods to include. Defatults to use the inbuilt methods.}
+
 \item{fx_nmb_training}{Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on training set}
 
 \item{fx_nmb_evaluation}{Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set}
@@ -33,7 +36,7 @@ do_nmb_sim(
 predictNMBsim
 }
 \description{
-Title
+Do the predictNMB simulation, evaluating the net monetary benefit of the simulated model.
 }
 \examples{
 
