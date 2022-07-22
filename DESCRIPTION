@@ -19,5 +19,11 @@ LazyData: true
 RoxygenNote: 7.2.0
 Imports: 
     cutpointr,
+    dplyr,
+    ggplot2,
+    magrittr,
     pmsampsize,
-    stats
+    rlang,
+    stats,
+    tibble,
+    tidyr
