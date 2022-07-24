@@ -1,12 +1,39 @@
-get_plot_data <- function(data, methods_order) {
+get_plot_data <- function(x,
+                          what,
+                          methods_order,
+                          rename_vector,
+                          inb_ref_col,
+                          ci) {
+  # select relevant data from predictNMBsim object
+  if(what=="cutpoints") {
+    data <- x$df_thresholds
+  } else {
+    data <- x$df_result
+  }
+
+  if(!missing(rename_vector)){
+    data <- dplyr::rename(data, dplyr::any_of(rename_vector))
+  }
+
+  if(what=="inb") {
+    data <-
+      data %>%
+      dplyr::mutate(dplyr::across(!n_sim, function(x) x - !!rlang::sym(inb_ref_col))) %>%
+      dplyr::select(-dplyr::all_of(inb_ref_col))
+  }
+
+  # pivot data to long format
   pivoted_data <- tidyr::pivot_longer(data, !n_sim)
+
   if(is.null(methods_order)){
     methods_order <- data %>% dplyr::select(-n_sim) %>% names()
   }
   pivoted_data$name <- factor(pivoted_data$name, levels=methods_order)
 
-  pivoted_data
+  # add label (in_interval) for whether the observation is within the interval
+  add_interval(pivoted_data, ci=ci)
 }
+
 
 add_interval <- function(data, ci){
   probs <- c((1 - ci)/2, 1 - (1 - ci)/2)
@@ -37,28 +64,15 @@ plot.predictNMBsim <- function(x,
                                                  axis.text.x = ggplot2::element_blank(),
                                                  strip.background = ggplot2::element_rect(fill="#f1f1f1")),
                                ...) {
-  what <- what[1]
 
-  if(what=="cutpoints") {
-    data <- x$df_thresholds
-  } else {
-    data <- x$df_result
-  }
-
-  if(!missing(rename_vector)){
-    data <- dplyr::rename(data, dplyr::any_of(rename_vector))
-  }
-
-  if(what=="inb") {
-    data <-
-      data %>%
-      dplyr::mutate(dplyr::across(!n_sim, function(x) x - !!rlang::sym(inb_ref_col))) %>%
-      dplyr::select(-dplyr::all_of(inb_ref_col))
-  }
-
-  p_data <- data %>%
-    get_plot_data(methods_order=methods_order) %>%
-    add_interval(ci=ci)
+  p_data <- get_plot_data(
+    x=x,
+    what=what[1],
+    methods_order=methods_order,
+    rename_vector=rename_vector,
+    inb_ref_col=inb_ref_col,
+    ci=ci
+  )
 
   df_agg <-
     p_data %>%
