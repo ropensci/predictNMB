@@ -123,3 +123,105 @@ plot.predictNMBsim <- function(x,
 
   p
 }
+
+
+
+#' @export
+plot.predictNMBscreen <- function(x,
+                                  x_axis_var=NULL,
+                                  what=c("nmb", "inb", "cutpoints"),
+                                  inb_ref_col=NA,
+                                  ci=0.95,
+                                  methods_order=NULL,
+                                  rename_vector,
+                                  extra_theme=NULL,
+                                  ...) {
+
+  if(is.null(x_axis_var)) {
+    message("No value for 'x_axis_var' given.")
+    if(length(x$screen_meta) == 1) {
+      message(paste0("Screening over ", names(x$screen_meta), " by default"))
+    } else {
+      message(
+        paste0("Screening over ",
+               names(x$screen_meta)[1],
+               " by default. Specify the variable in the 'x_axis_var' argument if you want to plot changes over:\n",
+               paste0(names(x$screen_meta)[-1], collapse=", ")))
+    }
+    x_axis_var <- names(x$screen_meta)[1]
+  }
+
+  grid_lookup <- x$grid
+  grid_lookup$.sim_id <- 1:nrow(grid_lookup)
+  sim.id_ignore <- c()
+
+  if(length(names(x$screen_meta))>1){
+    message(paste0("\n\nVarying simulation inputs, other than ", x_axis_var, ", are being held constant:\n"))
+    non_x_axis_vars <- x$screen_meta
+    non_x_axis_vars[[x_axis_var]] <- NULL
+    for(i in length(non_x_axis_vars)){
+      cat(paste0(
+        names(non_x_axis_vars)[i],
+        ": ",
+        non_x_axis_vars[[i]][[1]]
+      ))
+      sim.id_ignore <- append(
+        sim.id_ignore,
+        which(grid_lookup[[names(non_x_axis_vars)[i]]] != non_x_axis_vars[[i]][[1]])
+      )
+    }
+    sim.id_ignore <- unique(sim.id_ignore)
+
+    # filter the grid of simulations to only those which will be in the plot (keeping the non_x_var's constant)
+    grid_lookup <- grid_lookup[!grid_lookup$.sim_id %in% sim.id_ignore, ]
+  }
+
+  p_data_full <- NULL
+  for(s in grid_lookup$.sim_id){
+    p_data <- get_plot_data(
+      x=x$simulations[[s]],
+      what=what[1],
+      methods_order=methods_order,
+      rename_vector=rename_vector,
+      inb_ref_col=inb_ref_col,
+      ci=ci
+    )
+    p_data$.sim_id <- s
+    p_data_full <- rbind(p_data_full, stats::na.omit(p_data))
+  }
+
+  p_data_full <-
+    dplyr::left_join(p_data_full, grid_lookup, by=".sim_id") %>%
+    dplyr::rename(x_axis_var=dplyr::all_of(x_axis_var))
+
+  p_data_range <-
+    p_data_full %>%
+    dplyr::group_by(x_axis_var, name) %>%
+    dplyr::summarize(m=stats::median(value), ymin=min(value), ymax=max(value), .groups = 'drop') %>%
+    dplyr::ungroup()
+
+  p_data_interval <-
+    p_data_full %>%
+    dplyr::filter(in_interval) %>%
+    dplyr::group_by(x_axis_var, name) %>%
+    dplyr::summarize(ymin=min(value), ymax=max(value), .groups = 'drop') %>%
+    dplyr::ungroup()
+
+  p <-
+    ggplot2::ggplot() +
+    ggplot2::geom_point(data=p_data_range, ggplot2::aes(x=x_axis_var, y=m, col=name), size=3) +
+    ggplot2::geom_line(data=p_data_range, ggplot2::aes(x=x_axis_var, y=m, col=name)) +
+    ggplot2::geom_linerange(data=p_data_range, ggplot2::aes(x=x_axis_var, col=name, ymin=ymin, ymax=ymax)) +
+    ggplot2::geom_linerange(data=p_data_interval, ggplot2::aes(x=x_axis_var, col=name, ymin=ymin, ymax=ymax), size=1.2) +
+    ggplot2::labs(
+      x=x_axis_var,
+      y=what,
+      col="cutpoint methods"
+    ) +
+    ggplot2::theme_bw()
+
+  if(!is.null(extra_theme)){
+    p <- p + extra_theme
+  }
+  p
+}
