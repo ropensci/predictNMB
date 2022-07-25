@@ -129,6 +129,7 @@ plot.predictNMBsim <- function(x,
 #' @export
 plot.predictNMBscreen <- function(x,
                                   x_axis_var=NULL,
+                                  constants=list(),
                                   what=c("nmb", "inb", "cutpoints"),
                                   inb_ref_col=NA,
                                   ci=0.95,
@@ -160,19 +161,27 @@ plot.predictNMBscreen <- function(x,
     non_x_axis_vars <- x$screen_meta
     non_x_axis_vars[[x_axis_var]] <- NULL
     for(i in length(non_x_axis_vars)){
+
+      if(names(non_x_axis_vars)[i] %in% names(constants)){
+        v <- constants[[names(non_x_axis_vars)[i]]]
+      } else {
+        v <- non_x_axis_vars[[i]][[1]]
+      }
+
       cat(paste0(
         names(non_x_axis_vars)[i],
         ": ",
-        non_x_axis_vars[[i]][[1]]
+        v
       ))
+
       sim.id_ignore <- append(
         sim.id_ignore,
-        which(grid_lookup[[names(non_x_axis_vars)[i]]] != non_x_axis_vars[[i]][[1]])
+        which(grid_lookup[[names(non_x_axis_vars)[i]]] != v)
       )
     }
     sim.id_ignore <- unique(sim.id_ignore)
 
-    # filter the grid of simulations to only those which will be in the plot (keeping the non_x_var's constant)
+    # filter the grid of simulations to only those which will be in the plot (keeping the non-{x_axis_var}'s constant)
     grid_lookup <- grid_lookup[!grid_lookup$.sim_id %in% sim.id_ignore, ]
   }
 
