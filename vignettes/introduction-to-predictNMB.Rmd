@@ -1,0 +1,144 @@
+---
+title: "introduction-to-predictNMB"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{introduction-to-predictNMB}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# `{predictNMB}`
+
+`{predictNMB}` can be used to evaluate (hypothetical) clinical prediction models regarding the associated Net Monetary Benefit (NMB). This can be relevant to both prognostic and diagnostic models where a cutpoint (aka probability threshold) is used to use predicted classes rather than probabilities. It was born out of related work that investigates cutpoint selection methods which maximise the NMB, and includes several options for inbuilt and user-specified cutpoint selection functions. 
+
+
+## What's being simulated
+
+When `do_nmb_sim()` is run, many datasets are sampled, models fit, and evaluated regarding the NMB. To evaluate the NMB, the user is required to specify functions which can be called to obtain a named vector containing the NMB associated with each possible outcome from a binary classification: 
+
+- TP: True Positives
+- TN: True Negatives
+- FP: False Positives
+- FN: False Negatives
+
+
+### Example function
+
+```{r}
+get_nmb_sampler <- function() {
+  c(
+    "TP" = rnorm(n = 1, mean = -80, sd = 5),
+    "TN" = 0,
+    "FP" = -20,
+    "FN" = rnorm(n = 1, mean = -100, sd = 10)
+  )
+}
+
+get_nmb_sampler()
+get_nmb_sampler()
+get_nmb_sampler()
+```
+
+Every time we run this function, we get a new named vector for the NMB associated with each prediction. We can inform the distributions that we sample from based on the literature for the specific clinical prediction model at hand. See the examples at the end for a more in-depth example based on the literature. 
+
+Since we would expect to use our best estimates of the NMB associated with each prediction for an actual model (and not take a random sample from it's underlying distributions), we will make a separate function for the purpose of obtaining the cutpoint, separately from the one we used (above) to evaluate it.
+
+```{r}
+get_nmb_sampler_training <- function() {
+  c(
+    "TP" = -80,
+    "TN" = 0,
+    "FP" = -20,
+    "FN" = -100
+  )
+}
+get_nmb_sampler_training()
+```
+
+
+```{r setup}
+library(predictNMB)
+```
+
+# `do_nmb_sim()`
+
+`do_nmb_sim()` does a single simulation with a set of inputs for the hypothetical model and NMB related functions. For the model, we need to know the sample size for training and evaluation sets, the model's discrimination (Area Under the Curve - AUC) and the event rate of the outcome being predicted.
+
+We have options to include multiple cutpoint methods and the default is to use all of the available inbuilt methods as well as the treat-all and treat-none methods.
+
+```{r}
+get_inbuilt_cutpoint(return_all_methods = TRUE)
+```
+
+
+```{r}
+nmb_simulation <- do_nmb_sim(
+  sample_size = 1000,
+  n_sims = 500,
+  n_valid = 10000,
+  sim_auc = 0.7,
+  event_rate = 0.1,
+  fx_nmb_training = get_nmb_sampler_training,
+  fx_nmb_evaluation = get_nmb_sampler
+)
+
+nmb_simulation
+```
+
+The simulation can be visualised using plot(). The default is to visualise the distributions of NMB across all (500) simulations.
+```{r}
+plot(nmb_simulation)
+```
+However, we can also use this same function to visualise cutpoints or the incremental net monetary benefit (INB) if we have a known reference strategy.
+```{r}
+plot(nmb_simulation, what = "cutpoints")
+
+plot(nmb_simulation, what = "inb", inb_ref_col = "all")
+```
+
+The NMB for each cutpoint method for each simulation can be accessed by the object directly:
+
+```{r}
+head(nmb_simulation$df_result)
+```
+
+... and so can the cutpoints that were selected:
+
+```{r}
+head(nmb_simulation$df_thresholds)
+```
+
+
+# `screen_simulation_inputs()`
+
+We may want to investigate what the relative improvement in NMB is when increasing the model performance (AUC) and compare this to the treat all or treat none strategy.
+
+To do this, we can screen over many of these simulations with different inputs using `screen_simulation_inputs()`. This function takes the same inputs as `do_nmb_sim()` but can take a vector of inputs rather than only a single value. Here, we pass vectors for both the `sim_auc` and the `event_rate`
+
+```{r}
+sim_screen_obj <- screen_simulation_inputs(
+  n_sims = 50,
+  n_valid = 10000,
+  sim_auc = seq(0.7, 0.95, 0.05),
+  event_rate = c(0.1, 0.2),
+  fx_nmb_training = get_nmb_sampler_training,
+  fx_nmb_evaluation = get_nmb_sampler,
+  cutpoint_methods = c("all", "none", "youden")
+)
+```
+
+Here we can see that (for our hypothetical costed outcome), the classification model (when the cutpoint is selected by maximising the Youden index) only out-performs the treat-all strategy when the model has a AUC of about 0.9! This is pretty high, and may be better than the model that we expect to be able to get. Also, when the event rate is 0.1, rather than 0.2, we are only able the match the treat-all strategy when our model has an AUC of 0.95.
+```{r}
+plot(sim_screen_obj, constants = c(event_rate = 0.2))
+plot(sim_screen_obj, constants = c(event_rate = 0.1))
+```
+
+# TODO: Detailed example
+
