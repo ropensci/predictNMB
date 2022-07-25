@@ -14,12 +14,12 @@ test_that("plot method - defaults - works", {
 
 test_that("plot method - selected x_axis_var - works", {
   obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
-  p <- plot(obj, x_axis_var="event_rate")
+  p <- plot(obj, x_axis_var = "event_rate")
   expect_s3_class(p, "gg")
 })
 
 test_that("plot method - selected constants - works", {
   obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
-  p <- plot(obj, x_axis_var="event_rate", constants=list(sim_auc=0.8))
+  p <- plot(obj, x_axis_var = "event_rate", constants = list(sim_auc = 0.8))
   expect_s3_class(p, "gg")
 })

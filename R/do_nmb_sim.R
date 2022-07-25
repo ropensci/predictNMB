@@ -20,7 +20,7 @@
 #'   fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
 #' )
 do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
-                       cutpoint_methods = get_inbuilt_cutpoint(return_all_methods=TRUE),
+                       cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
                        fx_nmb_training, fx_nmb_evaluation) {
   if (missing(sample_size)) {
     sample_size <- NA
@@ -40,8 +40,8 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
   }
 
   for (i in 1:n_sims) {
-    train_sample <- get_sample(auc = sim_auc, n_samples = sample_size, prevalence = event_rate, min_events=ifelse(check_events, min_events, 0))
-    valid_sample <- get_sample(auc = sim_auc, n_samples = n_valid, prevalence = event_rate, min_events=ifelse(check_events, min_events, 0))
+    train_sample <- get_sample(auc = sim_auc, n_samples = sample_size, prevalence = event_rate, min_events = ifelse(check_events, min_events, 0))
+    valid_sample <- get_sample(auc = sim_auc, n_samples = n_valid, prevalence = event_rate, min_events = ifelse(check_events, min_events, 0))
 
     model <- stats::glm(actual ~ x, data = train_sample, family = stats::binomial())
 
