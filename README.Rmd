@@ -80,7 +80,6 @@ sim_screen_obj <- screen_simulation_inputs(
 plot(sim_screen_obj)
 ```
 
-
 In this example, the cost of the treatment is relatively cheap (\$10) to the effectiveness (reduces risk of outcome by 35%) of it and the cost of the outcome (\$100). The Youden index, which is a pretty commonly used method to obtain a cutpoint, out performs treat-all when the model has an AUC of about 0.85 or higher. Whereas, the cost-effective cutpoint starts out similar to treat-all even at low levels of model AUC, but improves as the AUC increases, staying ahead of the Youden index.
 
 The plot method includes additional arguments to rename the methods using a named vector. It can also be used to visualise cutpoints or the Incremental Net Monetary Benefit (INB) when there's a known reference strategy.
@@ -90,7 +89,6 @@ plot(
   sim_screen_obj, 
   rename_vector=c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Cost-effective" = "cost_effective")
 )
-
 plot(
   sim_screen_obj, 
   rename_vector=c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Cost-effective" = "cost_effective"),
@@ -98,3 +96,43 @@ plot(
   inb_ref_col="Treat All"
 )
 ```
+By default, the median (dot), 95% interval (thick vertical line), range (skinny vertical line), and lines between points are shown. All except the dots can be optionally turned off or on, and the width of the interval can be controlled with `ci`
+```{r}
+plot(
+  sim_screen_obj,
+  plot_line = FALSE,
+  plot_range = FALSE,
+  plot_ci = 0.8
+)
+plot(
+  sim_screen_obj,
+  plot_line = TRUE,
+  plot_range = FALSE,
+  plot_ci = 0
+)
+```
+
+The simulations for a given set of inputs can be accessed from our `predictNMBscreen` object (`sim_screen_obj`). These are the same as the output from `do_nmb_sim()` and have their own methods as well. Here, the plot shows the median as the solid bar within the distribution and the light blue portion of the distribution is the 95% interval (level can be changed using the `ci` argument).
+
+```{r}
+sim_screen_obj$simulations
+sim_obj <- sim_screen_obj$simulations[[1]]
+
+sim_obj
+plot(sim_obj)
+plot(sim_obj, ci=0.50)
+```
+The plot methods for both the `predictNMBscreen` and `predictNMBsim` objects have almost the same usage of arguments.
+```{r}
+plot(
+  sim_obj, 
+  rename_vector=c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Cost-effective" = "cost_effective")
+)
+plot(
+  sim_obj, 
+  rename_vector=c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Cost-effective" = "cost_effective"),
+  what="inb",
+  inb_ref_col="Treat All"
+)
+```
+

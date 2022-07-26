@@ -127,4 +127,134 @@ plot(
 #> Screening over sim_auc by default
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-2.png" width="100%" /> By
+default, the median (dot), 95% interval (thick vertical line), range
+(skinny vertical line), and lines between points are shown. All except
+the dots can be optionally turned off or on, and the width of the
+interval can be controlled with `ci`
+
+``` r
+plot(
+  sim_screen_obj,
+  plot_line = FALSE,
+  plot_range = FALSE,
+  plot_ci = 0.8
+)
+#> No value for 'x_axis_var' given.
+#> Screening over sim_auc by default
+```
+
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+
+``` r
+plot(
+  sim_screen_obj,
+  plot_line = TRUE,
+  plot_range = FALSE,
+  plot_ci = 0
+)
+#> No value for 'x_axis_var' given.
+#> Screening over sim_auc by default
+```
+
+<img src="man/figures/README-unnamed-chunk-7-2.png" width="100%" />
+
+The simulations for a given set of inputs can be accessed from our
+`predictNMBscreen` object (`sim_screen_obj`). These are the same as the
+output from `do_nmb_sim()` and have their own methods as well. Here, the
+plot shows the median as the solid bar within the distribution and the
+light blue portion of the distribution is the 95% interval (level can be
+changed using the `ci` argument).
+
+``` r
+sim_screen_obj$simulations
+#> [[1]]
+#> predictNMB object
+#> 
+#> Training data sample size:  189
+#> Evaluation data sample size:  10000
+#> Number of simulations:  500
+#> Simulated AUC:  0.7
+#> Simulated event rate:  0.1
+#> [[2]]
+#> predictNMB object
+#> 
+#> Training data sample size:  139
+#> Evaluation data sample size:  10000
+#> Number of simulations:  500
+#> Simulated AUC:  0.75
+#> Simulated event rate:  0.1
+#> [[3]]
+#> predictNMB object
+#> 
+#> Training data sample size:  139
+#> Evaluation data sample size:  10000
+#> Number of simulations:  500
+#> Simulated AUC:  0.8
+#> Simulated event rate:  0.1
+#> [[4]]
+#> predictNMB object
+#> 
+#> Training data sample size:  139
+#> Evaluation data sample size:  10000
+#> Number of simulations:  500
+#> Simulated AUC:  0.85
+#> Simulated event rate:  0.1
+#> [[5]]
+#> predictNMB object
+#> 
+#> Training data sample size:  139
+#> Evaluation data sample size:  10000
+#> Number of simulations:  500
+#> Simulated AUC:  0.9
+#> Simulated event rate:  0.1
+#> [[6]]
+#> predictNMB object
+#> 
+#> Training data sample size:  139
+#> Evaluation data sample size:  10000
+#> Number of simulations:  500
+#> Simulated AUC:  0.95
+#> Simulated event rate:  0.1
+sim_obj <- sim_screen_obj$simulations[[1]]
+
+sim_obj
+#> predictNMB object
+#> 
+#> Training data sample size:  189
+#> Evaluation data sample size:  10000
+#> Number of simulations:  500
+#> Simulated AUC:  0.7
+#> Simulated event rate:  0.1
+plot(sim_obj)
+```
+
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+
+``` r
+plot(sim_obj, ci=0.50)
+```
+
+<img src="man/figures/README-unnamed-chunk-8-2.png" width="100%" /> The
+plot methods for both the `predictNMBscreen` and `predictNMBsim` objects
+have almost the same usage of arguments.
+
+``` r
+plot(
+  sim_obj, 
+  rename_vector=c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Cost-effective" = "cost_effective")
+)
+```
+
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+
+``` r
+plot(
+  sim_obj, 
+  rename_vector=c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Cost-effective" = "cost_effective"),
+  what="inb",
+  inb_ref_col="Treat All"
+)
+```
+
+<img src="man/figures/README-unnamed-chunk-9-2.png" width="100%" />
