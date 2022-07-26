@@ -172,7 +172,7 @@ plot.predictNMBscreen <- function(x,
         v <- non_x_axis_vars[[i]][[1]]
       }
 
-      cat(paste0(
+      message(paste0(
         names(non_x_axis_vars)[i],
         ": ",
         v
