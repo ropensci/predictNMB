@@ -12,7 +12,8 @@ screen_simulation_inputs(
   event_rate,
   cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
   fx_nmb_training,
-  fx_nmb_evaluation
+  fx_nmb_evaluation,
+  meet_min_events = FALSE
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ screen_simulation_inputs(
 \item{fx_nmb_training}{a function (or list of functions) that returns named vector of NMB assigned to classifications use for obtaining cutpoint on training set}
 
 \item{fx_nmb_evaluation}{a function (or list of functions) that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set}
+
+\item{meet_min_events}{Whether or not to incrementally add samples until the expected number of events (\code{sample_size * event_rate}) is met. (Applies to sampling of training data only.)}
 }
 \value{
 predictNMBscreen
@@ -41,7 +44,7 @@ Screen many simulation inputs: a parent function to \code{do_nmb_sim()}
 \examples{
 
 # perform screen with increasing values of model discimination (sim_auc)
-if(FALSE){
+if (FALSE) {
   get_nmb <- function() c("TP" = 1, "TN" = 2, "FP" = 3, "FN" = 4)
   sim_screen_obj <- screen_simulation_inputs(
     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1), event_rate = 0.1,

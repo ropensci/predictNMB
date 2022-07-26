@@ -8,6 +8,7 @@
 #' @param cutpoint_methods cutpoint methods to include. Defaults to use the inbuilt methods. This doesn't change across calls to \code{do_nmb_sim()}
 #' @param fx_nmb_training a function (or list of functions) that returns named vector of NMB assigned to classifications use for obtaining cutpoint on training set
 #' @param fx_nmb_evaluation a function (or list of functions) that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set
+#' @param meet_min_events Whether or not to incrementally add samples until the expected number of events (\code{sample_size * event_rate}) is met. (Applies to sampling of training data only.)
 #'
 #' @return predictNMBscreen
 #' @export
@@ -24,7 +25,7 @@
 #' }
 screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
                                      cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
-                                     fx_nmb_training, fx_nmb_evaluation) {
+                                     fx_nmb_training, fx_nmb_evaluation, meet_min_events = FALSE) {
   if (missing(sample_size)) {
     sample_size <- NA
   }
@@ -63,7 +64,8 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
         event_rate = input_grid$event_rate[i],
         cutpoint_methods = cutpoint_methods,
         fx_nmb_training = input_grid$fx_nmb_training[[i]],
-        fx_nmb_evaluation = input_grid$fx_nmb_evaluation[[i]]
+        fx_nmb_evaluation = input_grid$fx_nmb_evaluation[[i]],
+        meet_min_events = meet_min_events
       )
     }
   )

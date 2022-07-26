@@ -31,13 +31,13 @@ Get a cutpoint using the methods inbuilt to predictNMB
 }
 \examples{
 ## get the list of available methods:
-get_inbuilt_cutpoint(return_all_methods=TRUE)
+get_inbuilt_cutpoint(return_all_methods = TRUE)
 
 ## get the cutpoint that maximises the Youden index for a given set of probabilities and outcomes
 get_inbuilt_cutpoint(
-    predicted = runif(1000),
-    actual = sample(c(0, 1), size = 1000, replace = TRUE),
-    method = "youden"
+  predicted = runif(1000),
+  actual = sample(c(0, 1), size = 1000, replace = TRUE),
+  method = "youden"
 )
 
 }

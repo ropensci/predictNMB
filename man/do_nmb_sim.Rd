@@ -12,7 +12,8 @@ do_nmb_sim(
   event_rate,
   cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
   fx_nmb_training,
-  fx_nmb_evaluation
+  fx_nmb_evaluation,
+  meet_min_events = TRUE
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ do_nmb_sim(
 \item{fx_nmb_training}{Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on training set}
 
 \item{fx_nmb_evaluation}{Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set}
+
+\item{meet_min_events}{Whether or not to incrementally add samples until the expected number of events (\code{sample_size * event_rate}) is met. (Applies to sampling of training data only.)}
 }
 \value{
 predictNMBsim

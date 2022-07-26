@@ -8,6 +8,7 @@
 #' @param cutpoint_methods cutpoint methods to include. Defaults to use the inbuilt methods.
 #' @param fx_nmb_training Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on training set
 #' @param fx_nmb_evaluation Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set
+#' @param meet_min_events Whether or not to incrementally add samples until the expected number of events (\code{sample_size * event_rate}) is met. (Applies to sampling of training data only.)
 #'
 #' @return predictNMBsim
 #' @export
@@ -21,7 +22,7 @@
 #' )
 do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
                        cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
-                       fx_nmb_training, fx_nmb_evaluation) {
+                       fx_nmb_training, fx_nmb_evaluation, meet_min_events = TRUE) {
   if (missing(sample_size)) {
     sample_size <- NA
   }
@@ -34,14 +35,13 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
     )
     sample_size <- pmsamp$sample_size
     min_events <- pmsamp$events
-    check_events <- TRUE
   } else {
-    check_events <- FALSE
+    min_events <- round(sample_size * event_rate)
   }
 
   for (i in 1:n_sims) {
-    train_sample <- get_sample(auc = sim_auc, n_samples = sample_size, prevalence = event_rate, min_events = ifelse(check_events, min_events, 0))
-    valid_sample <- get_sample(auc = sim_auc, n_samples = n_valid, prevalence = event_rate, min_events = ifelse(check_events, min_events, 0))
+    train_sample <- get_sample(auc = sim_auc, n_samples = sample_size, prevalence = event_rate, min_events = ifelse(meet_min_events, min_events, 0))
+    valid_sample <- get_sample(auc = sim_auc, n_samples = n_valid, prevalence = event_rate, min_events = 0)
 
     model <- stats::glm(actual ~ x, data = train_sample, family = stats::binomial())
 
