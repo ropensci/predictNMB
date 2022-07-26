@@ -127,7 +127,7 @@ To do this, we can screen over many of these simulations with different inputs u
 Here, we run the simulations in parallel by creating a cluster and passing this as an argument. This can also be done to `do_nmb_sim()` in the same way.
 
 ```{r}
-cl <- parallel::makeCluster(parallel::detectCores())
+cl <- parallel::makeCluster(2)
 sim_screen_obj <- screen_simulation_inputs(
   n_sims = 1000,
   n_valid = 10000,
