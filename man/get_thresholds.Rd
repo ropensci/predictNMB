@@ -27,7 +27,7 @@ Gets probability thresholds given predicted probabilities, outcomes and NMB.
 get_thresholds(
   predicted = runif(1000),
   actual = sample(c(0, 1), size = 1000, replace = TRUE),
-  nmb = c("TP" = 1, "TN" = 2, "FP" = 3, "FN" = 4)
+  nmb = c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 )
 
 
@@ -54,7 +54,7 @@ get_thresholds(
   predicted = runif(1000),
   actual = sample(c(0, 1), size = 1000, replace = TRUE),
   cutpoint_methods = c("fx_roc01", "fx_sum_sens_spec"),
-  nmb = c("TP" = 1, "TN" = 2, "FP" = 3, "FN" = 4)
+  nmb = c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 )
 
 # get a combination of cutpoints from both user-defined functions and inbuilt methods
@@ -62,6 +62,6 @@ get_thresholds(
   predicted = runif(1000),
   actual = sample(c(0, 1), size = 1000, replace = TRUE),
   cutpoint_methods = c("fx_roc01", "fx_sum_sens_spec", "youden", "all", "none"),
-  nmb = c("TP" = 1, "TN" = 2, "FP" = 3, "FN" = 4)
+  nmb = c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 )
 }

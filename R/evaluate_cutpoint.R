@@ -13,7 +13,7 @@
 #'   predicted = runif(1000),
 #'   actual = sample(c(0, 1), size = 1000, replace = TRUE),
 #'   pt = 0.1,
-#'   nmb = c("TP" = 1, "TN" = 2, "FP" = 3, "FN" = 4)
+#'   nmb = c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 #' )
 evaluate_cutpoint <- function(predicted, actual, pt, nmb) {
   d <- cbind(predicted, actual, NA)

@@ -43,7 +43,7 @@ Do the predictNMB simulation, evaluating the net monetary benefit of the simulat
 }
 \examples{
 
-get_nmb <- function() c("TP" = 1, "TN" = 2, "FP" = 3, "FN" = 4)
+get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 do_nmb_sim(
   n_sims = 50, n_valid = 10000, sim_auc = 0.7, event_rate = 0.1,
   fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
