@@ -114,9 +114,10 @@ plot.predictNMBsim <- function(x,
 
 
   x_axis_title <- switch(what[1],
-                         "nmb" = "Net Monetary Benefit ($)",
-                         "inb" = "Incremental Net Monetary Benefit ($)",
-                         "cutpoints" = "Selected Cutpoint")
+    "nmb" = "Net Monetary Benefit ($)",
+    "inb" = "Incremental Net Monetary Benefit ($)",
+    "cutpoints" = "Selected Cutpoint"
+  )
 
   p <-
     p +
@@ -235,18 +236,20 @@ plot.predictNMBscreen <- function(x,
     dplyr::ungroup()
 
   y_axis_title <- switch(what[1],
-                         "nmb" = "Net Monetary Benefit ($)",
-                         "inb" = "Incremental Net Monetary Benefit ($)",
-                         "cutpoints" = "Selected Cutpoint")
+    "nmb" = "Net Monetary Benefit ($)",
+    "inb" = "Incremental Net Monetary Benefit ($)",
+    "cutpoints" = "Selected Cutpoint"
+  )
 
   x_axis_title <- switch(x_axis_var,
-                         "sample_size" = "Training sample size",
-                         "n_sims" = "Number of simulations",
-                         "n_valid" = "Validation sample size",
-                         "sim_auc" = "Model AUC",
-                         "event_rate" = "Event rate",
-                         "fx_nmb_training" = "NMB Sampling Function (training)",
-                         "fx_nmb_evaluation" = "NMB Sampling Function (evaluation)")
+    "sample_size" = "Training sample size",
+    "n_sims" = "Number of simulations",
+    "n_valid" = "Validation sample size",
+    "sim_auc" = "Model AUC",
+    "event_rate" = "Event rate",
+    "fx_nmb_training" = "NMB Sampling Function (training)",
+    "fx_nmb_evaluation" = "NMB Sampling Function (evaluation)"
+  )
 
   p <-
     ggplot2::ggplot() +
@@ -256,7 +259,7 @@ plot.predictNMBscreen <- function(x,
       size = 3, alpha = plot_alpha
     )
 
-  if(plot_line) {
+  if (plot_line) {
     p <-
       p +
       ggplot2::geom_line(
@@ -266,7 +269,7 @@ plot.predictNMBscreen <- function(x,
       )
   }
 
-  if(plot_ci) {
+  if (plot_ci) {
     p <-
       p +
       ggplot2::geom_linerange(
@@ -276,7 +279,7 @@ plot.predictNMBscreen <- function(x,
       )
   }
 
-  if(plot_range) {
+  if (plot_range) {
     p <-
       p +
       ggplot2::geom_linerange(

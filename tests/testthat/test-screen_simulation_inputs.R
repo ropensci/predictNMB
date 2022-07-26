@@ -7,6 +7,30 @@ test_that("screen_simulation_inputs() works", {
   expect_s3_class(sim_screen_obj, "predictNMBscreen")
 })
 
+test_that("screen_simulation_inputs() works in parallel", {
+  get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
+  if (!requireNamespace("parallel", quietly = TRUE)) {
+    skip()
+  }
+
+  chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
+  if (nzchar(chk) && chk == TRUE) {
+    ncores <- 2
+  } else {
+    ncores <- parallel::detectCores()
+  }
+  cl <- parallel::makeCluster(ncores)
+
+  sim_screen_obj_par <- screen_simulation_inputs(
+    n_sims = 10, n_valid = 1000, sim_auc = seq(0.7, 0.9, 0.1), event_rate = 0.1,
+    fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb, cl = cl
+  )
+
+  parallel::stopCluster(cl)
+
+  expect_s3_class(sim_screen_obj_par, "predictNMBscreen")
+})
+
 test_that("plot method - defaults - works", {
   obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
   expect_s3_class(plot(obj), "gg")

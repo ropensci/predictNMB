@@ -9,6 +9,7 @@
 #' @param fx_nmb_training Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on training set
 #' @param fx_nmb_evaluation Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set
 #' @param meet_min_events Whether or not to incrementally add samples until the expected number of events (\code{sample_size * event_rate}) is met. (Applies to sampling of training data only.)
+#' @param cl A cluster made using \code{parallel::makeCluster()}. If a cluster is provided, the simulation will be done in parallel.
 #'
 #' @return predictNMBsim
 #' @export
@@ -22,7 +23,7 @@
 #' )
 do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
                        cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
-                       fx_nmb_training, fx_nmb_evaluation, meet_min_events = TRUE) {
+                       fx_nmb_training, fx_nmb_evaluation, meet_min_events = TRUE, cl = NULL) {
   if (missing(sample_size)) {
     sample_size <- NA
   }
@@ -39,46 +40,33 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
     min_events <- round(sample_size * event_rate)
   }
 
-  for (i in 1:n_sims) {
-    train_sample <- get_sample(auc = sim_auc, n_samples = sample_size, prevalence = event_rate, min_events = ifelse(meet_min_events, min_events, 0))
-    valid_sample <- get_sample(auc = sim_auc, n_samples = n_valid, prevalence = event_rate, min_events = 0)
-
-    model <- stats::glm(actual ~ x, data = train_sample, family = stats::binomial())
-
-    train_sample$predicted <- stats::predict(model, type = "response")
-    valid_sample$predicted <- stats::predict(model, type = "response", newdata = valid_sample)
-
-    training_value_vector <- fx_nmb_training()
-
-    thresholds <- get_thresholds(
-      predicted = train_sample$predicted,
-      actual = train_sample$actual,
-      nmb = training_value_vector,
-      cutpoint_methods = cutpoint_methods
+  # do iterations
+  f_iteration_wrapper <- function(...) {
+    do_nmb_iteration(
+      sim_auc = sim_auc,
+      sample_size = sample_size,
+      n_valid = n_valid,
+      event_rate = event_rate,
+      meet_min_events = meet_min_events,
+      min_events = min_events,
+      cutpoint_methods = cutpoint_methods,
+      fx_nmb_training = fx_nmb_training,
+      fx_nmb_evaluation = fx_nmb_evaluation
     )
+  }
 
-    evaluation_value_vector <- fx_nmb_evaluation()
+  if (is.null(cl)) {
+    iterations <- lapply(1:n_sims, f_iteration_wrapper)
+  } else {
+    parallel::clusterExport(cl, envir = environment(), {
+      c("f_iteration_wrapper", "do_nmb_iteration")
+    })
+    iterations <- parallel::parLapply(cl = cl, 1:n_sims, f_iteration_wrapper)
+  }
 
-    cost_threshold <- function(pt) {
-      evaluate_cutpoint(
-        predicted = valid_sample$predicted,
-        actual = valid_sample$actual,
-        pt = pt,
-        nmb = evaluation_value_vector
-      )
-    }
+  df_result <- do.call("rbind", lapply(iterations, "[[", "thresholds"))
+  df_thresholds <- do.call("rbind", lapply(iterations, "[[", "results"))
 
-    results_i <- t(unlist(lapply(thresholds, cost_threshold)))
-
-    thresholds_i <- unlist(thresholds)
-    if (i == 1) {
-      df_result <- results_i
-      df_thresholds <- thresholds_i
-    } else {
-      df_result <- rbind(df_result, results_i)
-      df_thresholds <- rbind(df_thresholds, thresholds_i)
-    }
-  } # end simulation loop
 
   df_result <- as.data.frame.matrix(df_result)
   df_thresholds <- as.data.frame.matrix(df_thresholds)
@@ -102,6 +90,63 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
   )
   class(res) <- "predictNMBsim"
   res
+}
+
+
+do_nmb_iteration <- function(sim_auc,
+                             sample_size,
+                             n_valid,
+                             event_rate,
+                             meet_min_events,
+                             min_events,
+                             cutpoint_methods,
+                             fx_nmb_training,
+                             fx_nmb_evaluation) {
+  train_sample <- predictNMB::get_sample(
+    auc = sim_auc,
+    n_samples = sample_size,
+    prevalence = event_rate,
+    min_events = ifelse(meet_min_events, min_events, 0)
+  )
+
+  valid_sample <- predictNMB::get_sample(
+    auc = sim_auc,
+    n_samples = n_valid,
+    prevalence = event_rate,
+    min_events = 0
+  )
+
+  model <- stats::glm(actual ~ x, data = train_sample, family = stats::binomial())
+
+  train_sample$predicted <- stats::predict(model, type = "response")
+  valid_sample$predicted <- stats::predict(model, type = "response", newdata = valid_sample)
+
+  training_value_vector <- fx_nmb_training()
+
+  thresholds <- predictNMB::get_thresholds(
+    predicted = train_sample$predicted,
+    actual = train_sample$actual,
+    nmb = training_value_vector,
+    cutpoint_methods = cutpoint_methods
+  )
+
+  evaluation_value_vector <- fx_nmb_evaluation()
+
+  cost_threshold <- function(pt) {
+    predictNMB::evaluate_cutpoint(
+      predicted = valid_sample$predicted,
+      actual = valid_sample$actual,
+      pt = pt,
+      nmb = evaluation_value_vector
+    )
+  }
+
+  return(
+    list(
+      results = t(unlist(lapply(thresholds, cost_threshold))),
+      thresholds = unlist(thresholds)
+    )
+  )
 }
 
 

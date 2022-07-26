@@ -13,7 +13,8 @@ screen_simulation_inputs(
   cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
   fx_nmb_training,
   fx_nmb_evaluation,
-  meet_min_events = FALSE
+  meet_min_events = FALSE,
+  cl = NULL
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ screen_simulation_inputs(
 \item{fx_nmb_evaluation}{a function (or list of functions) that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set}
 
 \item{meet_min_events}{Whether or not to incrementally add samples until the expected number of events (\code{sample_size * event_rate}) is met. (Applies to sampling of training data only.)}
+
+\item{cl}{A cluster made using \code{parallel::makeCluster()}. If a cluster is provided, the simulation will be done in parallel.}
 }
 \value{
 predictNMBscreen
