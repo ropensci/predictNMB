@@ -112,12 +112,22 @@ plot.predictNMBsim <- function(x,
     dplyr::slice(1) %>%
     dplyr::ungroup()
 
+
+  x_axis_title <- switch(what[1],
+                         "nmb" = "Net Monetary Benefit ($)",
+                         "inb" = "Incremental Net Monetary Benefit ($)",
+                         "cutpoints" = "Selected Cutpoint")
+
   p <-
     p +
     ggplot2::geom_segment(
       data = heights,
       ggplot2::aes(x = m, xend = m, y = 0, yend = count),
       size = median_line_size, alpha = median_line_alpha
+    ) +
+    labs(
+      x = x_axis_title,
+      y = ""
     )
 
   if (!is.null(extra_theme)) {
@@ -220,6 +230,20 @@ plot.predictNMBscreen <- function(x,
     dplyr::summarize(ymin = min(value), ymax = max(value), .groups = "drop") %>%
     dplyr::ungroup()
 
+  y_axis_title <- switch(what[1],
+                         "nmb" = "Net Monetary Benefit ($)",
+                         "inb" = "Incremental Net Monetary Benefit ($)",
+                         "cutpoints" = "Selected Cutpoint")
+
+  x_axis_title <- switch(x_axis_var,
+                         "sample_size" = "Training sample size",
+                         "n_sims" = "Number of simulations",
+                         "n_valid" = "Validation sample size",
+                         "sim_auc" = "Model AUC",
+                         "event_rate" = "Event rate",
+                         "fx_nmb_training" = "NMB Sampling Function (training)",
+                         "fx_nmb_evaluation" = "NMB Sampling Function (evaluation)")
+
   p <-
     ggplot2::ggplot() +
     ggplot2::geom_point(data = p_data_range, ggplot2::aes(x = x_axis_var, y = m, col = name), size = 3) +
@@ -227,9 +251,9 @@ plot.predictNMBscreen <- function(x,
     ggplot2::geom_linerange(data = p_data_range, ggplot2::aes(x = x_axis_var, col = name, ymin = ymin, ymax = ymax)) +
     ggplot2::geom_linerange(data = p_data_interval, ggplot2::aes(x = x_axis_var, col = name, ymin = ymin, ymax = ymax), size = 1.2) +
     ggplot2::labs(
-      x = x_axis_var,
-      y = what,
-      col = "cutpoint methods"
+      x = x_axis_title,
+      y = y_axis_title,
+      col = "Cutpoint Methods"
     ) +
     ggplot2::theme_bw()
 
