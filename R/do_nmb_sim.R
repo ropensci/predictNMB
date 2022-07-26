@@ -64,8 +64,8 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
     iterations <- parallel::parLapply(cl = cl, 1:n_sims, f_iteration_wrapper)
   }
 
-  df_result <- do.call("rbind", lapply(iterations, "[[", "thresholds"))
-  df_thresholds <- do.call("rbind", lapply(iterations, "[[", "results"))
+  df_result <- do.call("rbind", lapply(iterations, "[[", "results"))
+  df_thresholds <- do.call("rbind", lapply(iterations, "[[", "thresholds"))
 
 
   df_result <- as.data.frame.matrix(df_result)
