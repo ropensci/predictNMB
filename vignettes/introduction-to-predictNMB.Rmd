@@ -10,7 +10,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
 )
 ```
 
@@ -120,17 +122,21 @@ head(nmb_simulation$df_thresholds)
 
 We may want to investigate what the relative improvement in NMB is when increasing the model performance (AUC) and compare this to the treat all or treat none strategy.
 
-To do this, we can screen over many of these simulations with different inputs using `screen_simulation_inputs()`. This function takes the same inputs as `do_nmb_sim()` but can take a vector of inputs rather than only a single value. Here, we pass vectors for both the `sim_auc` and the `event_rate`
+To do this, we can screen over many of these simulations with different inputs using `screen_simulation_inputs()`. This function takes the same inputs as `do_nmb_sim()` but can take a vector of inputs rather than only a single value. Here, we pass vectors for both the `sim_auc` and the `event_rate`.
+
+Here, we run the simulations in parallel by creating a cluster and passing this as an argument. This can also be done to `do_nmb_sim()` in the same way.
 
 ```{r}
+cl <- parallel::makeCluster(parallel::detectCores())
 sim_screen_obj <- screen_simulation_inputs(
-  n_sims = 50,
+  n_sims = 1000,
   n_valid = 10000,
   sim_auc = seq(0.7, 0.95, 0.05),
   event_rate = c(0.1, 0.2),
   fx_nmb_training = get_nmb_sampler_training,
   fx_nmb_evaluation = get_nmb_sampler,
-  cutpoint_methods = c("all", "none", "youden")
+  cutpoint_methods = c("all", "none", "youden"),
+  cl = cl
 )
 ```
 

@@ -72,13 +72,17 @@ cutpoint.
 
 The event that I’m interested in happens to 10% of my patient population
 so I use `event_rate = 0.1`. I’m going to provide a vector of possible
-inputs for the model AUC so I use `sim_auc = seq(0.7, 0.95, 0.05)`
+inputs for the model AUC so I use `sim_auc = seq(0.7, 0.95, 0.05)`.
+
+It’s optional to pass a cluster as the `cl` argument. If it is passed,
+the simulations are run in parallel (faster).
 
 ``` r
+cl <- parallel::makeCluster(parallel::detectCores())
 sim_screen_obj <- screen_simulation_inputs(
-  n_sims = 500, n_valid = 10000, sim_auc = seq(0.7, 0.95, 0.05), event_rate = 0.1,
+  n_sims = 1000, n_valid = 10000, sim_auc = seq(0.7, 0.95, 0.05), event_rate = 0.1,
   fx_nmb_training = fx_nmb, fx_nmb_evaluation = fx_nmb,
-  cutpoint_methods = c("all", "none", "youden", "cost_effective")
+  cutpoint_methods = c("all", "none", "youden", "cost_effective"), cl = cl
 )
 ```
 
@@ -173,7 +177,7 @@ sim_screen_obj$simulations
 #> 
 #> Training data sample size:  189
 #> Evaluation data sample size:  10000
-#> Number of simulations:  500
+#> Number of simulations:  1000
 #> Simulated AUC:  0.7
 #> Simulated event rate:  0.1
 #> [[2]]
@@ -181,7 +185,7 @@ sim_screen_obj$simulations
 #> 
 #> Training data sample size:  139
 #> Evaluation data sample size:  10000
-#> Number of simulations:  500
+#> Number of simulations:  1000
 #> Simulated AUC:  0.75
 #> Simulated event rate:  0.1
 #> [[3]]
@@ -189,7 +193,7 @@ sim_screen_obj$simulations
 #> 
 #> Training data sample size:  139
 #> Evaluation data sample size:  10000
-#> Number of simulations:  500
+#> Number of simulations:  1000
 #> Simulated AUC:  0.8
 #> Simulated event rate:  0.1
 #> [[4]]
@@ -197,7 +201,7 @@ sim_screen_obj$simulations
 #> 
 #> Training data sample size:  139
 #> Evaluation data sample size:  10000
-#> Number of simulations:  500
+#> Number of simulations:  1000
 #> Simulated AUC:  0.85
 #> Simulated event rate:  0.1
 #> [[5]]
@@ -205,7 +209,7 @@ sim_screen_obj$simulations
 #> 
 #> Training data sample size:  139
 #> Evaluation data sample size:  10000
-#> Number of simulations:  500
+#> Number of simulations:  1000
 #> Simulated AUC:  0.9
 #> Simulated event rate:  0.1
 #> [[6]]
@@ -213,7 +217,7 @@ sim_screen_obj$simulations
 #> 
 #> Training data sample size:  139
 #> Evaluation data sample size:  10000
-#> Number of simulations:  500
+#> Number of simulations:  1000
 #> Simulated AUC:  0.95
 #> Simulated event rate:  0.1
 sim_obj <- sim_screen_obj$simulations[[1]]
@@ -223,7 +227,7 @@ sim_obj
 #> 
 #> Training data sample size:  189
 #> Evaluation data sample size:  10000
-#> Number of simulations:  500
+#> Number of simulations:  1000
 #> Simulated AUC:  0.7
 #> Simulated event rate:  0.1
 plot(sim_obj)

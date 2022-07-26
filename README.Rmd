@@ -64,13 +64,16 @@ We use this as an inputs so that the NMB can be evaluated for each simulation.
 
 In the simulation below, I want to see how performant I need my model to be to out perform a treat-all or treat-none strategy (i.e. how good does a model need to be to be better than no model at all). I'm going to select cutpoints using the Youden index as well as the cost_effective cutpoint.
 
-The event that I'm interested in happens to 10% of my patient population so I use `event_rate = 0.1`. I'm going to provide a vector of possible inputs for the model AUC so I use `sim_auc = seq(0.7, 0.95, 0.05)`
+The event that I'm interested in happens to 10% of my patient population so I use `event_rate = 0.1`. I'm going to provide a vector of possible inputs for the model AUC so I use `sim_auc = seq(0.7, 0.95, 0.05)`.
+
+It's optional to pass a cluster as the `cl` argument. If it is passed, the simulations are run in parallel (faster).
 
 ```{r warning=FALSE}
+cl <- parallel::makeCluster(parallel::detectCores())
 sim_screen_obj <- screen_simulation_inputs(
-  n_sims = 500, n_valid = 10000, sim_auc = seq(0.7, 0.95, 0.05), event_rate = 0.1,
+  n_sims = 1000, n_valid = 10000, sim_auc = seq(0.7, 0.95, 0.05), event_rate = 0.1,
   fx_nmb_training = fx_nmb, fx_nmb_evaluation = fx_nmb,
-  cutpoint_methods = c("all", "none", "youden", "cost_effective")
+  cutpoint_methods = c("all", "none", "youden", "cost_effective"), cl = cl
 )
 ```
 
