@@ -125,7 +125,7 @@ plot.predictNMBsim <- function(x,
       ggplot2::aes(x = m, xend = m, y = 0, yend = count),
       size = median_line_size, alpha = median_line_alpha
     ) +
-    labs(
+    ggplot2::labs(
       x = x_axis_title,
       y = ""
     )
@@ -145,6 +145,10 @@ plot.predictNMBscreen <- function(x,
                                   constants = list(),
                                   what = c("nmb", "inb", "cutpoints"),
                                   inb_ref_col = NA,
+                                  plot_range = TRUE,
+                                  plot_ci = TRUE,
+                                  plot_line = TRUE,
+                                  plot_alpha = 0.5,
                                   ci = 0.95,
                                   methods_order = NULL,
                                   rename_vector,
@@ -246,10 +250,43 @@ plot.predictNMBscreen <- function(x,
 
   p <-
     ggplot2::ggplot() +
-    ggplot2::geom_point(data = p_data_range, ggplot2::aes(x = x_axis_var, y = m, col = name), size = 3) +
-    ggplot2::geom_line(data = p_data_range, ggplot2::aes(x = x_axis_var, y = m, col = name)) +
-    ggplot2::geom_linerange(data = p_data_range, ggplot2::aes(x = x_axis_var, col = name, ymin = ymin, ymax = ymax)) +
-    ggplot2::geom_linerange(data = p_data_interval, ggplot2::aes(x = x_axis_var, col = name, ymin = ymin, ymax = ymax), size = 1.2) +
+    ggplot2::geom_point(
+      data = p_data_range,
+      ggplot2::aes(x = x_axis_var, y = m, col = name),
+      size = 3, alpha = plot_alpha
+    )
+
+  if(plot_line) {
+    p <-
+      p +
+      ggplot2::geom_line(
+        data = p_data_range,
+        ggplot2::aes(x = x_axis_var, y = m, col = name),
+        alpha = plot_alpha
+      )
+  }
+
+  if(plot_ci) {
+    p <-
+      p +
+      ggplot2::geom_linerange(
+        data = p_data_interval,
+        ggplot2::aes(x = x_axis_var, col = name, ymin = ymin, ymax = ymax),
+        size = 1.2, alpha = plot_alpha
+      )
+  }
+
+  if(plot_range) {
+    p <-
+      p +
+      ggplot2::geom_linerange(
+        data = p_data_range,
+        ggplot2::aes(x = x_axis_var, col = name, ymin = ymin, ymax = ymax),
+        alpha = plot_alpha
+      )
+  }
+
+  p <- p +
     ggplot2::labs(
       x = x_axis_title,
       y = y_axis_title,
