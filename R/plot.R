@@ -172,7 +172,7 @@ plot.predictNMBscreen <- function(x,
     x_axis_var <- names(x$screen_meta)[1]
   }
 
-  grid_lookup <- x$grid
+  grid_lookup <- x$summary_grid
   grid_lookup$.sim_id <- 1:nrow(grid_lookup)
   sim.id_ignore <- c()
 
@@ -185,6 +185,9 @@ plot.predictNMBscreen <- function(x,
         v <- constants[[names(non_x_axis_vars)[i]]]
       } else {
         v <- non_x_axis_vars[[i]][[1]]
+        if (inherits(v, "function")) {
+          v <- names(non_x_axis_vars[[i]])[1]
+        }
       }
 
       message(paste0(
@@ -264,7 +267,7 @@ plot.predictNMBscreen <- function(x,
       p +
       ggplot2::geom_line(
         data = p_data_range,
-        ggplot2::aes(x = x_axis_var, y = m, col = name),
+        ggplot2::aes(x = x_axis_var, y = m, col = name, group = name),
         alpha = plot_alpha
       )
   }

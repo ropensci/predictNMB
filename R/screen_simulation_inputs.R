@@ -49,6 +49,16 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
     fx_nmb_evaluation = fx_nmb_evaluation
   )
 
+  summary_grid <- tidyr::expand_grid(
+    sample_size = round_input(sample_size),
+    n_sims = round_input(n_sims),
+    n_valid = round_input(n_valid),
+    sim_auc = round_input(sim_auc),
+    event_rate = round_input(event_rate),
+    fx_nmb_training = get_fx_names(fx_nmb_training),
+    fx_nmb_evaluation = get_fx_names(fx_nmb_evaluation)
+  )
+
   if (nrow(input_grid) == 1) {
     stop("it looks like you've only entered one possible value for each argument
           You'd be better off running the simulation directly through do_nmb_sim()")
@@ -104,7 +114,8 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
 
 
   res <- list(
-    grid = input_grid,
+    input_grid = input_grid,
+    summary_grid = summary_grid,
     screen_meta = screen_meta,
     simulations = simulations
   )
@@ -116,6 +127,17 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
 
 round_input <- function(x) {
   as.numeric(as.character(x))
+}
+
+get_fx_names <- function(x) {
+  len <- length(x)
+  fx_names <- names(x)
+
+  if (is.null(fx_names)) {
+    fx_names <- paste0("unnamed-nmb-function-", 1:len)
+  }
+
+  fx_names
 }
 
 #' @export
