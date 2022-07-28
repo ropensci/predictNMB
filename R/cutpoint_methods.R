@@ -55,11 +55,11 @@ get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_meth
   }
 
   if (method == "all") {
-    return(1)
+    return(0)
   }
 
   if (method == "none") {
-    return(0)
+    return(1)
   }
 
   if (method == "cost_effective") {
