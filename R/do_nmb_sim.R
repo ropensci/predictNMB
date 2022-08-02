@@ -9,6 +9,7 @@
 #' @param fx_nmb_training Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on training set
 #' @param fx_nmb_evaluation Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set
 #' @param meet_min_events Whether or not to incrementally add samples until the expected number of events (\code{sample_size * event_rate}) is met. (Applies to sampling of training data only.)
+#' @param min_events The minimum number of events to include in the training sample. If less than this number are included in sample of size \code{sample_size}, additional samples are added until the min_events is met.
 #' @param cl A cluster made using \code{parallel::makeCluster()}. If a cluster is provided, the simulation will be done in parallel.
 #'
 #' @return predictNMBsim
@@ -23,7 +24,8 @@
 #' )
 do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
                        cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
-                       fx_nmb_training, fx_nmb_evaluation, meet_min_events = TRUE, cl = NULL) {
+                       fx_nmb_training, fx_nmb_evaluation, meet_min_events = TRUE,
+                       min_events = NULL, cl = NULL) {
   if (missing(sample_size)) {
     sample_size <- NA
   }
@@ -35,9 +37,15 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
       prevalence = event_rate
     )
     sample_size <- pmsamp$sample_size
-    min_events <- pmsamp$events
+    min_events_calc <- pmsamp$events
   } else {
-    min_events <- round(sample_size * event_rate)
+    min_events_calc <- round(sample_size * event_rate)
+  }
+
+  if(is.null(min_events)) {
+    min_events <- min_events_calc
+  } else {
+    stopifnot(min_events < sample_size)
   }
 
   # do iterations
