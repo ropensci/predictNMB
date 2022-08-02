@@ -15,7 +15,7 @@ do_sample_size_calc <- function(cstatistic, prevalence, sample_size, min_events)
     )
     sample_size <- pmsamp$sample_size
     min_events <- round(pmsamp$events)
-  } else if(is.na(min_events)){
+  } else if (is.na(min_events)) {
     min_events <- round(sample_size * prevalence)
   }
 

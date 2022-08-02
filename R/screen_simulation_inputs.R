@@ -59,7 +59,7 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
     fx_nmb_training = fx_nmb_training,
     fx_nmb_evaluation = fx_nmb_evaluation
   ) %>%
-    inner_join(., small_grid, by=".small_grid_id") %>%
+    inner_join(., small_grid, by = ".small_grid_id") %>%
     dplyr::select(-.small_grid_id)
 
   summary_grid <- tidyr::expand_grid(
@@ -69,7 +69,7 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
     fx_nmb_training = get_fx_names(fx_nmb_training),
     fx_nmb_evaluation = get_fx_names(fx_nmb_evaluation)
   ) %>%
-    inner_join(., small_grid, by=".small_grid_id") %>%
+    inner_join(., small_grid, by = ".small_grid_id") %>%
     dplyr::select(-.small_grid_id)
 
   if (nrow(input_grid) == 1) {
@@ -155,15 +155,19 @@ get_fx_names <- function(x) {
 add_sample_size_calcs <- function(x) {
   out <- lapply(
     1:nrow(x),
-    function(i) do_sample_size_calc(cstatistic = x$sim_auc[i],
-                                    prevalence = x$event_rate[i],
-                                    sample_size = x$sample_size[i],
-                                    min_events = x$min_events[i])
+    function(i) {
+      do_sample_size_calc(
+        cstatistic = x$sim_auc[i],
+        prevalence = x$event_rate[i],
+        sample_size = x$sample_size[i],
+        min_events = x$min_events[i]
+      )
+    }
   )
 
   ss_calculations <- data.frame(
-    sample_size=do.call("c", lapply(out, "[[", "sample_size")),
-    min_events=do.call("c", lapply(out, "[[", "min_events"))
+    sample_size = do.call("c", lapply(out, "[[", "sample_size")),
+    min_events = do.call("c", lapply(out, "[[", "min_events"))
   )
 
   x$sample_size <- ss_calculations$sample_size

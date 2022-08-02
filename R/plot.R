@@ -206,7 +206,7 @@ plot.predictNMBscreen <- function(x,
 
       sim.id_ignore <- append(
         sim.id_ignore,
-        which(!get_approx_match_indices(vec=grid_lookup[[names(non_x_axis_vars)[i]]], val=v))
+        which(!get_approx_match_indices(vec = grid_lookup[[names(non_x_axis_vars)[i]]], val = v))
       )
     }
     sim.id_ignore <- unique(sim.id_ignore)

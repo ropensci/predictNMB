@@ -57,6 +57,13 @@ test_that("plot method - selected constants - works", {
   expect_s3_class(p, "gg")
 })
 
+test_that("make_summary_table method works", {
+  obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
+  tbl <- make_summary_table(obj)
+
+  expect_s3_class(tbl, "data.frame")
+})
+
 
 # cl <- parallel::makeCluster(parallel::detectCores())
 # get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
