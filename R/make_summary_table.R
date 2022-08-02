@@ -58,11 +58,8 @@ make_summary_table.predictNMBscreen <- function(
     show_full_inputs = FALSE,
     ...) {
   get_row_from_sim <- function(sim_idx) {
-    data <- get_sim_data(x$simulations[[sim_idx]], what = what[1], inb_ref_col = inb_ref_col)
-
-    as.data.frame(sapply(agg_functions, mapply, dplyr::select(data, -n_sim))) %>%
-      tibble::rownames_to_column(var = "method") %>%
-      tidyr::pivot_wider(names_from = method, values_from = !method)
+    get_sim_data(x$simulations[[sim_idx]], what = what[1], inb_ref_col = inb_ref_col) %>%
+      dplyr::summarize(dplyr::across(!n_sim, agg_functions))
   }
 
   sim_aggregations <- lapply(1:length(x$simulations), get_row_from_sim)
@@ -89,14 +86,8 @@ make_summary_table.predictNMBsim <- function(
     ),
     ...) {
 
-  data <- get_sim_data(x, what = what[1], inb_ref_col = inb_ref_col)
-
-  res <- as.data.frame(sapply(agg_functions, mapply, dplyr::select(data, -n_sim))) %>%
-    tibble::rownames_to_column(var = "method")
-
-  res
+  get_sim_data(x, what = what[1], inb_ref_col = inb_ref_col) %>%
+    tidyr::pivot_longer(!n_sim, names_to = "method") %>%
+    dplyr::group_by(method) %>%
+    dplyr::summarize(dplyr::across(value, agg_functions, .names = "{.fn}"))
 }
-
-
-
-
