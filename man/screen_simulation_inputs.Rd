@@ -14,6 +14,7 @@ screen_simulation_inputs(
   fx_nmb_training,
   fx_nmb_evaluation,
   meet_min_events = FALSE,
+  min_events = NA,
   cl = NULL
 )
 }
@@ -35,6 +36,8 @@ screen_simulation_inputs(
 \item{fx_nmb_evaluation}{a function (or list of functions) that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set}
 
 \item{meet_min_events}{Whether or not to incrementally add samples until the expected number of events (\code{sample_size * event_rate}) is met. (Applies to sampling of training data only.)}
+
+\item{min_events}{a value: the minimum number of events to include in the training sample. If less than this number are included in sample of size \code{sample_size}, additional samples are added until the min_events is met. The default (\code{NA}) will use the expected value given the \code{event_rate} and the \code{sample_size}.}
 
 \item{cl}{A cluster made using \code{parallel::makeCluster()}. If a cluster is provided, the simulation will be done in parallel.}
 }

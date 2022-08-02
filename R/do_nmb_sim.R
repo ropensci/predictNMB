@@ -9,7 +9,7 @@
 #' @param fx_nmb_training Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on training set
 #' @param fx_nmb_evaluation Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set
 #' @param meet_min_events Whether or not to incrementally add samples until the expected number of events (\code{sample_size * event_rate}) is met. (Applies to sampling of training data only.)
-#' @param min_events The minimum number of events to include in the training sample. If less than this number are included in sample of size \code{sample_size}, additional samples are added until the min_events is met.
+#' @param min_events The minimum number of events to include in the training sample. If less than this number are included in sample of size \code{sample_size}, additional samples are added until the min_events is met. The default (\code{NA}) will use the expected value given the \code{event_rate} and the \code{sample_size}.
 #' @param cl A cluster made using \code{parallel::makeCluster()}. If a cluster is provided, the simulation will be done in parallel.
 #'
 #' @return predictNMBsim
@@ -25,28 +25,22 @@
 do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
                        cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
                        fx_nmb_training, fx_nmb_evaluation, meet_min_events = TRUE,
-                       min_events = NULL, cl = NULL) {
+                       min_events = NA, cl = NULL) {
   if (missing(sample_size)) {
     sample_size <- NA
   }
-  if (is.na(sample_size)) {
-    pmsamp <- pmsampsize::pmsampsize(
-      type = "b",
-      cstatistic = sim_auc,
-      parameters = 1,
-      prevalence = event_rate
-    )
-    sample_size <- pmsamp$sample_size
-    min_events_calc <- pmsamp$events
-  } else {
-    min_events_calc <- round(sample_size * event_rate)
-  }
 
-  if(is.null(min_events)) {
-    min_events <- min_events_calc
-  } else {
-    stopifnot(min_events < sample_size)
-  }
+  sample_size_calc <- do_sample_size_calc(
+    cstatistic = sim_auc,
+    prevalence = event_rate,
+    sample_size = sample_size,
+    min_events = min_events
+  )
+
+  sample_size <- sample_size_calc$sample_size
+  min_events <- sample_size_calc$min_events
+
+  stopifnot(min_events < sample_size)
 
   # do iterations
   f_iteration_wrapper <- function(...) {
@@ -88,6 +82,7 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
     df_thresholds = df_thresholds,
     meta_data = list(
       sample_size = sample_size,
+      min_events = min_events,
       n_sims = n_sims,
       n_valid = n_valid,
       sim_auc = sim_auc,
@@ -163,6 +158,7 @@ print.predictNMBsim <- function(x, digits = 2, ...) {
   cat("predictNMB object\n")
 
   cat(paste0("\nTraining data sample size: "), x$meta_data$sample_size)
+  cat(paste0("\nMinimum number of events in training sample: "), x$meta_data$min_events)
   cat(paste0("\nEvaluation data sample size: "), x$meta_data$n_valid)
   cat(paste0("\nNumber of simulations: "), x$meta_data$n_sims)
   cat(paste0("\nSimulated AUC: "), x$meta_data$sim_auc)

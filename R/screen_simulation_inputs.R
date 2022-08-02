@@ -9,6 +9,7 @@
 #' @param fx_nmb_training a function (or list of functions) that returns named vector of NMB assigned to classifications use for obtaining cutpoint on training set
 #' @param fx_nmb_evaluation a function (or list of functions) that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set
 #' @param meet_min_events Whether or not to incrementally add samples until the expected number of events (\code{sample_size * event_rate}) is met. (Applies to sampling of training data only.)
+#' @param min_events a value: the minimum number of events to include in the training sample. If less than this number are included in sample of size \code{sample_size}, additional samples are added until the min_events is met. The default (\code{NA}) will use the expected value given the \code{event_rate} and the \code{sample_size}.
 #' @param cl A cluster made using \code{parallel::makeCluster()}. If a cluster is provided, the simulation will be done in parallel.
 #'
 #' @return predictNMBscreen
@@ -26,7 +27,8 @@
 #' }
 screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
                                      cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
-                                     fx_nmb_training, fx_nmb_evaluation, meet_min_events = FALSE, cl = NULL) {
+                                     fx_nmb_training, fx_nmb_evaluation, meet_min_events = FALSE,
+                                     min_events = NA, cl = NULL) {
   if (missing(sample_size)) {
     sample_size <- NA
   }
@@ -39,25 +41,36 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
     fx_nmb_evaluation <- list(fx_nmb_evaluation)
   }
 
+  small_grid <-
+    tidyr::expand_grid(
+      sample_size = sample_size,
+      sim_auc = sim_auc,
+      event_rate = event_rate,
+      min_events = min_events
+    ) %>%
+    add_sample_size_calcs()
+
+  small_grid$.small_grid_id <- 1:nrow(small_grid)
+
   input_grid <- tidyr::expand_grid(
-    sample_size = sample_size,
+    .small_grid_id = 1:nrow(small_grid),
     n_sims = n_sims,
     n_valid = n_valid,
-    sim_auc = sim_auc,
-    event_rate = event_rate,
     fx_nmb_training = fx_nmb_training,
     fx_nmb_evaluation = fx_nmb_evaluation
-  )
+  ) %>%
+    inner_join(., small_grid, by=".small_grid_id") %>%
+    dplyr::select(-.small_grid_id)
 
   summary_grid <- tidyr::expand_grid(
-    sample_size = sample_size,
+    .small_grid_id = 1:nrow(small_grid),
     n_sims = n_sims,
     n_valid = n_valid,
-    sim_auc = sim_auc,
-    event_rate = event_rate,
     fx_nmb_training = get_fx_names(fx_nmb_training),
     fx_nmb_evaluation = get_fx_names(fx_nmb_evaluation)
-  )
+  ) %>%
+    inner_join(., small_grid, by=".small_grid_id") %>%
+    dplyr::select(-.small_grid_id)
 
   if (nrow(input_grid) == 1) {
     stop("it looks like you've only entered one possible value for each argument
@@ -77,6 +90,7 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
         fx_nmb_training = input_grid$fx_nmb_training[[i]],
         fx_nmb_evaluation = input_grid$fx_nmb_evaluation[[i]],
         meet_min_events = meet_min_events,
+        min_events = input_grid$min_events[i],
         cl = cl
       )
     }
@@ -135,6 +149,26 @@ get_fx_names <- function(x) {
   }
 
   fx_names
+}
+
+
+add_sample_size_calcs <- function(x) {
+  out <- lapply(
+    1:nrow(x),
+    function(i) do_sample_size_calc(cstatistic = x$sim_auc[i],
+                                    prevalence = x$event_rate[i],
+                                    sample_size = x$sample_size[i],
+                                    min_events = x$min_events[i])
+  )
+
+  ss_calculations <- data.frame(
+    sample_size=do.call("c", lapply(out, "[[", "sample_size")),
+    min_events=do.call("c", lapply(out, "[[", "min_events"))
+  )
+
+  x$sample_size <- ss_calculations$sample_size
+  x$min_events <- ss_calculations$min_events
+  x
 }
 
 

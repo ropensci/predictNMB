@@ -36,3 +36,9 @@ test_that("plot method works", {
   obj <- readRDS(test_path("fixtures", "predictNMBsim_object.rds"))
   expect_s3_class(plot(obj), "gg")
 })
+
+# predictNMBsim_obj <- do_nmb_sim(
+#   n_sims = 10, n_valid = 1000, sim_auc = 0.7, event_rate = 0.1,
+#   fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
+# )
+# saveRDS(predictNMBsim_obj, test_path("fixtures", "predictNMBsim_object.rds"))
