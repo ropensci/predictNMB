@@ -1,7 +1,7 @@
 utils::globalVariables(
   c(
     "name", "value", "percentile", "n_sim", "m", "outcome", "count",
-    "in_interval", "ymin", "ymax"
+    "in_interval", "ymin", "ymax", "method", "small_grid_id"
   )
 )
 

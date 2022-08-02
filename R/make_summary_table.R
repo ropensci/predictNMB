@@ -1,5 +1,33 @@
+#' Create table summaries of simulation objects.
+#'
+#' @param x \code{predictNMBscreen} or \code{predictNMBsim} object
+#' @param what what to summarise: one of "nmb", "inb" or "cutpoints". Defaults to "nmb".
+#' @param inb_ref_col which cutpoint method to use as the reference strategy when calculating the incremental net monetary benefit.
+#' @param agg_functions named list of functions to use to aggregate the selected values. Defaults to the median and 95\% interval.
+#' @param ... additional, optional arguments.
+#'
 #' @export
-make_summary_table <- function(x, ...) {
+#' @examples
+#'
+#' # perform screen with increasing values of model discimination (sim_auc)
+#' if (FALSE) {
+#'   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
+#'   sim_screen_obj <- screen_simulation_inputs(
+#'     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1), event_rate = 0.1,
+#'     fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
+#'   )
+#'   make_summary_table(sim_screen_obj)
+#'   make_summary_table(sim_screen_obj$simulations[[1]])
+#' }
+make_summary_table <- function(
+    x,
+    what = c("nmb", "inb", "cutpoints"),
+    inb_ref_col = NULL,
+    agg_functions = list(
+      "median" = stats::median,
+      "95% CI" = function(x) paste0(signif(stats::quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse = " to ")
+    ),
+    ...) {
   UseMethod("make_summary_table")
 }
 
@@ -25,7 +53,7 @@ make_summary_table.predictNMBscreen <- function(
     inb_ref_col = NULL,
     agg_functions = list(
       "median" = stats::median,
-      "95% CI" = function(x) paste0(signif(quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse = " to ")
+      "95% CI" = function(x) paste0(signif(stats::quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse = " to ")
     ),
     show_full_inputs = FALSE,
     ...) {
@@ -48,3 +76,27 @@ make_summary_table.predictNMBscreen <- function(
 
   cbind(inputs, sim_aggregations)
 }
+
+
+#' @export
+make_summary_table.predictNMBsim <- function(
+    x,
+    what = c("nmb", "inb", "cutpoints"),
+    inb_ref_col = NULL,
+    agg_functions = list(
+      "median" = stats::median,
+      "95% CI" = function(x) paste0(signif(stats::quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse = " to ")
+    ),
+    ...) {
+
+  data <- get_sim_data(x, what = what[1], inb_ref_col = inb_ref_col)
+
+  res <- as.data.frame(sapply(agg_functions, mapply, dplyr::select(data, -n_sim))) %>%
+    tibble::rownames_to_column(var = "method")
+
+  res
+}
+
+
+
+

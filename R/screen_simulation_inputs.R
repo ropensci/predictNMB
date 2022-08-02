@@ -50,27 +50,27 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
     ) %>%
     add_sample_size_calcs()
 
-  small_grid$.small_grid_id <- 1:nrow(small_grid)
+  small_grid$small_grid_id <- 1:nrow(small_grid)
 
   input_grid <- tidyr::expand_grid(
-    .small_grid_id = 1:nrow(small_grid),
+    small_grid_id = 1:nrow(small_grid),
     n_sims = n_sims,
     n_valid = n_valid,
     fx_nmb_training = fx_nmb_training,
     fx_nmb_evaluation = fx_nmb_evaluation
   ) %>%
-    inner_join(., small_grid, by = ".small_grid_id") %>%
-    dplyr::select(-.small_grid_id)
+    dplyr::inner_join(small_grid, by = "small_grid_id") %>%
+    dplyr::select(-small_grid_id)
 
   summary_grid <- tidyr::expand_grid(
-    .small_grid_id = 1:nrow(small_grid),
+    small_grid_id = 1:nrow(small_grid),
     n_sims = n_sims,
     n_valid = n_valid,
     fx_nmb_training = get_fx_names(fx_nmb_training),
     fx_nmb_evaluation = get_fx_names(fx_nmb_evaluation)
   ) %>%
-    inner_join(., small_grid, by = ".small_grid_id") %>%
-    dplyr::select(-.small_grid_id)
+    dplyr::inner_join(small_grid, by = "small_grid_id") %>%
+    dplyr::select(-small_grid_id)
 
   if (nrow(input_grid) == 1) {
     stop("it looks like you've only entered one possible value for each argument
