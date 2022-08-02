@@ -61,7 +61,12 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
     iterations <- lapply(1:n_sims, f_iteration_wrapper)
   } else {
     parallel::clusterExport(cl, envir = environment(), {
-      c("f_iteration_wrapper", "do_nmb_iteration")
+      c(
+        "f_iteration_wrapper",
+        "do_nmb_iteration",
+        "fx_nmb_training",
+        "fx_nmb_evaluation"
+      )
     })
     iterations <- parallel::parLapply(cl = cl, 1:n_sims, f_iteration_wrapper)
   }
