@@ -40,21 +40,21 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
   }
 
   input_grid <- tidyr::expand_grid(
-    sample_size = round_input(sample_size),
-    n_sims = round_input(n_sims),
-    n_valid = round_input(n_valid),
-    sim_auc = round_input(sim_auc),
-    event_rate = round_input(event_rate),
+    sample_size = sample_size,
+    n_sims = n_sims,
+    n_valid = n_valid,
+    sim_auc = sim_auc,
+    event_rate = event_rate,
     fx_nmb_training = fx_nmb_training,
     fx_nmb_evaluation = fx_nmb_evaluation
   )
 
   summary_grid <- tidyr::expand_grid(
-    sample_size = round_input(sample_size),
-    n_sims = round_input(n_sims),
-    n_valid = round_input(n_valid),
-    sim_auc = round_input(sim_auc),
-    event_rate = round_input(event_rate),
+    sample_size = sample_size,
+    n_sims = n_sims,
+    n_valid = n_valid,
+    sim_auc = sim_auc,
+    event_rate = event_rate,
     fx_nmb_training = get_fx_names(fx_nmb_training),
     fx_nmb_evaluation = get_fx_names(fx_nmb_evaluation)
   )
@@ -125,9 +125,6 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
   res
 }
 
-round_input <- function(x) {
-  as.numeric(as.character(x))
-}
 
 get_fx_names <- function(x) {
   len <- length(x)
@@ -139,6 +136,7 @@ get_fx_names <- function(x) {
 
   fx_names
 }
+
 
 #' @export
 print.predictNMBscreen <- function(x, digits = 2, ...) {

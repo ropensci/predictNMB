@@ -49,6 +49,14 @@ add_interval <- function(data, ci) {
 }
 
 
+get_approx_match_indices <- function(vec, val) {
+  # find indices of vec which match val
+  # use this approach for matching constants to simulation inputs as simulations input vectors can be passed from seq() and there are precision issues with matching values to those vectors
+  # all.equal() performs a test for 'near equality' and therefore doesn't have this issue.
+  unlist(lapply(vec, function(x) isTRUE(all.equal(x, val))))
+}
+
+
 #' @export
 plot.predictNMBsim <- function(x,
                                what = c("nmb", "inb", "cutpoints"),
@@ -198,7 +206,7 @@ plot.predictNMBscreen <- function(x,
 
       sim.id_ignore <- append(
         sim.id_ignore,
-        which(grid_lookup[[names(non_x_axis_vars)[i]]] != v)
+        which(!get_approx_match_indices(vec=grid_lookup[[names(non_x_axis_vars)[i]]], val=v))
       )
     }
     sim.id_ignore <- unique(sim.id_ignore)
