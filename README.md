@@ -6,6 +6,8 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/RWParsons/predictNMB/workflows/R-CMD-check/badge.svg)](https://github.com/RWParsons/predictNMB/actions)
+[![License: CC BY-NC
+4.0](https://img.shields.io/badge/License-CC_BY--NC_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
 <!-- badges: end -->
 
 The goal of predictNMB is to evaluate a hypothetical clinical prediction
@@ -176,6 +178,7 @@ sim_screen_obj$simulations
 #> predictNMB object
 #> 
 #> Training data sample size:  189
+#> Minimum number of events in training sample:  19
 #> Evaluation data sample size:  10000
 #> Number of simulations:  1000
 #> Simulated AUC:  0.7
@@ -184,6 +187,7 @@ sim_screen_obj$simulations
 #> predictNMB object
 #> 
 #> Training data sample size:  139
+#> Minimum number of events in training sample:  14
 #> Evaluation data sample size:  10000
 #> Number of simulations:  1000
 #> Simulated AUC:  0.75
@@ -192,6 +196,7 @@ sim_screen_obj$simulations
 #> predictNMB object
 #> 
 #> Training data sample size:  139
+#> Minimum number of events in training sample:  14
 #> Evaluation data sample size:  10000
 #> Number of simulations:  1000
 #> Simulated AUC:  0.8
@@ -200,6 +205,7 @@ sim_screen_obj$simulations
 #> predictNMB object
 #> 
 #> Training data sample size:  139
+#> Minimum number of events in training sample:  14
 #> Evaluation data sample size:  10000
 #> Number of simulations:  1000
 #> Simulated AUC:  0.85
@@ -208,6 +214,7 @@ sim_screen_obj$simulations
 #> predictNMB object
 #> 
 #> Training data sample size:  139
+#> Minimum number of events in training sample:  14
 #> Evaluation data sample size:  10000
 #> Number of simulations:  1000
 #> Simulated AUC:  0.9
@@ -216,6 +223,7 @@ sim_screen_obj$simulations
 #> predictNMB object
 #> 
 #> Training data sample size:  139
+#> Minimum number of events in training sample:  14
 #> Evaluation data sample size:  10000
 #> Number of simulations:  1000
 #> Simulated AUC:  0.95
@@ -226,6 +234,7 @@ sim_obj
 #> predictNMB object
 #> 
 #> Training data sample size:  189
+#> Minimum number of events in training sample:  19
 #> Evaluation data sample size:  10000
 #> Number of simulations:  1000
 #> Simulated AUC:  0.7
