@@ -68,6 +68,19 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
         "fx_nmb_evaluation"
       )
     })
+
+    if (any(!cutpoint_methods %in% get_inbuilt_cutpoint(return_all_methods = TRUE))) {
+      user_defined_methods <- cutpoint_methods[!cutpoint_methods %in% get_inbuilt_cutpoint(return_all_methods = TRUE)]
+      if (any(!user_defined_methods %in% ls(envir = globalenv()))) {
+        undefined_methods <- user_defined_methods[!user_defined_methods %in% ls(envir = globalenv())]
+        stop("You've included functions in in 'cutpoint_methods' which are neither inbuilt cutpoint methods or defined in your global environment:\n", paste0(undefined_methods, collapse = ","))
+      }
+
+      parallel::clusterExport(cl, envir = globalenv(), {
+        user_defined_methods
+      })
+    }
+
     iterations <- parallel::parLapply(cl = cl, 1:n_sims, f_iteration_wrapper)
   }
 
