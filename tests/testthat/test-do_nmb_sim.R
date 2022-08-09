@@ -9,18 +9,11 @@ test_that("do_nmb_sim() works", {
   expect_s3_class(out, "predictNMBsim")
 })
 
-test_that("do_nmb_sim() works in parallel with custom metric", {
+
+test_that("do_nmb_sim() works in parallel", {
   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
   if (!requireNamespace("parallel", quietly = TRUE)) {
     skip()
-  }
-
-  fx_roc01 <- function(predicted, actual, ...) {
-    cutpointr::cutpointr(
-      x = predicted, class = actual, method = cutpointr::minimize_metric,
-      metric = cutpointr::roc01,
-      silent = TRUE
-    )[["optimal_cutpoint"]]
   }
 
   chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
@@ -34,7 +27,7 @@ test_that("do_nmb_sim() works in parallel with custom metric", {
   out_par <- do_nmb_sim(
     n_sims = 100, n_valid = 1000, sim_auc = 0.7, event_rate = 0.1,
     fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb, cl = cl,
-    cutpoint_methods = c("all", "fx_roc01")
+    cutpoint_methods = c("all", "none")
   )
   parallel::stopCluster(cl)
   expect_s3_class(out_par, "predictNMBsim")
