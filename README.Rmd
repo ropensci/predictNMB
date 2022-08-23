@@ -20,7 +20,14 @@ knitr::opts_chunk$set(
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 <!-- badges: end -->
 
-The goal of predictNMB is to evaluate a hypothetical clinical prediction model regarding it's Net Monetary Benefit (NMB)
+## Overview
+
+predictNMB is a tool to evaluate hypothetical clinical prediction models based on their estimated Net Monetary Benefit (NMB).
+
+`{predictNMB}` has two main functions: 
+
+- `do_nmb_sim()`: takes user defined inputs for a given prediction model and population, then evaluates the NMB by performing simulations.
+- `screen_simulation_inputs()`: calls `do_nmb_sim()` many times, using a range of values for any of its inputs. This is useful for sensitivity analysis.
 
 ## Installation
 
@@ -37,23 +44,20 @@ devtools::install_github("RWParsons/predictNMB")
 library(predictNMB)
 ```
 
+Evaluating a hypothetical model for predicting and preventing an event using a confusion matrix (2 x 2 table)
 
-`{predictNMB}` has two main functions: 
-
-- `do_nmb_sim()`: using settings from the user for the prediction model and "patient" population, evaluates the NMB by performing many simulations.
-- `screen_simulation_inputs()`: calls `do_nmb_sim()` many times using a range values for any of its inputs.
-
-The most time consuming part of evaluating the NMB for a given setting and model will be obtaining realistic estimates for the NMB associated with the outcomes of the prediction model. 
-
-Here, I pretend that the cost associated with some healthcare event is \$100, when the treatment (that costs \$10) is given, this reduces the probability that the \$100 event occurs by 35% (reducing cost to $65) but has the additional cost of the treatment (bringing the total expected cost to \$75), and patients that were correctly predicted to not have the event have zero cost.
+Inputs:
+- Cost of outcome = $100
+- Cost savings from treatment = 35%
+- Cost of treatment = $10
 
 ```{r}
 fx_nmb <- function() {
   c(
-    "TP" = -75, # cost of the outcome + cost of treatment - saving associated with its effectiveness
-    "FP" = -10, # cost of treatment
-    "TN" = 0,  # no cost of treatment or outcome
-    "FN" = -100 # full cost of the outcome
+    "True positive" = -75, # Correctly predicted event = cost of outcome ($100) + cost of treatment ($10) - cost savings from treatment ($100*0.35)
+    "False positive" = -10, # Cost of (unnecessary) treatment from incorrectly predicted positive
+    "True negative" = 0,  # No cost of treatment or event from correctly predicted negative
+    "False negative" = -100 # Full cost of event from incorrectly predicted negative
   )
 }
 
@@ -61,13 +65,13 @@ fx_nmb()
 
 ```
 
-We use this as an inputs so that the NMB can be evaluated for each simulation.
+These inputs can be passed to `screen_simulation_inputs()` under the parameters `fx_nmb_training` and `fx_nmb_evaluation` to be evaluated in each simulation. The following function assesses the required performance for the model to outperform a default strategy of treat all or treat none. In this example, cutpoints are selected using the Youden index and the cost-effectiveness approach, which maximises NMB.
 
-In the simulation below, I want to see how performant I need my model to be to out perform a treat-all or treat-none strategy (i.e. how good does a model need to be to be better than no model at all). I'm going to select cutpoints using the Youden index as well as the cost_effective cutpoint.
+Inputs:
+`event_rate` - event incidence rate = 0.10
+`sim_auc` - vector of hypothetical AUC =  `seq(0.7, 0.95, 0.05)`
 
-The event that I'm interested in happens to 10% of my patient population so I use `event_rate = 0.1`. I'm going to provide a vector of possible inputs for the model AUC so I use `sim_auc = seq(0.7, 0.95, 0.05)`.
-
-It's optional to pass a cluster as the `cl` argument. If it is passed, the simulations are run in parallel (faster).
+Optional: Users can pass a cluster as the `cl` argument. If it is passed, the simulations are run in parallel (faster).
 
 ```{r warning=FALSE}
 cl <- parallel::makeCluster(parallel::detectCores())
@@ -84,7 +88,7 @@ sim_screen_obj <- screen_simulation_inputs(
 plot(sim_screen_obj)
 ```
 
-In this example, the cost of the treatment is relatively cheap (\$10) to the effectiveness (reduces risk of outcome by 35%) of it and the cost of the outcome (\$100). The Youden index, which is a pretty commonly used method to obtain a cutpoint, out performs treat-all when the model has an AUC of about 0.85 or higher. Whereas, the cost-effective cutpoint starts out similar to treat-all even at low levels of model AUC, but improves as the AUC increases, staying ahead of the Youden index.
+In this example, the Youden index outperforms the 'treat all' approach when AUC is at least 0.85 or higher. The cost-effective approach is similar to 'treat all' at low levels of AUC, but improves as AUC increases to stay ahead of the Youden index.
 
 The plot method includes additional arguments to rename the methods using a named vector. It can also be used to visualise cutpoints or the Incremental Net Monetary Benefit (INB) when there's a known reference strategy.
 

@@ -19,25 +19,25 @@ screen_simulation_inputs(
 )
 }
 \arguments{
-\item{sample_size}{a value (or vector of values): training data sample size. If missing, a sample size calculation will be performed and the calculated size will be used.}
+\item{sample_size}{A value (or vector of values): Sample size of training set. If missing, a sample size calculation will be performed and the calculated size will be used.}
 
-\item{n_sims}{a value (or vector of values): the number of simulations to run.}
+\item{n_sims}{A value (or vector of values): Number of simulations to run.}
 
-\item{n_valid}{a value (or vector of values): sample size for evaluation set.}
+\item{n_valid}{A value (or vector of values): Sample size for evaluation set.}
 
-\item{sim_auc}{a value (or vector of values): simulated model discrimination (AUC).}
+\item{sim_auc}{A value (or vector of values): Simulated model discrimination (AUC).}
 
-\item{event_rate}{a value (or vector of values): simulated event rate of the binary outcome being predicted.}
+\item{event_rate}{A value (or vector of values): simulated event rate of the binary outcome being predicted.}
 
 \item{cutpoint_methods}{cutpoint methods to include. Defaults to use the inbuilt methods. This doesn't change across calls to \code{do_nmb_sim()}}
 
-\item{fx_nmb_training}{a function (or list of functions) that returns named vector of NMB assigned to classifications use for obtaining cutpoint on training set}
+\item{fx_nmb_training}{A function (or list of functions) that returns named vector of NMB assigned to classifications use for obtaining cutpoint on training set}
 
-\item{fx_nmb_evaluation}{a function (or list of functions) that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set}
+\item{fx_nmb_evaluation}{A function (or list of functions) that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set}
 
 \item{meet_min_events}{Whether or not to incrementally add samples until the expected number of events (\code{sample_size * event_rate}) is met. (Applies to sampling of training data only.)}
 
-\item{min_events}{a value: the minimum number of events to include in the training sample. If less than this number are included in sample of size \code{sample_size}, additional samples are added until the min_events is met. The default (\code{NA}) will use the expected value given the \code{event_rate} and the \code{sample_size}.}
+\item{min_events}{A value: the minimum number of events to include in the training sample. If less than this number are included in sample of size \code{sample_size}, additional samples are added until the min_events is met. The default (\code{NA}) will use the expected value given the \code{event_rate} and the \code{sample_size}.}
 
 \item{cl}{A cluster made using \code{parallel::makeCluster()}. If a cluster is provided, the simulation will be done in parallel.}
 }
@@ -45,7 +45,7 @@ screen_simulation_inputs(
 predictNMBscreen
 }
 \description{
-Screen many simulation inputs: a parent function to \code{do_nmb_sim()}
+See \code{\link[=do_nmb_sim]{do_nmb_sim()}} for more information.
 }
 \examples{
 
