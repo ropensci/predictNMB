@@ -42,7 +42,7 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
                        fx_nmb_training, fx_nmb_evaluation, meet_min_events = TRUE,
                        min_events = NA, cl = NULL) {
   if (missing(sample_size)) {
-    sample_size <- sample_size_calc
+    sample_size <- NA
   }
 
   sample_size_calc <- do_sample_size_calc(

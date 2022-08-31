@@ -54,10 +54,10 @@ Inputs:
 ```{r}
 fx_nmb <- function() {
   c(
-    "True positive" = -75, # Correctly predicted event = cost of outcome ($100) + cost of treatment ($10) - cost savings from treatment ($100*0.35)
-    "False positive" = -10, # Cost of (unnecessary) treatment from incorrectly predicted positive
-    "True negative" = 0,  # No cost of treatment or event from correctly predicted negative
-    "False negative" = -100 # Full cost of event from incorrectly predicted negative
+    "TP" = -75, # Correctly predicted event = cost of outcome ($100) + cost of treatment ($10) - cost savings from treatment ($100*0.35)
+    "FP" = -10, # Cost of (unnecessary) treatment from incorrectly predicted positive
+    "TN" = 0,  # No cost of treatment or event from correctly predicted negative
+    "FN" = -100 # Full cost of event from incorrectly predicted negative
   )
 }
 

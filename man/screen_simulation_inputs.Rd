@@ -49,7 +49,7 @@ See \code{\link[=do_nmb_sim]{do_nmb_sim()}} for more information.
 }
 \examples{
 
-# perform screen with increasing values of model discimination (sim_auc)
+# Screen for optimal cutpoints given increasing values of model discrimination (sim_auc)
 if (FALSE) {
   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
   sim_screen_obj <- screen_simulation_inputs(
