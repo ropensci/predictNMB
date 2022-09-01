@@ -39,7 +39,7 @@ jobs:
           use-public-rspm: true
 
       - name: Install package first (Windows)
-        if: runner.os == "Windows"
+        if: runner.os == 'Windows'
         run: |
           install.packages('remotes')
           remotes::install_github("RWParsons/predictNMB")
