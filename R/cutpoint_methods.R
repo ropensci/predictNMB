@@ -39,7 +39,7 @@ roc_iu <- function(tp, fp, tn, fn, .roc_curve, ...) {
 #' )
 #'
 get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_methods = FALSE) {
-  inbuilt_methods <- c("all", "none", "cost_effective", "youden", "cost_minimising", "prod_sens_spec", "roc01")
+  inbuilt_methods <- c("all", "none", "cost_effective", "youden", "cost_minimising", "prod_sens_spec", "roc01", "index_of_union")
 
   if (return_all_methods) {
     return(inbuilt_methods)
