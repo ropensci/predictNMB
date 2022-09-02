@@ -41,6 +41,20 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
                        cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
                        fx_nmb_training, fx_nmb_evaluation, meet_min_events = TRUE,
                        min_events = NA, cl = NULL) {
+  validate_inputs(
+    sample_size,
+    n_sims,
+    n_valid,
+    sim_auc,
+    event_rate,
+    cutpoint_methods,
+    fx_nmb_training,
+    fx_nmb_evaluation,
+    meet_min_events,
+    min_events,
+    cl
+  )
+
   if (missing(sample_size)) {
     sample_size <- NA
   }
