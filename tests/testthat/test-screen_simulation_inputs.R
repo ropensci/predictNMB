@@ -49,11 +49,11 @@ test_that("plot method - selected constants - works", {
   obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
 
   # test on a numeric input being held constant
-  p <- plot(obj, x_axis_var = "event_rate", constants = list(sim_auc = 0.8))
+  p <- plot(obj, x_axis_var = "fx_nmb_training", constants = list(sim_auc = 0.8))
   expect_s3_class(p, "gg")
 
   # test on a function input being held constant
-  p <- plot(obj, x_axis_var = "event_rate", constants = list(fx_nmb_training = "f2"))
+  p <- plot(obj, x_axis_var = "sim_auc", constants = list(fx_nmb_training = "f2"))
   expect_s3_class(p, "gg")
 })
 

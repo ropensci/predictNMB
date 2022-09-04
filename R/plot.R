@@ -158,6 +158,8 @@ plot.predictNMBscreen <- function(x,
                                   plot_ci = TRUE,
                                   plot_line = TRUE,
                                   plot_alpha = 0.5,
+                                  jitter_height = NULL,
+                                  jitter_width = 0,
                                   ci = 0.95,
                                   methods_order = NULL,
                                   rename_vector,
@@ -264,10 +266,10 @@ plot.predictNMBscreen <- function(x,
 
   p <-
     ggplot2::ggplot() +
-    ggplot2::geom_point(
+    ggplot2::geom_jitter(
       data = p_data_range,
       ggplot2::aes(x = x_axis_var, y = m, col = name),
-      size = 3, alpha = plot_alpha
+      size = 3, alpha = plot_alpha, height = jitter_height, width = jitter_width
     )
 
   if (plot_line) {
