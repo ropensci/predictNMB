@@ -47,6 +47,7 @@ library(predictNMB)
 Evaluating a hypothetical model for predicting and preventing an event using a confusion matrix (2 x 2 table)
 
 Inputs:
+
 - Cost of outcome = $100
 - Cost savings from treatment = 35%
 - Cost of treatment = $10
@@ -68,8 +69,10 @@ fx_nmb()
 These inputs can be passed to `screen_simulation_inputs()` under the parameters `fx_nmb_training` and `fx_nmb_evaluation` to be evaluated in each simulation. The following function assesses the required performance for the model to outperform a default strategy of treat all or treat none. In this example, cutpoints are selected using the Youden index and the cost-effectiveness approach, which maximises NMB.
 
 Inputs:
-`event_rate` - event incidence rate = 0.10
-`sim_auc` - vector of hypothetical AUC =  `seq(0.7, 0.95, 0.05)`
+
+- `event_rate`: event incidence rate = 0.10
+- `sim_auc`: vector of hypothetical AUC =  `seq(0.7, 0.95, 0.05)`
+- `n_valid`: number of samples for validation dataset within each simulation (evaluating the NMB under each cutpoint)
 
 Optional: Users can pass a cluster as the `cl` argument. If it is passed, the simulations are run in parallel (faster).
 
@@ -104,7 +107,9 @@ plot(
   inb_ref_col="Treat All"
 )
 ```
-By default, the median (dot), 95% interval (thick vertical line), range (skinny vertical line), and lines between points are shown. All except the dots can be optionally turned off or on, and the width of the interval can be controlled with `ci`
+
+By default, the median (dot), 95% interval (thick vertical line), range (skinny vertical line), and lines between points are shown. All except the dots can be optionally turned off or on, and the width of the interval can be controlled with `ci`.
+
 ```{r}
 plot(
   sim_screen_obj,
@@ -120,17 +125,24 @@ plot(
 )
 ```
 
-The simulations for a given set of inputs can be accessed from our `predictNMBscreen` object (`sim_screen_obj`). These are the same as the output from `do_nmb_sim()` and have their own methods as well. Here, the plot shows the median as the solid bar within the distribution and the light blue portion of the distribution is the 95% interval (level can be changed using the `ci` argument).
+The simulations for a given set of inputs can be accessed from our `predictNMBscreen` object (`sim_screen_obj`). These are the same as the output from `do_nmb_sim()` and have their own methods as well. 
 
 ```{r}
 sim_screen_obj$simulations
 sim_obj <- sim_screen_obj$simulations[[1]]
 
 sim_obj
+```
+
+Here, using the `predictNMBsim` object, the plot shows the median as the solid bar within the distribution and the light blue portion of the distribution is the 95% interval (level can be changed using the `ci` argument).
+
+```{r}
 plot(sim_obj)
 plot(sim_obj, ci=0.50)
 ```
+
 The plot methods for both the `predictNMBscreen` and `predictNMBsim` objects have almost the same usage of arguments.
+
 ```{r}
 plot(
   sim_obj, 

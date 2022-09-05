@@ -43,8 +43,11 @@ library(predictNMB)
 Evaluating a hypothetical model for predicting and preventing an event
 using a confusion matrix (2 x 2 table)
 
-Inputs: - Cost of outcome = $100 - Cost savings from treatment = 35% -
-Cost of treatment = $10
+Inputs:
+
+-   Cost of outcome = $100
+-   Cost savings from treatment = 35%
+-   Cost of treatment = $10
 
 ``` r
 fx_nmb <- function() {
@@ -68,8 +71,12 @@ performance for the model to outperform a default strategy of treat all
 or treat none. In this example, cutpoints are selected using the Youden
 index and the cost-effectiveness approach, which maximises NMB.
 
-Inputs: `event_rate` - event incidence rate = 0.10 `sim_auc` - vector of
-hypothetical AUC = `seq(0.7, 0.95, 0.05)`
+Inputs:
+
+-   `event_rate`: event incidence rate = 0.10
+-   `sim_auc`: vector of hypothetical AUC = `seq(0.7, 0.95, 0.05)`
+-   `n_valid`: number of samples for validation dataset within each
+    simulation (evaluating the NMB under each cutpoint)
 
 Optional: Users can pass a cluster as the `cl` argument. If it is
 passed, the simulations are run in parallel (faster).
@@ -125,11 +132,12 @@ plot(
 #> Screening over sim_auc by default
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-2.png" width="100%" /> By
-default, the median (dot), 95% interval (thick vertical line), range
+<img src="man/figures/README-unnamed-chunk-6-2.png" width="100%" />
+
+By default, the median (dot), 95% interval (thick vertical line), range
 (skinny vertical line), and lines between points are shown. All except
 the dots can be optionally turned off or on, and the width of the
-interval can be controlled with `ci`
+interval can be controlled with `ci`.
 
 ``` r
 plot(
@@ -159,10 +167,7 @@ plot(
 
 The simulations for a given set of inputs can be accessed from our
 `predictNMBscreen` object (`sim_screen_obj`). These are the same as the
-output from `do_nmb_sim()` and have their own methods as well. Here, the
-plot shows the median as the solid bar within the distribution and the
-light blue portion of the distribution is the 95% interval (level can be
-changed using the `ci` argument).
+output from `do_nmb_sim()` and have their own methods as well.
 
 ``` r
 sim_screen_obj$simulations
@@ -231,18 +236,27 @@ sim_obj
 #> Number of simulations:  1000
 #> Simulated AUC:  0.7
 #> Simulated event rate:  0.1
+```
+
+Here, using the `predictNMBsim` object, the plot shows the median as the
+solid bar within the distribution and the light blue portion of the
+distribution is the 95% interval (level can be changed using the `ci`
+argument).
+
+``` r
 plot(sim_obj)
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 
 ``` r
 plot(sim_obj, ci=0.50)
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-2.png" width="100%" /> The
-plot methods for both the `predictNMBscreen` and `predictNMBsim` objects
-have almost the same usage of arguments.
+<img src="man/figures/README-unnamed-chunk-9-2.png" width="100%" />
+
+The plot methods for both the `predictNMBscreen` and `predictNMBsim`
+objects have almost the same usage of arguments.
 
 ``` r
 plot(
@@ -251,7 +265,7 @@ plot(
 )
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
 
 ``` r
 plot(
@@ -262,4 +276,4 @@ plot(
 )
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-10-2.png" width="100%" />
