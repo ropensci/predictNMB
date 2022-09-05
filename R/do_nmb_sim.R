@@ -166,7 +166,7 @@ do_nmb_iteration <- function(sim_auc,
     min_events = 0
   )
 
-  model <- stats::glm(actual ~ x, data = train_sample, family = stats::binomial())
+  model <- suppressWarnings(stats::glm(actual ~ x, data = train_sample, family = stats::binomial()))
 
   train_sample$predicted <- stats::predict(model, type = "response")
   valid_sample$predicted <- stats::predict(model, type = "response", newdata = valid_sample)
