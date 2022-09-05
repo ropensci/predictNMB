@@ -51,10 +51,10 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
     ) %>%
     add_sample_size_calcs()
 
-  small_grid$small_grid_id <- 1:nrow(small_grid)
+  small_grid$small_grid_id <- seq_len(nrow(small_grid))
 
   input_grid <- tidyr::expand_grid(
-    small_grid_id = 1:nrow(small_grid),
+    small_grid_id = seq_len(nrow(small_grid)),
     n_sims = n_sims,
     n_valid = n_valid,
     fx_nmb_training = fx_nmb_training,
@@ -64,7 +64,7 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
     dplyr::select(-small_grid_id)
 
   summary_grid <- tidyr::expand_grid(
-    small_grid_id = 1:nrow(small_grid),
+    small_grid_id = seq_len(nrow(small_grid)),
     n_sims = n_sims,
     n_valid = n_valid,
     fx_nmb_training = get_fx_names(fx_nmb_training),
@@ -79,7 +79,7 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
   }
 
   simulations <- lapply(
-    1:nrow(input_grid),
+    seq_len(nrow(input_grid)),
     function(i) {
       do_nmb_sim(
         sample_size = input_grid$sample_size[i],
@@ -146,7 +146,7 @@ get_fx_names <- function(x) {
   fx_names <- names(x)
 
   if (is.null(fx_names)) {
-    fx_names <- paste0("unnamed-nmb-function-", 1:len)
+    fx_names <- paste0("unnamed-nmb-function-", seq_len(len))
   }
 
   fx_names
@@ -155,7 +155,7 @@ get_fx_names <- function(x) {
 
 add_sample_size_calcs <- function(x) {
   out <- lapply(
-    1:nrow(x),
+    seq_len(nrow(x)),
     function(i) {
       do_sample_size_calc(
         cstatistic = x$sim_auc[i],

@@ -62,7 +62,7 @@ make_summary_table.predictNMBscreen <- function(
       dplyr::summarize(dplyr::across(!n_sim, agg_functions))
   }
 
-  sim_aggregations <- lapply(1:length(x$simulations), get_row_from_sim)
+  sim_aggregations <- lapply(seq_len(length(x$simulations)), get_row_from_sim)
   sim_aggregations <- do.call("rbind", sim_aggregations)
 
   if (show_full_inputs) {

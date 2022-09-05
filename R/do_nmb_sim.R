@@ -87,7 +87,7 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
   }
 
   if (is.null(cl)) {
-    iterations <- lapply(1:n_sims, f_iteration_wrapper)
+    iterations <- lapply(seq_len(n_sims), f_iteration_wrapper)
   } else {
     parallel::clusterExport(cl, envir = environment(), {
       c(
@@ -110,7 +110,7 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
       })
     }
 
-    iterations <- parallel::parLapply(cl = cl, 1:n_sims, f_iteration_wrapper)
+    iterations <- parallel::parLapply(cl = cl, seq_len(n_sims), f_iteration_wrapper)
   }
 
   df_result <- do.call("rbind", lapply(iterations, "[[", "results"))
@@ -121,8 +121,8 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
   df_thresholds <- as.data.frame.matrix(df_thresholds)
   rownames(df_thresholds) <- NULL
 
-  df_result <- cbind(n_sim = 1:nrow(df_result), df_result)
-  df_thresholds <- cbind(n_sim = 1:nrow(df_thresholds), df_thresholds)
+  df_result <- cbind(n_sim = seq_len(nrow(df_result)), df_result)
+  df_thresholds <- cbind(n_sim = seq_len(nrow(df_thresholds)), df_thresholds)
 
   res <- list(
     df_result = df_result,
