@@ -130,8 +130,7 @@ To do this, we can screen over many of these simulations with different inputs u
 Here, we run the simulations in parallel by creating a cluster and passing this as an argument. This can also be done to `do_nmb_sim()` in the same way.
 
 ```{r}
-library(parallel)
-cl <- makeCluster(2)
+cl <- parallel::makeCluster(2)
 sim_screen_obj <- screen_simulation_inputs(
   n_sims = 500,
   n_valid = 10000,
@@ -142,7 +141,7 @@ sim_screen_obj <- screen_simulation_inputs(
   cutpoint_methods = c("all", "none", "youden"),
   cl = cl
 )
-stopCluster(cl)
+parallel::stopCluster(cl)
 ```
 
 Here we can see that (for our hypothetical costed outcome), the classification model (when the cutpoint is selected by maximising the Youden index) only out-performs the treat-all strategy when the model has a AUC of about 0.9! This is pretty high, and may be better than the model that we expect to be able to get. Also, when the event rate is 0.1, rather than 0.2, we are only able the match the treat-all strategy when our model has an AUC of 0.95.
@@ -250,7 +249,7 @@ In the snippet below, we will compare the treat all strategy to scrapping the pr
 We can also do this in parallel to speed things up.
 
 ```{r}
-cl <- makeCluster(2)
+cl <- parallel::makeCluster(2)
 sim_pup_screen <- screen_simulation_inputs(
   n_sims = 500,
   n_valid = 10000,
@@ -261,7 +260,7 @@ sim_pup_screen <- screen_simulation_inputs(
   fx_nmb_evaluation = fx_nmb_sampler,
   cl = cl
 )
-stopCluster(cl)
+parallel::stopCluster(cl)
 
 make_summary_table(sim_pup_screen)
 ```
