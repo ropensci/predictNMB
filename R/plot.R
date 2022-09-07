@@ -310,6 +310,16 @@ plot.predictNMBscreen <- function(x,
     ) +
     ggplot2::theme_bw()
 
+
+  if(!inherits(p_data_range$x_axis_var, "character")) {
+    p <-
+      p +
+      ggplot2::scale_x_continuous(
+        breaks = unique(p_data_range$x_axis_var),
+        limits = c(min(p_data_range$x_axis_var), max(p_data_range$x_axis_var))
+      )
+  }
+
   if (!is.null(extra_theme)) {
     p <- p + extra_theme
   }
