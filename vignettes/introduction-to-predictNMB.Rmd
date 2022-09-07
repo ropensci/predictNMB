@@ -250,7 +250,7 @@ In the snippet below, we will compare the treat all strategy to scrapping the pr
 We can also do this in parallel to speed things up.
 
 ```{r}
-cl <- makeCluster(detectCores())
+cl <- makeCluster(2)
 sim_pup_screen <- screen_simulation_inputs(
   n_sims = 1000,
   n_valid = 10000,
