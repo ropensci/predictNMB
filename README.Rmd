@@ -44,21 +44,21 @@ devtools::install_github("RWParsons/predictNMB")
 library(predictNMB)
 ```
 
-Evaluating a hypothetical model for predicting and preventing an event using a confusion matrix (2 x 2 table)
+Evaluating a hypothetical model for predicting and preventing an adverse event using a confusion matrix (2 x 2 table).
 
-Inputs:
+Model inputs:
 
-- Cost of outcome = $100
-- Cost savings from treatment = 35%
-- Cost of treatment = $10
+- Cost of adverse event for untreated patient = $100
+- Cost of adverse event for treated patient = $65
+- Cost of treatment per patient = $10
 
 ```{r}
 fx_nmb <- function() {
   c(
-    "TP" = -75, # Correctly predicted event = cost of outcome ($100) + cost of treatment ($10) - cost savings from treatment ($100*0.35)
-    "FP" = -10, # Cost of (unnecessary) treatment from incorrectly predicted positive
-    "TN" = 0,  # No cost of treatment or event from correctly predicted negative
-    "FN" = -100 # Full cost of event from incorrectly predicted negative
+    "TP" = -75, # True positive: Correctly predicted event = cost of event for treated patient ($650) + cost of treatment ($100)
+    "FP" = -10, # False positive: Cost of (unnecessary) treatment from incorrectly predicted positive
+    "TN" = 0,  # True negative: No cost of treatment or event from correctly predicted negative
+    "FN" = -100 # False negative: Full cost of event from incorrectly predicted negative
   )
 }
 
@@ -66,7 +66,7 @@ fx_nmb()
 
 ```
 
-These inputs can be passed to `screen_simulation_inputs()` under the parameters `fx_nmb_training` and `fx_nmb_evaluation` to be evaluated in each simulation. The following function assesses the required performance for the model to outperform a default strategy of treat all or treat none. In this example, cutpoints are selected using the Youden index and the cost-effectiveness approach, which maximises NMB.
+These inputs can be passed to `screen_simulation_inputs()` under the parameters `fx_nmb_training` and `fx_nmb_evaluation`, to be evaluated in each simulation. The following function assesses the required performance for the model to outperform a default strategy of treat all or treat none. In this example, cutpoints are selected using the Youden index and the cost-effectiveness approach, which maximises NMB.
 
 Inputs:
 
