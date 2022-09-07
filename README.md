@@ -12,8 +12,8 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 
 ## Overview
 
-predictNMB is a tool to evaluate hypothetical clinical prediction models
-based on their estimated Net Monetary Benefit (NMB).
+predictNMB is a tool to evaluate clinical prediction models based on
+their estimated Net Monetary Benefit (NMB).
 
 `{predictNMB}` has two main functions:
 
@@ -34,28 +34,20 @@ You can install the development version of predictNMB from
 devtools::install_github("RWParsons/predictNMB")
 ```
 
-## Example
+## Estimating model cutpoints
+
+Hypothetical NMB associated with each square of a confusion matrix must
+first be defined.
 
 ``` r
 library(predictNMB)
-```
 
-Evaluating a hypothetical model for predicting and preventing an adverse
-event using a confusion matrix (2 x 2 table).
-
-Model inputs:
-
--   Cost of adverse event for untreated patient = $100
--   Cost of adverse event for treated patient = $65
--   Cost of treatment per patient = $10
-
-``` r
 fx_nmb <- function() {
   c(
-    "TP" = -75, # True positive: Correctly predicted event = cost of event for treated patient ($650) + cost of treatment ($100)
-    "FP" = -10, # False positive: Cost of (unnecessary) treatment from incorrectly predicted positive
-    "TN" = 0,  # True negative: No cost of treatment or event from correctly predicted negative
-    "FN" = -100 # False negative: Full cost of event from incorrectly predicted negative
+    "TP" = -75, # True positive
+    "FP" = -10, # False positive
+    "TN" = 0,  # True negative
+    "FN" = -100 # False negative
   )
 }
 
@@ -64,22 +56,22 @@ fx_nmb()
 #>  -75  -10    0 -100
 ```
 
-These inputs can be passed to `screen_simulation_inputs()` under the
-parameters `fx_nmb_training` and `fx_nmb_evaluation`, to be evaluated in
-each simulation. The following function assesses the required
-performance for the model to outperform a default strategy of treat all
-or treat none. In this example, cutpoints are selected using the Youden
-index and the cost-effectiveness approach, which maximises NMB.
+Required arguments:
 
-Inputs:
-
--   `event_rate`: event incidence rate = 0.10
--   `sim_auc`: vector of hypothetical AUC = `seq(0.7, 0.95, 0.05)`
--   `n_valid`: number of samples for validation dataset within each
-    simulation (evaluating the NMB under each cutpoint)
-
-Optional: Users can pass a cluster as the `cl` argument. If it is
-passed, the simulations are run in parallel (faster).
+-   `n_sims`: number of simulations to run. More simulations take
+    longer, but are more stable <br>
+-   `event_rate`: event incidence rate, or the proportion of patients
+    experiencing the event <br>
+-   `sim_auc`: vector of hypothetical AUCs; e.g. `seq(0.7, 0.95, 0.05)`
+    or `c(0.75, 0.80, 0.85)` <br>
+-   `n_valid`: number of samples the validation set draws within each
+    simulation (evaluating the NMB under each cutpoint) <br>
+-   `fx_nmb_training`: function-defined vector used to get cutpoints on
+    the training set. Recommended to use constant values <br>
+-   `fx_nmb_evaluation`: function-defined vector used to get cutpoints
+    on the evaluation set. Recommended to use sampled values <br>
+-   (Optional) Users can pass a cluster as the `cl` argument. If it is
+    passed, the simulations are run in parallel (faster). <br>
 
 ``` r
 library(parallel)
@@ -99,12 +91,7 @@ plot(sim_screen_obj)
 #> Screening over sim_auc by default
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
-
-In this example, the Youden index outperforms the ‘treat all’ approach
-when AUC is at least 0.85 or higher. The cost-effective approach is
-similar to ‘treat all’ at low levels of AUC, but improves as AUC
-increases to stay ahead of the Youden index.
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
 The plot method includes additional arguments to rename the methods
 using a named vector. It can also be used to visualise cutpoints or the
@@ -120,7 +107,7 @@ plot(
 #> Screening over sim_auc by default
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
 ``` r
 plot(
@@ -133,7 +120,7 @@ plot(
 #> Screening over sim_auc by default
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-5-2.png" width="100%" />
 
 By default, the median (dot), 95% interval (thick vertical line), range
 (skinny vertical line), and lines between points are shown. All except
@@ -151,7 +138,7 @@ plot(
 #> Screening over sim_auc by default
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 ``` r
 plot(
@@ -164,7 +151,7 @@ plot(
 #> Screening over sim_auc by default
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-2.png" width="100%" />
 
 The simulations for a given set of inputs can be accessed from our
 `predictNMBscreen` object (`sim_screen_obj`). These are the same as the
@@ -248,13 +235,13 @@ argument).
 plot(sim_obj)
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
 
 ``` r
 plot(sim_obj, ci=0.50)
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-8-2.png" width="100%" />
 
 The plot methods for both the `predictNMBscreen` and `predictNMBsim`
 objects have almost the same usage of arguments.
@@ -266,7 +253,7 @@ plot(
 )
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 
 ``` r
 plot(
@@ -277,4 +264,15 @@ plot(
 )
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-2.png" width="100%" />
+
+## Further reading
+
+The vignette, Introduction to predictNMB, is available here (insert
+link)
+
+## Related work
+
+This R package is based on previous work on cost-effective cutpoints for
+the economic evaluation of clinical prediction models. It can be
+accessed here (insert link).
