@@ -158,8 +158,7 @@ plot.predictNMBscreen <- function(x,
                                   plot_ci = TRUE,
                                   plot_line = TRUE,
                                   plot_alpha = 0.5,
-                                  jitter_height = NULL,
-                                  jitter_width = 0,
+                                  dodge_width = 0,
                                   ci = 0.95,
                                   methods_order = NULL,
                                   rename_vector,
@@ -264,12 +263,19 @@ plot.predictNMBscreen <- function(x,
     "fx_nmb_evaluation" = "NMB Sampling Function (evaluation)"
   )
 
+  if(dodge_width == 0) {
+    position <- "identity"
+  } else {
+    position <- position_dodge(width = dodge_width)
+  }
+
   p <-
     ggplot2::ggplot() +
-    ggplot2::geom_jitter(
+    ggplot2::geom_point(
       data = p_data_range,
-      ggplot2::aes(x = x_axis_var, y = m, col = name),
-      size = 3, alpha = plot_alpha, height = jitter_height, width = jitter_width
+      ggplot2::aes(x = x_axis_var, y = m, col = name, group = name),
+      size = 3, alpha = plot_alpha,
+      position = position
     )
 
   if (plot_line) {
@@ -278,7 +284,8 @@ plot.predictNMBscreen <- function(x,
       ggplot2::geom_line(
         data = p_data_range,
         ggplot2::aes(x = x_axis_var, y = m, col = name, group = name),
-        alpha = plot_alpha
+        alpha = plot_alpha,
+        position = position
       )
   }
 
@@ -288,7 +295,8 @@ plot.predictNMBscreen <- function(x,
       ggplot2::geom_linerange(
         data = p_data_interval,
         ggplot2::aes(x = x_axis_var, col = name, ymin = ymin, ymax = ymax),
-        size = 1.2, alpha = plot_alpha
+        size = 1.2, alpha = plot_alpha,
+        position = position
       )
   }
 
@@ -298,7 +306,8 @@ plot.predictNMBscreen <- function(x,
       ggplot2::geom_linerange(
         data = p_data_range,
         ggplot2::aes(x = x_axis_var, col = name, ymin = ymin, ymax = ymax),
-        alpha = plot_alpha
+        alpha = plot_alpha,
+        position = position
       )
   }
 
@@ -315,8 +324,7 @@ plot.predictNMBscreen <- function(x,
     p <-
       p +
       ggplot2::scale_x_continuous(
-        breaks = unique(p_data_range$x_axis_var),
-        limits = c(min(p_data_range$x_axis_var), max(p_data_range$x_axis_var))
+        breaks = unique(p_data_range$x_axis_var)
       )
   }
 
