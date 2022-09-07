@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
   fig.width = 7,
   fig.height = 5
 )
+set.seed(42)
 ```
 
 # `{predictNMB}`
@@ -104,7 +105,6 @@ plot(nmb_simulation)
 However, we can also use this same function to visualise cutpoints or the incremental net monetary benefit (INB) if we have a known reference strategy.
 ```{r}
 plot(nmb_simulation, what = "cutpoints")
-
 plot(nmb_simulation, what = "inb", inb_ref_col = "all")
 ```
 
@@ -130,7 +130,8 @@ To do this, we can screen over many of these simulations with different inputs u
 Here, we run the simulations in parallel by creating a cluster and passing this as an argument. This can also be done to `do_nmb_sim()` in the same way.
 
 ```{r}
-cl <- parallel::makeCluster(2)
+library(parallel)
+cl <- makeCluster(2)
 sim_screen_obj <- screen_simulation_inputs(
   n_sims = 1000,
   n_valid = 10000,
@@ -141,6 +142,7 @@ sim_screen_obj <- screen_simulation_inputs(
   cutpoint_methods = c("all", "none", "youden"),
   cl = cl
 )
+stopCluster(cl)
 ```
 
 Here we can see that (for our hypothetical costed outcome), the classification model (when the cutpoint is selected by maximising the Youden index) only out-performs the treat-all strategy when the model has a AUC of about 0.9! This is pretty high, and may be better than the model that we expect to be able to get. Also, when the event rate is 0.1, rather than 0.2, we are only able the match the treat-all strategy when our model has an AUC of 0.95.
@@ -191,13 +193,11 @@ fx_nmb <- function() {
 }
 
 fx_nmb()
-
 ```
 
 For a first pass, we want to see how our current values affect the estimated NMB from model implementation. We will just use our best guesses for now, but for a rigourous simulation, we will want to use Monte Carlo methods to sample from input distributions.
 
 ```{r}
-set.seed(42)
 nmb_simulation <- do_nmb_sim(
   sample_size = 1000,         # Evaluating a theoretical cohort of 1,000 patients
   n_sims = 500,               # The larger the number of samples, the longer it takes to run, but the more reproducible the results
@@ -224,8 +224,6 @@ However, the utility of these models and the threshold selection methods based o
 First, let's specify our sampler function for the confusion matrix. We can replace our inputs with normal distributions, as our values are all means. Make sure to pass distribution definitions within the function so that they are resampled every time, but pull the same value for the same patient.
 
 ```{r}
-
-set.seed(42)
 fx_nmb_sampler <- function() {
   cost_of_pi <- rnorm(n = 1, mean = 8000, sd = 550)
   eff_pup <- rnorm(n = 1, mean = 0.04, sd = 0.03)
@@ -252,9 +250,6 @@ In the snippet below, we will compare the treat all strategy to scrapping the pr
 We can also do this in parallel to speed things up.
 
 ```{r}
-library(parallel)
-set.seed(42)
-
 cl <- makeCluster(detectCores())
 sim_pup_screen <- screen_simulation_inputs(
   n_sims = 1000,
@@ -266,9 +261,9 @@ sim_pup_screen <- screen_simulation_inputs(
   fx_nmb_evaluation = fx_nmb_sampler,
   cl = cl
 )
+stopCluster(cl)
 
 make_summary_table(sim_pup_screen)
-
 ```
 
 We can see from these results that as our event rate increases, treatment decisions based on the model begin to look better, but there are still very marginal gains from using the prediction model regardless of threshold. It might be that the program could be beneficial mostly in those settings where patients are at a very high risk. 
@@ -282,7 +277,6 @@ plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.10))
 plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.18))
 
 plot(sim_pup_screen, x_axis_var = "event_rate")
-
 ```
 
 

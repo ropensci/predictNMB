@@ -82,7 +82,8 @@ Optional: Users can pass a cluster as the `cl` argument. If it is
 passed, the simulations are run in parallel (faster).
 
 ``` r
-cl <- parallel::makeCluster(parallel::detectCores())
+library(parallel)
+cl <- makeCluster(detectCores())
 sim_screen_obj <- screen_simulation_inputs(
   n_sims = 1000, n_valid = 10000, sim_auc = seq(0.7, 0.95, 0.05), event_rate = 0.1,
   fx_nmb_training = fx_nmb, fx_nmb_evaluation = fx_nmb,
