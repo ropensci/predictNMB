@@ -133,7 +133,7 @@ Here, we run the simulations in parallel by creating a cluster and passing this 
 library(parallel)
 cl <- makeCluster(2)
 sim_screen_obj <- screen_simulation_inputs(
-  n_sims = 1000,
+  n_sims = 500,
   n_valid = 10000,
   sim_auc = seq(0.7, 0.95, 0.05),
   event_rate = c(0.1, 0.2),
@@ -252,7 +252,7 @@ We can also do this in parallel to speed things up.
 ```{r}
 cl <- makeCluster(2)
 sim_pup_screen <- screen_simulation_inputs(
-  n_sims = 1000,
+  n_sims = 500,
   n_valid = 10000,
   sim_auc = seq(0.72, 0.92, 0.05),
   event_rate = c(0.02, 0.1, 0.18),
