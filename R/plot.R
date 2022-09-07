@@ -266,7 +266,7 @@ plot.predictNMBscreen <- function(x,
   if(dodge_width == 0) {
     position <- "identity"
   } else {
-    position <- position_dodge(width = dodge_width)
+    position <- ggplot2::position_dodge(width = dodge_width)
   }
 
   p <-
