@@ -32,6 +32,11 @@ get_sample <- function(auc, n_samples, prevalence, min_events = 0) {
   }
 
   n_neg <- n_samples - n_pos
+
+  if (n_pos == 0 | n_neg == 0) {
+    return(get_sample(auc, n_samples, prevalence, min_events))
+  }
+
   x <- c(stats::rnorm(n_neg, mean = 0), stats::rnorm(n_pos, mean = d))
   y <- c(rep(0, n_neg), rep(1, n_pos))
 
