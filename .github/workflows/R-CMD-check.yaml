@@ -42,8 +42,8 @@ jobs:
 
       - name: Install package and dependencies first
         run: |
-          install.packages('devtools')
-          devtools::install(dependencies = TRUE)
+          install.packages('remotes')
+          remotes::install_github("RWParsons/predictNMB", dependencies = TRUE)
         shell: Rscript {0}
 
       - uses: r-lib/actions/setup-r-dependencies@v2
