@@ -173,12 +173,21 @@ do_nmb_iteration <- function(sim_auc,
 
   training_value_vector <- fx_nmb_training()
 
-  thresholds <- predictNMB::get_thresholds(
+  thresholds <- try({predictNMB::get_thresholds(
     predicted = train_sample$predicted,
     actual = train_sample$actual,
     nmb = training_value_vector,
     cutpoint_methods = cutpoint_methods
-  )
+  )})
+
+  if(inherits(thresholds, "try-error")) {
+    stop(
+      "error when running get_thresholds()\n",
+      paste0(
+        "training data had ", sum(training_sample$actual), "positives and",
+        nrow(training_sample) - sum(training_sample$actual), "negatives")
+    )
+  }
 
   evaluation_value_vector <- fx_nmb_evaluation()
 
