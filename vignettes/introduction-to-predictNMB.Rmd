@@ -148,6 +148,13 @@ parallel::stopCluster(cl)
 Here we can see that (for our hypothetical costed outcome), the classification model (when the cutpoint is selected by maximising the Youden index) only out-performs the treat-all strategy when the model has a AUC of about 0.9! This is pretty high, and may be better than the model that we expect to be able to get. Also, when the event rate is 0.1, rather than 0.2, we are only able the match the treat-all strategy when our model has an AUC of 0.95.
 ```{r}
 plot(sim_screen_obj, x_axis_var = "sim_auc", constants = c(event_rate = 0.2))
+```
+
+```{r, echo=F}
+dev.off()
+```
+
+```{r}
 plot(sim_screen_obj, x_axis_var = "sim_auc", constants = c(event_rate = 0.1))
 ```
 
@@ -271,12 +278,35 @@ We can see from these results that as our event rate increases, treatment decisi
 We can also represent these results visually.
 
 ```{r}
-
 plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.02))
-plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.10))
-plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.18))
+```
 
+
+```{r, echo=F}
+dev.off()
+```
+
+```{r}
+plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.10))
+```
+
+```{r, echo=F}
+dev.off()
+```
+
+```{r}
+plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.18))
+```
+
+```{r, echo=F}
+dev.off()
+```
+
+```{r}
 plot(sim_pup_screen, x_axis_var = "event_rate")
+```
+
+
 ```
 
 
