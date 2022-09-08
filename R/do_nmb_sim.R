@@ -184,8 +184,8 @@ do_nmb_iteration <- function(sim_auc,
     stop(
       "error when running get_thresholds()\n",
       paste0(
-        "training data had ", sum(training_sample$actual), "positives and",
-        nrow(training_sample) - sum(training_sample$actual), "negatives")
+        "training data had ", sum(train_sample$actual), "positives and",
+        nrow(train_sample) - sum(train_sample$actual), "negatives")
     )
   }
 
