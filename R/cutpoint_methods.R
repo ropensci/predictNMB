@@ -1,19 +1,19 @@
-# total_nmb <- function(tn, tp, fn, fp, utility_tp, utility_tn, cost_fp, cost_fn, ...) {
-#   total_nmb <- utility_tp * tp + utility_tn * tn + cost_fp * fp + cost_fn * fn
-#   total_nmb <- matrix(total_nmb, ncol = 1)
-#   colnames(total_nmb) <- "total_nmb"
-#   total_nmb
-# }
-#
-# roc_iu <- function(tp, fp, tn, fn, .roc_curve, ...) {
-#   tempauc <- cutpointr::auc(.roc_curve)
-#   sens <- cutpointr::sensitivity(tp = tp, fn = fn)
-#   spec <- cutpointr::specificity(fp = fp, tn = tn)
-#   iu <- abs(sens - tempauc) + abs(spec - tempauc)
-#   iu <- matrix(iu, ncol = 1)
-#   colnames(iu) <- "roc_iu"
-#   return(iu)
-# }
+total_nmb <- function(tn, tp, fn, fp, utility_tp, utility_tn, cost_fp, cost_fn, ...) {
+  total_nmb <- utility_tp * tp + utility_tn * tn + cost_fp * fp + cost_fn * fn
+  total_nmb <- matrix(total_nmb, ncol = 1)
+  colnames(total_nmb) <- "total_nmb"
+  total_nmb
+}
+
+roc_iu <- function(tp, fp, tn, fn, .roc_curve, ...) {
+  tempauc <- cutpointr::auc(.roc_curve)
+  sens <- cutpointr::sensitivity(tp = tp, fn = fn)
+  spec <- cutpointr::specificity(fp = fp, tn = tn)
+  iu <- abs(sens - tempauc) + abs(spec - tempauc)
+  iu <- matrix(iu, ncol = 1)
+  colnames(iu) <- "roc_iu"
+  return(iu)
+}
 
 
 #' Get a cutpoint using the methods inbuilt to predictNMB
