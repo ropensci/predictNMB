@@ -94,7 +94,10 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
         "f_iteration_wrapper",
         "do_nmb_iteration",
         "fx_nmb_training",
-        "fx_nmb_evaluation"
+        "fx_nmb_evaluation",
+        "get_sample",
+        "get_thresholds",
+        "evaluate_cutpoint"
       )
     })
 
@@ -152,14 +155,14 @@ do_nmb_iteration <- function(sim_auc,
                              cutpoint_methods,
                              fx_nmb_training,
                              fx_nmb_evaluation) {
-  train_sample <- predictNMB::get_sample(
+  train_sample <- get_sample(
     auc = sim_auc,
     n_samples = sample_size,
     prevalence = event_rate,
     min_events = ifelse(meet_min_events, min_events, 0)
   )
 
-  valid_sample <- predictNMB::get_sample(
+  valid_sample <- get_sample(
     auc = sim_auc,
     n_samples = n_valid,
     prevalence = event_rate,
@@ -173,7 +176,7 @@ do_nmb_iteration <- function(sim_auc,
 
   training_value_vector <- fx_nmb_training()
 
-  thresholds <- predictNMB::get_thresholds(
+  thresholds <- get_thresholds(
     predicted = train_sample$predicted,
     actual = train_sample$actual,
     nmb = training_value_vector,
@@ -183,7 +186,7 @@ do_nmb_iteration <- function(sim_auc,
   evaluation_value_vector <- fx_nmb_evaluation()
 
   cost_threshold <- function(pt) {
-    predictNMB::evaluate_cutpoint(
+    evaluate_cutpoint(
       predicted = valid_sample$predicted,
       actual = valid_sample$actual,
       pt = pt,

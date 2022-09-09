@@ -22,7 +22,7 @@ numeric
 Evaluates a cutpoint by returning the mean NMB per sample.
 }
 \examples{
-predictNMB::evaluate_cutpoint(
+evaluate_cutpoint(
   predicted = runif(1000),
   actual = sample(c(0, 1), size = 1000, replace = TRUE),
   pt = 0.1,
