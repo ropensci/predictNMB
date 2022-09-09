@@ -159,15 +159,7 @@ do_nmb_iteration <- function(sim_auc,
     min_events = ifelse(meet_min_events, min_events, 0)
   )
 
-  c <- unique(train_sample$actual)
-  if(length(c) != 2){
-    stop(
-      "error when running get_thresholds()\n",
-      paste0(
-        "training data had ", sum(train_sample$actual), "positives and",
-        nrow(train_sample) - sum(train_sample$actual), "negatives")
-    )
-  }
+  stop("early error")
 
   valid_sample <- predictNMB::get_sample(
     auc = sim_auc,
