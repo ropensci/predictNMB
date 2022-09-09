@@ -44,93 +44,93 @@ get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_meth
   if (return_all_methods) {
     return(inbuilt_methods)
   }
-  return(runif(1))
-  # if(length(unique(actual)) != 2) {
-  #   stop(paste0("data were all ", unique(actual), "'s"))
-  # }
-  #
-  # if (!method %in% inbuilt_methods) {
-  #   stop(
-  #     paste0(
-  #       "the method, '", method, "' is not within the available inbuilt methods:\n",
-  #       paste0(paste0("'", inbuilt_methods, "'"), collapse = ", ")
-  #     )
-  #   )
-  # }
-  #
-  # if (method == "all") {
-  #   return(0)
-  # }
-  #
-  # if (method == "none") {
-  #   return(1)
-  # }
-  #
-  # if (method == "cost_effective") {
-  #   pt_cost_effective <- cutpointr::cutpointr(
-  #     x = predicted, class = actual, method = cutpointr::maximize_metric, metric = total_nmb,
-  #     utility_tp = nmb["TP"], utility_tn = nmb["TN"],
-  #     cost_fp = nmb["FP"], cost_fn = nmb["FN"],
-  #     silent = TRUE
-  #   )[["optimal_cutpoint"]]
-  #   if (pt_cost_effective > 1) {
-  #     pt_cost_effective <- 1
-  #   }
-  #   return(pt_cost_effective)
-  # }
-  #
-  # if (method == "youden") {
-  #   pt_youden <- cutpointr::cutpointr(
-  #     x = predicted, class = actual, method = cutpointr::maximize_metric, metric = cutpointr::youden,
-  #     silent = TRUE
-  #   )[["optimal_cutpoint"]]
-  #   if (pt_youden > 1) {
-  #     pt_youden <- 1
-  #   }
-  #   return(pt_youden)
-  # }
-  #
-  # if (method == "cost_minimising") {
-  #   costs <- -nmb
-  #   pt_cost_minimising <-
-  #     (costs["FP"] - costs["TN"]) /
-  #       (costs["FP"] + costs["FN"] - costs["TP"] - costs["TN"])
-  #   names(pt_cost_minimising) <- NULL
-  #   return(pt_cost_minimising)
-  # }
-  #
-  # if (method == "prod_sens_spec") {
-  #   pt_cz <- cutpointr::cutpointr(
-  #     x = predicted, class = actual, method = cutpointr::maximize_metric, metric = cutpointr::prod_sens_spec,
-  #     silent = TRUE
-  #   )[["optimal_cutpoint"]]
-  #   if (pt_cz > 1) {
-  #     pt_cz <- 1
-  #   }
-  #   return(pt_cz)
-  # }
-  #
-  # if (method == "roc01") {
-  #   pt_er <- cutpointr::cutpointr(
-  #     x = predicted, class = actual, method = cutpointr::minimize_metric, metric = cutpointr::roc01,
-  #     silent = TRUE
-  #   )[["optimal_cutpoint"]]
-  #   if (length(pt_er) > 1) {
-  #     pt_er <- stats::median(pt_er)
-  #   }
-  #   return(pt_er)
-  # }
-  #
-  # if (method == "index_of_union") {
-  #   pt_iu <- cutpointr::cutpointr(
-  #     x = predicted, class = actual, method = cutpointr::minimize_metric, metric = roc_iu,
-  #     silent = TRUE
-  #   )[["optimal_cutpoint"]]
-  #   if (pt_iu > 1) {
-  #     pt_iu <- 1
-  #   }
-  #   return(pt_iu)
-  # }
+  # return(runif(1))
+  if(length(unique(actual)) != 2) {
+    stop(paste0("data were all ", unique(actual), "'s"))
+  }
+
+  if (!method %in% inbuilt_methods) {
+    stop(
+      paste0(
+        "the method, '", method, "' is not within the available inbuilt methods:\n",
+        paste0(paste0("'", inbuilt_methods, "'"), collapse = ", ")
+      )
+    )
+  }
+
+  if (method == "all") {
+    return(0)
+  }
+
+  if (method == "none") {
+    return(1)
+  }
+
+  if (method == "cost_effective") {
+    pt_cost_effective <- cutpointr::cutpointr(
+      x = predicted, class = actual, method = cutpointr::maximize_metric, metric = total_nmb,
+      utility_tp = nmb["TP"], utility_tn = nmb["TN"],
+      cost_fp = nmb["FP"], cost_fn = nmb["FN"],
+      silent = TRUE
+    )[["optimal_cutpoint"]]
+    if (pt_cost_effective > 1) {
+      pt_cost_effective <- 1
+    }
+    return(pt_cost_effective)
+  }
+
+  if (method == "youden") {
+    pt_youden <- cutpointr::cutpointr(
+      x = predicted, class = actual, method = cutpointr::maximize_metric, metric = cutpointr::youden,
+      silent = TRUE
+    )[["optimal_cutpoint"]]
+    if (pt_youden > 1) {
+      pt_youden <- 1
+    }
+    return(pt_youden)
+  }
+
+  if (method == "cost_minimising") {
+    costs <- -nmb
+    pt_cost_minimising <-
+      (costs["FP"] - costs["TN"]) /
+        (costs["FP"] + costs["FN"] - costs["TP"] - costs["TN"])
+    names(pt_cost_minimising) <- NULL
+    return(pt_cost_minimising)
+  }
+
+  if (method == "prod_sens_spec") {
+    pt_cz <- cutpointr::cutpointr(
+      x = predicted, class = actual, method = cutpointr::maximize_metric, metric = cutpointr::prod_sens_spec,
+      silent = TRUE
+    )[["optimal_cutpoint"]]
+    if (pt_cz > 1) {
+      pt_cz <- 1
+    }
+    return(pt_cz)
+  }
+
+  if (method == "roc01") {
+    pt_er <- cutpointr::cutpointr(
+      x = predicted, class = actual, method = cutpointr::minimize_metric, metric = cutpointr::roc01,
+      silent = TRUE
+    )[["optimal_cutpoint"]]
+    if (length(pt_er) > 1) {
+      pt_er <- stats::median(pt_er)
+    }
+    return(pt_er)
+  }
+
+  if (method == "index_of_union") {
+    pt_iu <- cutpointr::cutpointr(
+      x = predicted, class = actual, method = cutpointr::minimize_metric, metric = roc_iu,
+      silent = TRUE
+    )[["optimal_cutpoint"]]
+    if (pt_iu > 1) {
+      pt_iu <- 1
+    }
+    return(pt_iu)
+  }
 }
 
 
@@ -192,9 +192,9 @@ get_thresholds <- function(predicted, actual, nmb, cutpoint_methods = NULL) {
     cutpoint_methods <- get_inbuilt_cutpoint(return_all_methods = TRUE)
   }
 
-  out <- runif(n=length(cutpoint_methods))
-  names(out) <- cutpoint_methods
-  return(out)
+  # out <- runif(n=length(cutpoint_methods))
+  # names(out) <- cutpoint_methods
+  # return(out)
   # get cutpoints using inbuilt methods
   inbuilt_methods <- cutpoint_methods[cutpoint_methods %in% get_inbuilt_cutpoint(return_all_methods = TRUE)]
   inbuilt_cutpoints <- lapply(
