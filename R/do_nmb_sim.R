@@ -159,8 +159,6 @@ do_nmb_iteration <- function(sim_auc,
     min_events = ifelse(meet_min_events, min_events, 0)
   )
 
-  stop("early error")
-
   valid_sample <- predictNMB::get_sample(
     auc = sim_auc,
     n_samples = n_valid,
@@ -175,12 +173,12 @@ do_nmb_iteration <- function(sim_auc,
 
   training_value_vector <- fx_nmb_training()
 
-  thresholds <- try({predictNMB::get_thresholds(
+  thresholds <- predictNMB::get_thresholds(
     predicted = train_sample$predicted,
     actual = train_sample$actual,
     nmb = training_value_vector,
     cutpoint_methods = cutpoint_methods
-  )})
+  )
 
   if(inherits(thresholds, "try-error")) {
     stop(
