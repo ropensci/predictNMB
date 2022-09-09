@@ -180,15 +180,6 @@ do_nmb_iteration <- function(sim_auc,
     cutpoint_methods = cutpoint_methods
   )
 
-  if(inherits(thresholds, "try-error")) {
-    stop(
-      "error when running get_thresholds()\n",
-      paste0(
-        "training data had ", sum(train_sample$actual), "positives and",
-        nrow(train_sample) - sum(train_sample$actual), "negatives")
-    )
-  }
-
   evaluation_value_vector <- fx_nmb_evaluation()
 
   cost_threshold <- function(pt) {
