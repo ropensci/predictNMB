@@ -105,7 +105,7 @@ plot(nmb_simulation)
 ```
 
 ```{r, echo=F}
-dev.off()
+while (!is.null(dev.list()))  dev.off()
 ```
 
 However, we can also use this same function to visualise cutpoints or the incremental net monetary benefit (INB) if we have a known reference strategy.
@@ -114,7 +114,7 @@ plot(nmb_simulation, what = "cutpoints")
 ```
 
 ```{r, echo=F}
-dev.off()
+while (!is.null(dev.list()))  dev.off()
 ```
 
 ```{r}
@@ -122,7 +122,7 @@ plot(nmb_simulation, what = "inb", inb_ref_col = "all")
 ```
 
 ```{r, echo=F}
-dev.off()
+while (!is.null(dev.list()))  dev.off()
 ```
 The NMB for each cutpoint method for each simulation can be accessed by the object directly:
 
@@ -166,7 +166,7 @@ plot(sim_screen_obj, x_axis_var = "sim_auc", constants = c(event_rate = 0.2))
 ```
 
 ```{r, echo=F}
-dev.off()
+while (!is.null(dev.list()))  dev.off()
 ```
 
 ```{r}
@@ -174,7 +174,7 @@ plot(sim_screen_obj, x_axis_var = "sim_auc", constants = c(event_rate = 0.1))
 ```
 
 ```{r, echo=F}
-dev.off()
+while (!is.null(dev.list()))  dev.off()
 ```
 
 # Detailed example
@@ -242,7 +242,7 @@ plot(nmb_simulation, what = "cutpoints")                # Demonstrates the range
 ```
 
 ```{r, echo=F}
-dev.off()
+while (!is.null(dev.list()))  dev.off()
 ```
 
 ```{r}
@@ -250,7 +250,7 @@ plot(nmb_simulation, what = "inb", inb_ref_col = "all") # Compares the increment
 ```
 
 ```{r, echo=F}
-dev.off()
+while (!is.null(dev.list()))  dev.off()
 ```
 
 Our first pass shows that based on the inputs we've given the simulation model, treating all is a bad option, outperformed by every other method (as the reference strategy, treat all has an NMB of 0). Treat none looks like a good choice; we should definitely consider scrapping the program and looking for something else that costs less or provides better results. However, this doesn't tell the full story. There may be some incremental benefit from using a model to select patients depending on how our input values change. It's worth noting here that the results from the ROC-based methods like the Youden index and index of union are quite uncertain, but even the most extreme probabilities are still better than treating all.
@@ -312,7 +312,7 @@ plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.02))
 
 
 ```{r, echo=F}
-dev.off()
+while (!is.null(dev.list()))  dev.off()
 ```
 
 ```{r}
@@ -320,7 +320,7 @@ plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.10))
 ```
 
 ```{r, echo=F}
-dev.off()
+while (!is.null(dev.list()))  dev.off()
 ```
 
 ```{r}
@@ -328,7 +328,7 @@ plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.18))
 ```
 
 ```{r, echo=F}
-dev.off()
+while (!is.null(dev.list()))  dev.off()
 ```
 
 ```{r}
@@ -336,7 +336,7 @@ plot(sim_pup_screen, x_axis_var = "event_rate")
 ```
 
 ```{r, echo=F}
-dev.off()
+while (!is.null(dev.list()))  dev.off()
 ```
 
 ```
