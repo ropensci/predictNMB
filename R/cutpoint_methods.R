@@ -44,7 +44,7 @@ get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_meth
   if (return_all_methods) {
     return(inbuilt_methods)
   }
-
+  return(runif(1))
   # if(length(unique(actual)) != 2) {
   #   stop(paste0("data were all ", unique(actual), "'s"))
   # }
