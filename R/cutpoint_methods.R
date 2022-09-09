@@ -41,10 +41,10 @@
 get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_methods = FALSE) {
   inbuilt_methods <- c("all", "none", "cost_effective", "youden", "cost_minimising", "prod_sens_spec", "roc01", "index_of_union")
 
-  # if (return_all_methods) {
-  #   return(inbuilt_methods)
-  # }
-  #
+  if (return_all_methods) {
+    return(inbuilt_methods)
+  }
+
   # if(length(unique(actual)) != 2) {
   #   stop(paste0("data were all ", unique(actual), "'s"))
   # }
