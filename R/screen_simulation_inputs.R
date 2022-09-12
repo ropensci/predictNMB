@@ -28,7 +28,7 @@
 #' }
 screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
                                      cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
-                                     fx_nmb_training, fx_nmb_evaluation, meet_min_events = FALSE,
+                                     fx_nmb_training, fx_nmb_evaluation, meet_min_events = TRUE,
                                      min_events = NA, cl = NULL) {
   if (missing(sample_size)) {
     sample_size <- NA
@@ -47,7 +47,8 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
       sample_size = sample_size,
       sim_auc = sim_auc,
       event_rate = event_rate,
-      min_events = min_events
+      min_events = min_events,
+      meet_min_events = meet_min_events
     ) %>%
     add_sample_size_calcs()
 
@@ -90,7 +91,7 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
         cutpoint_methods = cutpoint_methods,
         fx_nmb_training = input_grid$fx_nmb_training[[i]],
         fx_nmb_evaluation = input_grid$fx_nmb_evaluation[[i]],
-        meet_min_events = meet_min_events,
+        meet_min_events = input_grid$meet_min_events[[i]],
         min_events = input_grid$min_events[i],
         cl = cl
       )
@@ -161,7 +162,8 @@ add_sample_size_calcs <- function(x) {
         cstatistic = x$sim_auc[i],
         prevalence = x$event_rate[i],
         sample_size = x$sample_size[i],
-        min_events = x$min_events[i]
+        min_events = x$min_events[i],
+        meet_min_events = x$meet_min_events[i]
       )
     }
   )

@@ -63,7 +63,8 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
     cstatistic = sim_auc,
     prevalence = event_rate,
     sample_size = sample_size,
-    min_events = min_events
+    min_events = min_events,
+    meet_min_events = meet_min_events
   )
 
   sample_size <- sample_size_calc$sample_size

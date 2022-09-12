@@ -13,7 +13,7 @@ screen_simulation_inputs(
   cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
   fx_nmb_training,
   fx_nmb_evaluation,
-  meet_min_events = FALSE,
+  meet_min_events = TRUE,
   min_events = NA,
   cl = NULL
 )

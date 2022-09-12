@@ -5,7 +5,7 @@ utils::globalVariables(
   )
 )
 
-do_sample_size_calc <- function(cstatistic, prevalence, sample_size, min_events) {
+do_sample_size_calc <- function(cstatistic, prevalence, sample_size, min_events, meet_min_events) {
   if (is.na(sample_size)) {
     pmsamp <- pmsampsize::pmsampsize(
       type = "b",
@@ -14,11 +14,24 @@ do_sample_size_calc <- function(cstatistic, prevalence, sample_size, min_events)
       prevalence = prevalence
     )
     sample_size <- pmsamp$sample_size
-    min_events <- round(pmsamp$events)
-  } else if (is.na(min_events)) {
-    min_events <- round(sample_size * prevalence)
   }
 
+  if(meet_min_events) {
+    if (!is.na(min_events)) {
+      min_events <- min_events
+    } else if (is.na(sample_size)) {
+      min_events <- round(pmsamp$events)
+    } else {
+      min_events <- round(sample_size * prevalence)
+    }
+  } else {
+    min_events <- 1
+  }
+
+
+  if (is.na(min_events)) {
+    min_events <- ifelse(meet_min_events, round(sample_size * prevalence), 1)
+  }
   list(
     sample_size = sample_size,
     min_events = min_events
@@ -60,7 +73,20 @@ validate_inputs <- function(sample_size,
     stopifnot(assertthat::is.count(min_events))
   }
 
+  if(!is.na(min_events) & meet_min_events & missing(sample_size)) {
+    message("Power analyses is being performed to estimate sample size but",
+            "'min_events' is specified so the power analyses for minimum number of events will be ignored.\n",
+            "    The minimum number of events being used is ",
+            min_events, ".")
+  }
+
+  if(!is.na(min_events) & !meet_min_events) {
+    message("'min_events' is specified but 'meet_min_events' is FALSE.\n",
+            "'min_events' will be ignored and no minimum number of events will be set.")
+  }
+
   if(!is.null(cl)) {
     stopifnot(inherits(cl, c("SOCKcluster", "cluster")))
   }
+
 }
