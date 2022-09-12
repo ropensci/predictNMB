@@ -31,7 +31,7 @@ get_sample <- function(auc, n_samples, prevalence, min_events = 0) {
 
   # if by chance all samples are either positive or negative, repeat the sampling
   # almost all the cutpoint selection methods will fail if there's only 1 class.
-  if (n_pos == 0 | n_neg == 0) {
+  if ((n_pos == 0 | n_neg == 0) & min_events > 0) {
     return(get_sample(auc, n_samples, prevalence, min_events))
   }
 
