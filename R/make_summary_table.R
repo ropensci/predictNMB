@@ -19,15 +19,14 @@
 #'   make_summary_table(sim_screen_obj)
 #'   make_summary_table(sim_screen_obj$simulations[[1]])
 #' }
-make_summary_table <- function(
-    x,
-    what = c("nmb", "inb", "cutpoints"),
-    inb_ref_col = NULL,
-    agg_functions = list(
-      "median" = stats::median,
-      "95% CI" = function(x) paste0(signif(stats::quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse = " to ")
-    ),
-    ...) {
+make_summary_table <- function(x,
+                               what = c("nmb", "inb", "cutpoints"),
+                               inb_ref_col = NULL,
+                               agg_functions = list(
+                                 "median" = stats::median,
+                                 "95% CI" = function(x) paste0(signif(stats::quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse = " to ")
+                               ),
+                               ...) {
   UseMethod("make_summary_table")
 }
 
@@ -47,16 +46,15 @@ get_sim_data <- function(x, what, inb_ref_col = NULL) {
 
 
 #' @export
-make_summary_table.predictNMBscreen <- function(
-    x,
-    what = c("nmb", "inb", "cutpoints"),
-    inb_ref_col = NULL,
-    agg_functions = list(
-      "median" = stats::median,
-      "95% CI" = function(x) paste0(round(stats::quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse = " to ")
-    ),
-    show_full_inputs = FALSE,
-    ...) {
+make_summary_table.predictNMBscreen <- function(x,
+                                                what = c("nmb", "inb", "cutpoints"),
+                                                inb_ref_col = NULL,
+                                                agg_functions = list(
+                                                  "median" = stats::median,
+                                                  "95% CI" = function(x) paste0(round(stats::quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse = " to ")
+                                                ),
+                                                show_full_inputs = FALSE,
+                                                ...) {
   get_row_from_sim <- function(sim_idx) {
     get_sim_data(x$simulations[[sim_idx]], what = what[1], inb_ref_col = inb_ref_col) %>%
       dplyr::summarize(dplyr::across(!n_sim, agg_functions))
@@ -76,16 +74,14 @@ make_summary_table.predictNMBscreen <- function(
 
 
 #' @export
-make_summary_table.predictNMBsim <- function(
-    x,
-    what = c("nmb", "inb", "cutpoints"),
-    inb_ref_col = NULL,
-    agg_functions = list(
-      "median" = stats::median,
-      "95% CI" = function(x) paste0(round(stats::quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse = " to ")
-    ),
-    ...) {
-
+make_summary_table.predictNMBsim <- function(x,
+                                             what = c("nmb", "inb", "cutpoints"),
+                                             inb_ref_col = NULL,
+                                             agg_functions = list(
+                                               "median" = stats::median,
+                                               "95% CI" = function(x) paste0(round(stats::quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse = " to ")
+                                             ),
+                                             ...) {
   get_sim_data(x, what = what[1], inb_ref_col = inb_ref_col) %>%
     tidyr::pivot_longer(!n_sim, names_to = "method") %>%
     dplyr::group_by(method) %>%

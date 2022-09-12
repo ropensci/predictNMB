@@ -16,7 +16,7 @@ do_sample_size_calc <- function(cstatistic, prevalence, sample_size, min_events,
     sample_size <- pmsamp$sample_size
   }
 
-  if(meet_min_events) {
+  if (meet_min_events) {
     if (!is.na(min_events)) {
       min_events <- min_events
     } else if (is.na(sample_size)) {
@@ -28,10 +28,10 @@ do_sample_size_calc <- function(cstatistic, prevalence, sample_size, min_events,
     min_events <- 1
   }
 
-
   if (is.na(min_events)) {
     min_events <- ifelse(meet_min_events, round(sample_size * prevalence), 1)
   }
+
   list(
     sample_size = sample_size,
     min_events = min_events
@@ -49,8 +49,7 @@ validate_inputs <- function(sample_size,
                             meet_min_events,
                             min_events,
                             cl) {
-
-  if(!missing(sample_size)) {
+  if (!missing(sample_size)) {
     stopifnot(assertthat::is.count(sample_size))
   }
 
@@ -63,30 +62,33 @@ validate_inputs <- function(sample_size,
   stopifnot(inherits(cutpoint_methods, "character"))
   stopifnot(is.logical(meet_min_events))
 
-  if(!missing(fx_nmb_training)) {
+  if (!missing(fx_nmb_training)) {
     stopifnot(inherits(fx_nmb_training, "function"))
   }
 
   stopifnot(inherits(fx_nmb_evaluation, "function"))
 
-  if(!is.na(min_events)) {
+  if (!is.na(min_events)) {
     stopifnot(assertthat::is.count(min_events))
   }
 
-  if(!is.na(min_events) & meet_min_events & missing(sample_size)) {
-    message("Power analyses is being performed to estimate sample size but",
-            "'min_events' is specified so the power analyses for minimum number of events will be ignored.\n",
-            "    The minimum number of events being used is ",
-            min_events, ".")
+  if (!is.na(min_events) & meet_min_events & missing(sample_size)) {
+    message(
+      "Power analyses is being performed to estimate sample size but",
+      "'min_events' is specified so the power analyses for minimum number of events will be ignored.\n",
+      "    The minimum number of events being used is ",
+      min_events, "."
+    )
   }
 
-  if(!is.na(min_events) & !meet_min_events) {
-    message("'min_events' is specified but 'meet_min_events' is FALSE.\n",
-            "'min_events' will be ignored and no minimum number of events will be set.")
+  if (!is.na(min_events) & !meet_min_events) {
+    message(
+      "'min_events' is specified but 'meet_min_events' is FALSE.\n",
+      "'min_events' will be ignored and no minimum number of events will be set."
+    )
   }
 
-  if(!is.null(cl)) {
+  if (!is.null(cl)) {
     stopifnot(inherits(cl, c("SOCKcluster", "cluster")))
   }
-
 }

@@ -263,7 +263,7 @@ plot.predictNMBscreen <- function(x,
     "fx_nmb_evaluation" = "NMB Sampling Function (evaluation)"
   )
 
-  if(dodge_width == 0) {
+  if (dodge_width == 0) {
     position <- "identity"
   } else {
     position <- ggplot2::position_dodge(width = dodge_width)
@@ -320,7 +320,7 @@ plot.predictNMBscreen <- function(x,
     ggplot2::theme_bw()
 
 
-  if(!inherits(p_data_range$x_axis_var, "character")) {
+  if (!inherits(p_data_range$x_axis_var, "character")) {
     p <-
       p +
       ggplot2::scale_x_continuous(
