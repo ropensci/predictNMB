@@ -14,7 +14,6 @@ knitr::opts_chunk$set(
   fig.width = 7,
   fig.height = 5
 )
-set.seed(42)
 ```
 
 # `{predictNMB}`
@@ -22,6 +21,12 @@ set.seed(42)
 `{predictNMB}` can be used to evaluate existing or hypothetical clinical prediction models based on their Net Monetary Benefit (NMB). This can be relevant to both prognostic and diagnostic models where a cutpoint (AKA, probability threshold) is used to use predicted classes rather than probabilities. While it is often beneficial in clinical settings to present the user with a predicted probability, it may be helpful in certain cases to simulate the effect of the decision arising from this probability. For example, in a hospital setting, a user might want to specify the probability threshold for a clinical prediction model at which best practice suggests treatment over non-treatment as the default strategy. By weighing the NMB of these decisions, users can assess the impact of the model and the suggested threshold prior to implementation.
 
 `{predictNMB}` was born out of related work that investigates cutpoint selection methods which maximise the NMB, and includes several options for inbuilt and user-specified cutpoint selection functions. 
+
+```{r setup}
+library(predictNMB)
+library(parallel)
+set.seed(42)
+```
 
 ## What's being simulated?
 
@@ -67,10 +72,6 @@ get_nmb_sampler_training()
 ```
 
 These inputs can be passed to `screen_simulation_inputs()` under the parameters `fx_nmb_training` and `fx_nmb_evaluation`, to be evaluated in each simulation. 
-
-```{r setup}
-library(predictNMB)
-```
 
 # `do_nmb_sim()`
 
@@ -132,7 +133,7 @@ To do this, we can screen over many of these simulations with different inputs u
 Here, we run the simulations in parallel by creating a cluster and passing this as an argument. This can also be done to `do_nmb_sim()` in the same way.
 
 ```{r}
-cl <- parallel::makeCluster(2)
+cl <- makeCluster(2)
 sim_screen_obj <- screen_simulation_inputs(
   n_sims = 500,
   n_valid = 10000,
@@ -143,7 +144,7 @@ sim_screen_obj <- screen_simulation_inputs(
   cutpoint_methods = c("all", "none", "youden", "cost_effective"),
   cl = cl
 )
-parallel::stopCluster(cl)
+stopCluster(cl)
 ```
 
 Here we can see that (for our hypothetical costed outcome), the classification model (when the cutpoint is selected by maximising the Youden index) only out-performs the treat-all strategy when the model has a AUC of about 0.9! This is pretty high, and may be better than the model that we expect to be able to get. Also, when the event rate is 0.1, rather than 0.2, we are only able the match the treat-all strategy when our model has an AUC of 0.95.
@@ -252,7 +253,7 @@ In the snippet below, we will compare the treat all strategy to scrapping the pr
 We can also do this in parallel to speed things up.
 
 ```{r}
-cl <- parallel::makeCluster(2)
+cl <- makeCluster(2)
 sim_pup_screen <- screen_simulation_inputs(
   n_sims = 500,
   n_valid = 10000,
@@ -263,7 +264,7 @@ sim_pup_screen <- screen_simulation_inputs(
   fx_nmb_evaluation = fx_nmb_sampler,
   cl = cl
 )
-parallel::stopCluster(cl)
+stopCluster(cl)
 
 make_summary_table(sim_pup_screen)
 ```
