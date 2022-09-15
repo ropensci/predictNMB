@@ -31,6 +31,7 @@ get_plot_data <- function(x,
       names()
   }
   pivoted_data$name <- factor(pivoted_data$name, levels = methods_order)
+  pivoted_data <- dplyr::filter(pivoted_data, !is.na(name))
 
   # add label (in_interval) for whether the observation is within the interval
   add_interval(pivoted_data, ci = ci)
