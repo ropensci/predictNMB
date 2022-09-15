@@ -72,9 +72,13 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
 
   stopifnot(min_events < sample_size)
 
+  df_nmb_training <- do.call("rbind", replicate(n_sims, fx_nmb_training(), simplify = FALSE))
+  df_nmb_evaluation <- do.call("rbind", replicate(n_sims, fx_nmb_evaluation(), simplify = FALSE))
+
   # do iterations
-  f_iteration_wrapper <- function(...) {
+  f_iteration_wrapper <- function(iter) {
     do_nmb_iteration(
+      iter = iter,
       sim_auc = sim_auc,
       sample_size = sample_size,
       n_valid = n_valid,
@@ -82,8 +86,8 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
       meet_min_events = meet_min_events,
       min_events = min_events,
       cutpoint_methods = cutpoint_methods,
-      fx_nmb_training = fx_nmb_training,
-      fx_nmb_evaluation = fx_nmb_evaluation
+      df_nmb_training = df_nmb_training,
+      df_nmb_evaluation = df_nmb_evaluation
     )
   }
 
@@ -94,8 +98,8 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
       c(
         "f_iteration_wrapper",
         "do_nmb_iteration",
-        "fx_nmb_training",
-        "fx_nmb_evaluation",
+        "df_nmb_training",
+        "df_nmb_evaluation",
         "get_sample",
         "get_thresholds",
         "evaluate_cutpoint"
@@ -147,15 +151,16 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
 }
 
 
-do_nmb_iteration <- function(sim_auc,
+do_nmb_iteration <- function(iter,
+                             sim_auc,
                              sample_size,
                              n_valid,
                              event_rate,
                              meet_min_events,
                              min_events,
                              cutpoint_methods,
-                             fx_nmb_training,
-                             fx_nmb_evaluation) {
+                             df_nmb_training,
+                             df_nmb_evaluation) {
   train_sample <- get_sample(
     auc = sim_auc,
     n_samples = sample_size,
@@ -175,7 +180,7 @@ do_nmb_iteration <- function(sim_auc,
   train_sample$predicted <- stats::predict(model, type = "response")
   valid_sample$predicted <- stats::predict(model, type = "response", newdata = valid_sample)
 
-  training_value_vector <- fx_nmb_training()
+  training_value_vector <- unlist(df_nmb_training[iter, ])
 
   thresholds <- get_thresholds(
     predicted = train_sample$predicted,
@@ -184,7 +189,7 @@ do_nmb_iteration <- function(sim_auc,
     cutpoint_methods = cutpoint_methods
   )
 
-  evaluation_value_vector <- fx_nmb_evaluation()
+  evaluation_value_vector <- unlist(df_nmb_evaluation[iter, ])
 
   cost_threshold <- function(pt) {
     evaluate_cutpoint(
