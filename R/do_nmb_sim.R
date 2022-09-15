@@ -9,7 +9,7 @@
 #' \itemize{
 #'  \item{"all" = treat all patients}
 #'  \item{"none" = treat no patients}
-#'  \item{"cost_effective" = select the cutpoint that maximises NMB}
+#'  \item{"value_optimising" = select the cutpoint that maximises NMB}
 #'  \item{"youden" = select cutpoint based on the Youden index, also known as the J-index (sensitivity + specificity - 1)}
 #'  \item{"cost_minimising" = select the cutpoint that minimises expected value of costs}
 #'  \item{"prod_sens_spec" = product of sensitivity and specificity (sensitivity \* specificity)}

@@ -39,7 +39,7 @@ roc_iu <- function(tp, fp, tn, fn, .roc_curve, ...) {
 #' )
 #'
 get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_methods = FALSE) {
-  inbuilt_methods <- c("all", "none", "cost_effective", "youden", "cost_minimising", "prod_sens_spec", "roc01", "index_of_union")
+  inbuilt_methods <- c("all", "none", "value_optimising", "youden", "cost_minimising", "prod_sens_spec", "roc01", "index_of_union")
 
   if (return_all_methods) {
     return(inbuilt_methods)
@@ -66,17 +66,17 @@ get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_meth
     return(1)
   }
 
-  if (method == "cost_effective") {
-    pt_cost_effective <- cutpointr::cutpointr(
+  if (method == "value_optimising") {
+    pt_value_optimising <- cutpointr::cutpointr(
       x = predicted, class = actual, method = cutpointr::maximize_metric, metric = total_nmb,
       utility_tp = nmb["TP"], utility_tn = nmb["TN"],
       cost_fp = nmb["FP"], cost_fn = nmb["FN"],
       silent = TRUE
     )[["optimal_cutpoint"]]
-    if (pt_cost_effective > 1) {
-      pt_cost_effective <- 1
+    if (pt_value_optimising > 1) {
+      pt_value_optimising <- 1
     }
-    return(pt_cost_effective)
+    return(pt_value_optimising)
   }
 
   if (method == "youden") {

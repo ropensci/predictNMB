@@ -79,7 +79,7 @@ cl <- makeCluster(detectCores())
 sim_screen_obj <- screen_simulation_inputs(
   n_sims = 1000, n_valid = 10000, sim_auc = seq(0.7, 0.95, 0.05), event_rate = 0.1,
   fx_nmb_training = fx_nmb, fx_nmb_evaluation = fx_nmb,
-  cutpoint_methods = c("all", "none", "youden", "cost_effective"), cl = cl
+  cutpoint_methods = c("all", "none", "youden", "value_optimising"), cl = cl
 )
 ```
 
@@ -101,7 +101,7 @@ strategy.
 ``` r
 plot(
   sim_screen_obj, 
-  rename_vector=c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Cost-effective" = "cost_effective")
+  rename_vector=c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Value-Optimising" = "value_optimising")
 )
 #> No value for 'x_axis_var' given.
 #> Screening over sim_auc by default
@@ -112,7 +112,7 @@ plot(
 ``` r
 plot(
   sim_screen_obj, 
-  rename_vector=c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Cost-effective" = "cost_effective"),
+  rename_vector=c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Value-Optimising" = "value_optimising"),
   what="inb",
   inb_ref_col="Treat All"
 )
@@ -249,7 +249,7 @@ objects have almost the same usage of arguments.
 ``` r
 plot(
   sim_obj, 
-  rename_vector=c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Cost-effective" = "cost_effective")
+  rename_vector=c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Value-Optimising" = "value_optimising")
 )
 ```
 
@@ -258,7 +258,7 @@ plot(
 ``` r
 plot(
   sim_obj, 
-  rename_vector=c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Cost-effective" = "cost_effective"),
+  rename_vector=c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Value-Optimising" = "value_optimising"),
   what="inb",
   inb_ref_col="Treat All"
 )
@@ -273,6 +273,6 @@ link)
 
 ## Related work
 
-This R package is based on previous work on cost-effective cutpoints for
-the economic evaluation of clinical prediction models. It can be
+This R package is based on previous work on value-optimising cutpoints
+for the economic evaluation of clinical prediction models. It can be
 accessed here (insert link).

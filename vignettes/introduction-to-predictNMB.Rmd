@@ -141,7 +141,7 @@ sim_screen_obj <- screen_simulation_inputs(
   event_rate = c(0.1, 0.2),
   fx_nmb_training = get_nmb_sampler_training,
   fx_nmb_evaluation = get_nmb_sampler,
-  cutpoint_methods = c("all", "none", "youden", "cost_effective"),
+  cutpoint_methods = c("all", "none", "youden", "value_optimising"),
   cl = cl
 )
 stopCluster(cl)
@@ -248,7 +248,7 @@ The sampler function shows that we can expect some significant variation, especi
 
 We should also check whether changing the other inputs can lead to different results. Perhaps the authors of the clinical prediction model we want to use reported a misleading AUC and when we implement the model it turns out to be lower, or perhaps our pressure ulcer rate in some wards is actually quite different to the average incidence at the hospital. By replacing our `sim_auc` and `event_rate` arguments with vectors, we can run simulations for each possible combination we are interested in. 
 
-In the snippet below, we will compare the treat all strategy to scrapping the program altogether ("none") and to a couple of alternative strategies, using the "cost_effective" and "youden" thresholds.
+In the snippet below, we will compare the treat all strategy to scrapping the program altogether ("none") and to a couple of alternative strategies, using the "value_optimising" and "youden" thresholds.
 
 We can also do this in parallel to speed things up.
 
@@ -259,7 +259,7 @@ sim_pup_screen <- screen_simulation_inputs(
   n_valid = 10000,
   sim_auc = seq(0.72, 0.92, 0.05),
   event_rate = c(0.02, 0.1, 0.18),
-  cutpoint_methods = c("all", "none", "cost_effective", "youden"),
+  cutpoint_methods = c("all", "none", "value_optimising", "youden"),
   fx_nmb_training = fx_nmb,
   fx_nmb_evaluation = fx_nmb_sampler,
   cl = cl
