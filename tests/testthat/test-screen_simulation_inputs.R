@@ -64,6 +64,15 @@ test_that("make_summary_table method works", {
   expect_s3_class(tbl, "data.frame")
 })
 
+test_that("summary table method works", {
+  obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
+  expect_s3_class(
+    make_summary_table(
+      obj,
+      rename_vector = c("Treat All" = "all", "Treat None" = "none")),
+    "data.frame"
+  )
+})
 
 # cl <- parallel::makeCluster(parallel::detectCores())
 # get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)

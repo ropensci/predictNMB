@@ -33,10 +33,19 @@ test_that("do_nmb_sim() works in parallel", {
   expect_s3_class(out_par, "predictNMBsim")
 })
 
-
 test_that("plot method works", {
   obj <- readRDS(test_path("fixtures", "predictNMBsim_object.rds"))
   expect_s3_class(plot(obj), "gg")
+})
+
+test_that("summary table method works", {
+  obj <- readRDS(test_path("fixtures", "predictNMBsim_object.rds"))
+  expect_s3_class(
+    make_summary_table(
+      obj,
+      rename_vector = c("Treat All" = "all", "Treat None" = "none")),
+    "data.frame"
+  )
 })
 
 # predictNMBsim_obj <- do_nmb_sim(

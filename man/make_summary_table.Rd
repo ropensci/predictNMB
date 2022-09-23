@@ -11,6 +11,7 @@ make_summary_table(
   agg_functions = list(median = stats::median, `95\% CI` = function(x)
     paste0(signif(stats::quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse =
     " to ")),
+  rename_vector = c(),
   ...
 )
 }
@@ -22,6 +23,8 @@ make_summary_table(
 \item{inb_ref_col}{which cutpoint method to use as the reference strategy when calculating the incremental net monetary benefit.}
 
 \item{agg_functions}{named list of functions to use to aggregate the selected values. Defaults to the median and 95\% interval.}
+
+\item{rename_vector}{a named vector for renaming the methods in the summary. The values of the vector are the default names and the names given are the desired names in the output.}
 
 \item{...}{additional, optional arguments.}
 }

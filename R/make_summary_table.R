@@ -4,6 +4,7 @@
 #' @param what what to summarise: one of "nmb", "inb" or "cutpoints". Defaults to "nmb".
 #' @param inb_ref_col which cutpoint method to use as the reference strategy when calculating the incremental net monetary benefit.
 #' @param agg_functions named list of functions to use to aggregate the selected values. Defaults to the median and 95\% interval.
+#' @param rename_vector a named vector for renaming the methods in the summary. The values of the vector are the default names and the names given are the desired names in the output.
 #' @param ... additional, optional arguments.
 #'
 #' @export
@@ -26,6 +27,7 @@ make_summary_table <- function(x,
                                  "median" = stats::median,
                                  "95% CI" = function(x) paste0(signif(stats::quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse = " to ")
                                ),
+                               rename_vector = c(),
                                ...) {
   UseMethod("make_summary_table")
 }
@@ -53,10 +55,12 @@ make_summary_table.predictNMBscreen <- function(x,
                                                   "median" = stats::median,
                                                   "95% CI" = function(x) paste0(round(stats::quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse = " to ")
                                                 ),
+                                                rename_vector = c(),
                                                 show_full_inputs = FALSE,
                                                 ...) {
   get_row_from_sim <- function(sim_idx) {
     get_sim_data(x$simulations[[sim_idx]], what = what[1], inb_ref_col = inb_ref_col) %>%
+      dplyr::rename(dplyr::any_of(rename_vector)) %>%
       dplyr::summarize(dplyr::across(!n_sim, agg_functions))
   }
 
@@ -81,8 +85,10 @@ make_summary_table.predictNMBsim <- function(x,
                                                "median" = stats::median,
                                                "95% CI" = function(x) paste0(round(stats::quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse = " to ")
                                              ),
+                                             rename_vector = c(),
                                              ...) {
   get_sim_data(x, what = what[1], inb_ref_col = inb_ref_col) %>%
+    dplyr::rename(dplyr::any_of(rename_vector)) %>%
     tidyr::pivot_longer(!n_sim, names_to = "method") %>%
     dplyr::group_by(method) %>%
     dplyr::summarize(dplyr::across(value, agg_functions, .names = "{.fn}"))
