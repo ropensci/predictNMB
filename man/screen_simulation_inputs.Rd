@@ -13,6 +13,7 @@ screen_simulation_inputs(
   cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
   fx_nmb_training,
   fx_nmb_evaluation,
+  pair_nmb_train_and_evaluation_functions = FALSE,
   meet_min_events = TRUE,
   min_events = NA,
   cl = NULL
@@ -34,6 +35,8 @@ screen_simulation_inputs(
 \item{fx_nmb_training}{A function (or list of functions) that returns named vector of NMB assigned to classifications use for obtaining cutpoint on training set}
 
 \item{fx_nmb_evaluation}{A function (or list of functions) that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set}
+
+\item{pair_nmb_train_and_evaluation_functions}{Logical. Whether or not to pair the lists of functions passed for \code{fx_nmb_training} and \code{fx_nmb_evaluation}. If two treatment strategies are being used, it may make more sense to pair these because selecting a value-optimising or cost-minimising threshold using one strategy but evaluating another is likely unwanted.}
 
 \item{meet_min_events}{Whether or not to incrementally add samples until the expected number of events (\code{sample_size * event_rate}) is met. (Applies to sampling of training data only.)}
 

@@ -7,6 +7,32 @@ test_that("screen_simulation_inputs() works", {
   expect_s3_class(sim_screen_obj, "predictNMBscreen")
 })
 
+test_that("screen_simulation_inputs() with paired functions works", {
+  get_nmb1 <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
+  get_nmb2 <- function() c("TP" = -5, "TN" = 0, "FP" = -1.5, "FN" = -2)
+
+  sim_screen_obj <- screen_simulation_inputs(
+    sample_size = 100,
+    n_sims = 10, n_valid = 1000, sim_auc = c(0.7, 0.8), event_rate = 0.1,
+    fx_nmb_training = list(get_nmb1, get_nmb2),
+    fx_nmb_evaluation = list(get_nmb1, get_nmb2),
+    pair_nmb_train_and_evaluation_functions = TRUE
+  )
+
+  expect_equal(nrow(sim_screen_obj$input_grid), 2 * 2)
+
+  sim_screen_obj <- screen_simulation_inputs(
+    sample_size = 100,
+    n_sims = 10, n_valid = 1000, sim_auc = c(0.7, 0.8), event_rate = 0.1,
+    fx_nmb_training = list(get_nmb1, get_nmb2),
+    fx_nmb_evaluation = list(get_nmb1, get_nmb2),
+    pair_nmb_train_and_evaluation_functions = FALSE
+  )
+
+  expect_equal(nrow(sim_screen_obj$input_grid), 2 * 2 * 2)
+})
+
+
 test_that("screen_simulation_inputs() works in parallel", {
   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
   if (!requireNamespace("parallel", quietly = TRUE)) {

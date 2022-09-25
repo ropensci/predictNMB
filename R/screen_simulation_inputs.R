@@ -9,6 +9,7 @@
 #' @param cutpoint_methods cutpoint methods to include. Defaults to use the inbuilt methods. This doesn't change across calls to \code{do_nmb_sim()}
 #' @param fx_nmb_training A function (or list of functions) that returns named vector of NMB assigned to classifications use for obtaining cutpoint on training set
 #' @param fx_nmb_evaluation A function (or list of functions) that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set
+#' @param pair_nmb_train_and_evaluation_functions Logical. Whether or not to pair the lists of functions passed for \code{fx_nmb_training} and \code{fx_nmb_evaluation}. If two treatment strategies are being used, it may make more sense to pair these because selecting a value-optimising or cost-minimising threshold using one strategy but evaluating another is likely unwanted.
 #' @param meet_min_events Whether or not to incrementally add samples until the expected number of events (\code{sample_size * event_rate}) is met. (Applies to sampling of training data only.)
 #' @param min_events A value: the minimum number of events to include in the training sample. If less than this number are included in sample of size \code{sample_size}, additional samples are added until the min_events is met. The default (\code{NA}) will use the expected value given the \code{event_rate} and the \code{sample_size}.
 #' @param cl A cluster made using \code{parallel::makeCluster()}. If a cluster is provided, the simulation will be done in parallel.
@@ -28,8 +29,8 @@
 #' }
 screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
                                      cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
-                                     fx_nmb_training, fx_nmb_evaluation, meet_min_events = TRUE,
-                                     min_events = NA, cl = NULL) {
+                                     fx_nmb_training, fx_nmb_evaluation, pair_nmb_train_and_evaluation_functions = FALSE,
+                                     meet_min_events = TRUE, min_events = NA, cl = NULL) {
   if (missing(sample_size)) {
     sample_size <- NA
   }
@@ -54,13 +55,49 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
 
   small_grid$small_grid_id <- seq_len(nrow(small_grid))
 
-  input_grid <- tidyr::expand_grid(
-    small_grid_id = seq_len(nrow(small_grid)),
-    n_sims = n_sims,
-    n_valid = n_valid,
-    fx_nmb_training = fx_nmb_training,
-    fx_nmb_evaluation = fx_nmb_evaluation
-  ) %>%
+  if (pair_nmb_train_and_evaluation_functions) {
+    stopifnot(length(fx_nmb_training) == length(fx_nmb_training))
+
+    input_grid <- tidyr::expand_grid(
+      small_grid_id = seq_len(nrow(small_grid)),
+      n_sims = n_sims,
+      n_valid = n_valid,
+      fx_nmb_both = mapply(c, fx_nmb_training, fx_nmb_evaluation, SIMPLIFY = FALSE)
+    )
+
+    train_fxs <-
+      tibble::as_tibble(
+        list(
+          fx_nmb_training = lapply(input_grid$fx_nmb_both, "[[", 1)
+        )
+      )
+
+    valid_fxs <-
+      tibble::as_tibble(
+        list(
+          fx_nmb_evaluation = lapply(input_grid$fx_nmb_both, "[[", 2)
+        )
+      )
+
+    functions_frame <- cbind(train_fxs, valid_fxs)
+
+    input_grid <-
+      input_grid %>%
+      dplyr::select(-fx_nmb_both) %>%
+      cbind(functions_frame) %>%
+      tibble::as_tibble()
+  } else {
+    input_grid <- tidyr::expand_grid(
+      small_grid_id = seq_len(nrow(small_grid)),
+      n_sims = n_sims,
+      n_valid = n_valid,
+      fx_nmb_training = fx_nmb_training,
+      fx_nmb_evaluation = fx_nmb_evaluation
+    )
+  }
+
+  input_grid <-
+    input_grid %>%
     dplyr::inner_join(small_grid, by = "small_grid_id") %>%
     dplyr::select(-small_grid_id)
 
