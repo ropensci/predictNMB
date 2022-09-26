@@ -1,5 +1,5 @@
 ---
-title: "introduction-to-predictNMB"
+title: "Introduction to predictNMB"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{introduction-to-predictNMB}
