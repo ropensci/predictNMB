@@ -1,0 +1,10 @@
+pandoc: 2.7.3
+pkgdown: 2.0.6
+pkgdown_sha: ~
+articles:
+  introduction-to-predictNMB: introduction-to-predictNMB.html
+last_built: 2022-09-26T04:49Z
+urls:
+  reference: https://rwparsons.github.io/predictNMB/reference
+  article: https://rwparsons.github.io/predictNMB/articles
+
