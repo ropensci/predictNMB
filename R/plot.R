@@ -197,6 +197,9 @@ plot.predictNMBscreen <- function(x,
         v <- non_x_axis_vars[[i]][[1]]
         if (inherits(v, "function")) {
           v <- names(non_x_axis_vars[[i]])[1]
+          if (x$pair_nmb_train_and_evaluation_functions) {
+            next
+          }
         }
       }
 
