@@ -66,9 +66,10 @@ plot.predictNMBsim <- function(x,
                                methods_order = NULL,
                                n_bins = 40,
                                label_wrap_width = 15,
-                               fill_cols = c("grey50", "grey50", "#ADD8E6"),
+                               fill_cols = c("grey50", "#ADD8E6"),
                                median_line_size = 2,
                                median_line_alpha = 0.5,
+                               median_line_col = "black",
                                rename_vector,
                                extra_theme = ggplot2::theme(
                                  panel.spacing = ggplot2::unit(0, "lines"),
@@ -98,9 +99,8 @@ plot.predictNMBsim <- function(x,
     ggplot2::coord_flip() +
     ggplot2::facet_wrap(~name, labeller = ggplot2::label_wrap_gen(width = label_wrap_width), nrow = 1) +
     ggplot2::theme_bw() +
-    ggplot2::scale_fill_manual(values = c(fill_cols)) +
-    ggplot2::guides(fill = "none")
-
+    ggplot2::guides(fill = "none") +
+    ggplot2::scale_fill_manual(values = c(NA, fill_cols))
 
   my_plot_innards <- ggplot2::ggplot_build(p)
 
@@ -133,7 +133,7 @@ plot.predictNMBsim <- function(x,
     ggplot2::geom_segment(
       data = heights,
       ggplot2::aes(x = m, xend = m, y = 0, yend = count),
-      size = median_line_size, alpha = median_line_alpha
+      size = median_line_size, alpha = median_line_alpha, col = median_line_col
     ) +
     ggplot2::labs(
       x = x_axis_title,
