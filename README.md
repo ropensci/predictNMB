@@ -42,14 +42,11 @@ first be defined.
 ``` r
 library(predictNMB)
 
-fx_nmb <- function() {
-  c(
-    "TP" = -75, # True positive
-    "FP" = -10, # False positive
-    "TN" = 0,  # True negative
-    "FN" = -100 # False negative
-  )
-}
+fx_nmb <- get_nmb_sampler(
+  outcome_cost = 100,
+  high_risk_group_treatment_effect = 0.35,
+  high_risk_group_treatment_cost = 10
+)
 
 fx_nmb()
 #>   TP   FP   TN   FN 
@@ -59,19 +56,19 @@ fx_nmb()
 Required arguments:
 
 -   `n_sims`: number of simulations to run. More simulations take
-    longer, but are more stable <br>
+    longer, but are more stable
 -   `event_rate`: event incidence rate, or the proportion of patients
-    experiencing the event <br>
+    experiencing the event
 -   `sim_auc`: vector of hypothetical AUCs; e.g. `seq(0.7, 0.95, 0.05)`
-    or `c(0.75, 0.80, 0.85)` <br>
+    or `c(0.75, 0.80, 0.85)`
 -   `n_valid`: number of samples the validation set draws within each
-    simulation (evaluating the NMB under each cutpoint) <br>
+    simulation (evaluating the NMB under each cutpoint)
 -   `fx_nmb_training`: function-defined vector used to get cutpoints on
-    the training set. Recommended to use constant values <br>
+    the training set. Recommended to use constant values
 -   `fx_nmb_evaluation`: function-defined vector used to get cutpoints
-    on the evaluation set. Recommended to use sampled values <br>
+    on the evaluation set. Recommended to use sampled values
 -   (Optional) Users can pass a cluster as the `cl` argument. If it is
-    passed, the simulations are run in parallel (faster). <br>
+    passed, the simulations are run in parallel (faster).
 
 ``` r
 library(parallel)
@@ -79,200 +76,55 @@ cl <- makeCluster(detectCores())
 sim_screen_obj <- screen_simulation_inputs(
   n_sims = 1000, n_valid = 10000, sim_auc = seq(0.7, 0.95, 0.05), event_rate = 0.1,
   fx_nmb_training = fx_nmb, fx_nmb_evaluation = fx_nmb,
-  cutpoint_methods = c("all", "none", "youden", "value_optimising"), cl = cl
+  cutpoint_methods = c("all", "none", "youden"), cl = cl
 )
 ```
 
-`plot()` can be used to generate plots of the many simulations.
+These simulations can be interpreted as a range of hypothetical
+situations under different levels of model performance within my
+specific healthcare setting. We can visualise how this change may affect
+preference between the model-guided strategy versus a treat-all or
+treat-non strategy.
+
+`plot()` on the object returned from this function to quickly inspect
+these trends.
 
 ``` r
 plot(sim_screen_obj)
-#> No value for 'x_axis_var' given.
-#> Screening over sim_auc by default
 ```
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
-The plot method includes additional arguments to rename the methods
-using a named vector. It can also be used to visualise cutpoints or the
-Incremental Net Monetary Benefit (INB) when there’s a known reference
-strategy.
+Here, we are visualising many simulations under different inputs. If we
+want to inspect just a single set of inputs, say when the model AUC was
+0.9, we can run that simulation alone using `do_nmb_sim()`, or access it
+from our existing screen.
 
 ``` r
-plot(
-  sim_screen_obj, 
-  rename_vector=c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Value-Optimising" = "value_optimising")
-)
-#> No value for 'x_axis_var' given.
-#> Screening over sim_auc by default
-```
-
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
-
-``` r
-plot(
-  sim_screen_obj, 
-  rename_vector=c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Value-Optimising" = "value_optimising"),
-  what="inb",
-  inb_ref_col="Treat All"
-)
-#> No value for 'x_axis_var' given.
-#> Screening over sim_auc by default
-```
-
-<img src="man/figures/README-unnamed-chunk-5-2.png" width="100%" />
-
-By default, the median (dot), 95% interval (thick vertical line), range
-(skinny vertical line), and lines between points are shown. All except
-the dots can be optionally turned off or on, and the width of the
-interval can be controlled with `ci`.
-
-``` r
-plot(
-  sim_screen_obj,
-  plot_line = FALSE,
-  plot_range = FALSE,
-  plot_ci = 0.8
-)
-#> No value for 'x_axis_var' given.
-#> Screening over sim_auc by default
-```
-
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
-
-``` r
-plot(
-  sim_screen_obj,
-  plot_line = TRUE,
-  plot_range = FALSE,
-  plot_ci = 0
-)
-#> No value for 'x_axis_var' given.
-#> Screening over sim_auc by default
-```
-
-<img src="man/figures/README-unnamed-chunk-6-2.png" width="100%" />
-
-The simulations for a given set of inputs can be accessed from our
-`predictNMBscreen` object (`sim_screen_obj`). These are the same as the
-output from `do_nmb_sim()` and have their own methods as well.
-
-``` r
-sim_screen_obj$simulations
-#> [[1]]
-#> predictNMB object
-#> 
-#> Training data sample size:  189
-#> Minimum number of events in training sample:  19
-#> Evaluation data sample size:  10000
-#> Number of simulations:  1000
-#> Simulated AUC:  0.7
-#> Simulated event rate:  0.1
-#> [[2]]
-#> predictNMB object
-#> 
-#> Training data sample size:  139
-#> Minimum number of events in training sample:  14
-#> Evaluation data sample size:  10000
-#> Number of simulations:  1000
-#> Simulated AUC:  0.75
-#> Simulated event rate:  0.1
-#> [[3]]
-#> predictNMB object
-#> 
-#> Training data sample size:  139
-#> Minimum number of events in training sample:  14
-#> Evaluation data sample size:  10000
-#> Number of simulations:  1000
-#> Simulated AUC:  0.8
-#> Simulated event rate:  0.1
-#> [[4]]
-#> predictNMB object
-#> 
-#> Training data sample size:  139
-#> Minimum number of events in training sample:  14
-#> Evaluation data sample size:  10000
-#> Number of simulations:  1000
-#> Simulated AUC:  0.85
-#> Simulated event rate:  0.1
-#> [[5]]
-#> predictNMB object
-#> 
-#> Training data sample size:  139
-#> Minimum number of events in training sample:  14
-#> Evaluation data sample size:  10000
-#> Number of simulations:  1000
-#> Simulated AUC:  0.9
-#> Simulated event rate:  0.1
-#> [[6]]
-#> predictNMB object
-#> 
-#> Training data sample size:  139
-#> Minimum number of events in training sample:  14
-#> Evaluation data sample size:  10000
-#> Number of simulations:  1000
-#> Simulated AUC:  0.95
-#> Simulated event rate:  0.1
-sim_obj <- sim_screen_obj$simulations[[1]]
-
-sim_obj
-#> predictNMB object
-#> 
-#> Training data sample size:  189
-#> Minimum number of events in training sample:  19
-#> Evaluation data sample size:  10000
-#> Number of simulations:  1000
-#> Simulated AUC:  0.7
-#> Simulated event rate:  0.1
-```
-
-Here, using the `predictNMBsim` object, the plot shows the median as the
-solid bar within the distribution and the light blue portion of the
-distribution is the 95% interval (level can be changed using the `ci`
-argument).
-
-``` r
-plot(sim_obj)
-```
-
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
-
-``` r
-plot(sim_obj, ci=0.50)
-```
-
-<img src="man/figures/README-unnamed-chunk-8-2.png" width="100%" />
-
-The plot methods for both the `predictNMBscreen` and `predictNMBsim`
-objects have almost the same usage of arguments.
-
-``` r
-plot(
-  sim_obj, 
-  rename_vector=c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Value-Optimising" = "value_optimising")
+single_sim_obj <- do_nmb_sim(
+  n_sims = 1000, n_valid = 10000, sim_auc = 0.9, event_rate = 0.1,
+  fx_nmb_training = fx_nmb, fx_nmb_evaluation = fx_nmb,
+  cutpoint_methods = c("all", "none", "youden"), cl = cl
 )
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
-
 ``` r
-plot(
-  sim_obj, 
-  rename_vector=c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Value-Optimising" = "value_optimising"),
-  what="inb",
-  inb_ref_col="Treat All"
-)
+single_sim_obj <- sim_screen_obj$simulations[[6]]
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-2.png" width="100%" />
+When plotting a single set of simulation inputs, we see the
+distributions of the NMB across all simulations under each strategy.
+
+``` r
+plot(single_sim_obj)
+```
+
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
 ## Further reading
 
-The vignette, Introduction to predictNMB, is available here (insert
-link)
-
-## Related work
-
-This R package is based on previous work on value-optimising cutpoints
-for the economic evaluation of clinical prediction models. It can be
-accessed here (insert link).
+The introduction to `predictNMB` vignette is available
+[here](https://rwparsons.github.io/predictNMB/articles/introduction-to-predictNMB.html)
+and vignette on plotting and making summary tables from the simulations
+is
+[here](https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html)
