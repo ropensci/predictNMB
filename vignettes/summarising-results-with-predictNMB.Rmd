@@ -22,8 +22,6 @@ library(ggplot2)
 set.seed(42)
 ```
 
-# Making plots with predictNMB
-
 This vignette is purely about how to use the `plot()` method and `make_summary_table()` to visualise and summarise the simulations made using `{predictNMB}`. For an introduction to `{predictNMB}`, please see the other vignette.
 
 Firstly, as an example case, we will run `screen_simulation_inputs()`.
@@ -62,8 +60,6 @@ if (nzchar(chk) && chk == TRUE) {
 cl <- makeCluster(ncores)
 ```
 
-## Plotting the results from `screen_simulation_inputs()` 
-
 ```{r}
 sim_screen_obj <- screen_simulation_inputs(
   n_sims = 500,
@@ -77,6 +73,11 @@ sim_screen_obj <- screen_simulation_inputs(
 )
 stopCluster(cl)
 ```
+
+
+# Making plots with predictNMB
+
+## Plotting the results from `screen_simulation_inputs()` 
 
 ### Choosing the x-axis variable and other constants
 
@@ -190,7 +191,6 @@ The y-axis variable and names and orders of methods can be controlled in the sam
 
 ```{r}
 plot(do_nmb_sim_obj, what = "nmb")
-
 plot(
   do_nmb_sim_obj, 
   what = "inb", 
@@ -199,7 +199,6 @@ plot(
                     "Treat-None" = "none",
                     "Youden Index" = "youden")
 )
-
 plot(
   do_nmb_sim_obj, 
   what = "cutpoints", 
@@ -219,7 +218,7 @@ plot(
 )
 ```
 
-The `n_bins` argument controls the number of bins used for the histograms and the `label_wrap_width` is the number of characters above which to start a new line for the facet labels. This can be handy when using detailed names for the methods when the font of the label is relatively large compared to the plot.
+The `n_bins` argument controls the number of bins used for the histograms and the `label_wrap_width` is the number of characters above which to start a new line for the facet labels. This can be handy when using detailed names for the methods when the font of the label is relatively large compared to the plot. Also, the width of the confidence intervals can be controlled by the `ci` argument.
 
 ```{r, fig.height=3, fig.width=6}
 plot(
@@ -229,7 +228,8 @@ plot(
                     "Treat- None" = "none",
                     "Treat- All" = "all",
                     "Youden Index" = "youden"),
-  label_wrap_width = 12
+  label_wrap_width = 12,
+  ci = 0.8
 )
 ```
 
@@ -237,7 +237,6 @@ By default there is an additional theme applied to the facets to bring them clos
 
 ```{r}
 plot(do_nmb_sim_obj, extra_theme = NULL)
-
 plot(
   do_nmb_sim_obj, 
   extra_theme = theme(
@@ -248,3 +247,77 @@ plot(
 )
 ```
 
+# Making tables with predictNMB
+
+To make tables from the same objects as we used for the plots, we instead use `make_summary_table()`. This can be applied to either type of results (`screen_simulation_inputs()` or `do_nmb_sim()`).
+
+
+```{r, eval=FALSE}
+make_summary_table(sim_screen_obj)
+```
+```{r, echo=FALSE}
+make_summary_table(sim_screen_obj) %>% knitr::kable()
+```
+
+```{r, eval=FALSE}
+make_summary_table(do_nmb_sim_obj)
+```
+```{r, echo=FALSE}
+make_summary_table(do_nmb_sim_obj) %>% knitr::kable()
+```
+
+By default, the methods are aggregated by the median and the 95% confidence intervals. These are the default list of functions passed to the `make_summary_table()` as the `agg_functions` argument. These can be changed to any functions which aggregate a numeric vector.
+
+```{r, eval=FALSE}
+make_summary_table(
+  do_nmb_sim_obj, 
+  agg_functions = list("mean" = mean, "min" = min, "max" = max)
+)
+```
+```{r, echo=FALSE}
+make_summary_table(
+  do_nmb_sim_obj, 
+  agg_functions = list("mean" = mean, "min" = min, "max" = max)
+) %>% 
+  knitr::kable()
+```
+
+The `what` and `rename_vector` arguments work in the same way as they did when using `plot()`.
+
+```{r, eval=FALSE}
+make_summary_table(
+  do_nmb_sim_obj, 
+  what = "inb",
+  inb_ref_col = "all",
+  rename_vector = c("Value-Optimising" = "value_optimising", 
+                    "Treat-None" = "none",
+                    "Youden Index" = "youden")
+)
+```
+```{r, echo=FALSE}
+make_summary_table(
+  do_nmb_sim_obj, 
+  what = "inb",
+  inb_ref_col = "all",
+  rename_vector = c("Value-Optimising" = "value_optimising", 
+                    "Treat-None" = "none",
+                    "Youden Index" = "youden")
+) %>% 
+  knitr::kable()
+```
+
+The summary table contains the same thing for both object types but are arrange slightly differently. Each row in the object containing a screen over inputs is a unique set of inputs. This can be trimmed short to include only those that vary over inputs by using the `show_full_inputs` argument. By default, only the inputs that vary are shown.
+
+```{r, eval=FALSE}
+make_summary_table(sim_screen_obj)
+```
+```{r, echo=FALSE}
+make_summary_table(sim_screen_obj) %>% knitr::kable()
+```
+
+```{r, eval=FALSE}
+make_summary_table(sim_screen_obj, show_full_inputs = TRUE)
+```
+```{r, echo=FALSE}
+make_summary_table(sim_screen_obj, show_full_inputs = TRUE) %>% knitr::kable()
+```
