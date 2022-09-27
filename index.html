@@ -104,14 +104,11 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rwparsons.github.io/predictNMB/">predictNMB</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fx_nmb</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"TP"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">75</span>, <span class="co"># True positive</span></span>
-<span>    <span class="st">"FP"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">10</span>, <span class="co"># False positive</span></span>
-<span>    <span class="st">"TN"</span> <span class="op">=</span> <span class="fl">0</span>,  <span class="co"># True negative</span></span>
-<span>    <span class="st">"FN"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">100</span> <span class="co"># False negative</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span></span>
+<span><span class="va">fx_nmb</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_nmb_sampler.html">get_nmb_sampler</a></span><span class="op">(</span></span>
+<span>  outcome_cost <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  high_risk_group_treatment_effect <span class="op">=</span> <span class="fl">0.35</span>,</span>
+<span>  high_risk_group_treatment_cost <span class="op">=</span> <span class="fl">10</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">fx_nmb</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   TP   FP   TN   FN </span></span>
@@ -119,25 +116,19 @@
 <p>Required arguments:</p>
 <ul>
 <li>
-<code>n_sims</code>: number of simulations to run. More simulations take longer, but are more stable <br>
+<code>n_sims</code>: number of simulations to run. More simulations take longer, but are more stable</li>
+<li>
+<code>event_rate</code>: event incidence rate, or the proportion of patients experiencing the event</li>
+<li>
+<code>sim_auc</code>: vector of hypothetical AUCs; e.g. <code>seq(0.7, 0.95, 0.05)</code> or <code>c(0.75, 0.80, 0.85)</code>
 </li>
 <li>
-<code>event_rate</code>: event incidence rate, or the proportion of patients experiencing the event <br>
-</li>
+<code>n_valid</code>: number of samples the validation set draws within each simulation (evaluating the NMB under each cutpoint)</li>
 <li>
-<code>sim_auc</code>: vector of hypothetical AUCs; e.g. <code>seq(0.7, 0.95, 0.05)</code> or <code>c(0.75, 0.80, 0.85)</code> <br>
-</li>
+<code>fx_nmb_training</code>: function-defined vector used to get cutpoints on the training set. Recommended to use constant values</li>
 <li>
-<code>n_valid</code>: number of samples the validation set draws within each simulation (evaluating the NMB under each cutpoint) <br>
-</li>
-<li>
-<code>fx_nmb_training</code>: function-defined vector used to get cutpoints on the training set. Recommended to use constant values <br>
-</li>
-<li>
-<code>fx_nmb_evaluation</code>: function-defined vector used to get cutpoints on the evaluation set. Recommended to use sampled values <br>
-</li>
-<li>(Optional) Users can pass a cluster as the <code>cl</code> argument. If it is passed, the simulations are run in parallel (faster). <br>
-</li>
+<code>fx_nmb_evaluation</code>: function-defined vector used to get cutpoints on the evaluation set. Recommended to use sampled values</li>
+<li>(Optional) Users can pass a cluster as the <code>cl</code> argument. If it is passed, the simulations are run in parallel (faster).</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">parallel</span><span class="op">)</span></span>
@@ -145,154 +136,31 @@
 <span><span class="va">sim_screen_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/screen_simulation_inputs.html">screen_simulation_inputs</a></span><span class="op">(</span></span>
 <span>  n_sims <span class="op">=</span> <span class="fl">1000</span>, n_valid <span class="op">=</span> <span class="fl">10000</span>, sim_auc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.7</span>, <span class="fl">0.95</span>, <span class="fl">0.05</span><span class="op">)</span>, event_rate <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  fx_nmb_training <span class="op">=</span> <span class="va">fx_nmb</span>, fx_nmb_evaluation <span class="op">=</span> <span class="va">fx_nmb</span>,</span>
-<span>  cutpoint_methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"youden"</span>, <span class="st">"value_optimising"</span><span class="op">)</span>, cl <span class="op">=</span> <span class="va">cl</span></span>
+<span>  cutpoint_methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"youden"</span><span class="op">)</span>, cl <span class="op">=</span> <span class="va">cl</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> can be used to generate plots of the many simulations.</p>
+<p>These simulations can be interpreted as a range of hypothetical situations under different levels of model performance within my specific healthcare setting. We can visualise how this change may affect preference between the model-guided strategy versus a treat-all or treat-non strategy.</p>
+<p><code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> on the object returned from this function to quickly inspect these trends.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span><span class="op">)</span></span>
-<span><span class="co">#&gt; No value for 'x_axis_var' given.</span></span>
-<span><span class="co">#&gt; Screening over sim_auc by default</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%"></p>
-<p>The plot method includes additional arguments to rename the methods using a named vector. It can also be used to visualise cutpoints or the Incremental Net Monetary Benefit (INB) when there’s a known reference strategy.</p>
+<p>Here, we are visualising many simulations under different inputs. If we want to inspect just a single set of inputs, say when the model AUC was 0.9, we can run that simulation alone using <code><a href="reference/do_nmb_sim.html">do_nmb_sim()</a></code>, or access it from our existing screen.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
-<span>  <span class="va">sim_screen_obj</span>, </span>
-<span>  rename_vector<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treat All"</span> <span class="op">=</span> <span class="st">"all"</span>, <span class="st">"Treat None"</span> <span class="op">=</span> <span class="st">"none"</span>, <span class="st">"Youden Index"</span> <span class="op">=</span> <span class="st">"youden"</span>, <span class="st">"Value-Optimising"</span> <span class="op">=</span> <span class="st">"value_optimising"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; No value for 'x_axis_var' given.</span></span>
-<span><span class="co">#&gt; Screening over sim_auc by default</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
+<code class="sourceCode R"><span><span class="va">single_sim_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/do_nmb_sim.html">do_nmb_sim</a></span><span class="op">(</span></span>
+<span>  n_sims <span class="op">=</span> <span class="fl">1000</span>, n_valid <span class="op">=</span> <span class="fl">10000</span>, sim_auc <span class="op">=</span> <span class="fl">0.9</span>, event_rate <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  fx_nmb_training <span class="op">=</span> <span class="va">fx_nmb</span>, fx_nmb_evaluation <span class="op">=</span> <span class="va">fx_nmb</span>,</span>
+<span>  cutpoint_methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"youden"</span><span class="op">)</span>, cl <span class="op">=</span> <span class="va">cl</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
-<span>  <span class="va">sim_screen_obj</span>, </span>
-<span>  rename_vector<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treat All"</span> <span class="op">=</span> <span class="st">"all"</span>, <span class="st">"Treat None"</span> <span class="op">=</span> <span class="st">"none"</span>, <span class="st">"Youden Index"</span> <span class="op">=</span> <span class="st">"youden"</span>, <span class="st">"Value-Optimising"</span> <span class="op">=</span> <span class="st">"value_optimising"</span><span class="op">)</span>,</span>
-<span>  what<span class="op">=</span><span class="st">"inb"</span>,</span>
-<span>  inb_ref_col<span class="op">=</span><span class="st">"Treat All"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; No value for 'x_axis_var' given.</span></span>
-<span><span class="co">#&gt; Screening over sim_auc by default</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-5-2.png" width="100%"></p>
-<p>By default, the median (dot), 95% interval (thick vertical line), range (skinny vertical line), and lines between points are shown. All except the dots can be optionally turned off or on, and the width of the interval can be controlled with <code>ci</code>.</p>
+<code class="sourceCode R"><span><span class="va">single_sim_obj</span> <span class="op">&lt;-</span> <span class="va">sim_screen_obj</span><span class="op">$</span><span class="va">simulations</span><span class="op">[[</span><span class="fl">6</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+<p>When plotting a single set of simulation inputs, we see the distributions of the NMB across all simulations under each strategy.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
-<span>  <span class="va">sim_screen_obj</span>,</span>
-<span>  plot_line <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  plot_range <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  plot_ci <span class="op">=</span> <span class="fl">0.8</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; No value for 'x_axis_var' given.</span></span>
-<span><span class="co">#&gt; Screening over sim_auc by default</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
-<span>  <span class="va">sim_screen_obj</span>,</span>
-<span>  plot_line <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  plot_range <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  plot_ci <span class="op">=</span> <span class="fl">0</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; No value for 'x_axis_var' given.</span></span>
-<span><span class="co">#&gt; Screening over sim_auc by default</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-6-2.png" width="100%"></p>
-<p>The simulations for a given set of inputs can be accessed from our <code>predictNMBscreen</code> object (<code>sim_screen_obj</code>). These are the same as the output from <code><a href="reference/do_nmb_sim.html">do_nmb_sim()</a></code> and have their own methods as well.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sim_screen_obj</span><span class="op">$</span><span class="va">simulations</span></span>
-<span><span class="co">#&gt; [[1]]</span></span>
-<span><span class="co">#&gt; predictNMB object</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Training data sample size:  189</span></span>
-<span><span class="co">#&gt; Minimum number of events in training sample:  19</span></span>
-<span><span class="co">#&gt; Evaluation data sample size:  10000</span></span>
-<span><span class="co">#&gt; Number of simulations:  1000</span></span>
-<span><span class="co">#&gt; Simulated AUC:  0.7</span></span>
-<span><span class="co">#&gt; Simulated event rate:  0.1</span></span>
-<span><span class="co">#&gt; [[2]]</span></span>
-<span><span class="co">#&gt; predictNMB object</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Training data sample size:  139</span></span>
-<span><span class="co">#&gt; Minimum number of events in training sample:  14</span></span>
-<span><span class="co">#&gt; Evaluation data sample size:  10000</span></span>
-<span><span class="co">#&gt; Number of simulations:  1000</span></span>
-<span><span class="co">#&gt; Simulated AUC:  0.75</span></span>
-<span><span class="co">#&gt; Simulated event rate:  0.1</span></span>
-<span><span class="co">#&gt; [[3]]</span></span>
-<span><span class="co">#&gt; predictNMB object</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Training data sample size:  139</span></span>
-<span><span class="co">#&gt; Minimum number of events in training sample:  14</span></span>
-<span><span class="co">#&gt; Evaluation data sample size:  10000</span></span>
-<span><span class="co">#&gt; Number of simulations:  1000</span></span>
-<span><span class="co">#&gt; Simulated AUC:  0.8</span></span>
-<span><span class="co">#&gt; Simulated event rate:  0.1</span></span>
-<span><span class="co">#&gt; [[4]]</span></span>
-<span><span class="co">#&gt; predictNMB object</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Training data sample size:  139</span></span>
-<span><span class="co">#&gt; Minimum number of events in training sample:  14</span></span>
-<span><span class="co">#&gt; Evaluation data sample size:  10000</span></span>
-<span><span class="co">#&gt; Number of simulations:  1000</span></span>
-<span><span class="co">#&gt; Simulated AUC:  0.85</span></span>
-<span><span class="co">#&gt; Simulated event rate:  0.1</span></span>
-<span><span class="co">#&gt; [[5]]</span></span>
-<span><span class="co">#&gt; predictNMB object</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Training data sample size:  139</span></span>
-<span><span class="co">#&gt; Minimum number of events in training sample:  14</span></span>
-<span><span class="co">#&gt; Evaluation data sample size:  10000</span></span>
-<span><span class="co">#&gt; Number of simulations:  1000</span></span>
-<span><span class="co">#&gt; Simulated AUC:  0.9</span></span>
-<span><span class="co">#&gt; Simulated event rate:  0.1</span></span>
-<span><span class="co">#&gt; [[6]]</span></span>
-<span><span class="co">#&gt; predictNMB object</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Training data sample size:  139</span></span>
-<span><span class="co">#&gt; Minimum number of events in training sample:  14</span></span>
-<span><span class="co">#&gt; Evaluation data sample size:  10000</span></span>
-<span><span class="co">#&gt; Number of simulations:  1000</span></span>
-<span><span class="co">#&gt; Simulated AUC:  0.95</span></span>
-<span><span class="co">#&gt; Simulated event rate:  0.1</span></span>
-<span><span class="va">sim_obj</span> <span class="op">&lt;-</span> <span class="va">sim_screen_obj</span><span class="op">$</span><span class="va">simulations</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span></span>
-<span><span class="va">sim_obj</span></span>
-<span><span class="co">#&gt; predictNMB object</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Training data sample size:  189</span></span>
-<span><span class="co">#&gt; Minimum number of events in training sample:  19</span></span>
-<span><span class="co">#&gt; Evaluation data sample size:  10000</span></span>
-<span><span class="co">#&gt; Number of simulations:  1000</span></span>
-<span><span class="co">#&gt; Simulated AUC:  0.7</span></span>
-<span><span class="co">#&gt; Simulated event rate:  0.1</span></span></code></pre></div>
-<p>Here, using the <code>predictNMBsim</code> object, the plot shows the median as the solid bar within the distribution and the light blue portion of the distribution is the 95% interval (level can be changed using the <code>ci</code> argument).</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_obj</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-8-1.png" width="100%"></p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_obj</span>, ci<span class="op">=</span><span class="fl">0.50</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-8-2.png" width="100%"></p>
-<p>The plot methods for both the <code>predictNMBscreen</code> and <code>predictNMBsim</code> objects have almost the same usage of arguments.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
-<span>  <span class="va">sim_obj</span>, </span>
-<span>  rename_vector<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treat All"</span> <span class="op">=</span> <span class="st">"all"</span>, <span class="st">"Treat None"</span> <span class="op">=</span> <span class="st">"none"</span>, <span class="st">"Youden Index"</span> <span class="op">=</span> <span class="st">"youden"</span>, <span class="st">"Value-Optimising"</span> <span class="op">=</span> <span class="st">"value_optimising"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-9-1.png" width="100%"></p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
-<span>  <span class="va">sim_obj</span>, </span>
-<span>  rename_vector<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treat All"</span> <span class="op">=</span> <span class="st">"all"</span>, <span class="st">"Treat None"</span> <span class="op">=</span> <span class="st">"none"</span>, <span class="st">"Youden Index"</span> <span class="op">=</span> <span class="st">"youden"</span>, <span class="st">"Value-Optimising"</span> <span class="op">=</span> <span class="st">"value_optimising"</span><span class="op">)</span>,</span>
-<span>  what<span class="op">=</span><span class="st">"inb"</span>,</span>
-<span>  inb_ref_col<span class="op">=</span><span class="st">"Treat All"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-9-2.png" width="100%"></p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">single_sim_obj</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="further-reading">Further reading<a class="anchor" aria-label="anchor" href="#further-reading"></a>
 </h2>
-<p>The vignette, Introduction to predictNMB, is available here (insert link)</p>
-</div>
-<div class="section level2">
-<h2 id="related-work">Related work<a class="anchor" aria-label="anchor" href="#related-work"></a>
-</h2>
-<p>This R package is based on previous work on value-optimising cutpoints for the economic evaluation of clinical prediction models. It can be accessed here (insert link).</p>
+<p>The introduction to <code>predictNMB</code> vignette is available <a href="https://rwparsons.github.io/predictNMB/articles/introduction-to-predictNMB.html">here</a> and vignette on plotting and making summary tables from the simulations is <a href="https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html">here</a></p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
