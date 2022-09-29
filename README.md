@@ -36,8 +36,8 @@ devtools::install_github("RWParsons/predictNMB")
 
 ## Estimating model cutpoints
 
-Hypothetical NMB associated with each square of a confusion matrix must
-first be defined.
+We must first define a hypothetical NMB associated with each square of a
+confusion matrix (2x2 table).
 
 ``` r
 library(predictNMB)
@@ -53,7 +53,7 @@ fx_nmb()
 #>  -75  -10    0 -100
 ```
 
-Required arguments:
+We can then pass this to the simulation function. Required arguments:
 
 -   `n_sims`: number of simulations to run. More simulations take
     longer, but are more stable
@@ -73,6 +73,9 @@ Required arguments:
 ``` r
 library(parallel)
 cl <- makeCluster(detectCores())
+```
+
+``` r
 sim_screen_obj <- screen_simulation_inputs(
   n_sims = 1000, n_valid = 10000, sim_auc = seq(0.7, 0.95, 0.05), event_rate = 0.1,
   fx_nmb_training = fx_nmb, fx_nmb_evaluation = fx_nmb,
@@ -81,22 +84,23 @@ sim_screen_obj <- screen_simulation_inputs(
 ```
 
 These simulations can be interpreted as a range of hypothetical
-situations under different levels of model performance within my
+situations under different levels of model performance within our
 specific healthcare setting. We can visualise how this change may affect
-preference between the model-guided strategy versus a treat-all or
-treat-non strategy.
+preferences between the model-guided strategy versus a treat-all or
+treat-none strategy - in other words, using the model to determine who
+should get treatment, rather than everyone or no-one.
 
 `plot()` on the object returned from this function to quickly inspect
-these trends.
+these trends:
 
 ``` r
 plot(sim_screen_obj)
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 Here, we are visualising many simulations under different inputs. If we
-want to inspect just a single set of inputs, say when the model AUC was
+just want to inspect a single set of inputs, say when the model AUC is
 0.9, we can run that simulation alone using `do_nmb_sim()`, or access it
 from our existing screen.
 
@@ -119,7 +123,7 @@ distributions of the NMB across all simulations under each strategy.
 plot(single_sim_obj)
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 
 ## Further reading
 

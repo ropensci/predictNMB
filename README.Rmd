@@ -66,9 +66,23 @@ Required arguments:
 - `fx_nmb_evaluation`: function-defined vector used to get cutpoints on the evaluation set. Recommended to use sampled values
 - (Optional) Users can pass a cluster as the `cl` argument. If it is passed, the simulations are run in parallel (faster).
 
-```{r warning=FALSE}
+```{r, eval=FALSE}
 library(parallel)
 cl <- makeCluster(detectCores())
+```
+
+```{r, include=FALSE}
+library(parallel)
+chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
+if (nzchar(chk) && chk == TRUE) {
+  ncores <- 2
+} else {
+  ncores <- detectCores()
+}
+cl <- makeCluster(ncores)
+```
+
+```{r warning=FALSE}
 sim_screen_obj <- screen_simulation_inputs(
   n_sims = 1000, n_valid = 10000, sim_auc = seq(0.7, 0.95, 0.05), event_rate = 0.1,
   fx_nmb_training = fx_nmb, fx_nmb_evaluation = fx_nmb,

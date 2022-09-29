@@ -145,8 +145,21 @@ To do this, we can screen over many of these simulations with different inputs u
 
 Here, we run the simulations in parallel by creating a cluster and passing this as an argument. This can also be done to `do_nmb_sim()` in the same way. This can take some time - the fewer cores used, the longer it takes. For more details on running in parallel, see the `parallel` package.
 
+```{r, eval=FALSE}
+cl <- makeCluster(detectCores())
+```
+
+```{r, include=FALSE}
+chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
+if (nzchar(chk) && chk == TRUE) {
+  ncores <- 2
+} else {
+  ncores <- detectCores()
+}
+cl <- makeCluster(ncores)
+```
+
 ```{r}
-cl <- makeCluster(2)
 sim_screen_obj <- screen_simulation_inputs(
   n_sims = 500,
   n_valid = 10000,
