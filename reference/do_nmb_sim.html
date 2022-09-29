@@ -94,15 +94,18 @@
 <li><p>"cost_minimising" = select the cutpoint that minimises expected value of costs</p></li>
 <li><p>"prod_sens_spec" = product of sensitivity and specificity (sensitivity \* specificity)</p></li>
 <li><p>"roc01" = selects the closest threshold to the (0,1) point on the ROC curve</p></li>
-</ul></dd>
+</ul><p>User-defined cutpoint methods can be used by passing the name of a function that takes the following arguments:</p><ul><li><p><code>predicted</code> (predicted probabilities)</p></li>
+<li><p><code>actual</code> (the actual, binary outcome)</p></li>
+<li><p><code>nmb</code> (a named vector containing NMB values assigned to each predicted class (i.e. c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)))</p></li>
+</ul><p>See <code><a href="get_thresholds.html">?get_thresholds</a></code> for an example of a user-defined cutpoint function.</p></dd>
 
 
 <dt>fx_nmb_training</dt>
-<dd><p>Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on training set. See `details` for more information.</p></dd>
+<dd><p>Function that returns a named vector of NMB assigned to classifications use for obtaining cutpoint on training set. See `details` for more information.</p></dd>
 
 
 <dt>fx_nmb_evaluation</dt>
-<dd><p>Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set. See `details` for more information.</p></dd>
+<dd><p>Function that returns a named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set. See `details` for more information.</p></dd>
 
 
 <dt>meet_min_events</dt>
@@ -125,9 +128,12 @@
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The parameters fx_nmb_training and fx_nmb_evaluation require a vector of NMB values to evaluate at each simulation.
-By assigning a value to each component of a list, the <code>do_nmb_sim()</code> function can pass these values to the cutpoint calculation. <br><br>
-For example, a confusion matrix with sample values for each cell would be: <br><code>get_nmb &lt;- function() c("True positive" = -3, "True negative" = 0, "False positive" = -1, "False negative" = -4)</code></p>
+    <p>This function runs a simulation for a given set of inputs that represent a healthcare setting using model-guided interventions. <br>
+The arguments <code>fx_nmb_training</code> and <code>fx_nmb_evaluation</code> should be functions that capture the treatment being used, it's costs and effectiveness, and the costs of the outcome being treated/prevented. <br><br>
+Both of these are functions that return a named vector of NMB values when called and are used for obtaining and evaluating cutpoints, respectively.
+For example, the following function returns the appropriately named vector. <br><br><code>get_nmb &lt;- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)</code></p>
+
+<p>There is a helper function, <code><a href="get_nmb_sampler.html">get_nmb_sampler()</a></code>, to help you create these.</p>
     </div>
 
     <div class="section level2">

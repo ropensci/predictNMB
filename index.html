@@ -100,7 +100,7 @@
 <div class="section level2">
 <h2 id="estimating-model-cutpoints">Estimating model cutpoints<a class="anchor" aria-label="anchor" href="#estimating-model-cutpoints"></a>
 </h2>
-<p>Hypothetical NMB associated with each square of a confusion matrix must first be defined.</p>
+<p>We must first define a hypothetical NMB associated with each square of a confusion matrix (2x2 table).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rwparsons.github.io/predictNMB/">predictNMB</a></span><span class="op">)</span></span>
 <span></span>
@@ -113,7 +113,7 @@
 <span><span class="fu">fx_nmb</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   TP   FP   TN   FN </span></span>
 <span><span class="co">#&gt;  -75  -10    0 -100</span></span></code></pre></div>
-<p>Required arguments:</p>
+<p>We can then pass this to the simulation function. Required arguments:</p>
 <ul>
 <li>
 <code>n_sims</code>: number of simulations to run. More simulations take longer, but are more stable</li>
@@ -132,30 +132,31 @@
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">parallel</span><span class="op">)</span></span>
-<span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">sim_screen_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/screen_simulation_inputs.html">screen_simulation_inputs</a></span><span class="op">(</span></span>
+<span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sim_screen_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/screen_simulation_inputs.html">screen_simulation_inputs</a></span><span class="op">(</span></span>
 <span>  n_sims <span class="op">=</span> <span class="fl">1000</span>, n_valid <span class="op">=</span> <span class="fl">10000</span>, sim_auc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.7</span>, <span class="fl">0.95</span>, <span class="fl">0.05</span><span class="op">)</span>, event_rate <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  fx_nmb_training <span class="op">=</span> <span class="va">fx_nmb</span>, fx_nmb_evaluation <span class="op">=</span> <span class="va">fx_nmb</span>,</span>
 <span>  cutpoint_methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"youden"</span><span class="op">)</span>, cl <span class="op">=</span> <span class="va">cl</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>These simulations can be interpreted as a range of hypothetical situations under different levels of model performance within my specific healthcare setting. We can visualise how this change may affect preference between the model-guided strategy versus a treat-all or treat-non strategy.</p>
-<p><code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> on the object returned from this function to quickly inspect these trends.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%"></p>
-<p>Here, we are visualising many simulations under different inputs. If we want to inspect just a single set of inputs, say when the model AUC was 0.9, we can run that simulation alone using <code><a href="reference/do_nmb_sim.html">do_nmb_sim()</a></code>, or access it from our existing screen.</p>
+<p>These simulations can be interpreted as a range of hypothetical situations under different levels of model performance within our specific healthcare setting. We can visualise how this change may affect preferences between the model-guided strategy versus a treat-all or treat-none strategy - in other words, using the model to determine who should get treatment, rather than everyone or no-one.</p>
+<p><code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> on the object returned from this function to quickly inspect these trends:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
+<p>Here, we are visualising many simulations under different inputs. If we just want to inspect a single set of inputs, say when the model AUC is 0.9, we can run that simulation alone using <code><a href="reference/do_nmb_sim.html">do_nmb_sim()</a></code>, or access it from our existing screen.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">single_sim_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/do_nmb_sim.html">do_nmb_sim</a></span><span class="op">(</span></span>
 <span>  n_sims <span class="op">=</span> <span class="fl">1000</span>, n_valid <span class="op">=</span> <span class="fl">10000</span>, sim_auc <span class="op">=</span> <span class="fl">0.9</span>, event_rate <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  fx_nmb_training <span class="op">=</span> <span class="va">fx_nmb</span>, fx_nmb_evaluation <span class="op">=</span> <span class="va">fx_nmb</span>,</span>
 <span>  cutpoint_methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"youden"</span><span class="op">)</span>, cl <span class="op">=</span> <span class="va">cl</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">single_sim_obj</span> <span class="op">&lt;-</span> <span class="va">sim_screen_obj</span><span class="op">$</span><span class="va">simulations</span><span class="op">[[</span><span class="fl">6</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 <p>When plotting a single set of simulation inputs, we see the distributions of the NMB across all simulations under each strategy.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">single_sim_obj</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-9-1.png" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="further-reading">Further reading<a class="anchor" aria-label="anchor" href="#further-reading"></a>
