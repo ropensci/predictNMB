@@ -20,7 +20,6 @@ evaluate_cutpoint <- function(predicted, actual, pt, nmb) {
   colnames(d) <- c("predicted", "actual", "nmb")
 
   d[d[, "predicted"] < pt & d[, "actual"] == 0, "nmb"] <- nmb["TN"]
-
   d[d[, "predicted"] < pt & d[, "actual"] == 1, "nmb"] <- nmb["FN"]
   d[d[, "predicted"] > pt & d[, "actual"] == 1, "nmb"] <- nmb["TP"]
   d[d[, "predicted"] > pt & d[, "actual"] == 0, "nmb"] <- nmb["FP"]

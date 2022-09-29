@@ -44,7 +44,7 @@ get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_meth
   if (return_all_methods) {
     return(inbuilt_methods)
   }
-  # return(runif(1))
+
   if (length(unique(actual)) != 2) {
     stop(paste0("data were all ", unique(actual), "'s"))
   }
@@ -192,9 +192,6 @@ get_thresholds <- function(predicted, actual, nmb, cutpoint_methods = NULL) {
     cutpoint_methods <- get_inbuilt_cutpoint(return_all_methods = TRUE)
   }
 
-  # out <- runif(n=length(cutpoint_methods))
-  # names(out) <- cutpoint_methods
-  # return(out)
   # get cutpoints using inbuilt methods
   inbuilt_methods <- cutpoint_methods[cutpoint_methods %in% get_inbuilt_cutpoint(return_all_methods = TRUE)]
   inbuilt_cutpoints <- lapply(

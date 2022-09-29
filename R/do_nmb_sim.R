@@ -15,17 +15,28 @@
 #'  \item{"prod_sens_spec" = product of sensitivity and specificity (sensitivity \* specificity)}
 #'  \item{"roc01" = selects the closest threshold to the (0,1) point on the ROC curve}
 #' }
-#' @param fx_nmb_training Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on training set. See `details` for more information.
-#' @param fx_nmb_evaluation Function that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set. See `details` for more information.
+#' User-defined cutpoint methods can be used by passing the name of a function that takes the following arguments:
+#' \itemize{
+#'  \item{\code{predicted} (predicted probabilities)}
+#'  \item{\code{actual} (the actual, binary outcome)}
+#'  \item{\code{nmb} (a named vector containing NMB values assigned to each predicted class (i.e. c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)))}
+#' }
+#' See \code{?get_thresholds} for an example of a user-defined cutpoint function.
+#' @param fx_nmb_training Function that returns a named vector of NMB assigned to classifications use for obtaining cutpoint on training set. See `details` for more information.
+#' @param fx_nmb_evaluation Function that returns a named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set. See `details` for more information.
 #' @param meet_min_events Whether or not to incrementally add samples until the expected number of events (\code{sample_size * event_rate}) is met. (Applies to sampling of training data only.)
 #' @param min_events The minimum number of events to include in the training sample. If less than this number are included in sample of size \code{sample_size}, additional samples are added until the min_events is met. The default (\code{NA}) will use the expected value given the \code{event_rate} and the \code{sample_size}.
 #' @param cl A cluster made using \code{parallel::makeCluster()}. If a cluster is provided, the simulation will be done in parallel.
 #'
 #' @details
-#' The parameters fx_nmb_training and fx_nmb_evaluation require a vector of NMB values to evaluate at each simulation.
-#' By assigning a value to each component of a list, the \code{do_nmb_sim()} function can pass these values to the cutpoint calculation. \cr \cr
-#' For example, a confusion matrix with sample values for each cell would be: \cr
-#' \code{get_nmb <- function() c("True positive" = -3, "True negative" = 0, "False positive" = -1, "False negative" = -4)}
+#' This function runs a simulation for a given set of inputs that represent a healthcare setting using model-guided interventions. \cr
+#' The arguments \code{fx_nmb_training} and \code{fx_nmb_evaluation} should be functions that capture the treatment being used, it's costs and effectiveness, and the costs of the outcome being treated/prevented. \cr \cr
+#' Both of these are functions that return a named vector of NMB values when called and are used for obtaining and evaluating cutpoints, respectively.
+#' For example, the following function returns the appropriately named vector. \cr\cr
+#' \code{get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)}
+#'
+#'
+#' There is a helper function, \code{get_nmb_sampler()}, to help you create these.
 #'
 #' @return predictNMBsim
 #' @export
