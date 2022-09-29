@@ -36,11 +36,15 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
   }
 
   if (inherits(fx_nmb_training, "function")) {
-    fx_nmb_training <- list(fx_nmb_training)
+    fx_nmb_training <- list("unnamed-nmb-function-1" = fx_nmb_training)
+  } else {
+    names(fx_nmb_training) <- fill_fx_names(fx_nmb_training)
   }
 
   if (inherits(fx_nmb_evaluation, "function")) {
-    fx_nmb_evaluation <- list(fx_nmb_evaluation)
+    fx_nmb_evaluation <- list("unnamed-nmb-function-1" = fx_nmb_evaluation)
+  } else {
+    names(fx_nmb_evaluation) <- fill_fx_names(fx_nmb_evaluation)
   }
 
   small_grid <-
@@ -103,8 +107,8 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
 
   summary_grid <- input_grid %>%
     dplyr::mutate(
-      fx_nmb_training = get_fx_names(fx_nmb_training),
-      fx_nmb_evaluation = get_fx_names(fx_nmb_evaluation)
+      fx_nmb_training = names(fx_nmb_training),
+      fx_nmb_evaluation = names(fx_nmb_evaluation)
     )
 
   if (nrow(input_grid) == 1) {
@@ -176,15 +180,10 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
 }
 
 
-get_fx_names <- function(x) {
-  len <- length(x)
-  fx_names <- names(x)
-
-  if (is.null(fx_names)) {
-    fx_names <- paste0("unnamed-nmb-function-", seq_len(len))
-  }
-
-  fx_names
+fill_fx_names <- function(fx) {
+  newnames <- names(fx)
+  newnames[newnames == ""] <- paste0("unnamed-nmb-function-", grep("^$", newnames[newnames == ""]))
+  newnames
 }
 
 
