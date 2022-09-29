@@ -125,7 +125,8 @@
 <div class="section level4">
 <h4 id="choosing-the-x-axis-variable-and-other-constants">Choosing the x-axis variable and other constants<a class="anchor" aria-label="anchor" href="#choosing-the-x-axis-variable-and-other-constants"></a>
 </h4>
-<p>In this simulation screen, we vary both the event rate and the model discrimination. There are many ways that we could visualise these data. The <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> allows us to make some basic plots to compare different cutpoint methods regardin the Net Monetary Benefit (NMB) and another variable of our choice. In our case, we can choose between the <code>sim_auc</code> and <code>event_rate</code>. We control this with the <code>x_axis_var</code> argument.</p>
+<p>In this simulation screen, we vary both the event rate and the model discrimination (sim_AUC). There are many ways that we could visualise the data. The <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function allows us to make some basic plots to compare the impact of different cutpoint methods on Net Monetary Benefit (NMB) and another variable of our choice.</p>
+<p>In this case, we can visualise the impact on NMB for different methods across varying levels of <code>sim_auc</code> or <code>event_rate</code>. We control this with the <code>x_axis_var</code> argument.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -140,7 +141,7 @@
 <span><span class="co">#&gt; Varying simulation inputs, other than event_rate, are being held constant:</span></span>
 <span><span class="co">#&gt; sim_auc: 0.7</span></span></code></pre></div>
 <p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-6-2.png" width="700"></p>
-<p>For these plots, one of the screened inputs will be the x-axis variable and the other will only displayed at one of it’s levels. The default will assume the first level, so when we visualised the change in NMB as <code>sim_auc</code> increased, we were only observing this for the case where <code>event_rate = 0.1</code>. We can choose to select another level with the <code>constants</code> argument. This argument expects a named list containing the values to keep for the screened inputs which are not shown on the x-axis.</p>
+<p>For these plots, one of the screened inputs will be the x-axis variable, but the other will only be displayed at a single level. The default setting will assume the first level, so when we visualise the change in NMB specifying <code>sim_auc</code> as the x-axis variable, we only observe this for the case where <code>event_rate = 0.1</code>. We can choose to select another level with the <code>constants</code> argument. This argument expects a named list containing the values to keep for the screened inputs which are not shown on the x-axis.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -160,7 +161,7 @@
 <div class="section level4">
 <h4 id="choosing-a-y-axis-variable">Choosing a y-axis variable<a class="anchor" aria-label="anchor" href="#choosing-a-y-axis-variable"></a>
 </h4>
-<p>There are three options for the y-axis. The default is the NMB, but you can also visualise the Incremental Net Monetary Benefit (INB) and the selected cutpoints. These are controlled by the <code>what</code> argument which can be any of <code>c("nmb", "inb", "cutpoints")</code>. If a vector is passed, the first value is used. If you choose to visualise the INB, you must your chosen reference strategy for the calculation in the <code>inb_ref_col</code>.</p>
+<p>There are three options for the y-axis. The default is the NMB, but you can also visualise the Incremental Net Monetary Benefit (INB) and the selected cutpoints. These are controlled by the <code>what</code> argument, which can be any of <code>c("nmb", "inb", "cutpoints")</code>. If a vector is used, only the first value will be selected. If you choose to visualise the INB, you must list your chosen reference strategy for the calculation in the <code>inb_ref_col</code>. In this case, we use treat all (<code>"all"</code>).</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, what <span class="op">=</span> <span class="st">"nmb"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
@@ -174,7 +175,7 @@
 <div class="section level4">
 <h4 id="selecting-what-to-show-on-the-plot">Selecting what to show on the plot<a class="anchor" aria-label="anchor" href="#selecting-what-to-show-on-the-plot"></a>
 </h4>
-<p>The plots show, be default, the median (the dot), the 95% confidence interval (thick vertical lines), and the range (thin vertical lines), and the lines between the points. These can each be shown or hidden independently, and the width of the confidence interval can be controlled using the <code>ci</code> argument.</p>
+<p>The plots show the median (the dot), the 95% confidence interval (thick vertical lines), the range (thin vertical lines), and the lines between the points by default. These can each be shown or hidden independently, and the width of the confidence interval can be controlled using the <code>ci</code> argument.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span><span class="op">)</span></span></code></pre></div>
 <p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
@@ -182,13 +183,13 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, plot_range <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-9-2.png" width="700"></p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, plot_ci <span class="op">=</span> <span class="cn">FALSE</span>, plot_range <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, plot_ci <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-9-3.png" width="700"></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, plot_ci <span class="op">=</span> <span class="cn">FALSE</span>, plot_range <span class="op">=</span> <span class="cn">FALSE</span>, plot_line <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, plot_ci <span class="op">=</span> <span class="cn">FALSE</span>, plot_range <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-9-4.png" width="700"></p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, plot_ci <span class="op">=</span> <span class="cn">FALSE</span>, plot_range <span class="op">=</span> <span class="cn">FALSE</span>, plot_line <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-9-5.png" width="700"></p>
 </div>
 <div class="section level4">
@@ -208,10 +209,10 @@
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">sim_screen_obj</span>, </span>
-<span>  rename_vector <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treat All"</span> <span class="op">=</span> <span class="st">"all"</span>, <span class="st">"Treat None"</span> <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span>
+<span>  rename_vector <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treat All"</span> <span class="op">=</span> <span class="st">"all"</span>, <span class="st">"Treat None"</span> <span class="op">=</span> <span class="st">"none"</span>, <span class="st">"Youden Index"</span> <span class="op">=</span> <span class="st">"youden"</span>, <span class="st">"Value Optimisation"</span> <span class="op">=</span> <span class="st">"value_optimising"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-11-2.png" width="700"></p>
-<p>You can reorder the methods by passing the order as the <code>methods_order</code> argument. Also note that this will remove all methods which aren’t included, and it will factor the names AFTER it has renamed them, so if you are both renaming and re-ordering, you must provide the updated names.</p>
+<p>You can reorder the methods by passing the order as the <code>methods_order</code> argument. Also note that this will remove all methods which aren’t included, and it will factor the names AFTER it has renamed them. So, if you are both renaming and re-ordering, you must provide the updated names when you order them:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span><span class="op">)</span></span></code></pre></div>
 <p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
@@ -221,8 +222,8 @@
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">sim_screen_obj</span>,</span>
-<span>  rename_vector <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treat All"</span> <span class="op">=</span> <span class="st">"all"</span>, <span class="st">"Treat None"</span> <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span>,</span>
-<span>  methods_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treat All"</span>, <span class="st">"Treat None"</span><span class="op">)</span></span>
+<span>  rename_vector <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treat All"</span> <span class="op">=</span> <span class="st">"all"</span>, <span class="st">"Treat None"</span> <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span>, <span class="co">#Assign new names to the two methods of interest </span></span>
+<span>  methods_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treat All"</span>, <span class="st">"Treat None"</span><span class="op">)</span>                   <span class="co">#Call the methods by their new names</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-12-3.png" width="700"></p>
 <p>The transparency of all layers can be controlled with <code>plot_alpha</code>.</p>
@@ -273,10 +274,10 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">do_nmb_sim_obj</span>, </span>
 <span>  what <span class="op">=</span> <span class="st">"cutpoints"</span>, </span>
-<span>  methods_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"value_optimising"</span><span class="op">)</span></span>
+<span>  methods_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"youden"</span>, <span class="st">"value_optimising"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-17-3.png" width="700"></p>
-<p>These plots display the median as the solid bar, the grey part of the distributions are the outer 5% of the simulated values and the light blue region is the 95% CI. The fill colours of the histogram are controlled with <code>fill_cols</code> and the line for the median is controlled with <code>median_line_col</code>. The thickness of the median line is controlled with <code>median_line_size</code> and it’s transparency with <code>median_line_alpha</code>.</p>
+<p>These plots display the median as the solid bar, the grey part of the distributions are the outer 5% of the simulated values and the light blue region is the 95% CI. For the methods that select thresholds based on the values in the 2x2 table, such as value-optimising thresholds, this may look a little strange as the cutpoints are highly variable. This can be stabilised with more simulations. The fill colours of the histogram are controlled with <code>fill_cols</code> and the line for the median is controlled with <code>median_line_col</code>. The thickness of the median line is controlled with <code>median_line_size</code> and it’s transparency with <code>median_line_alpha</code>.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">do_nmb_sim_obj</span>, </span>
@@ -286,7 +287,7 @@
 <span>  median_line_size <span class="op">=</span> <span class="fl">0.9</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
-<p>The <code>n_bins</code> argument controls the number of bins used for the histograms and the <code>label_wrap_width</code> is the number of characters above which to start a new line for the facet labels. This can be handy when using detailed names for the methods when the font of the label is relatively large compared to the plot. Also, the width of the confidence intervals can be controlled by the <code>ci</code> argument.</p>
+<p>The <code>n_bins</code> argument controls the number of bins used for the histograms and the <code>label_wrap_width</code> is the number of characters above which to start a new line for the facet labels. This can be handy when using detailed names for the methods when the font of the label is relatively large compared to the plot, though a space is needed to determine where to split the label. The width of the confidence intervals can also be controlled by the <code>ci</code> argument in this <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> call.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">do_nmb_sim_obj</span>,</span>
@@ -318,7 +319,7 @@
 <div class="section level2">
 <h2 id="making-tables-with-predictnmb">Making tables with predictNMB<a class="anchor" aria-label="anchor" href="#making-tables-with-predictnmb"></a>
 </h2>
-<p>To make tables from the same objects as we used for the plots, we instead use <code><a href="../reference/make_summary_table.html">make_summary_table()</a></code>. This can be applied to either type of results (<code><a href="../reference/screen_simulation_inputs.html">screen_simulation_inputs()</a></code> or <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code>).</p>
+<p>To make tables from the same objects as we used for the plots, we instead use <code><a href="../reference/make_summary_table.html">make_summary_table()</a></code>. This can be applied to either type of results (<code><a href="../reference/screen_simulation_inputs.html">screen_simulation_inputs()</a></code> or <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code>). Using the <code>%&gt;%</code> operator, it is compatible with the <code>knitr</code> function <code>kable()</code>, which is a simple table generator.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span><span class="va">sim_screen_obj</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
@@ -350,146 +351,146 @@
 <tr class="odd">
 <td align="right">0.70</td>
 <td align="right">0.1</td>
-<td align="right">-25.994</td>
+<td align="right">-26.012</td>
 <td align="left">-26.33 to -25.67</td>
-<td align="right">-9.99</td>
+<td align="right">-10.020</td>
 <td align="left">-10.55 to -9.45</td>
-<td align="right">-14.981</td>
-<td align="left">-20.52 to -11.32</td>
-<td align="right">-10.061</td>
-<td align="left">-10.91 to -9.48</td>
+<td align="right">-14.770</td>
+<td align="left">-20.71 to -11.23</td>
+<td align="right">-10.080</td>
+<td align="left">-10.87 to -9.5</td>
 </tr>
 <tr class="even">
 <td align="right">0.70</td>
 <td align="right">0.2</td>
-<td align="right">-32.024</td>
-<td align="left">-32.49 to -31.53</td>
-<td align="right">-20.04</td>
-<td align="left">-20.81 to -19.21</td>
-<td align="right">-23.082</td>
-<td align="left">-26.33 to -20.65</td>
-<td align="right">-20.104</td>
-<td align="left">-21.31 to -19.27</td>
-</tr>
-<tr class="odd">
-<td align="right">0.75</td>
-<td align="right">0.1</td>
-<td align="right">-26.012</td>
-<td align="left">-26.34 to -25.64</td>
-<td align="right">-10.02</td>
-<td align="left">-10.57 to -9.4</td>
-<td align="right">-13.789</td>
-<td align="left">-18.76 to -10.82</td>
-<td align="right">-10.080</td>
-<td align="left">-10.82 to -9.45</td>
-</tr>
-<tr class="even">
-<td align="right">0.75</td>
-<td align="right">0.2</td>
-<td align="right">-31.994</td>
-<td align="left">-32.46 to -31.58</td>
-<td align="right">-19.99</td>
-<td align="left">-20.76 to -19.3</td>
-<td align="right">-22.231</td>
-<td align="left">-25.22 to -20.04</td>
-<td align="right">-19.907</td>
-<td align="left">-21.13 to -19.18</td>
-</tr>
-<tr class="odd">
-<td align="right">0.80</td>
-<td align="right">0.1</td>
-<td align="right">-25.994</td>
-<td align="left">-26.34 to -25.62</td>
-<td align="right">-9.99</td>
-<td align="left">-10.56 to -9.36</td>
-<td align="right">-12.985</td>
-<td align="left">-17.64 to -10.37</td>
-<td align="right">-10.012</td>
-<td align="left">-10.89 to -9.35</td>
-</tr>
-<tr class="even">
-<td align="right">0.80</td>
-<td align="right">0.2</td>
-<td align="right">-32.006</td>
-<td align="left">-32.49 to -31.57</td>
-<td align="right">-20.01</td>
-<td align="left">-20.81 to -19.29</td>
-<td align="right">-21.294</td>
-<td align="left">-23.95 to -19.87</td>
-<td align="right">-19.678</td>
-<td align="left">-20.64 to -18.92</td>
-</tr>
-<tr class="odd">
-<td align="right">0.85</td>
-<td align="right">0.1</td>
-<td align="right">-26.012</td>
-<td align="left">-26.38 to -25.67</td>
-<td align="right">-10.02</td>
-<td align="left">-10.64 to -9.44</td>
-<td align="right">-12.065</td>
-<td align="left">-16.47 to -10.1</td>
-<td align="right">-9.933</td>
-<td align="left">-10.72 to -9.38</td>
-</tr>
-<tr class="even">
-<td align="right">0.85</td>
-<td align="right">0.2</td>
-<td align="right">-31.994</td>
-<td align="left">-32.49 to -31.54</td>
-<td align="right">-19.99</td>
-<td align="left">-20.81 to -19.23</td>
-<td align="right">-20.640</td>
-<td align="left">-22.64 to -19.21</td>
-<td align="right">-19.296</td>
-<td align="left">-20.35 to -18.49</td>
-</tr>
-<tr class="odd">
-<td align="right">0.90</td>
-<td align="right">0.1</td>
-<td align="right">-26.012</td>
-<td align="left">-26.35 to -25.66</td>
-<td align="right">-10.02</td>
-<td align="left">-10.59 to -9.43</td>
-<td align="right">-11.328</td>
-<td align="left">-14.9 to -9.58</td>
-<td align="right">-9.718</td>
-<td align="left">-10.48 to -9.12</td>
-</tr>
-<tr class="even">
-<td align="right">0.90</td>
-<td align="right">0.2</td>
 <td align="right">-32.000</td>
-<td align="left">-32.45 to -31.55</td>
-<td align="right">-20.00</td>
-<td align="left">-20.76 to -19.25</td>
-<td align="right">-19.599</td>
-<td align="left">-21.45 to -18.38</td>
-<td align="right">-18.725</td>
-<td align="left">-19.9 to -17.94</td>
+<td align="left">-32.48 to -31.57</td>
+<td align="right">-20.000</td>
+<td align="left">-20.8 to -19.28</td>
+<td align="right">-22.906</td>
+<td align="left">-26.38 to -20.66</td>
+<td align="right">-20.044</td>
+<td align="left">-21.16 to -19.27</td>
 </tr>
 <tr class="odd">
-<td align="right">0.95</td>
+<td align="right">0.75</td>
+<td align="right">0.1</td>
+<td align="right">-25.982</td>
+<td align="left">-26.32 to -25.64</td>
+<td align="right">-9.970</td>
+<td align="left">-10.54 to -9.4</td>
+<td align="right">-13.835</td>
+<td align="left">-19.63 to -10.65</td>
+<td align="right">-10.054</td>
+<td align="left">-11.12 to -9.48</td>
+</tr>
+<tr class="even">
+<td align="right">0.75</td>
+<td align="right">0.2</td>
+<td align="right">-32.018</td>
+<td align="left">-32.51 to -31.52</td>
+<td align="right">-20.030</td>
+<td align="left">-20.86 to -19.2</td>
+<td align="right">-22.289</td>
+<td align="left">-25.42 to -20.34</td>
+<td align="right">-19.969</td>
+<td align="left">-21.39 to -19.1</td>
+</tr>
+<tr class="odd">
+<td align="right">0.80</td>
+<td align="right">0.1</td>
+<td align="right">-26.000</td>
+<td align="left">-26.36 to -25.66</td>
+<td align="right">-10.000</td>
+<td align="left">-10.6 to -9.44</td>
+<td align="right">-13.140</td>
+<td align="left">-18.04 to -10.57</td>
+<td align="right">-10.010</td>
+<td align="left">-10.91 to -9.45</td>
+</tr>
+<tr class="even">
+<td align="right">0.80</td>
+<td align="right">0.2</td>
+<td align="right">-31.994</td>
+<td align="left">-32.41 to -31.54</td>
+<td align="right">-19.990</td>
+<td align="left">-20.69 to -19.23</td>
+<td align="right">-21.358</td>
+<td align="left">-24.06 to -19.64</td>
+<td align="right">-19.655</td>
+<td align="left">-20.78 to -18.87</td>
+</tr>
+<tr class="odd">
+<td align="right">0.85</td>
 <td align="right">0.1</td>
 <td align="right">-26.006</td>
-<td align="left">-26.4 to -25.65</td>
-<td align="right">-10.01</td>
-<td align="left">-10.66 to -9.41</td>
-<td align="right">-10.253</td>
-<td align="left">-12.93 to -8.93</td>
-<td align="right">-9.265</td>
-<td align="left">-10.16 to -8.66</td>
+<td align="left">-26.37 to -25.67</td>
+<td align="right">-10.010</td>
+<td align="left">-10.61 to -9.44</td>
+<td align="right">-12.368</td>
+<td align="left">-16.23 to -10.07</td>
+<td align="right">-9.921</td>
+<td align="left">-10.72 to -9.34</td>
+</tr>
+<tr class="even">
+<td align="right">0.85</td>
+<td align="right">0.2</td>
+<td align="right">-32.000</td>
+<td align="left">-32.49 to -31.53</td>
+<td align="right">-20.000</td>
+<td align="left">-20.81 to -19.22</td>
+<td align="right">-20.571</td>
+<td align="left">-22.87 to -19.18</td>
+<td align="right">-19.286</td>
+<td align="left">-20.34 to -18.45</td>
+</tr>
+<tr class="odd">
+<td align="right">0.90</td>
+<td align="right">0.1</td>
+<td align="right">-26.009</td>
+<td align="left">-26.35 to -25.66</td>
+<td align="right">-10.015</td>
+<td align="left">-10.59 to -9.44</td>
+<td align="right">-11.303</td>
+<td align="left">-14.29 to -9.64</td>
+<td align="right">-9.696</td>
+<td align="left">-10.46 to -9.09</td>
+</tr>
+<tr class="even">
+<td align="right">0.90</td>
+<td align="right">0.2</td>
+<td align="right">-31.982</td>
+<td align="left">-32.47 to -31.55</td>
+<td align="right">-19.970</td>
+<td align="left">-20.78 to -19.25</td>
+<td align="right">-19.576</td>
+<td align="left">-21.49 to -18.43</td>
+<td align="right">-18.690</td>
+<td align="left">-19.9 to -17.93</td>
+</tr>
+<tr class="odd">
+<td align="right">0.95</td>
+<td align="right">0.1</td>
+<td align="right">-25.988</td>
+<td align="left">-26.32 to -25.62</td>
+<td align="right">-9.980</td>
+<td align="left">-10.53 to -9.36</td>
+<td align="right">-10.156</td>
+<td align="left">-12.96 to -8.99</td>
+<td align="right">-9.267</td>
+<td align="left">-10.02 to -8.67</td>
 </tr>
 <tr class="even">
 <td align="right">0.95</td>
 <td align="right">0.2</td>
-<td align="right">-32.000</td>
-<td align="left">-32.48 to -31.54</td>
-<td align="right">-20.00</td>
-<td align="left">-20.8 to -19.23</td>
-<td align="right">-18.463</td>
-<td align="left">-19.91 to -17.54</td>
-<td align="right">-17.902</td>
-<td align="left">-19.59 to -17.24</td>
+<td align="right">-32.006</td>
+<td align="left">-32.47 to -31.57</td>
+<td align="right">-20.010</td>
+<td align="left">-20.78 to -19.29</td>
+<td align="right">-18.385</td>
+<td align="left">-19.75 to -17.55</td>
+<td align="right">-17.931</td>
+<td align="left">-19.84 to -17.22</td>
 </tr>
 </tbody>
 </table>
@@ -504,23 +505,23 @@
 <tbody>
 <tr class="odd">
 <td align="left">all</td>
-<td align="right">-25.994</td>
+<td align="right">-26.012</td>
 <td align="left">-26.33 to -25.67</td>
 </tr>
 <tr class="even">
 <td align="left">none</td>
-<td align="right">-9.990</td>
+<td align="right">-10.020</td>
 <td align="left">-10.55 to -9.45</td>
 </tr>
 <tr class="odd">
 <td align="left">value_optimising</td>
-<td align="right">-10.061</td>
-<td align="left">-10.91 to -9.48</td>
+<td align="right">-10.080</td>
+<td align="left">-10.87 to -9.5</td>
 </tr>
 <tr class="even">
 <td align="left">youden</td>
-<td align="right">-14.981</td>
-<td align="left">-20.52 to -11.32</td>
+<td align="right">-14.770</td>
+<td align="left">-20.71 to -11.23</td>
 </tr>
 </tbody>
 </table>
@@ -540,27 +541,27 @@
 <tbody>
 <tr class="odd">
 <td align="left">all</td>
-<td align="right">-26.00946</td>
-<td align="right">-26.582</td>
-<td align="right">-25.490</td>
+<td align="right">-26.00870</td>
+<td align="right">-26.552</td>
+<td align="right">-25.574</td>
 </tr>
 <tr class="even">
 <td align="left">none</td>
-<td align="right">-10.01576</td>
-<td align="right">-10.970</td>
-<td align="right">-9.150</td>
+<td align="right">-10.01450</td>
+<td align="right">-10.920</td>
+<td align="right">-9.290</td>
 </tr>
 <tr class="odd">
 <td align="left">value_optimising</td>
-<td align="right">-10.23044</td>
-<td align="right">-26.122</td>
-<td align="right">-9.150</td>
+<td align="right">-10.19853</td>
+<td align="right">-26.076</td>
+<td align="right">-9.290</td>
 </tr>
 <tr class="even">
 <td align="left">youden</td>
-<td align="right">-15.15456</td>
-<td align="right">-23.502</td>
-<td align="right">-10.334</td>
+<td align="right">-15.15142</td>
+<td align="right">-22.946</td>
+<td align="right">-10.344</td>
 </tr>
 </tbody>
 </table>
@@ -583,22 +584,22 @@
 <tbody>
 <tr class="odd">
 <td align="left">Treat-None</td>
-<td align="right">16.004</td>
+<td align="right">15.992</td>
 <td align="left">15.78 to 16.22</td>
 </tr>
 <tr class="even">
 <td align="left">Value-Optimising</td>
-<td align="right">15.940</td>
-<td align="left">15.27 to 16.19</td>
+<td align="right">15.948</td>
+<td align="left">15.14 to 16.19</td>
 </tr>
 <tr class="odd">
 <td align="left">Youden Index</td>
-<td align="right">11.043</td>
-<td align="left">5.46 to 14.66</td>
+<td align="right">11.221</td>
+<td align="left">5.27 to 14.75</td>
 </tr>
 </tbody>
 </table>
-<p>The summary table contains the same thing for both object types but are arrange slightly differently. Each row in the object containing a screen over inputs is a unique set of inputs. This can be trimmed short to include only those that vary over inputs by using the <code>show_full_inputs</code> argument. By default, only the inputs that vary are shown.</p>
+<p>The summary table contains the same outputs for both <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> and <code><a href="../reference/screen_simulation_inputs.html">screen_simulation_inputs()</a></code>, but they are arranged slightly differently. Each row in the screen over inputs object is a unique set of inputs. By default, this is trimmed to include only those inputs that vary in our function call - here, <code>sim_auc</code> and <code>event_rate</code> - by using the <code>show_full_inputs</code> argument. By default, only the inputs that vary are shown. However, we can set <code>show_full_inputs = TRUE</code> to see more.</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span><span class="va">sim_screen_obj</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
@@ -630,146 +631,146 @@
 <tr class="odd">
 <td align="right">0.70</td>
 <td align="right">0.1</td>
-<td align="right">-25.994</td>
+<td align="right">-26.012</td>
 <td align="left">-26.33 to -25.67</td>
-<td align="right">-9.99</td>
+<td align="right">-10.020</td>
 <td align="left">-10.55 to -9.45</td>
-<td align="right">-14.981</td>
-<td align="left">-20.52 to -11.32</td>
-<td align="right">-10.061</td>
-<td align="left">-10.91 to -9.48</td>
+<td align="right">-14.770</td>
+<td align="left">-20.71 to -11.23</td>
+<td align="right">-10.080</td>
+<td align="left">-10.87 to -9.5</td>
 </tr>
 <tr class="even">
 <td align="right">0.70</td>
 <td align="right">0.2</td>
-<td align="right">-32.024</td>
-<td align="left">-32.49 to -31.53</td>
-<td align="right">-20.04</td>
-<td align="left">-20.81 to -19.21</td>
-<td align="right">-23.082</td>
-<td align="left">-26.33 to -20.65</td>
-<td align="right">-20.104</td>
-<td align="left">-21.31 to -19.27</td>
-</tr>
-<tr class="odd">
-<td align="right">0.75</td>
-<td align="right">0.1</td>
-<td align="right">-26.012</td>
-<td align="left">-26.34 to -25.64</td>
-<td align="right">-10.02</td>
-<td align="left">-10.57 to -9.4</td>
-<td align="right">-13.789</td>
-<td align="left">-18.76 to -10.82</td>
-<td align="right">-10.080</td>
-<td align="left">-10.82 to -9.45</td>
-</tr>
-<tr class="even">
-<td align="right">0.75</td>
-<td align="right">0.2</td>
-<td align="right">-31.994</td>
-<td align="left">-32.46 to -31.58</td>
-<td align="right">-19.99</td>
-<td align="left">-20.76 to -19.3</td>
-<td align="right">-22.231</td>
-<td align="left">-25.22 to -20.04</td>
-<td align="right">-19.907</td>
-<td align="left">-21.13 to -19.18</td>
-</tr>
-<tr class="odd">
-<td align="right">0.80</td>
-<td align="right">0.1</td>
-<td align="right">-25.994</td>
-<td align="left">-26.34 to -25.62</td>
-<td align="right">-9.99</td>
-<td align="left">-10.56 to -9.36</td>
-<td align="right">-12.985</td>
-<td align="left">-17.64 to -10.37</td>
-<td align="right">-10.012</td>
-<td align="left">-10.89 to -9.35</td>
-</tr>
-<tr class="even">
-<td align="right">0.80</td>
-<td align="right">0.2</td>
-<td align="right">-32.006</td>
-<td align="left">-32.49 to -31.57</td>
-<td align="right">-20.01</td>
-<td align="left">-20.81 to -19.29</td>
-<td align="right">-21.294</td>
-<td align="left">-23.95 to -19.87</td>
-<td align="right">-19.678</td>
-<td align="left">-20.64 to -18.92</td>
-</tr>
-<tr class="odd">
-<td align="right">0.85</td>
-<td align="right">0.1</td>
-<td align="right">-26.012</td>
-<td align="left">-26.38 to -25.67</td>
-<td align="right">-10.02</td>
-<td align="left">-10.64 to -9.44</td>
-<td align="right">-12.065</td>
-<td align="left">-16.47 to -10.1</td>
-<td align="right">-9.933</td>
-<td align="left">-10.72 to -9.38</td>
-</tr>
-<tr class="even">
-<td align="right">0.85</td>
-<td align="right">0.2</td>
-<td align="right">-31.994</td>
-<td align="left">-32.49 to -31.54</td>
-<td align="right">-19.99</td>
-<td align="left">-20.81 to -19.23</td>
-<td align="right">-20.640</td>
-<td align="left">-22.64 to -19.21</td>
-<td align="right">-19.296</td>
-<td align="left">-20.35 to -18.49</td>
-</tr>
-<tr class="odd">
-<td align="right">0.90</td>
-<td align="right">0.1</td>
-<td align="right">-26.012</td>
-<td align="left">-26.35 to -25.66</td>
-<td align="right">-10.02</td>
-<td align="left">-10.59 to -9.43</td>
-<td align="right">-11.328</td>
-<td align="left">-14.9 to -9.58</td>
-<td align="right">-9.718</td>
-<td align="left">-10.48 to -9.12</td>
-</tr>
-<tr class="even">
-<td align="right">0.90</td>
-<td align="right">0.2</td>
 <td align="right">-32.000</td>
-<td align="left">-32.45 to -31.55</td>
-<td align="right">-20.00</td>
-<td align="left">-20.76 to -19.25</td>
-<td align="right">-19.599</td>
-<td align="left">-21.45 to -18.38</td>
-<td align="right">-18.725</td>
-<td align="left">-19.9 to -17.94</td>
+<td align="left">-32.48 to -31.57</td>
+<td align="right">-20.000</td>
+<td align="left">-20.8 to -19.28</td>
+<td align="right">-22.906</td>
+<td align="left">-26.38 to -20.66</td>
+<td align="right">-20.044</td>
+<td align="left">-21.16 to -19.27</td>
 </tr>
 <tr class="odd">
-<td align="right">0.95</td>
+<td align="right">0.75</td>
+<td align="right">0.1</td>
+<td align="right">-25.982</td>
+<td align="left">-26.32 to -25.64</td>
+<td align="right">-9.970</td>
+<td align="left">-10.54 to -9.4</td>
+<td align="right">-13.835</td>
+<td align="left">-19.63 to -10.65</td>
+<td align="right">-10.054</td>
+<td align="left">-11.12 to -9.48</td>
+</tr>
+<tr class="even">
+<td align="right">0.75</td>
+<td align="right">0.2</td>
+<td align="right">-32.018</td>
+<td align="left">-32.51 to -31.52</td>
+<td align="right">-20.030</td>
+<td align="left">-20.86 to -19.2</td>
+<td align="right">-22.289</td>
+<td align="left">-25.42 to -20.34</td>
+<td align="right">-19.969</td>
+<td align="left">-21.39 to -19.1</td>
+</tr>
+<tr class="odd">
+<td align="right">0.80</td>
+<td align="right">0.1</td>
+<td align="right">-26.000</td>
+<td align="left">-26.36 to -25.66</td>
+<td align="right">-10.000</td>
+<td align="left">-10.6 to -9.44</td>
+<td align="right">-13.140</td>
+<td align="left">-18.04 to -10.57</td>
+<td align="right">-10.010</td>
+<td align="left">-10.91 to -9.45</td>
+</tr>
+<tr class="even">
+<td align="right">0.80</td>
+<td align="right">0.2</td>
+<td align="right">-31.994</td>
+<td align="left">-32.41 to -31.54</td>
+<td align="right">-19.990</td>
+<td align="left">-20.69 to -19.23</td>
+<td align="right">-21.358</td>
+<td align="left">-24.06 to -19.64</td>
+<td align="right">-19.655</td>
+<td align="left">-20.78 to -18.87</td>
+</tr>
+<tr class="odd">
+<td align="right">0.85</td>
 <td align="right">0.1</td>
 <td align="right">-26.006</td>
-<td align="left">-26.4 to -25.65</td>
-<td align="right">-10.01</td>
-<td align="left">-10.66 to -9.41</td>
-<td align="right">-10.253</td>
-<td align="left">-12.93 to -8.93</td>
-<td align="right">-9.265</td>
-<td align="left">-10.16 to -8.66</td>
+<td align="left">-26.37 to -25.67</td>
+<td align="right">-10.010</td>
+<td align="left">-10.61 to -9.44</td>
+<td align="right">-12.368</td>
+<td align="left">-16.23 to -10.07</td>
+<td align="right">-9.921</td>
+<td align="left">-10.72 to -9.34</td>
+</tr>
+<tr class="even">
+<td align="right">0.85</td>
+<td align="right">0.2</td>
+<td align="right">-32.000</td>
+<td align="left">-32.49 to -31.53</td>
+<td align="right">-20.000</td>
+<td align="left">-20.81 to -19.22</td>
+<td align="right">-20.571</td>
+<td align="left">-22.87 to -19.18</td>
+<td align="right">-19.286</td>
+<td align="left">-20.34 to -18.45</td>
+</tr>
+<tr class="odd">
+<td align="right">0.90</td>
+<td align="right">0.1</td>
+<td align="right">-26.009</td>
+<td align="left">-26.35 to -25.66</td>
+<td align="right">-10.015</td>
+<td align="left">-10.59 to -9.44</td>
+<td align="right">-11.303</td>
+<td align="left">-14.29 to -9.64</td>
+<td align="right">-9.696</td>
+<td align="left">-10.46 to -9.09</td>
+</tr>
+<tr class="even">
+<td align="right">0.90</td>
+<td align="right">0.2</td>
+<td align="right">-31.982</td>
+<td align="left">-32.47 to -31.55</td>
+<td align="right">-19.970</td>
+<td align="left">-20.78 to -19.25</td>
+<td align="right">-19.576</td>
+<td align="left">-21.49 to -18.43</td>
+<td align="right">-18.690</td>
+<td align="left">-19.9 to -17.93</td>
+</tr>
+<tr class="odd">
+<td align="right">0.95</td>
+<td align="right">0.1</td>
+<td align="right">-25.988</td>
+<td align="left">-26.32 to -25.62</td>
+<td align="right">-9.980</td>
+<td align="left">-10.53 to -9.36</td>
+<td align="right">-10.156</td>
+<td align="left">-12.96 to -8.99</td>
+<td align="right">-9.267</td>
+<td align="left">-10.02 to -8.67</td>
 </tr>
 <tr class="even">
 <td align="right">0.95</td>
 <td align="right">0.2</td>
-<td align="right">-32.000</td>
-<td align="left">-32.48 to -31.54</td>
-<td align="right">-20.00</td>
-<td align="left">-20.8 to -19.23</td>
-<td align="right">-18.463</td>
-<td align="left">-19.91 to -17.54</td>
-<td align="right">-17.902</td>
-<td align="left">-19.59 to -17.24</td>
+<td align="right">-32.006</td>
+<td align="left">-32.47 to -31.57</td>
+<td align="right">-20.010</td>
+<td align="left">-20.78 to -19.29</td>
+<td align="right">-18.385</td>
+<td align="left">-19.75 to -17.55</td>
+<td align="right">-17.931</td>
+<td align="left">-19.84 to -17.22</td>
 </tr>
 </tbody>
 </table>
@@ -825,14 +826,14 @@
 <td align="right">0.1</td>
 <td align="right">19</td>
 <td align="left">TRUE</td>
-<td align="right">-25.994</td>
+<td align="right">-26.012</td>
 <td align="left">-26.33 to -25.67</td>
-<td align="right">-9.99</td>
+<td align="right">-10.020</td>
 <td align="left">-10.55 to -9.45</td>
-<td align="right">-14.981</td>
-<td align="left">-20.52 to -11.32</td>
-<td align="right">-10.061</td>
-<td align="left">-10.91 to -9.48</td>
+<td align="right">-14.770</td>
+<td align="left">-20.71 to -11.23</td>
+<td align="right">-10.080</td>
+<td align="left">-10.87 to -9.5</td>
 </tr>
 <tr class="even">
 <td align="right">500</td>
@@ -844,185 +845,185 @@
 <td align="right">0.2</td>
 <td align="right">49</td>
 <td align="left">TRUE</td>
-<td align="right">-32.024</td>
-<td align="left">-32.49 to -31.53</td>
-<td align="right">-20.04</td>
-<td align="left">-20.81 to -19.21</td>
-<td align="right">-23.082</td>
-<td align="left">-26.33 to -20.65</td>
-<td align="right">-20.104</td>
-<td align="left">-21.31 to -19.27</td>
-</tr>
-<tr class="odd">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-3</td>
-<td align="left">unnamed-nmb-function-3</td>
-<td align="right">139</td>
-<td align="right">0.75</td>
-<td align="right">0.1</td>
-<td align="right">14</td>
-<td align="left">TRUE</td>
-<td align="right">-26.012</td>
-<td align="left">-26.34 to -25.64</td>
-<td align="right">-10.02</td>
-<td align="left">-10.57 to -9.4</td>
-<td align="right">-13.789</td>
-<td align="left">-18.76 to -10.82</td>
-<td align="right">-10.080</td>
-<td align="left">-10.82 to -9.45</td>
-</tr>
-<tr class="even">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-4</td>
-<td align="left">unnamed-nmb-function-4</td>
-<td align="right">246</td>
-<td align="right">0.75</td>
-<td align="right">0.2</td>
-<td align="right">49</td>
-<td align="left">TRUE</td>
-<td align="right">-31.994</td>
-<td align="left">-32.46 to -31.58</td>
-<td align="right">-19.99</td>
-<td align="left">-20.76 to -19.3</td>
-<td align="right">-22.231</td>
-<td align="left">-25.22 to -20.04</td>
-<td align="right">-19.907</td>
-<td align="left">-21.13 to -19.18</td>
-</tr>
-<tr class="odd">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-5</td>
-<td align="left">unnamed-nmb-function-5</td>
-<td align="right">139</td>
-<td align="right">0.80</td>
-<td align="right">0.1</td>
-<td align="right">14</td>
-<td align="left">TRUE</td>
-<td align="right">-25.994</td>
-<td align="left">-26.34 to -25.62</td>
-<td align="right">-9.99</td>
-<td align="left">-10.56 to -9.36</td>
-<td align="right">-12.985</td>
-<td align="left">-17.64 to -10.37</td>
-<td align="right">-10.012</td>
-<td align="left">-10.89 to -9.35</td>
-</tr>
-<tr class="even">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-6</td>
-<td align="left">unnamed-nmb-function-6</td>
-<td align="right">246</td>
-<td align="right">0.80</td>
-<td align="right">0.2</td>
-<td align="right">49</td>
-<td align="left">TRUE</td>
-<td align="right">-32.006</td>
-<td align="left">-32.49 to -31.57</td>
-<td align="right">-20.01</td>
-<td align="left">-20.81 to -19.29</td>
-<td align="right">-21.294</td>
-<td align="left">-23.95 to -19.87</td>
-<td align="right">-19.678</td>
-<td align="left">-20.64 to -18.92</td>
-</tr>
-<tr class="odd">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-7</td>
-<td align="left">unnamed-nmb-function-7</td>
-<td align="right">139</td>
-<td align="right">0.85</td>
-<td align="right">0.1</td>
-<td align="right">14</td>
-<td align="left">TRUE</td>
-<td align="right">-26.012</td>
-<td align="left">-26.38 to -25.67</td>
-<td align="right">-10.02</td>
-<td align="left">-10.64 to -9.44</td>
-<td align="right">-12.065</td>
-<td align="left">-16.47 to -10.1</td>
-<td align="right">-9.933</td>
-<td align="left">-10.72 to -9.38</td>
-</tr>
-<tr class="even">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-8</td>
-<td align="left">unnamed-nmb-function-8</td>
-<td align="right">246</td>
-<td align="right">0.85</td>
-<td align="right">0.2</td>
-<td align="right">49</td>
-<td align="left">TRUE</td>
-<td align="right">-31.994</td>
-<td align="left">-32.49 to -31.54</td>
-<td align="right">-19.99</td>
-<td align="left">-20.81 to -19.23</td>
-<td align="right">-20.640</td>
-<td align="left">-22.64 to -19.21</td>
-<td align="right">-19.296</td>
-<td align="left">-20.35 to -18.49</td>
-</tr>
-<tr class="odd">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-9</td>
-<td align="left">unnamed-nmb-function-9</td>
-<td align="right">139</td>
-<td align="right">0.90</td>
-<td align="right">0.1</td>
-<td align="right">14</td>
-<td align="left">TRUE</td>
-<td align="right">-26.012</td>
-<td align="left">-26.35 to -25.66</td>
-<td align="right">-10.02</td>
-<td align="left">-10.59 to -9.43</td>
-<td align="right">-11.328</td>
-<td align="left">-14.9 to -9.58</td>
-<td align="right">-9.718</td>
-<td align="left">-10.48 to -9.12</td>
-</tr>
-<tr class="even">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-10</td>
-<td align="left">unnamed-nmb-function-10</td>
-<td align="right">246</td>
-<td align="right">0.90</td>
-<td align="right">0.2</td>
-<td align="right">49</td>
-<td align="left">TRUE</td>
 <td align="right">-32.000</td>
-<td align="left">-32.45 to -31.55</td>
-<td align="right">-20.00</td>
-<td align="left">-20.76 to -19.25</td>
-<td align="right">-19.599</td>
-<td align="left">-21.45 to -18.38</td>
-<td align="right">-18.725</td>
-<td align="left">-19.9 to -17.94</td>
+<td align="left">-32.48 to -31.57</td>
+<td align="right">-20.000</td>
+<td align="left">-20.8 to -19.28</td>
+<td align="right">-22.906</td>
+<td align="left">-26.38 to -20.66</td>
+<td align="right">-20.044</td>
+<td align="left">-21.16 to -19.27</td>
 </tr>
 <tr class="odd">
 <td align="right">500</td>
 <td align="right">10000</td>
-<td align="left">unnamed-nmb-function-11</td>
-<td align="left">unnamed-nmb-function-11</td>
+<td align="left">unnamed-nmb-function-3</td>
+<td align="left">unnamed-nmb-function-3</td>
 <td align="right">139</td>
-<td align="right">0.95</td>
+<td align="right">0.75</td>
+<td align="right">0.1</td>
+<td align="right">14</td>
+<td align="left">TRUE</td>
+<td align="right">-25.982</td>
+<td align="left">-26.32 to -25.64</td>
+<td align="right">-9.970</td>
+<td align="left">-10.54 to -9.4</td>
+<td align="right">-13.835</td>
+<td align="left">-19.63 to -10.65</td>
+<td align="right">-10.054</td>
+<td align="left">-11.12 to -9.48</td>
+</tr>
+<tr class="even">
+<td align="right">500</td>
+<td align="right">10000</td>
+<td align="left">unnamed-nmb-function-4</td>
+<td align="left">unnamed-nmb-function-4</td>
+<td align="right">246</td>
+<td align="right">0.75</td>
+<td align="right">0.2</td>
+<td align="right">49</td>
+<td align="left">TRUE</td>
+<td align="right">-32.018</td>
+<td align="left">-32.51 to -31.52</td>
+<td align="right">-20.030</td>
+<td align="left">-20.86 to -19.2</td>
+<td align="right">-22.289</td>
+<td align="left">-25.42 to -20.34</td>
+<td align="right">-19.969</td>
+<td align="left">-21.39 to -19.1</td>
+</tr>
+<tr class="odd">
+<td align="right">500</td>
+<td align="right">10000</td>
+<td align="left">unnamed-nmb-function-5</td>
+<td align="left">unnamed-nmb-function-5</td>
+<td align="right">139</td>
+<td align="right">0.80</td>
+<td align="right">0.1</td>
+<td align="right">14</td>
+<td align="left">TRUE</td>
+<td align="right">-26.000</td>
+<td align="left">-26.36 to -25.66</td>
+<td align="right">-10.000</td>
+<td align="left">-10.6 to -9.44</td>
+<td align="right">-13.140</td>
+<td align="left">-18.04 to -10.57</td>
+<td align="right">-10.010</td>
+<td align="left">-10.91 to -9.45</td>
+</tr>
+<tr class="even">
+<td align="right">500</td>
+<td align="right">10000</td>
+<td align="left">unnamed-nmb-function-6</td>
+<td align="left">unnamed-nmb-function-6</td>
+<td align="right">246</td>
+<td align="right">0.80</td>
+<td align="right">0.2</td>
+<td align="right">49</td>
+<td align="left">TRUE</td>
+<td align="right">-31.994</td>
+<td align="left">-32.41 to -31.54</td>
+<td align="right">-19.990</td>
+<td align="left">-20.69 to -19.23</td>
+<td align="right">-21.358</td>
+<td align="left">-24.06 to -19.64</td>
+<td align="right">-19.655</td>
+<td align="left">-20.78 to -18.87</td>
+</tr>
+<tr class="odd">
+<td align="right">500</td>
+<td align="right">10000</td>
+<td align="left">unnamed-nmb-function-7</td>
+<td align="left">unnamed-nmb-function-7</td>
+<td align="right">139</td>
+<td align="right">0.85</td>
 <td align="right">0.1</td>
 <td align="right">14</td>
 <td align="left">TRUE</td>
 <td align="right">-26.006</td>
-<td align="left">-26.4 to -25.65</td>
-<td align="right">-10.01</td>
-<td align="left">-10.66 to -9.41</td>
-<td align="right">-10.253</td>
-<td align="left">-12.93 to -8.93</td>
-<td align="right">-9.265</td>
-<td align="left">-10.16 to -8.66</td>
+<td align="left">-26.37 to -25.67</td>
+<td align="right">-10.010</td>
+<td align="left">-10.61 to -9.44</td>
+<td align="right">-12.368</td>
+<td align="left">-16.23 to -10.07</td>
+<td align="right">-9.921</td>
+<td align="left">-10.72 to -9.34</td>
+</tr>
+<tr class="even">
+<td align="right">500</td>
+<td align="right">10000</td>
+<td align="left">unnamed-nmb-function-8</td>
+<td align="left">unnamed-nmb-function-8</td>
+<td align="right">246</td>
+<td align="right">0.85</td>
+<td align="right">0.2</td>
+<td align="right">49</td>
+<td align="left">TRUE</td>
+<td align="right">-32.000</td>
+<td align="left">-32.49 to -31.53</td>
+<td align="right">-20.000</td>
+<td align="left">-20.81 to -19.22</td>
+<td align="right">-20.571</td>
+<td align="left">-22.87 to -19.18</td>
+<td align="right">-19.286</td>
+<td align="left">-20.34 to -18.45</td>
+</tr>
+<tr class="odd">
+<td align="right">500</td>
+<td align="right">10000</td>
+<td align="left">unnamed-nmb-function-9</td>
+<td align="left">unnamed-nmb-function-9</td>
+<td align="right">139</td>
+<td align="right">0.90</td>
+<td align="right">0.1</td>
+<td align="right">14</td>
+<td align="left">TRUE</td>
+<td align="right">-26.009</td>
+<td align="left">-26.35 to -25.66</td>
+<td align="right">-10.015</td>
+<td align="left">-10.59 to -9.44</td>
+<td align="right">-11.303</td>
+<td align="left">-14.29 to -9.64</td>
+<td align="right">-9.696</td>
+<td align="left">-10.46 to -9.09</td>
+</tr>
+<tr class="even">
+<td align="right">500</td>
+<td align="right">10000</td>
+<td align="left">unnamed-nmb-function-10</td>
+<td align="left">unnamed-nmb-function-10</td>
+<td align="right">246</td>
+<td align="right">0.90</td>
+<td align="right">0.2</td>
+<td align="right">49</td>
+<td align="left">TRUE</td>
+<td align="right">-31.982</td>
+<td align="left">-32.47 to -31.55</td>
+<td align="right">-19.970</td>
+<td align="left">-20.78 to -19.25</td>
+<td align="right">-19.576</td>
+<td align="left">-21.49 to -18.43</td>
+<td align="right">-18.690</td>
+<td align="left">-19.9 to -17.93</td>
+</tr>
+<tr class="odd">
+<td align="right">500</td>
+<td align="right">10000</td>
+<td align="left">unnamed-nmb-function-11</td>
+<td align="left">unnamed-nmb-function-11</td>
+<td align="right">139</td>
+<td align="right">0.95</td>
+<td align="right">0.1</td>
+<td align="right">14</td>
+<td align="left">TRUE</td>
+<td align="right">-25.988</td>
+<td align="left">-26.32 to -25.62</td>
+<td align="right">-9.980</td>
+<td align="left">-10.53 to -9.36</td>
+<td align="right">-10.156</td>
+<td align="left">-12.96 to -8.99</td>
+<td align="right">-9.267</td>
+<td align="left">-10.02 to -8.67</td>
 </tr>
 <tr class="even">
 <td align="right">500</td>
@@ -1034,14 +1035,14 @@
 <td align="right">0.2</td>
 <td align="right">49</td>
 <td align="left">TRUE</td>
-<td align="right">-32.000</td>
-<td align="left">-32.48 to -31.54</td>
-<td align="right">-20.00</td>
-<td align="left">-20.8 to -19.23</td>
-<td align="right">-18.463</td>
-<td align="left">-19.91 to -17.54</td>
-<td align="right">-17.902</td>
-<td align="left">-19.59 to -17.24</td>
+<td align="right">-32.006</td>
+<td align="left">-32.47 to -31.57</td>
+<td align="right">-20.010</td>
+<td align="left">-20.78 to -19.29</td>
+<td align="right">-18.385</td>
+<td align="left">-19.75 to -17.55</td>
+<td align="right">-17.931</td>
+<td align="left">-19.84 to -17.22</td>
 </tr>
 </tbody>
 </table>

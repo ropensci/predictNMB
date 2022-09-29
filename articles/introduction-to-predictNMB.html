@@ -81,7 +81,7 @@
 <h2 id="predictnmb">
 <code>{predictNMB}</code><a class="anchor" aria-label="anchor" href="#predictnmb"></a>
 </h2>
-<p><a href="https://rwparsons.github.io/predictNMB/">predictNMB</a> can be used to evaluate existing or hypothetical clinical prediction models based on their Net Monetary Benefit (NMB). This can be relevant to both prognostic and diagnostic models where a cutpoint (AKA, probability threshold) is used to use predicted classes rather than probabilities. While it is often beneficial in clinical settings to present the user with a predicted probability, it may be helpful in certain cases to simulate the effect of the decision arising from this probability. For example, in a hospital setting, a user might want to specify the probability threshold for a clinical prediction model at which best practice suggests treatment over non-treatment as the default strategy. By weighing the NMB of these decisions, users can assess the impact of the model and the suggested threshold prior to implementation.</p>
+<p><a href="https://rwparsons.github.io/predictNMB/">predictNMB</a> can be used to evaluate existing or hypothetical clinical prediction models based on their Net Monetary Benefit (NMB). This can be relevant to both prognostic and diagnostic models where a cutpoint (AKA, probability threshold) is used to generate predicted classes rather than probabilities. While it is often beneficial in clinical settings to present the user with a predicted probability, it may be helpful in certain cases to simulate the effect of the decision arising from this probability. For example, in a hospital setting, a user might want to specify the probability threshold for a clinical prediction model at which best practice suggests treatment over non-treatment as the default strategy. By weighing the NMB of these decisions, users can assess the impact of the model and the suggested threshold prior to implementation.</p>
 <p><a href="https://rwparsons.github.io/predictNMB/">predictNMB</a> was born out of related work that investigates cutpoint selection methods which maximise the NMB, and includes several options for inbuilt and user-specified cutpoint selection functions.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rwparsons.github.io/predictNMB/">predictNMB</a></span><span class="op">)</span></span>
@@ -90,13 +90,14 @@
 <div class="section level3">
 <h3 id="whats-being-simulated">What’s being simulated?<a class="anchor" aria-label="anchor" href="#whats-being-simulated"></a>
 </h3>
-<p>When <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> is run, many datasets are created, and models are fit and evaluated based on their NMB. To evaluate NMB, the user is required to specify functions which can be called to obtain a named vector containing the NMB associated with each possible outcome from binary classification:</p>
+<p>When <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> is run, many datasets are created, and models are fit and evaluated based on their NMB. To evaluate NMB, the user is required to specify functions that define each square of the confusion matrix, which arises from binary classification:</p>
 <ul>
 <li>TP: True Positives, correctly predicted events that lead to necessary treatment</li>
 <li>TN: True Negatives, correctly predicted non-events that avoid unnecessary treatment</li>
 <li>FP: False Positives, incorrectly predicted positives that lead to unnecessary treatment</li>
 <li>FN: False Negatives, incorrectly predicted non-events that lead to a lack of necessary treatment</li>
 </ul>
+<p>These are presented as a function so that we can repeatedly sample from it to get uncertainty estimates. We might want to sample from a distribution for uncertain parameters (for example, TP and FN) or use constants for parameters we are certain of (here, TN and FP). The function returns a vector representing each square of the matrix when called.</p>
 <div class="section level4">
 <h4 id="example-function">Example function<a class="anchor" aria-label="anchor" href="#example-function"></a>
 </h4>
@@ -120,7 +121,7 @@
 <span><span class="co">#&gt;         TP         TN         FP         FN </span></span>
 <span><span class="co">#&gt;  -77.97866    0.00000  -20.00000 -101.06125</span></span></code></pre></div>
 <p>Every time we run this function, we get a new named vector for the NMB associated with each prediction. We can inform the distributions that we sample from based on the literature for the specific clinical prediction model at hand. See the examples at the end for a more in-depth example based on the literature.</p>
-<p>Since we would expect to use our best estimates of the NMB associated with each prediction for an actual model (and not take a random sample from its underlying distributions), we will make a separate function for the purpose of obtaining the cutpoint, separately from the one we used (above) to evaluate it.</p>
+<p>Since we would expect to use our best estimates, in this case the expected value of the NMB associated with each prediction for an actual model (and not take a random sample from its underlying distributions), we will make a separate function for the purpose of obtaining the cutpoint, separately from the one we used (above) to evaluate it.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">get_nmb_sampler_training</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -141,13 +142,8 @@
 <h2 id="do_nmb_sim">
 <code>do_nmb_sim()</code><a class="anchor" aria-label="anchor" href="#do_nmb_sim"></a>
 </h2>
-<p><code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> does a single simulation with a set of inputs for the hypothetical model and NMB related functions. For the model, we need to know the sample size for training and evaluation sets, the model’s discrimination (Area Under the Curve - AUC) and the event rate of the outcome being predicted.</p>
-<p>We have options to include multiple cutpoint methods and the default is to use all of the available inbuilt methods as well as the treat-all and treat-none methods.</p>
+<p><code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> does a single simulation with a set of inputs for the hypothetical model and NMB related functions. For the model, we need to know the sample size for training and evaluation sets, the model’s discrimination (Area Under the Receiver Operating Characteristic Curve, also known as the Area Under the Curve, or AUC) and the event rate of the outcome being predicted.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_inbuilt_cutpoint.html">get_inbuilt_cutpoint</a></span><span class="op">(</span>return_all_methods <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "all"              "none"             "value_optimising" "youden"          </span></span>
-<span><span class="co">#&gt; [5] "cost_minimising"  "prod_sens_spec"   "roc01"            "index_of_union"</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nmb_simulation</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_nmb_sim.html">do_nmb_sim</a></span><span class="op">(</span></span>
 <span>  sample_size <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  n_sims <span class="op">=</span> <span class="fl">500</span>,</span>
@@ -167,19 +163,35 @@
 <span><span class="co">#&gt; Number of simulations:  500</span></span>
 <span><span class="co">#&gt; Simulated AUC:  0.7</span></span>
 <span><span class="co">#&gt; Simulated event rate:  0.1</span></span></code></pre></div>
-<p>The simulation can be visualised using plot(). The default is to visualise the distributions of NMB across all (500) simulations. In the plot below, the spread (light blue) shows the variability in results due to repeated simulation. The median is represented with the dark blue line in the centre of each distribution.</p>
+<p>We can call simulation outputs like NMB and cutpoints directly from our simulation object, and choose strategies to examine using this list. This is useful to examine histograms or get summary values. For example, our current default strategy might be to treat all, which is the same as setting our probability threshold for treatment to 0:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">nmb_simulation</span><span class="op">$</span><span class="va">df_result</span><span class="op">$</span><span class="va">all</span>, main <span class="op">=</span> <span class="st">"Simulation results - treat all"</span>, xlab <span class="op">=</span> <span class="st">"Net monetary benefit (NMB)"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
-<p>However, we can also use this same function to visualise cutpoints or the incremental net monetary benefit (INB) if we have a known reference strategy.</p>
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">nmb_simulation</span><span class="op">$</span><span class="va">df_result</span><span class="op">$</span><span class="va">all</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span><span class="co">#&gt;  -27.87  -26.39  -25.99  -26.02  -25.66  -24.41</span></span></code></pre></div>
+<p>We have options to include multiple cutpoint methods, and the default is to use all of the available inbuilt methods as well as the treat-all and treat-none strategies.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"cutpoints"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_inbuilt_cutpoint.html">get_inbuilt_cutpoint</a></span><span class="op">(</span>return_all_methods <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "all"              "none"             "value_optimising" "youden"          </span></span>
+<span><span class="co">#&gt; [5] "cost_minimising"  "prod_sens_spec"   "roc01"            "index_of_union"</span></span></code></pre></div>
+<p>The simulation under the various cutpoints can be visualised using <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>. The default is to visualise the distributions of NMB across all (500) simulations. In the plot below, the spread (light blue) shows the variability in results due to repeated simulation. The median is represented with the dark blue line in the centre of each distribution.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"inb"</span>, inb_ref_col <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-7-2.png" width="672"></p>
-<p>The NMB for each cutpoint method for each simulation can be accessed by the object directly:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
+<p>Treating all looks like a bad option here. The rest are relatively similar at this AUC and event rate, with an edge to treat none or the thresholds using value optimisation and cost minimisation.</p>
+<p>However, we can also use this same function to visualise cutpoints or the incremental net monetary benefit (INB) if we have a known reference strategy, in this case treat-all:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"cutpoints"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"inb"</span>, inb_ref_col <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-8-2.png" width="672"> Compared to treat-all, every alternative looks better, but treating none or using value-optimising/cost-minimising look the best.</p>
+<p>We can compare the NMB for each cutpoint method, as before, by accessing the object directly:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nmb_simulation</span><span class="op">$</span><span class="va">df_result</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   n_sim       all       none value_optimising    youden cost_minimising</span></span>
 <span><span class="co">#&gt; 1     1 -25.08691  -9.791819        -9.791819 -14.56210       -9.790418</span></span>
@@ -195,8 +207,8 @@
 <span><span class="co">#&gt; 4      -15.15321 -15.15321      -15.15321</span></span>
 <span><span class="co">#&gt; 5      -15.19484 -15.19484      -15.19484</span></span>
 <span><span class="co">#&gt; 6      -16.29397 -16.29397      -16.13769</span></span></code></pre></div>
-<p>… and so can the cutpoints that were selected:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<p>… and do the same for our selected cutpoints:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nmb_simulation</span><span class="op">$</span><span class="va">df_thresholds</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   n_sim all none value_optimising     youden cost_minimising prod_sens_spec</span></span>
 <span><span class="co">#&gt; 1     1   0    1        1.0000000 0.09641938             0.5     0.09641938</span></span>
@@ -219,8 +231,8 @@
 </h2>
 <p>We may want to investigate what the relative improvement in NMB is when increasing the model performance (AUC) and compare this to the treat all or treat none strategy. The following function assesses the required performance for the model to outperform a default strategy of treat all or treat none. In this example, cutpoints are selected using the Youden index and the cost-effectiveness approach, which maximises NMB.</p>
 <p>To do this, we can screen over many of these simulations with different inputs using <code><a href="../reference/screen_simulation_inputs.html">screen_simulation_inputs()</a></code>. This function takes the same inputs as <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> but can take a vector of inputs rather than only a single value. Here, we pass vectors for both the <code>sim_auc</code> and the <code>event_rate</code>.</p>
-<p>Here, we run the simulations in parallel by creating a cluster and passing this as an argument. This can also be done to <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> in the same way.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<p>Here, we run the simulations in parallel by creating a cluster and passing this as an argument. This can also be done to <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> in the same way. This can take some time - the fewer cores used, the longer it takes. For more details on running in parallel, see the <code>parallel</code> package.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">sim_screen_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/screen_simulation_inputs.html">screen_simulation_inputs</a></span><span class="op">(</span></span>
 <span>  n_sims <span class="op">=</span> <span class="fl">500</span>,</span>
@@ -233,35 +245,36 @@
 <span>  cl <span class="op">=</span> <span class="va">cl</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">stopCluster</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></span></code></pre></div>
-<p>Here we can see that (for our hypothetical costed outcome), the classification model (when the cutpoint is selected by maximising the Youden index) only out-performs the treat-all strategy when the model has a AUC of about 0.9! This is pretty high, and may be better than the model that we expect to be able to get. Also, when the event rate is 0.1, rather than 0.2, we are only able the match the treat-all strategy when our model has an AUC of 0.95.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<p>Here we can see that, for our hypothetical costed outcome, the classification model when the cutpoint is selected by maximising the Youden index only out-performs the treat-none strategy when the model has a AUC of about 0.9. This is pretty high, and may be better than the model that we expect to be able to get. Also, when the event rate is 0.1, rather than 0.2, we are only able the match the treat-none strategy when our model has an AUC of 0.95.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Varying simulation inputs, other than sim_auc, are being held constant:</span></span>
 <span><span class="co">#&gt; event_rate: 0.2</span></span></code></pre></div>
-<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Varying simulation inputs, other than sim_auc, are being held constant:</span></span>
 <span><span class="co">#&gt; event_rate: 0.1</span></span></code></pre></div>
-<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-11-2.png" width="672"></p>
+<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-12-2.png" width="672"></p>
 </div>
 <div class="section level2">
 <h2 id="detailed-example">Detailed example<a class="anchor" aria-label="anchor" href="#detailed-example"></a>
 </h2>
 <p>Economic analysis typically combines information from a variety of sources, including randomised controlled trials, costing studies, and local data. An advantage of simulation is that it can estimate the utility of a proposed intervention prior to implementation.</p>
-<p>In this example, we simulate the decision process for a hospital analyst at an Australian hospital with a high rate of pressure injuries, also known as pressure ulcers. Pressure ulcers are significant adverse events for patients, often leading to additional discomfort, prolonged length of stay, and increased costs. The hospital currently has a pressure ulcer program in place, but our analyst is examining whether to implement a clinical prediction model to identify patients who may not benefit from the program.</p>
+<p>In this example, we simulate the decision process for a hospital analyst at an Australian hospital with a high rate of pressure injuries, also known as pressure ulcers. Pressure ulcers are significant adverse events for patients, often leading to additional discomfort, prolonged length of hospital stay, and increased costs. The hospital currently has a pressure ulcer prevention program in place, but our analyst is examining whether to implement a clinical prediction model to identify patients who may not benefit from the program and potentially save on costs.</p>
 <p>Let’s begin by generating some realistic costs and probabilities. Keep in mind, we are trying to avoid a negative event, so the net monetary benefit of every strategy is going to be negative. In economic parlance, costs are typically negative, while cost savings are positive. If we were also interested in improving quality of life, we could estimate quality-adjusted life years (QALYs), multiply them by a willingness-to-pay threshold (WTP), and add this gain or loss to our true positive and false negative squares to signify the impact on the patient. For simplicity’s sake, let’s say we’re only interested in hospital costs.</p>
-<p>Model inputs: <br> - Mean incremental cost per pressure injury: $8,000 (SD 550) <br> - Per-patient cost of pressure ulcer prevention strategy (PUP): $140 (SD 20) <br> - Impact of intervention: Odds ratio of pressure ulcer with intervention compared to non-intervention: 0.96 (SD 0.03) <br> - AUC: 0.820 <br> - Hypothetical hospital pressure injury incidence/event rate: 0.1 (SD 0.02) <br></p>
+<p>Model inputs: <br> - Mean incremental cost per pressure injury: $8,000 (SD 550) <br> - Per-patient cost of pressure ulcer prevention strategy (PUP): $140 (SD 20) <br> - Odds ratio of pressure ulcer with intervention compared to non-intervention: 0.96 (SD 0.03) <br> - AUC: 0.820 (SD 0.02) <br> - Hypothetical hospital pressure injury incidence/event rate: 0.1 (SD 0.02) <br></p>
 <p>With these inputs, we can populate our confusion matrix (2x2 table), which helps us understand the outcomes resulting from correct and incorrect predictions.</p>
 <div class="section level3">
 <h3 id="model-inputs">Model inputs<a class="anchor" aria-label="anchor" href="#model-inputs"></a>
 </h3>
-<p>First, we need to define our NMB function, which provides data for our simulation. In this case, the intervention is not 100% effective; there was a 4% reduction in pressure ulcer incidence. This means we can just use a probability-weighted cost savings for successful prevention, at 8000*(1-0.04) = a small improvement of around $320. After including $140 in program costs, the net benefit is around $180.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<p>First, we need to define our NMB function, which provides data for our simulation. In this case, the intervention is associated with a 4% reduction in the odds of a pressure ulcer, so it’s only moderately effective at reducing the chance of a pressure injury. We can use a probability-weighted cost savings for successful prevention, at 8000*(0.96) = a small improvement of around $320. After including $140 in program costs, the net benefit is around $180 for a successfully prevented pressure ulcer.</p>
+<p>The AUC is 0.820, which is essentially the proportion of random positive samples that received a higher probability of an injury than random negative samples (and vice versa). A useful property of the AUC is that it is the same no matter what probability threshold we use. In our case, an AUC of 0.820 means that the model will assign higher probabilities of a pressure ulcer to around 82% of patients who go on to develop one compared to patients that don’t.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">fx_nmb</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">cost_of_pi</span> <span class="op">&lt;-</span> <span class="fl">8000</span></span>
@@ -278,8 +291,8 @@
 <span><span class="fu">fx_nmb</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    TP    FP    TN    FN </span></span>
 <span><span class="co">#&gt; -7820  -140     0 -8000</span></span></code></pre></div>
-<p>For a first pass, we want to see how our current values affect the estimated NMB from model implementation. We will just use our best guesses for now, but for a rigourous simulation, we will want to use Monte Carlo methods to sample from input distributions.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<p>For a first pass, we want to see how our current values affect the estimated NMB from model implementation. We will just use our best guesses for now, but for a rigorous simulation, we will want to use Monte Carlo methods to sample from input distributions.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nmb_simulation</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_nmb_sim.html">do_nmb_sim</a></span><span class="op">(</span></span>
 <span>  sample_size <span class="op">=</span> <span class="fl">1000</span>,         <span class="co"># Evaluating a theoretical cohort of 1,000 patients</span></span>
 <span>  n_sims <span class="op">=</span> <span class="fl">500</span>,               <span class="co"># The larger the number of samples, the longer it takes to run, but the more reproducible the results</span></span>
@@ -314,15 +327,14 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> youden            -<span style="color: #BB0000;">820.</span> -872.62 to -769.95</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"cutpoints"</span><span class="op">)</span>                <span class="co"># Demonstrates the range of selected cutpoints under each method</span></span></code></pre></div>
-<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"inb"</span>, inb_ref_col <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span> <span class="co"># Compares the incremental benefit of each alternate strategy to our current practice (treat all)</span></span></code></pre></div>
-<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-13-2.png" width="672"></p>
-<p>Our first pass shows that based on the inputs we’ve given the simulation model, treating all is a bad option, outperformed by every other method (as the reference strategy, treat all has an NMB of 0). Treat none looks like a good choice; we should definitely consider scrapping the program and looking for something else that costs less or provides better results. However, this doesn’t tell the full story. There may be some incremental benefit from using a model to select patients depending on how our input values change. It’s worth noting here that the results from the ROC-based methods like the Youden index and index of union are quite uncertain, but even the most extreme probabilities are still better than treating all.</p>
-<p>However, the utility of these models and the threshold selection methods based on the ROC might improve as they get more accurate, or as the event rate increases; what we really want to know is how robust our results are to changes in the input parameters. This is the purpose of <code><a href="../reference/screen_simulation_inputs.html">screen_simulation_inputs()</a></code>. We can not only simulate from a distribution for our cost inputs, we can pass a vector to the AUC and incidence arguments to understand how these impact our findings.</p>
+<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-14-2.png" width="672"></p>
+<p>Our first pass shows that based on the inputs we’ve given the simulation model, treating all is a bad option, outperformed by every other method (as the reference strategy, treat all has an NMB of 0). Treat none looks like a good choice; we should definitely consider scrapping the program and looking for something else that costs less or provides better results. However, this doesn’t tell the full story. There may be some incremental benefit from using a model to select patients depending on how our input values change, as the median for value-optimising and cost-minimising strategies is higher than treating none. So our intervention might be worth using, but only for the highest risk patients. Results from the ROC-based methods like the Youden index and index of union are quite uncertain, so we may not want to use them for these input parameters. However, the utility of these models and the threshold selection methods based on the ROC might improve as they get more accurate, or as the event rate increases; what we really want to know is how robust our results are to changes in the input parameters. This is the purpose of <code><a href="../reference/screen_simulation_inputs.html">screen_simulation_inputs()</a></code>. We can not only simulate from a distribution for our cost inputs, we can pass a vector to the AUC and incidence arguments to understand how these impact our findings.</p>
 <p>First, let’s specify our sampler function for the confusion matrix. We can replace our inputs with normal distributions, as our values are all means. Make sure to pass distribution definitions within the function so that they are resampled every simulation, but pull the same value for the same patient.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fx_nmb_sampler</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">cost_of_pi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, mean <span class="op">=</span> <span class="fl">8000</span>, sd <span class="op">=</span> <span class="fl">550</span><span class="op">)</span></span>
 <span>  <span class="va">eff_pup</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, mean <span class="op">=</span> <span class="fl">0.04</span>, sd <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
@@ -348,7 +360,7 @@
 <p>We should also check whether changing the other inputs can lead to different results. Perhaps the authors of the clinical prediction model we want to use reported a misleading AUC and when we implement the model it turns out to be lower, or perhaps our pressure ulcer rate in some wards is actually quite different to the average incidence at the hospital. By replacing our <code>sim_auc</code> and <code>event_rate</code> arguments with vectors, we can run simulations for each possible combination we are interested in.</p>
 <p>In the snippet below, we will compare the treat all strategy to scrapping the program altogether (“none”) and to a couple of alternative strategies, using the “value_optimising” and “youden” thresholds.</p>
 <p>We can also do this in parallel to speed things up.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">sim_pup_screen</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/screen_simulation_inputs.html">screen_simulation_inputs</a></span><span class="op">(</span></span>
 <span>  n_sims <span class="op">=</span> <span class="fl">500</span>,</span>
@@ -364,84 +376,84 @@
 <span></span>
 <span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span><span class="va">sim_pup_screen</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    sim_auc event_rate all_median           all_95% CI none_median</span></span>
-<span><span class="co">#&gt; 1     0.72       0.02  -296.7833   -342.77 to -241.25   -160.0118</span></span>
-<span><span class="co">#&gt; 2     0.72       0.10  -905.3003  -1032.73 to -783.22   -800.8210</span></span>
-<span><span class="co">#&gt; 3     0.72       0.18 -1523.1550 -1737.55 to -1333.51  -1447.8356</span></span>
-<span><span class="co">#&gt; 4     0.77       0.02  -292.0657   -347.66 to -242.92   -159.6375</span></span>
-<span><span class="co">#&gt; 5     0.77       0.10  -907.9782  -1047.44 to -778.95   -800.4316</span></span>
-<span><span class="co">#&gt; 6     0.77       0.18 -1516.4585 -1753.41 to -1300.35  -1436.4768</span></span>
-<span><span class="co">#&gt; 7     0.82       0.02  -293.1680    -346.49 to -245.5   -160.3301</span></span>
-<span><span class="co">#&gt; 8     0.82       0.10  -906.6603  -1034.05 to -776.32   -800.1959</span></span>
-<span><span class="co">#&gt; 9     0.82       0.18 -1516.4770 -1750.59 to -1325.82  -1434.2190</span></span>
-<span><span class="co">#&gt; 10    0.87       0.02  -293.5979   -348.97 to -245.34   -159.0430</span></span>
-<span><span class="co">#&gt; 11    0.87       0.10  -909.2716  -1029.78 to -786.78   -802.9242</span></span>
-<span><span class="co">#&gt; 12    0.87       0.18 -1521.7642 -1740.35 to -1303.22  -1445.9602</span></span>
-<span><span class="co">#&gt; 13    0.92       0.02  -290.7913   -338.88 to -246.35   -158.5153</span></span>
-<span><span class="co">#&gt; 14    0.92       0.10  -903.6015  -1039.19 to -792.21   -798.4490</span></span>
-<span><span class="co">#&gt; 15    0.92       0.18 -1516.4315 -1738.23 to -1293.59  -1439.5674</span></span>
+<span><span class="co">#&gt; 1     0.72       0.02  -295.4895   -349.66 to -237.79   -159.9889</span></span>
+<span><span class="co">#&gt; 2     0.72       0.10  -904.4021  -1027.59 to -778.46   -799.3261</span></span>
+<span><span class="co">#&gt; 3     0.72       0.18 -1523.0230 -1749.12 to -1331.39  -1441.7256</span></span>
+<span><span class="co">#&gt; 4     0.77       0.02  -291.0628    -343.5 to -243.62   -159.6326</span></span>
+<span><span class="co">#&gt; 5     0.77       0.10  -910.5176   -1031.27 to -779.9   -803.1828</span></span>
+<span><span class="co">#&gt; 6     0.77       0.18 -1511.8179 -1739.53 to -1283.55  -1429.9707</span></span>
+<span><span class="co">#&gt; 7     0.82       0.02  -292.8657   -348.56 to -246.27   -160.9506</span></span>
+<span><span class="co">#&gt; 8     0.82       0.10  -908.3586  -1041.98 to -778.33   -803.8329</span></span>
+<span><span class="co">#&gt; 9     0.82       0.18 -1521.1749 -1752.77 to -1325.05  -1434.4920</span></span>
+<span><span class="co">#&gt; 10    0.87       0.02  -294.0556   -343.83 to -248.64   -160.8685</span></span>
+<span><span class="co">#&gt; 11    0.87       0.10  -908.7589  -1039.52 to -778.89   -801.2736</span></span>
+<span><span class="co">#&gt; 12    0.87       0.18 -1525.1272 -1742.42 to -1307.23  -1439.1459</span></span>
+<span><span class="co">#&gt; 13    0.92       0.02  -289.9835      -336.67 to -244   -158.3304</span></span>
+<span><span class="co">#&gt; 14    0.92       0.10  -904.1743  -1039.29 to -775.22   -800.0967</span></span>
+<span><span class="co">#&gt; 15    0.92       0.18 -1521.2808 -1748.13 to -1328.61  -1436.0307</span></span>
 <span><span class="co">#&gt;             none_95% CI value_optimising_median value_optimising_95% CI</span></span>
-<span><span class="co">#&gt; 1       -193.78 to -127               -160.0118      -194.33 to -127.08</span></span>
-<span><span class="co">#&gt; 2       -924 to -690.44               -801.7850      -923.29 to -690.23</span></span>
-<span><span class="co">#&gt; 3  -1653.47 to -1251.82              -1446.9924    -1650.22 to -1251.08</span></span>
-<span><span class="co">#&gt; 4    -192.66 to -134.07               -159.6802      -193.19 to -134.15</span></span>
-<span><span class="co">#&gt; 5    -913.33 to -683.27               -800.3309      -915.94 to -683.84</span></span>
-<span><span class="co">#&gt; 6   -1644.1 to -1236.43              -1436.1600    -1640.14 to -1233.61</span></span>
-<span><span class="co">#&gt; 7    -190.17 to -130.62               -160.5858      -190.23 to -130.96</span></span>
-<span><span class="co">#&gt; 8    -914.51 to -689.28               -800.5802      -915.49 to -689.16</span></span>
-<span><span class="co">#&gt; 9      -1661 to -1247.8              -1428.4714    -1654.98 to -1239.74</span></span>
-<span><span class="co">#&gt; 10    -195.8 to -131.97               -159.3406      -195.45 to -132.05</span></span>
-<span><span class="co">#&gt; 11   -923.58 to -693.38               -801.8500      -920.87 to -692.23</span></span>
-<span><span class="co">#&gt; 12  -1639.95 to -1248.5              -1435.8328    -1641.49 to -1238.11</span></span>
-<span><span class="co">#&gt; 13   -190.66 to -133.58               -158.7225      -190.99 to -133.58</span></span>
-<span><span class="co">#&gt; 14   -924.57 to -691.63               -793.1972      -918.89 to -686.62</span></span>
-<span><span class="co">#&gt; 15 -1640.33 to -1237.77              -1424.3223    -1631.27 to -1214.98</span></span>
+<span><span class="co">#&gt; 1    -191.11 to -128.35               -160.2440      -194.36 to -128.35</span></span>
+<span><span class="co">#&gt; 2    -925.02 to -680.84               -800.6726      -924.64 to -681.16</span></span>
+<span><span class="co">#&gt; 3  -1651.71 to -1254.17              -1442.1030    -1649.64 to -1256.89</span></span>
+<span><span class="co">#&gt; 4    -189.62 to -132.12               -160.0915      -189.78 to -132.37</span></span>
+<span><span class="co">#&gt; 5    -910.99 to -688.23               -803.1193       -910.13 to -686.5</span></span>
+<span><span class="co">#&gt; 6  -1620.98 to -1231.61              -1428.2545    -1626.82 to -1225.44</span></span>
+<span><span class="co">#&gt; 7    -193.44 to -130.52               -161.1065      -194.95 to -130.46</span></span>
+<span><span class="co">#&gt; 8    -924.11 to -686.87               -801.8532       -929.06 to -687.6</span></span>
+<span><span class="co">#&gt; 9  -1672.56 to -1253.62              -1431.9116    -1659.92 to -1249.87</span></span>
+<span><span class="co">#&gt; 10   -191.68 to -130.95               -161.0109      -191.72 to -131.88</span></span>
+<span><span class="co">#&gt; 11   -928.47 to -691.84               -799.2363      -924.36 to -689.69</span></span>
+<span><span class="co">#&gt; 12 -1630.45 to -1241.07              -1433.0504    -1628.97 to -1229.31</span></span>
+<span><span class="co">#&gt; 13   -190.52 to -130.25               -158.3568      -191.15 to -131.06</span></span>
+<span><span class="co">#&gt; 14   -917.41 to -692.78               -792.8030      -915.77 to -680.13</span></span>
+<span><span class="co">#&gt; 15  -1642.19 to -1253.4              -1422.8258    -1625.43 to -1237.77</span></span>
 <span><span class="co">#&gt;    youden_median        youden_95% CI</span></span>
-<span><span class="co">#&gt; 1      -204.6101   -270.66 to -153.87</span></span>
-<span><span class="co">#&gt; 2      -828.0400   -950.66 to -712.58</span></span>
-<span><span class="co">#&gt; 3     -1460.4685 -1666.56 to -1270.36</span></span>
-<span><span class="co">#&gt; 4      -193.4255   -246.59 to -154.42</span></span>
-<span><span class="co">#&gt; 5      -823.3590    -938.5 to -698.06</span></span>
-<span><span class="co">#&gt; 6     -1447.5095 -1665.31 to -1242.68</span></span>
-<span><span class="co">#&gt; 7      -187.7781   -242.31 to -147.42</span></span>
-<span><span class="co">#&gt; 8      -820.8266   -939.83 to -698.38</span></span>
-<span><span class="co">#&gt; 9     -1441.2496 -1675.22 to -1245.04</span></span>
-<span><span class="co">#&gt; 10     -181.3244   -236.65 to -142.91</span></span>
-<span><span class="co">#&gt; 11     -812.0086    -935.66 to -710.7</span></span>
-<span><span class="co">#&gt; 12    -1436.5507 -1651.97 to -1234.59</span></span>
-<span><span class="co">#&gt; 13     -171.6005    -228.39 to -139.7</span></span>
-<span><span class="co">#&gt; 14     -802.5313   -932.13 to -691.12</span></span>
-<span><span class="co">#&gt; 15    -1427.1325 -1640.83 to -1216.94</span></span></code></pre></div>
+<span><span class="co">#&gt; 1      -202.0775   -265.89 to -157.92</span></span>
+<span><span class="co">#&gt; 2      -827.8577    -945.99 to -712.1</span></span>
+<span><span class="co">#&gt; 3     -1457.1012 -1679.11 to -1274.34</span></span>
+<span><span class="co">#&gt; 4      -193.8136    -247.7 to -154.03</span></span>
+<span><span class="co">#&gt; 5      -828.5544    -940.6 to -705.09</span></span>
+<span><span class="co">#&gt; 6     -1443.2030 -1645.66 to -1227.47</span></span>
+<span><span class="co">#&gt; 7      -189.1873    -247.48 to -147.8</span></span>
+<span><span class="co">#&gt; 8      -823.0664   -937.86 to -695.98</span></span>
+<span><span class="co">#&gt; 9     -1442.6621  -1677.64 to -1251.9</span></span>
+<span><span class="co">#&gt; 10     -182.8893   -236.45 to -144.73</span></span>
+<span><span class="co">#&gt; 11     -812.3547   -935.49 to -702.04</span></span>
+<span><span class="co">#&gt; 12    -1439.6698 -1653.08 to -1237.68</span></span>
+<span><span class="co">#&gt; 13     -169.8181   -219.19 to -139.86</span></span>
+<span><span class="co">#&gt; 14     -800.5874    -926.7 to -685.69</span></span>
+<span><span class="co">#&gt; 15    -1430.9696 -1651.67 to -1239.36</span></span></code></pre></div>
 <p>We can see from these results that as our event rate increases, treatment decisions based on the model, like the Youden index, begin to look better, but there are still very marginal gains from using the prediction model regardless of threshold. It might be that the program could be beneficial mostly in those settings where patients are at a very high risk. If the event rates 0.02, 0.10 and 0.18 corresponded to different wards of the hospital, our simulation could represent the estimated effectiveness of different strategies in each setting.</p>
 <p>We can also represent these results visually.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_pup_screen</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.02</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Varying simulation inputs, other than sim_auc, are being held constant:</span></span>
 <span><span class="co">#&gt; event_rate: 0.02</span></span></code></pre></div>
-<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_pup_screen</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.10</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Varying simulation inputs, other than sim_auc, are being held constant:</span></span>
 <span><span class="co">#&gt; event_rate: 0.1</span></span></code></pre></div>
-<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-16-2.png" width="672"></p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-17-2.png" width="672"></p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_pup_screen</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.18</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Varying simulation inputs, other than sim_auc, are being held constant:</span></span>
 <span><span class="co">#&gt; event_rate: 0.18</span></span></code></pre></div>
-<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-16-3.png" width="672"></p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-17-3.png" width="672"></p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_pup_screen</span>, x_axis_var <span class="op">=</span> <span class="st">"event_rate"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Varying simulation inputs, other than event_rate, are being held constant:</span></span>
 <span><span class="co">#&gt; sim_auc: 0.72</span></span></code></pre></div>
-<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-16-4.png" width="672"></p>
-<p>The nice thing about our cost-effectiveness function is that it tends to follow the best threshold, regardless of AUC or event rate. In this case, it tends to follow the treat none decision as it moves across, which is why the strategies for treat none and cost-effective overlap in the plots. We can also see that the Youden index begins to look better at higher accuracy and higher incidence rates, but it’s pretty unlikely the ‘true’ AUC of the model is over 0.90!</p>
+<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-17-4.png" width="672"></p>
+<p>The nice thing about our cost-effectiveness function is that it tends to follow the best threshold, regardless of AUC or event rate. In this case, it tends to follow the treat none decision as it moves across, which is why the strategies for treat none and cost-effective overlap in the plots. We can also see that the Youden index begins to look better at higher accuracy and higher incidence rates, but predicting what patients will get a pressure ulcer is challenging.</p>
 <p>Ultimately at our given AUC and event rate, it might be best to stop using the intervention for the time being across all patients. This is actually the finding in the analysis this vignette was based off, a cost-effectiveness analysis of a pressure ulcer prevention care bundle by Whitty et al in 2017 (10.1016/j.ijnurstu.2017.06.014).</p>
 </div>
 </div>
