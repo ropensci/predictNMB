@@ -81,15 +81,17 @@ stopCluster(cl)
 
 ### Choosing the x-axis variable and other constants
 
-In this simulation screen, we vary both the event rate and the model discrimination.
-There are many ways that we could visualise these data. The `plot()` allows us to make some basic plots to compare different cutpoint methods regardin the Net Monetary Benefit (NMB) and another variable of our choice. In our case, we can choose between the `sim_auc` and `event_rate`. We control this with the `x_axis_var` argument.
+In this simulation screen, we vary both the event rate and the model discrimination (sim_AUC).
+There are many ways that we could visualise the data. The `plot()` function allows us to make some basic plots to compare the impact of different cutpoint methods on Net Monetary Benefit (NMB) and another variable of our choice. 
+
+In this case, we can visualise the impact on NMB for different methods across varying levels of `sim_auc` or `event_rate`. We control this with the `x_axis_var` argument.
 
 ```{r}
 plot(sim_screen_obj, x_axis_var = "sim_auc")
 plot(sim_screen_obj, x_axis_var = "event_rate")
 ```
 
-For these plots, one of the screened inputs will be the x-axis variable and the other will only displayed at one of it's levels. The default will assume the first level, so when we visualised the change in NMB as `sim_auc` increased, we were only observing this for the case where `event_rate = 0.1`. We can choose to select another level with the `constants` argument. This argument expects a named list containing the values to keep for the screened inputs which are not shown on the x-axis.
+For these plots, one of the screened inputs will be the x-axis variable, but the other will only be displayed at a single level. The default setting will assume the first level, so when we visualise the change in NMB specifying `sim_auc` as the x-axis variable, we only observe this for the case where `event_rate = 0.1`. We can choose to select another level with the `constants` argument. This argument expects a named list containing the values to keep for the screened inputs which are not shown on the x-axis.
 
 ```{r}
 plot(sim_screen_obj, x_axis_var = "sim_auc", constants = list(event_rate = 0.1))
@@ -100,7 +102,7 @@ We see both a change to the plot as well as the message produced when the plot i
 
 ### Choosing a y-axis variable
 
-There are three options for the y-axis. The default is the NMB, but you can also visualise the Incremental Net Monetary Benefit (INB) and the selected cutpoints. These are controlled by the `what` argument which can be any of `c("nmb", "inb", "cutpoints")`. If a vector is passed, the first value is used. If you choose to visualise the INB, you must your chosen reference strategy for the calculation in the `inb_ref_col`.
+There are three options for the y-axis. The default is the NMB, but you can also visualise the Incremental Net Monetary Benefit (INB) and the selected cutpoints. These are controlled by the `what` argument, which can be any of `c("nmb", "inb", "cutpoints")`. If a vector is used, only the first value will be selected. If you choose to visualise the INB, you must list your chosen reference strategy for the calculation in the `inb_ref_col`. In this case, we use treat all (`"all"`).
 
 ```{r, message=FALSE}
 plot(sim_screen_obj, what = "nmb")
@@ -111,14 +113,14 @@ plot(sim_screen_obj, what = "cutpoints")
 
 ### Selecting what to show on the plot
 
-The plots show, be default, the median (the dot), the 95% confidence interval (thick vertical lines), and the range (thin vertical lines), and the lines between the points. These can each be shown or hidden independently, and the width of the confidence interval can be controlled using the `ci` argument.
+The plots show the median (the dot), the 95% confidence interval (thick vertical lines), the range (thin vertical lines), and the lines between the points by default. These can each be shown or hidden independently, and the width of the confidence interval can be controlled using the `ci` argument.
 
 ```{r, message=FALSE}
 plot(sim_screen_obj)
 plot(sim_screen_obj, plot_range = FALSE)
+plot(sim_screen_obj, plot_ci = FALSE)
 plot(sim_screen_obj, plot_ci = FALSE, plot_range = FALSE)
 plot(sim_screen_obj, plot_ci = FALSE, plot_range = FALSE, plot_line = FALSE)
-plot(sim_screen_obj)
 ```
 
 
@@ -137,19 +139,19 @@ The cutpoint methods can be renamed or removed. To rename them, pass a named vec
 plot(sim_screen_obj)
 plot(
   sim_screen_obj, 
-  rename_vector = c("Treat All" = "all", "Treat None" = "none")
+  rename_vector = c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Value Optimisation" = "value_optimising")
 )
 ```
 
-You can reorder the methods by passing the order as the `methods_order` argument. Also note that this will remove all methods which aren't included, and it will factor the names AFTER it has renamed them, so if you are both renaming and re-ordering, you must provide the updated names.
+You can reorder the methods by passing the order as the `methods_order` argument. Also note that this will remove all methods which aren't included, and it will factor the names AFTER it has renamed them. So, if you are both renaming and re-ordering, you must provide the updated names when you order them:
 
 ```{r, message=FALSE}
 plot(sim_screen_obj)
 plot(sim_screen_obj, methods_order = c("all", "none"))
 plot(
   sim_screen_obj,
-  rename_vector = c("Treat All" = "all", "Treat None" = "none"),
-  methods_order = c("Treat All", "Treat None")
+  rename_vector = c("Treat All" = "all", "Treat None" = "none"), #Assign new names to the two methods of interest 
+  methods_order = c("Treat All", "Treat None")                   #Call the methods by their new names
 )
 ```
 
@@ -202,11 +204,11 @@ plot(
 plot(
   do_nmb_sim_obj, 
   what = "cutpoints", 
-  methods_order = c("all", "none", "value_optimising")
+  methods_order = c("all", "none", "youden", "value_optimising")
 )
 ```
 
-These plots display the median as the solid bar, the grey part of the distributions are the outer 5% of the simulated values and the light blue region is the 95% CI. The fill colours of the histogram are controlled with `fill_cols` and the line for the median is controlled with `median_line_col`. The thickness of the median line is controlled with `median_line_size` and it's transparency with `median_line_alpha`.
+These plots display the median as the solid bar, the grey part of the distributions are the outer 5% of the simulated values and the light blue region is the 95% CI. For the methods that select thresholds based on the values in the 2x2 table, such as value-optimising thresholds, this may look a little strange as the cutpoints are highly variable. This can be stabilised with more simulations. The fill colours of the histogram are controlled with `fill_cols` and the line for the median is controlled with `median_line_col`. The thickness of the median line is controlled with `median_line_size` and it's transparency with `median_line_alpha`. 
 
 ```{r}
 plot(
@@ -218,7 +220,7 @@ plot(
 )
 ```
 
-The `n_bins` argument controls the number of bins used for the histograms and the `label_wrap_width` is the number of characters above which to start a new line for the facet labels. This can be handy when using detailed names for the methods when the font of the label is relatively large compared to the plot. Also, the width of the confidence intervals can be controlled by the `ci` argument.
+The `n_bins` argument controls the number of bins used for the histograms and the `label_wrap_width` is the number of characters above which to start a new line for the facet labels. This can be handy when using detailed names for the methods when the font of the label is relatively large compared to the plot, though a space is needed to determine where to split the label. The width of the confidence intervals can also be controlled by the `ci` argument in this `plot()` call.
 
 ```{r, fig.height=3, fig.width=6}
 plot(
@@ -249,7 +251,7 @@ plot(
 
 # Making tables with predictNMB
 
-To make tables from the same objects as we used for the plots, we instead use `make_summary_table()`. This can be applied to either type of results (`screen_simulation_inputs()` or `do_nmb_sim()`).
+To make tables from the same objects as we used for the plots, we instead use `make_summary_table()`. This can be applied to either type of results (`screen_simulation_inputs()` or `do_nmb_sim()`). Using the `%>%` operator, it is compatible with the `knitr` function `kable()`, which is a simple table generator.
 
 
 ```{r, eval=FALSE}
@@ -306,7 +308,7 @@ make_summary_table(
   knitr::kable()
 ```
 
-The summary table contains the same thing for both object types but are arrange slightly differently. Each row in the object containing a screen over inputs is a unique set of inputs. This can be trimmed short to include only those that vary over inputs by using the `show_full_inputs` argument. By default, only the inputs that vary are shown.
+The summary table contains the same outputs for both `do_nmb_sim()` and `screen_simulation_inputs()`, but they are arranged slightly differently. Each row in the screen over inputs object is a unique set of inputs. By default, this is trimmed to include only those inputs that vary in our function call - here, `sim_auc` and `event_rate` - by using the `show_full_inputs` argument. By default, only the inputs that vary are shown. However, we can set `show_full_inputs = TRUE` to see more.
 
 ```{r, eval=FALSE}
 make_summary_table(sim_screen_obj)

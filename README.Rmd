@@ -41,7 +41,7 @@ devtools::install_github("RWParsons/predictNMB")
 
 ## Estimating model cutpoints
 
-Hypothetical NMB associated with each square of a confusion matrix must first be defined.
+We must first define a hypothetical NMB associated with each square of a confusion matrix (2x2 table).
 
 ```{r}
 library(predictNMB)
@@ -55,6 +55,7 @@ fx_nmb <- get_nmb_sampler(
 fx_nmb()
 ```
 
+We can then pass this to the simulation function.
 Required arguments:
 
 - `n_sims`: number of simulations to run. More simulations take longer, but are more stable
@@ -75,15 +76,15 @@ sim_screen_obj <- screen_simulation_inputs(
 )
 ```
 
-These simulations can be interpreted as a range of hypothetical situations under different levels of model performance within my specific healthcare setting. We can visualise how this change may affect preference between the model-guided strategy versus a treat-all or treat-non strategy.
+These simulations can be interpreted as a range of hypothetical situations under different levels of model performance within our specific healthcare setting. We can visualise how this change may affect preferences between the model-guided strategy versus a treat-all or treat-none strategy - in other words, using the model to determine who should get treatment, rather than everyone or no-one.
 
-`plot()` on the object returned from this function to quickly inspect these trends.
+`plot()` on the object returned from this function to quickly inspect these trends:
 
 ```{r, message=FALSE}
 plot(sim_screen_obj)
 ```
 
-Here, we are visualising many simulations under different inputs. If we want to inspect just a single set of inputs, say when the model AUC was 0.9, we can run that simulation alone using `do_nmb_sim()`, or access it from our existing screen.
+Here, we are visualising many simulations under different inputs. If we just want to inspect a single set of inputs, say when the model AUC is 0.9, we can run that simulation alone using `do_nmb_sim()`, or access it from our existing screen.
 
 ```{r, eval=F}
 single_sim_obj <- do_nmb_sim(
