@@ -29,14 +29,14 @@ do_nmb_sim(
 
 \item{event_rate}{Simulated event rate of the binary outcome being predicted. Also known as prevalence.}
 
-\item{cutpoint_methods}{A value or vector of cutpoint methods to include. Defaults to use the inbuilt methods. \cr Methods:
+\item{cutpoint_methods}{A value or vector of cutpoint methods to include. Defaults to use the inbuilt methods:
 \itemize{
- \item{"all" = treat all patients}
- \item{"none" = treat no patients}
+ \item{"all" = treat all patients (cutpoint = 0)}
+ \item{"none" = treat no patients (cutpoint = 1)}
  \item{"value_optimising" = select the cutpoint that maximises NMB}
  \item{"youden" = select cutpoint based on the Youden index, also known as the J-index (sensitivity + specificity - 1)}
  \item{"cost_minimising" = select the cutpoint that minimises expected value of costs}
- \item{"prod_sens_spec" = product of sensitivity and specificity (sensitivity \* specificity)}
+ \item{"prod_sens_spec" = product of sensitivity and specificity (sensitivity * specificity)}
  \item{"roc01" = selects the closest threshold to the (0,1) point on the ROC curve}
 }
 User-defined cutpoint methods can be used by passing the name of a function that takes the following arguments:
@@ -47,9 +47,9 @@ User-defined cutpoint methods can be used by passing the name of a function that
 }
 See \code{?get_thresholds} for an example of a user-defined cutpoint function.}
 
-\item{fx_nmb_training}{Function that returns a named vector of NMB assigned to classifications use for obtaining cutpoint on training set. See `details` for more information.}
+\item{fx_nmb_training}{Function that returns a named vector of NMB assigned to classifications used for obtaining cutpoint on training set. See `details` for more information.}
 
-\item{fx_nmb_evaluation}{Function that returns a named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set. See `details` for more information.}
+\item{fx_nmb_evaluation}{Function that returns a named vector of NMB assigned to classifications used for obtaining cutpoint on evaluation set. See `details` for more information.}
 
 \item{meet_min_events}{Whether or not to incrementally add samples until the expected number of events (\code{sample_size * event_rate}) is met. (Applies to sampling of training data only.)}
 
@@ -64,8 +64,8 @@ predictNMBsim
 Do the predictNMB simulation, evaluating the net monetary benefit of the simulated model.
 }
 \details{
-This function runs a simulation for a given set of inputs that represent a healthcare setting using model-guided interventions. \cr
-The arguments \code{fx_nmb_training} and \code{fx_nmb_evaluation} should be functions that capture the treatment being used, it's costs and effectiveness, and the costs of the outcome being treated/prevented. \cr \cr
+This function runs a simulation for a given set of inputs that represent a healthcare setting using model-guided interventions. \cr \cr
+The arguments \code{fx_nmb_training} and \code{fx_nmb_evaluation} should be functions that capture the treatment being used, its costs and effectiveness, and the costs of the outcome being treated/prevented. \cr \cr
 Both of these are functions that return a named vector of NMB values when called and are used for obtaining and evaluating cutpoints, respectively.
 For example, the following function returns the appropriately named vector. \cr\cr
 \code{get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)}

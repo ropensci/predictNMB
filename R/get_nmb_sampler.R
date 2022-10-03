@@ -3,7 +3,7 @@
 #' @param outcome_cost The cost of the outcome. Must be provided if \code{wtp} and \code{qalys_lost} are not.
 #' Or can be used in addition to these arguments to represent additional cost to the health burden.
 #' @param wtp Willingness-to-pay.
-#' @param qalys_lost Quality-adjusted-life-years lost due to healthcare event being predicted.
+#' @param qalys_lost Quality-adjusted life years (QALYs) lost due to healthcare event being predicted.
 #' @param high_risk_group_treatment_effect The effect of the treatment provided
 #' to patients given high risk prediction. Can be a number of a function.
 #' Provide a function to incorporate uncertainty.
@@ -17,7 +17,7 @@
 #' patients given low risk prediction. Can be a number of a function.
 #' Provide a function to incorporate uncertainty. Defaults to 0 (no treatment).
 #' @param use_expected_values Logical. If \code{TRUE}, gets the mean of many
-#' samples from the produced function and returns these everytime. This is a
+#' samples from the produced function and returns these every time. This is a
 #' sensible choice when using the resulting function for selecting the cutpoint.
 #' See \code{fx_nmb_training}. Defaults to \code{FALSE.}
 #' @param nboot The number of samples to use when creating a function that

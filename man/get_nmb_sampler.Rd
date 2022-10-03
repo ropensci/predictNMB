@@ -22,7 +22,7 @@ Or can be used in addition to these arguments to represent additional cost to th
 
 \item{wtp}{Willingness-to-pay.}
 
-\item{qalys_lost}{Quality-adjusted-life-years lost due to healthcare event being predicted.}
+\item{qalys_lost}{Quality-adjusted life years (QALYs) lost due to healthcare event being predicted.}
 
 \item{high_risk_group_treatment_effect}{The effect of the treatment provided
 to patients given high risk prediction. Can be a number of a function.
@@ -41,7 +41,7 @@ patients given low risk prediction. Can be a number of a function.
 Provide a function to incorporate uncertainty. Defaults to 0 (no treatment).}
 
 \item{use_expected_values}{Logical. If \code{TRUE}, gets the mean of many
-samples from the produced function and returns these everytime. This is a
+samples from the produced function and returns these every time. This is a
 sensible choice when using the resulting function for selecting the cutpoint.
 See \code{fx_nmb_training}. Defaults to \code{FALSE.}}
 
