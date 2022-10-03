@@ -68,11 +68,11 @@
 
 
 <dt>what</dt>
-<dd><p>what to summarise: one of "nmb", "inb" or "cutpoints". Defaults to "nmb".</p></dd>
+<dd><p>what to summarise: one of "nmb", "inb" or "cutpoints". Defaults to "nmb". See `details` for more.</p></dd>
 
 
 <dt>inb_ref_col</dt>
-<dd><p>which cutpoint method to use as the reference strategy when calculating the incremental net monetary benefit.</p></dd>
+<dd><p>which cutpoint method to use as the reference strategy when calculating the incremental net monetary benefit. See <code>do_nmb_sim</code> for more information.</p></dd>
 
 
 <dt>agg_functions</dt>
@@ -87,6 +87,11 @@
 <dd><p>additional, optional arguments.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Table summaries will be based on the `what` argument. Using "nmb" returns the simulated values for NMB, with no reference group;
+"inb" returns the difference between simulated values for NMB and a set strategy defined by `inb_ref_col`; "cutpoints" returns the cutpoints selected (0,1).</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
