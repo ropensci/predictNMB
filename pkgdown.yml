@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   introduction-to-predictNMB: introduction-to-predictNMB.html
   summarising-results-with-predictNMB: summarising-results-with-predictNMB.html
-last_built: 2022-10-03T21:19Z
+last_built: 2022-10-25T06:51Z
 urls:
   reference: https://rwparsons.github.io/predictNMB/reference
   article: https://rwparsons.github.io/predictNMB/articles
