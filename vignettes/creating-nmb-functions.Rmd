@@ -1,0 +1,121 @@
+---
+title: "Creating NMB functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{creating-nmb-functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# NMB functions
+
+The most important aspect of `predictNMB` is it's ability to evaluate the simulated prediction models in terms of Net Monetary Benefit (NMB). To do so, it requires the user to create and provide functions which generate a named vector with NMB values assigned to each of the four possible classifications: 
+
+- TP: True Positives, correctly predicted events that lead to necessary treatment
+- TN: True Negatives, correctly predicted non-events that avoid unnecessary treatment
+- FP: False Positives, incorrectly predicted positives that lead to unnecessary treatment
+- FN: False Negatives, incorrectly predicted non-events that lead to a lack of necessary treatment
+
+This vignette will guide you how to create these functions by hand as well as using the helper function, `get_nmb_sampler()`. Firstly, it starts with key considerations for the user when creating these functions to best reflect their clinical context. The last section will show how to use the created functions with `do_nmb_sim()`.
+
+## Key considerations
+
+The functions created here are used for two purposes depending on which argument they are passed to within `do_nmb_sim()`/`screen_simulation_inputs()`. The arguments which take these functions are:
+
+- `fx_nmb_training`: only ever used if the `cost_minimising` or `value_optimising` cutpoint methods are used. These cutpoints aim to maximise the NMB are therefore require our best estimates of the NMB values assigned to each classification.
+- `fx_nmb_evaluation`: used for evaluation for all methods and is required to run the simulation.
+
+The function that generates the named vector and is passed as the `fx_nmb_evaluation` argument is re-evaluated at every iteration of the simulation. This allows us to bake in uncertainty since it is unlikely that we know these costs exactly. The mean NMB per patient is evaluated at the end of each iteration according to this produced named vector and this is what is summarised from the simulation using the summary methods (see associated vignette using `browseVignettes(package = "predictNMB")`). It is important to incorporate uncertainty into the function which is used for `fx_nmb_evaluation` because, usually, we are not certain about the effectiveness of interventions or their associated costs, and this uncertainty should be translated towards the uncertainty that we summarise from the simulation and the uncertainty in the decision regarding the best available method. Similarly, if we do not include any uncertainty for this function or the function used for `fx_nmb_training`, we are assuming that we are able to select the cutpoint based on the **exact** costs and intervention when, in reality, this is unlikely. This may mean that the merit of the `cost_minimising` or `value_optimising` cutpoint approach may be overestimated. Since, in practice, the cutpoint for the prediction model is likely to be selected based upon best possible evidence - our best estimate of costs and effectiveness - the function passed as the `fx_nmb_training` argument should provide the same named vector every time, and be based on these best estimates and not include any uncertainty. This will be revisited in the last section on using the generated functions when calling `do_nmb_sim()`.
+
+
+## Making functions by hand
+
+This first section describes how to make them by hand. If you're not particularly familiar with R, this may be trickier to follow and the subsequent section on using `get_nmb_sampler()` may be a better place to start. This section introduces all the flexibility that the user to can express when creating these functions but may be overkill for some use cases.
+
+An example of a function which provides the appropriate output is below. 
+
+```{r}
+foo1 <- function() {
+  c(
+    "TP" = -3,
+    "TN" = 0,
+    "FP" = -1,
+    "FN" = -4
+  )
+}
+foo1()
+```
+
+Note that NMB values for each possible classification are equal or less than zero. If we frame this around a healthcare event, say inpatient falls, we can assume that this model is predicting inpatient falls and those which are categorised as high risk by the model and given some intervention that reduces the rate or impact of those falls. The cost of the fall is \$4, the cost of the intervention is \$1, and the intervention reduces the rate of falls by 50%. 
+
+For our possible classifications: 
+
+- $TP = -\$1 - \frac{\$4}{2} = -\$3$ (receive the intervention (\$1) and falls (\$4) at half the rate (/2))
+- $TN = \$0$ (do not receive the intervention and do not have the cost of the fall)
+- $FP = -\$1$ (receive the intervention (\$1) and do not have the cost of the fall)
+- $FN -\$4$ (do not have the intervention and do have the (full) cost of the fall (\$4))
+
+For better flexibility. The users can provide any argument-less function in this form. This allows the ability to incorporate uncertainty when it comes to evaluating models (since we may not know *exactly* how much a fall may cost or *exactly* how well the intervention will work). For example, in the function below, we have incorporated uncertainty into the estimates that we use to construct our NMB values, and every time we call the function we get slightly different values assigned to each of the possible classification (except for the TN's since in all cases, they don't receive the treatment or the cost of the fall). (This is particularly important for evaluation!)
+
+
+```{r}
+foo2 <- function() {
+  intervention_cost <- rgamma(n = 1, shape = 1)
+  intervention_effectiveness <- rbeta(n = 1, shape1 = 10, shape2 = 10)
+  fall_cost <- rgamma(n = 1, shape = 4)
+
+  c(
+    "TP" = -intervention_cost - fall_cost * intervention_effectiveness,
+    "TN" = 0,
+    "FP" = -intervention_cost,
+    "FN" = -fall_cost
+  )
+}
+
+foo2()
+foo2()
+foo2()
+```
+
+Another benefit of this user-defined function structure is that the user can also allow the low risk group to receive an intervention rather than nothing. This may make sense where there are more than one available intervention to use and one is more costly (and presumably effective) than the other. This way, we can assign all high risk patients to receive the high cost and highly effective intervention and the low risk patients to receive the low cost and less effective intervention. Extending `foo2()`, we can could create the function below, where the low cost intervention is \$0.5 and reduces falls by 30%.
+
+```{r}
+foo3 <- function() {
+  # intervention for high risk (hr) group
+  hr_intervention_cost <- rgamma(n = 1, shape = 1)
+  hr_intervention_effectiveness <- rbeta(n = 1, shape1 = 10, shape2 = 10)
+
+  # intervention for low risk (lr) group
+  lr_intervention_cost <- rgamma(n = 1, shape = 0.5 * 10, rate = 1 * 10)
+  lr_intervention_effectiveness <- rbeta(n = 1, shape1 = 10, shape2 = 30)
+
+
+  fall_cost <- rgamma(n = 1, shape = 4)
+
+  c(
+    "TP" = -hr_intervention_cost - fall_cost * hr_intervention_effectiveness,
+    "TN" = -lr_intervention_cost,
+    "FP" = -hr_intervention_cost,
+    "FN" = -lr_intervention_cost - fall_cost * lr_intervention_effectiveness
+  )
+}
+
+foo3()
+foo3()
+foo3()
+```
+
+Now, since we are providing an intervention with an associated cost to those categorised as low risk, there is a negative NMB assigned to TN's but the NMB of the FN's is not as negative as before since they are receiving an (albeit less effective) intervention that reduces the cost of the fall.
+
+## Making functions using `get_nmb_sampler()`
+
+
+## Passing these functions to `do_nmb_sim()`
+
