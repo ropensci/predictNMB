@@ -153,14 +153,14 @@
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         TN         FP         FN </span></span>
-<span><span class="co">#&gt; -2.1360947  0.0000000 -0.5662071 -5.0293350</span></span>
-<span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         TN         FP         FN </span></span>
-<span><span class="co">#&gt; -2.4998553  0.0000000 -0.2822953 -3.4846957</span></span>
+<span><span class="co">#&gt;        TP        TN        FP        FN </span></span>
+<span><span class="co">#&gt; -6.412450  0.000000 -4.384015 -4.465281</span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        TP        TN        FP        FN </span></span>
-<span><span class="co">#&gt; -2.491876  0.000000 -1.178492 -2.268127</span></span></code></pre></div>
+<span><span class="co">#&gt; -5.651997  0.000000 -2.657268 -6.645606</span></span>
+<span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        TP        TN        FP        FN </span></span>
+<span><span class="co">#&gt; -3.202208  0.000000 -1.343519 -3.902816</span></span></code></pre></div>
 <p>Another benefit of this user-defined function structure is that the user can also allow the low risk group to receive an intervention rather than nothing. This may make sense where there are more than one available intervention to use and one is more costly (and presumably effective) than the other. This way, we can assign all high risk patients to receive the high cost and highly effective intervention and the low risk patients to receive the low cost and less effective intervention. Extending <code>foo2()</code>, we can could create the function below, where the low cost intervention is $0.5 and reduces falls by 30%.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foo3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
@@ -185,13 +185,13 @@
 <span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         TN         FP         FN </span></span>
-<span><span class="co">#&gt; -2.7404517 -0.6722498 -0.7922867 -1.8171225</span></span>
+<span><span class="co">#&gt; -2.6901596 -0.3087913 -0.2269915 -1.2339056</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         TN         FP         FN </span></span>
-<span><span class="co">#&gt; -1.5407598 -0.4385568 -0.3265480 -1.3163814</span></span>
+<span><span class="co">#&gt; -2.7263579 -0.9122333 -0.1376267 -1.9003357</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         TN         FP         FN </span></span>
-<span><span class="co">#&gt; -1.9203429 -0.3469574 -0.8699982 -1.1267865</span></span></code></pre></div>
+<span><span class="co">#&gt; -2.5547361 -0.6083610 -0.3353511 -1.6140347</span></span></code></pre></div>
 <p>Now, since we are providing an intervention with an associated cost to those categorised as low risk, there is a negative NMB assigned to TN’s but the NMB of the FN’s is not as negative as before since they are receiving an (albeit less effective) intervention that reduces the cost of the fall.</p>
 </div>
 <div class="section level3">
