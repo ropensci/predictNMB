@@ -1,6 +1,6 @@
 Package: predictNMB
 Type: Package
-Title: Evaluate Clinical Prediction Models By Net Monetary Benefit
+Title: Evaluate Clinical Prediction Models by Net Monetary Benefit
 Version: 0.0.0.9000
 Authors@R: c(
     person("Rex", "Parsons", role = c("aut", "cre"),
