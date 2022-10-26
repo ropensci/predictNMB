@@ -45,8 +45,8 @@
 #'
 #' get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 #' do_nmb_sim(
-#'   n_sims = 50, n_valid = 10000, sim_auc = 0.7, event_rate = 0.1,
-#'   fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
+#'   sample_size = 200, n_sims = 50, n_valid = 10000, sim_auc = 0.7,
+#'   event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
 #' )
 do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
                        cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
