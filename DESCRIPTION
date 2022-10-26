@@ -3,29 +3,18 @@ Type: Package
 Title: Evaluate Clinical Prediction Models By Net Monetary Benefit
 Version: 0.0.0.9000
 Authors@R: c(
-      person(given = "Rex",
-             family = "Parsons",
-             role = c("aut", "cre"),
-             email = "Rex.Parsons94@gmail.com",
-             comment = c(ORCID = "0000-0002-6053-8174")),
-      person(given = "Robin",
-             family = "Blythe",
-             role = "aut",
-             comment = c(ORCID = "0000-0002-3643-4332")),
-      person(given = "Adrian",
-             family = "Barnett",
-             role = "aut",
-             comment = c(ORCID = "0000-0001-6339-0374")),
-      person(given = "Susanna",
-             family = "Cramb",
-             role = "ctb",
-             comment = c(ORCID = "0000-0001-9041-9531")),
-      person(given = "Steve",
-             family = "McPhail",
-             role = "ctb",
-             comment = c(ORCID = "0000-0002-1463-662X"))
-    )
-Maintainer: Rex Parsons <Rex.Parsons94@gmail.com>
+    person("Rex", "Parsons", role = c("aut", "cre"),
+           email = "rex.parsons94@gmail.com",
+           comment = c(ORCID = "0000-0002-6053-8174")),
+    person("Robin", "Blythe", role = "aut",
+           comment = c(ORCID = "0000-0002-3643-4332")),
+    person("Adrian", "Barnett", role = "aut",
+           comment = c(ORCID = "0000-0001-6339-0374")),
+    person("Susanna", "Cramb", role = "ctb",
+           comment = c(ORCID = "0000-0001-9041-9531")),
+    person("Steve", "McPhail", role = "ctb",
+           comment = c(ORCID = "0000-0002-1463-662X"))
+  )
 Description: Estimates when and where a model-guided strategy would outperform 
     a treat-all or treat-none approach.
 License: GPL (>= 3)
