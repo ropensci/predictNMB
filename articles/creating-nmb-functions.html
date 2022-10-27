@@ -117,23 +117,23 @@
 <code class="sourceCode R"><span><span class="va">foo1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"TP"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">3</span>,</span>
-<span>    <span class="st">"TN"</span> <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>    <span class="st">"FP"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,</span>
+<span>    <span class="st">"TN"</span> <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>    <span class="st">"FN"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">4</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="fu">foo1</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; TP TN FP FN </span></span>
-<span><span class="co">#&gt; -3  0 -1 -4</span></span></code></pre></div>
+<span><span class="co">#&gt; TP FP TN FN </span></span>
+<span><span class="co">#&gt; -3 -1  0 -4</span></span></code></pre></div>
 <p>Note that NMB values for each possible classification are equal or less than zero. If we frame this around a healthcare event, say inpatient falls, we can assume that this model is predicting inpatient falls and those which are categorised as high risk by the model and given some intervention that reduces the rate or impact of those falls. The cost of the fall is $4, the cost of the intervention is $1, and the intervention reduces the rate of falls by 50%.</p>
 <p>For our possible classifications:</p>
 <ul>
 <li>
 <span class="math inline">\(TP = -\$1 - \frac{\$4}{2} = -\$3\)</span> (receive the intervention ($1) and falls ($4) at half the rate (/2))</li>
 <li>
-<span class="math inline">\(TN = \$0\)</span> (do not receive the intervention and do not have the cost of the fall)</li>
-<li>
 <span class="math inline">\(FP = -\$1\)</span> (receive the intervention ($1) and do not have the cost of the fall)</li>
+<li>
+<span class="math inline">\(TN = \$0\)</span> (do not receive the intervention and do not have the cost of the fall)</li>
 <li>
 <span class="math inline">\(FN -\$4\)</span> (do not have the intervention and do have the (full) cost of the fall ($4))</li>
 </ul>
@@ -145,22 +145,22 @@
 <span>  <span class="va">fall_cost</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"TP"</span> <span class="op">=</span> <span class="op">-</span><span class="va">intervention_cost</span> <span class="op">-</span> <span class="va">fall_cost</span> <span class="op">*</span> <span class="va">intervention_effectiveness</span>,</span>
-<span>    <span class="st">"TN"</span> <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>    <span class="st">"TP"</span> <span class="op">=</span> <span class="op">-</span><span class="va">intervention_cost</span> <span class="op">-</span> <span class="va">fall_cost</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">intervention_effectiveness</span><span class="op">)</span>,</span>
 <span>    <span class="st">"FP"</span> <span class="op">=</span> <span class="op">-</span><span class="va">intervention_cost</span>,</span>
+<span>    <span class="st">"TN"</span> <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>    <span class="st">"FN"</span> <span class="op">=</span> <span class="op">-</span><span class="va">fall_cost</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        TN        FP        FN </span></span>
-<span><span class="co">#&gt; -6.412450  0.000000 -4.384015 -4.465281</span></span>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -3.814944 -1.557311  0.000000 -3.313327</span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        TN        FP        FN </span></span>
-<span><span class="co">#&gt; -5.651997  0.000000 -2.657268 -6.645606</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -2.8388283 -0.8044415  0.0000000 -3.1043927</span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        TN        FP        FN </span></span>
-<span><span class="co">#&gt; -3.202208  0.000000 -1.343519 -3.902816</span></span></code></pre></div>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -3.088197 -2.084523  0.000000 -3.379052</span></span></code></pre></div>
 <p>Another benefit of this user-defined function structure is that the user can also allow the low risk group to receive an intervention rather than nothing. This may make sense where there are more than one available intervention to use and one is more costly (and presumably effective) than the other. This way, we can assign all high risk patients to receive the high cost and highly effective intervention and the low risk patients to receive the low cost and less effective intervention. Extending <code>foo2()</code>, we can could create the function below, where the low cost intervention is $0.5 and reduces falls by 30%.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foo3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
@@ -176,31 +176,179 @@
 <span>  <span class="va">fall_cost</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"TP"</span> <span class="op">=</span> <span class="op">-</span><span class="va">hr_intervention_cost</span> <span class="op">-</span> <span class="va">fall_cost</span> <span class="op">*</span> <span class="va">hr_intervention_effectiveness</span>,</span>
-<span>    <span class="st">"TN"</span> <span class="op">=</span> <span class="op">-</span><span class="va">lr_intervention_cost</span>,</span>
+<span>    <span class="st">"TP"</span> <span class="op">=</span> <span class="op">-</span><span class="va">hr_intervention_cost</span> <span class="op">-</span> <span class="va">fall_cost</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">hr_intervention_effectiveness</span><span class="op">)</span>,</span>
 <span>    <span class="st">"FP"</span> <span class="op">=</span> <span class="op">-</span><span class="va">hr_intervention_cost</span>,</span>
-<span>    <span class="st">"FN"</span> <span class="op">=</span> <span class="op">-</span><span class="va">lr_intervention_cost</span> <span class="op">-</span> <span class="va">fall_cost</span> <span class="op">*</span> <span class="va">lr_intervention_effectiveness</span></span>
+<span>    <span class="st">"TN"</span> <span class="op">=</span> <span class="op">-</span><span class="va">lr_intervention_cost</span>,</span>
+<span>    <span class="st">"FN"</span> <span class="op">=</span> <span class="op">-</span><span class="va">lr_intervention_cost</span> <span class="op">-</span> <span class="va">fall_cost</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">lr_intervention_effectiveness</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         TN         FP         FN </span></span>
-<span><span class="co">#&gt; -2.6901596 -0.3087913 -0.2269915 -1.2339056</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -1.3009054 -0.2249718 -0.2975558 -1.7348849</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         TN         FP         FN </span></span>
-<span><span class="co">#&gt; -2.7263579 -0.9122333 -0.1376267 -1.9003357</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -2.9153282 -0.1753290 -0.2682912 -4.5353548</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         TN         FP         FN </span></span>
-<span><span class="co">#&gt; -2.5547361 -0.6083610 -0.3353511 -1.6140347</span></span></code></pre></div>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -2.2937040 -0.7007700 -0.2244039 -2.6516869</span></span></code></pre></div>
 <p>Now, since we are providing an intervention with an associated cost to those categorised as low risk, there is a negative NMB assigned to TN’s but the NMB of the FN’s is not as negative as before since they are receiving an (albeit less effective) intervention that reduces the cost of the fall.</p>
 </div>
 <div class="section level3">
 <h3 id="making-functions-using-get_nmb_sampler">Making functions using <code>get_nmb_sampler()</code><a class="anchor" aria-label="anchor" href="#making-functions-using-get_nmb_sampler"></a>
 </h3>
+<p>The previous section demonstrates how to make functions by hand and a general approach to thinking about intervention costs and effects on the outcome. This same approach is used by <code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code> but abstracts the actual creation of the function away to make things more straight forward for the user.</p>
+<p>To replicate what we created as <code>foo1()</code>, we pass these costs as separate arguments and the function is created and output by<code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code>. Recall:</p>
+<blockquote>
+<p>The cost of the fall is $4, the cost of the intervention is $1, and the intervention reduces the rate of falls by 50%.</p>
+</blockquote>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rwparsons.github.io/predictNMB/">predictNMB</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">foo1_remake</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/get_nmb_sampler.html">get_nmb_sampler</a></span><span class="op">(</span></span>
+<span>    outcome_cost <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>    high_risk_group_treatment_cost <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    high_risk_group_treatment_effect <span class="op">=</span> <span class="fl">0.5</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu">foo1_remake</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; TP FP TN FN </span></span>
+<span><span class="co">#&gt; -3 -1  0 -4</span></span>
+<span><span class="fu">foo1</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; TP FP TN FN </span></span>
+<span><span class="co">#&gt; -3 -1  0 -4</span></span></code></pre></div>
+<p>The arguments are passed as costs and the treatment effect (<code>high_risk_group_treatment_effect</code>) is the the rate reduction of the event for those receiving the treatment.</p>
+<p><sub>(firstly, some code for making plots of sampled NMB values from a given function)</sub></p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="va">plot_nmb_dist</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">f</span>, <span class="va">n</span> <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="st">"rbind"</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">n</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">f</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">data_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>,</span>
+<span>    cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    names_to <span class="op">=</span> <span class="st">"classification"</span>,</span>
+<span>    values_to <span class="op">=</span> <span class="st">"NMB"</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">data_long</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">NMB</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">classification</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">""</span>, x <span class="op">=</span> <span class="st">"Net Monetary Benefit ($)"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>We can incorporate uncertainty by passing argument-less functions which generate values as the arguments. When calling <code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code>, we specify the values as argument-less functions and these are evaluated every time the returned function is called.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">foo2_remake</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/get_nmb_sampler.html">get_nmb_sampler</a></span><span class="op">(</span></span>
+<span>    outcome_cost <span class="op">=</span> \<span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,</span>
+<span>    high_risk_group_treatment_cost <span class="op">=</span> \<span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    high_risk_group_treatment_effect <span class="op">=</span> \<span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape1 <span class="op">=</span> <span class="fl">10</span>, shape2 <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu">plot_nmb_dist</span><span class="op">(</span><span class="va">foo2_remake</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"foo2_remake()"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></span>
+<span><span class="fu">plot_nmb_dist</span><span class="op">(</span><span class="va">foo2</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"foo2()"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></span></code></pre></div>
+<p><img src="creating-nmb-functions_files/figure-html/unnamed-chunk-7-1.png" width="700"><img src="creating-nmb-functions_files/figure-html/unnamed-chunk-7-2.png" width="700"></p>
+<p>We can also create a NMB function which replicates our scenario where the low-risk group is given a cheaper and less effective intervention.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">foo3_remake</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/get_nmb_sampler.html">get_nmb_sampler</a></span><span class="op">(</span></span>
+<span>    outcome_cost <span class="op">=</span> \<span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,</span>
+<span>    high_risk_group_treatment_cost <span class="op">=</span> \<span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    high_risk_group_treatment_effect <span class="op">=</span> \<span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape1 <span class="op">=</span> <span class="fl">10</span>, shape2 <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>    low_risk_group_treatment_cost <span class="op">=</span> \<span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="fl">10</span>, rate <span class="op">=</span> <span class="fl">1</span> <span class="op">*</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>    low_risk_group_treatment_effect <span class="op">=</span> \<span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape1 <span class="op">=</span> <span class="fl">10</span>, shape2 <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu">plot_nmb_dist</span><span class="op">(</span><span class="va">foo3_remake</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"foo3_remake()"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></span>
+<span><span class="fu">plot_nmb_dist</span><span class="op">(</span><span class="va">foo3</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"foo3()"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></span></code></pre></div>
+<p><img src="creating-nmb-functions_files/figure-html/unnamed-chunk-8-1.png" width="700"><img src="creating-nmb-functions_files/figure-html/unnamed-chunk-8-2.png" width="700"></p>
+<p>Something that wasn’t covered in the previous section for making NMB functions by hand is that we can specify the cost of the outcome to be a single value and/or to be calculated based on the quality-adjusted life-years (QALYs) lost due to the outcome and our willingness to pay (WTP). The inputs to <code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code> that evaluates the cost of the outcome <em>in total</em> are:</p>
+<ul>
+<li>
+<code>outcome_cost</code>: single value associated with the event</li>
+<li>
+<code>wtp</code>: willingness to pay. Is multiplied by the <code>qalys_lost</code> to evaluate cost associated with the the event.</li>
+<li>
+<code>qalys_lost</code>: quality-adjusted life-years lost due to the event. Is multiplied by <code>wtp</code> to evaluate cost associated with the event.</li>
+</ul>
+<p>You must provide either the <code>outcome_cost</code> OR the <code>wtp</code> AND the <code>qalys_lost</code>. You can also provide all three if, for example, there are some costs associated with the event that are fixed and separate to the QALYs lost. For example, following a fall, every patient may have an X-ray, and this would be separate cost to the QALYs lost due to the fall and our WTP.</p>
+<p>For example, if our WTP is $8 and each fall is associated with a 0.5 QALY lost (on average), then this would be equivalent to our fixed cost of $4. But, by having these as separate arguments, it lets us easier evaluate the literature, which may provide us with estimates (and uncertainty) for the QALY’s lost due to our healthcare event of interest, and the WTP in our specific context.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">foo4</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/get_nmb_sampler.html">get_nmb_sampler</a></span><span class="op">(</span></span>
+<span>    wtp <span class="op">=</span> <span class="fl">8</span>,</span>
+<span>    qalys_lost <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>    high_risk_group_treatment_cost <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    high_risk_group_treatment_effect <span class="op">=</span> <span class="fl">0.5</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu">foo4</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; TP FP TN FN </span></span>
+<span><span class="co">#&gt; -3 -1  0 -4</span></span>
+<span><span class="fu">foo1</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; TP FP TN FN </span></span>
+<span><span class="co">#&gt; -3 -1  0 -4</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="passing-these-functions-to-do_nmb_sim">Passing these functions to <code>do_nmb_sim()</code><a class="anchor" aria-label="anchor" href="#passing-these-functions-to-do_nmb_sim"></a>
 </h3>
+<p>The NMB functions are passed to the <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> via the <code>fx_nmb_training</code> and <code>fx_nmb_evaluation</code> arguments. The former is purely for selecting a cutpoint if you’re using either the <code>'cost_minimising'</code> or <code>'value_optimising'</code> cutpoint methods. Here, we will use the <code>'value_optimising'</code> cutpoint method alongside the Youden index and a treat all/none strategy.</p>
+<p>In this first example, we pass <code>foo1</code>, which is our function that always provided the same values for every classification, as if we <strong>knew</strong> the exact costs associated with the outcome of each possible prediction.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">simulation_res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_nmb_sim.html">do_nmb_sim</a></span><span class="op">(</span></span>
+<span>  sample_size <span class="op">=</span> <span class="fl">200</span>, n_sims <span class="op">=</span> <span class="fl">500</span>, n_valid <span class="op">=</span> <span class="fl">10000</span>, sim_auc <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>  event_rate <span class="op">=</span> <span class="fl">0.1</span>, fx_nmb_training <span class="op">=</span> <span class="va">foo1</span>, fx_nmb_evaluation <span class="op">=</span> <span class="va">foo1</span>,</span>
+<span>  cutpoint_methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"youden"</span>, <span class="st">"value_optimising"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">simulation_res1</span><span class="op">)</span></span></code></pre></div>
+<p><img src="creating-nmb-functions_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<p>As mentioned previously, the problem with this is that we don’t really know for sure how effective our intervention is, what the burden of the event is, and how much things cost, so we should incorporate uncertainty into the evaluation part ONLY. If we use a NMB function that incorporates uncertainty for selecting the cutpoint, this would reflect us picking costs randomly and using those on our data to select a cutpoint, which is unlikely. Instead, we use the function that provides the fixed values for training still.</p>
+<p><code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code> offers a feature to get these fixed (expected) values by sampling from the distributions and using the column means as the fixed values.</p>
+<p>For example, using <code>foo2_remake()</code> as an example, we use <code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code> in the same way but include <code>use_expected_values = TRUE</code> so that it returns a function that gives fixed values for training:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">foo2_remake</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/get_nmb_sampler.html">get_nmb_sampler</a></span><span class="op">(</span></span>
+<span>    outcome_cost <span class="op">=</span> \<span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,</span>
+<span>    high_risk_group_treatment_cost <span class="op">=</span> \<span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    high_risk_group_treatment_effect <span class="op">=</span> \<span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape1 <span class="op">=</span> <span class="fl">10</span>, shape2 <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">foo2_remake_training</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/get_nmb_sampler.html">get_nmb_sampler</a></span><span class="op">(</span></span>
+<span>    outcome_cost <span class="op">=</span> \<span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,</span>
+<span>    high_risk_group_treatment_cost <span class="op">=</span> \<span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    high_risk_group_treatment_effect <span class="op">=</span> \<span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape1 <span class="op">=</span> <span class="fl">10</span>, shape2 <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>    use_expected_values <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -3.011956 -1.001653  0.000000 -4.021057</span></span>
+<span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -3.011956 -1.001653  0.000000 -4.021057</span></span>
+<span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -3.011956 -1.001653  0.000000 -4.021057</span></span></code></pre></div>
+<p>In many cases (including this one), this will give similar values to using the parameter estimates for each of the inputs (similar to <code>foo1()</code>), but not always, and we expect that the values from this process should be more stable than using the estimates.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">simulation_res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_nmb_sim.html">do_nmb_sim</a></span><span class="op">(</span></span>
+<span>  sample_size <span class="op">=</span> <span class="fl">200</span>, n_sims <span class="op">=</span> <span class="fl">500</span>, n_valid <span class="op">=</span> <span class="fl">10000</span>, sim_auc <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>  event_rate <span class="op">=</span> <span class="fl">0.1</span>, fx_nmb_training <span class="op">=</span> <span class="va">foo2_remake_training</span>, fx_nmb_evaluation <span class="op">=</span> <span class="va">foo2_remake</span>,</span>
+<span>  cutpoint_methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"youden"</span>, <span class="st">"value_optimising"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">simulation_res2</span><span class="op">)</span></span></code></pre></div>
+<p><img src="creating-nmb-functions_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p>This drastically changed the results. We probably have more uncertainty in these functions than you would likely have when using values from the literature for your case, but it illustrates the importance of incorporating this when conducting the simulation.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
