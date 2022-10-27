@@ -45,8 +45,8 @@ An example of a function which provides the appropriate output is below.
 foo1 <- function() {
   c(
     "TP" = -3,
-    "TN" = 0,
     "FP" = -1,
+    "TN" = 0,
     "FN" = -4
   )
 }
@@ -58,8 +58,8 @@ Note that NMB values for each possible classification are equal or less than zer
 For our possible classifications: 
 
 - $TP = -\$1 - \frac{\$4}{2} = -\$3$ (receive the intervention (\$1) and falls (\$4) at half the rate (/2))
-- $TN = \$0$ (do not receive the intervention and do not have the cost of the fall)
 - $FP = -\$1$ (receive the intervention (\$1) and do not have the cost of the fall)
+- $TN = \$0$ (do not receive the intervention and do not have the cost of the fall)
 - $FN -\$4$ (do not have the intervention and do have the (full) cost of the fall (\$4))
 
 For better flexibility. The users can provide any argument-less function in this form. This allows the ability to incorporate uncertainty when it comes to evaluating models (since we may not know *exactly* how much a fall may cost or *exactly* how well the intervention will work). For example, in the function below, we have incorporated uncertainty into the estimates that we use to construct our NMB values, and every time we call the function we get slightly different values assigned to each of the possible classification (except for the TN's since in all cases, they don't receive the treatment or the cost of the fall). (This is particularly important for evaluation!)
@@ -72,9 +72,9 @@ foo2 <- function() {
   fall_cost <- rgamma(n = 1, shape = 4)
 
   c(
-    "TP" = -intervention_cost - fall_cost * intervention_effectiveness,
-    "TN" = 0,
+    "TP" = -intervention_cost - fall_cost * (1 - intervention_effectiveness),
     "FP" = -intervention_cost,
+    "TN" = 0,
     "FN" = -fall_cost
   )
 }
@@ -100,10 +100,10 @@ foo3 <- function() {
   fall_cost <- rgamma(n = 1, shape = 4)
 
   c(
-    "TP" = -hr_intervention_cost - fall_cost * hr_intervention_effectiveness,
-    "TN" = -lr_intervention_cost,
+    "TP" = -hr_intervention_cost - fall_cost * (1 - hr_intervention_effectiveness),
     "FP" = -hr_intervention_cost,
-    "FN" = -lr_intervention_cost - fall_cost * lr_intervention_effectiveness
+    "TN" = -lr_intervention_cost,
+    "FN" = -lr_intervention_cost - fall_cost * (1 - lr_intervention_effectiveness)
   )
 }
 
@@ -116,6 +116,160 @@ Now, since we are providing an intervention with an associated cost to those cat
 
 ## Making functions using `get_nmb_sampler()`
 
+The previous section demonstrates how to make functions by hand and a general approach to thinking about intervention costs and effects on the outcome. This same approach is used by `get_nmb_sampler()` but abstracts the actual creation of the function away to make things more straight forward for the user.
+
+To replicate what we created as `foo1()`, we pass these costs as separate arguments and the function is created and output by` get_nmb_sampler()`. Recall:
+
+>The cost of the fall is \$4, the cost of the intervention is \$1, and the intervention reduces the rate of falls by 50%. 
+
+```{r}
+library(predictNMB)
+
+foo1_remake <-
+  get_nmb_sampler(
+    outcome_cost = 4,
+    high_risk_group_treatment_cost = 1,
+    high_risk_group_treatment_effect = 0.5
+  )
+
+foo1_remake()
+foo1()
+```
+
+The arguments are passed as costs and the treatment effect (`high_risk_group_treatment_effect`) is the the rate reduction of the event for those receiving the treatment. 
+
+<sub>(firstly, some code for making plots of sampled NMB values from a given function)</sup>
+
+```{r, warning=FALSE}
+library(tidyr)
+library(ggplot2)
+plot_nmb_dist <- function(f, n = 10000) {
+  data <- do.call("rbind", lapply(1:n, \(x) f()))
+
+  data_long <- pivot_longer(
+    as.data.frame(data),
+    cols = everything(),
+    names_to = "classification",
+    values_to = "NMB"
+  )
+
+  ggplot(data_long, aes(NMB)) +
+    geom_histogram() +
+    facet_wrap(~classification) +
+    theme_bw() +
+    labs(y = "", x = "Net Monetary Benefit ($)")
+}
+```
+
+We can incorporate uncertainty by passing argument-less functions which generate values as the arguments. When calling `get_nmb_sampler()`, we specify the values as argument-less functions and these are evaluated every time the returned function is called.
+
+```{r, fig.show='hold'}
+foo2_remake <-
+  get_nmb_sampler(
+    outcome_cost = \() rgamma(n = 1, shape = 4),
+    high_risk_group_treatment_cost = \() rgamma(n = 1, shape = 1),
+    high_risk_group_treatment_effect = \() rbeta(n = 1, shape1 = 10, shape2 = 10)
+  )
+
+plot_nmb_dist(foo2_remake) + ggtitle("foo2_remake()")
+plot_nmb_dist(foo2) + ggtitle("foo2()")
+```
+
+We can also create a NMB function which replicates our scenario where the low-risk group is given a cheaper and less effective intervention.
+
+```{r, fig.show='hold'}
+foo3_remake <-
+  get_nmb_sampler(
+    outcome_cost = \() rgamma(n = 1, shape = 4),
+    high_risk_group_treatment_cost = \() rgamma(n = 1, shape = 1),
+    high_risk_group_treatment_effect = \() rbeta(n = 1, shape1 = 10, shape2 = 10),
+    low_risk_group_treatment_cost = \() rgamma(n = 1, shape = 0.5 * 10, rate = 1 * 10),
+    low_risk_group_treatment_effect = \() rbeta(n = 1, shape1 = 10, shape2 = 30)
+  )
+
+plot_nmb_dist(foo3_remake) + ggtitle("foo3_remake()")
+plot_nmb_dist(foo3) + ggtitle("foo3()")
+```
+
+
+Something that wasn't covered in the previous section for making NMB functions by hand is that we can specify the cost of the outcome to be a single value and/or to be calculated based on the quality-adjusted life-years (QALYs) lost due to the outcome and our willingness to pay (WTP). The inputs to `get_nmb_sampler()` that evaluates the cost of the outcome *in total* are: 
+
+- `outcome_cost`: single value associated with the event
+- `wtp`: willingness to pay. Is multiplied by the `qalys_lost` to evaluate cost associated with the the event.
+- `qalys_lost`: quality-adjusted life-years lost due to the event. Is multiplied by `wtp` to evaluate cost associated with the event.
+
+You must provide either the `outcome_cost` OR the `wtp` AND the `qalys_lost`. You can also provide all three if, for example, there are some costs associated with the event that are fixed and separate to the QALYs lost. For example, following a fall, every patient may have an X-ray, and this would be separate cost to the QALYs lost due to the fall and our WTP.
+
+For example, if our WTP is \$8 and each fall is associated with a 0.5 QALY lost (on average), then this would be equivalent to our fixed cost of \$4. But, by having these as separate arguments, it lets us easier evaluate the literature, which may provide us with estimates (and uncertainty) for the QALY's lost due to our healthcare event of interest, and the WTP in our specific context.
+
+```{r}
+foo4 <-
+  get_nmb_sampler(
+    wtp = 8,
+    qalys_lost = 0.5,
+    high_risk_group_treatment_cost = 1,
+    high_risk_group_treatment_effect = 0.5
+  )
+
+foo4()
+foo1()
+```
+
 
 ## Passing these functions to `do_nmb_sim()`
 
+
+The NMB functions are passed to the `do_nmb_sim()` via the `fx_nmb_training` and `fx_nmb_evaluation` arguments. The former is purely for selecting a cutpoint if you're using either the `'cost_minimising'` or `'value_optimising'` cutpoint methods. Here, we will use the `'value_optimising'` cutpoint method alongside the Youden index and a treat all/none strategy.
+
+In this first example, we pass `foo1`, which is our function that always provided the same values for every classification, as if we **knew** the exact costs associated with the outcome of each possible prediction.
+
+```{r}
+simulation_res1 <- do_nmb_sim(
+  sample_size = 200, n_sims = 500, n_valid = 10000, sim_auc = 0.7,
+  event_rate = 0.1, fx_nmb_training = foo1, fx_nmb_evaluation = foo1,
+  cutpoint_methods = c("all", "none", "youden", "value_optimising")
+)
+
+plot(simulation_res1)
+```
+
+As mentioned previously, the problem with this is that we don't really know for sure how effective our intervention is, what the burden of the event is, and how much things cost, so we should incorporate uncertainty into the evaluation part ONLY. If we use a NMB function that incorporates uncertainty for selecting the cutpoint, this would reflect us picking costs randomly and using those on our data to select a cutpoint, which is unlikely. Instead, we use the function that provides the fixed values for training still.
+
+`get_nmb_sampler()` offers a feature to get these fixed (expected) values by sampling from the distributions and using the column means as the fixed values.
+
+For example, using `foo2_remake()` as an example, we use `get_nmb_sampler()` in the same way but include `use_expected_values = TRUE` so that it returns a function that gives fixed values for training:
+
+```{r}
+foo2_remake <-
+  get_nmb_sampler(
+    outcome_cost = \() rgamma(n = 1, shape = 4),
+    high_risk_group_treatment_cost = \() rgamma(n = 1, shape = 1),
+    high_risk_group_treatment_effect = \() rbeta(n = 1, shape1 = 10, shape2 = 10)
+  )
+
+foo2_remake_training <-
+  get_nmb_sampler(
+    outcome_cost = \() rgamma(n = 1, shape = 4),
+    high_risk_group_treatment_cost = \() rgamma(n = 1, shape = 1),
+    high_risk_group_treatment_effect = \() rbeta(n = 1, shape1 = 10, shape2 = 10),
+    use_expected_values = TRUE
+  )
+
+foo2_remake_training()
+foo2_remake_training()
+foo2_remake_training()
+```
+
+In many cases (including this one), this will give similar values to using the parameter estimates for each of the inputs (similar to `foo1()`), but not always, and we expect that the values from this process should be more stable than using the estimates.
+
+```{r}
+simulation_res2 <- do_nmb_sim(
+  sample_size = 200, n_sims = 500, n_valid = 10000, sim_auc = 0.7,
+  event_rate = 0.1, fx_nmb_training = foo2_remake_training, fx_nmb_evaluation = foo2_remake,
+  cutpoint_methods = c("all", "none", "youden", "value_optimising")
+)
+
+plot(simulation_res2)
+```
+
+This drastically changed the results. We probably have more uncertainty in these functions than you would likely have when using values from the literature for your case, but it illustrates the importance of incorporating this when conducting the simulation.
