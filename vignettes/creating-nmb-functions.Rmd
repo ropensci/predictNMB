@@ -144,7 +144,7 @@ The arguments are passed as costs and the treatment effect (`high_risk_group_tre
 library(tidyr)
 library(ggplot2)
 plot_nmb_dist <- function(f, n = 10000) {
-  data <- do.call("rbind", lapply(1:n, \(x) f()))
+  data <- do.call("rbind", lapply(1:n, function(x) f()))
 
   data_long <- pivot_longer(
     as.data.frame(data),
@@ -166,9 +166,9 @@ We can incorporate uncertainty by passing argument-less functions which generate
 ```{r, fig.show='hold'}
 foo2_remake <-
   get_nmb_sampler(
-    outcome_cost = \() rgamma(n = 1, shape = 4),
-    high_risk_group_treatment_cost = \() rgamma(n = 1, shape = 1),
-    high_risk_group_treatment_effect = \() rbeta(n = 1, shape1 = 10, shape2 = 10)
+    outcome_cost = function() rgamma(n = 1, shape = 4),
+    high_risk_group_treatment_cost = function() rgamma(n = 1, shape = 1),
+    high_risk_group_treatment_effect = function() rbeta(n = 1, shape1 = 10, shape2 = 10)
   )
 
 plot_nmb_dist(foo2_remake) + ggtitle("foo2_remake()")
@@ -180,11 +180,11 @@ We can also create a NMB function which replicates our scenario where the low-ri
 ```{r, fig.show='hold'}
 foo3_remake <-
   get_nmb_sampler(
-    outcome_cost = \() rgamma(n = 1, shape = 4),
-    high_risk_group_treatment_cost = \() rgamma(n = 1, shape = 1),
-    high_risk_group_treatment_effect = \() rbeta(n = 1, shape1 = 10, shape2 = 10),
-    low_risk_group_treatment_cost = \() rgamma(n = 1, shape = 0.5 * 10, rate = 1 * 10),
-    low_risk_group_treatment_effect = \() rbeta(n = 1, shape1 = 10, shape2 = 30)
+    outcome_cost = function() rgamma(n = 1, shape = 4),
+    high_risk_group_treatment_cost = function() rgamma(n = 1, shape = 1),
+    high_risk_group_treatment_effect = function() rbeta(n = 1, shape1 = 10, shape2 = 10),
+    low_risk_group_treatment_cost = function() rgamma(n = 1, shape = 0.5 * 10, rate = 1 * 10),
+    low_risk_group_treatment_effect = function() rbeta(n = 1, shape1 = 10, shape2 = 30)
   )
 
 plot_nmb_dist(foo3_remake) + ggtitle("foo3_remake()")
@@ -242,16 +242,16 @@ For example, using `foo2_remake()` as an example, we use `get_nmb_sampler()` in 
 ```{r}
 foo2_remake <-
   get_nmb_sampler(
-    outcome_cost = \() rgamma(n = 1, shape = 4),
-    high_risk_group_treatment_cost = \() rgamma(n = 1, shape = 1),
-    high_risk_group_treatment_effect = \() rbeta(n = 1, shape1 = 10, shape2 = 10)
+    outcome_cost = function() rgamma(n = 1, shape = 4),
+    high_risk_group_treatment_cost = function() rgamma(n = 1, shape = 1),
+    high_risk_group_treatment_effect = function() rbeta(n = 1, shape1 = 10, shape2 = 10)
   )
 
 foo2_remake_training <-
   get_nmb_sampler(
-    outcome_cost = \() rgamma(n = 1, shape = 4),
-    high_risk_group_treatment_cost = \() rgamma(n = 1, shape = 1),
-    high_risk_group_treatment_effect = \() rbeta(n = 1, shape1 = 10, shape2 = 10),
+    outcome_cost = function() rgamma(n = 1, shape = 4),
+    high_risk_group_treatment_cost = function() rgamma(n = 1, shape = 1),
+    high_risk_group_treatment_effect = function() rbeta(n = 1, shape1 = 10, shape2 = 10),
     use_expected_values = TRUE
   )
 
