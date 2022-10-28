@@ -153,14 +153,14 @@
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -4.385488 -1.068743  0.000000 -5.703515</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -1.8104536 -0.6612191  0.0000000 -1.6393806</span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -1.6600165 -0.1754868  0.0000000 -3.7746475</span></span>
+<span><span class="co">#&gt; -2.5673216 -0.9203729  0.0000000 -2.5858608</span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -4.839640 -0.534939  0.000000 -6.404401</span></span></code></pre></div>
+<span><span class="co">#&gt; -6.553803 -4.408866  0.000000 -5.676079</span></span></code></pre></div>
 <p>Another benefit of this user-defined function structure is that the user can also allow the low risk group to receive an intervention rather than nothing. This may make sense where there are more than one available intervention to use and one is more costly (and presumably effective) than the other. This way, we can assign all high risk patients to receive the high cost and highly effective intervention and the low risk patients to receive the low cost and less effective intervention. Extending <code>foo2()</code>, we can could create the function below, where the low cost intervention is $0.5 and reduces falls by 30%.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foo3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
@@ -185,13 +185,13 @@
 <span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.7244805 -0.3288442 -0.4718650 -4.8875753</span></span>
+<span><span class="co">#&gt; -3.8767146 -0.9936856 -0.6109546 -4.4166262</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -3.5087070 -1.1714131 -0.4823971 -5.2633782</span></span>
+<span><span class="co">#&gt; -4.4297767 -3.8742692 -0.1801419 -1.0982919</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.0512036 -1.0772704 -0.8879603 -2.2133290</span></span></code></pre></div>
+<span><span class="co">#&gt; -2.0929678 -0.6587572 -0.5059659 -2.9129602</span></span></code></pre></div>
 <p>Now, since we are providing an intervention with an associated cost to those categorised as low risk, there is a negative NMB assigned to TN’s but the NMB of the FN’s is not as negative as before since they are receiving an (albeit less effective) intervention that reduces the cost of the fall.</p>
 </div>
 <div class="section level3">
@@ -330,14 +330,14 @@
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -3.0102475 -0.9909007  0.0000000 -4.0245107</span></span>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -2.994912 -1.001192  0.000000 -3.985059</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -3.0102475 -0.9909007  0.0000000 -4.0245107</span></span>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -2.994912 -1.001192  0.000000 -3.985059</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -3.0102475 -0.9909007  0.0000000 -4.0245107</span></span></code></pre></div>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -2.994912 -1.001192  0.000000 -3.985059</span></span></code></pre></div>
 <p>In many cases (including this one), this will give similar values to using the parameter estimates for each of the inputs (similar to <code>foo1()</code>), but not always, and we expect that the values from this process should be more stable than using the estimates.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">simulation_res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_nmb_sim.html">do_nmb_sim</a></span><span class="op">(</span></span>
