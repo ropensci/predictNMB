@@ -113,7 +113,10 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
         "df_nmb_evaluation",
         "get_sample",
         "get_thresholds",
-        "evaluate_cutpoint"
+        "evaluate_cutpoint",
+        "get_inbuilt_cutpoint",
+        "total_nmb",
+        "roc_iu"
       )
     })
 
