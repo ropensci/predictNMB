@@ -107,7 +107,7 @@
 <code>fx_nmb_evaluation</code>: used for evaluation for all methods. This argument is required to run all simulations in <code>predictNMB</code>.</li>
 </ul>
 <p>The function that generates the named vector used by the <code>fx_nmb_evaluation</code> argument is re-evaluated at every iteration of the simulation. In other words, we are sampling from a range of plausible values for our simulation inputs. This allows us to “bake in” uncertainty, since it is unlikely that we know these costs or outcomes exactly. By incorporating uncertainty this way, we are propagating the uncertainty throughout the whole model. This is good practice in simulation modelling, because our simulation will never be able to perfectly mirror the reality of finding the best method. If we include no uncertainty in <code>fx_nmb_evaluation</code>, we are making the assumption that we know each input of the model <strong>exactly</strong>.</p>
-<p>Note that we use our best estimates (without uncertainty) for the <code>fx_nmb_training</code> function. This reflects the fact that when cut points are selected in practice, they usually stay fixed rather than varying by scenario. It is this fixed value we are evaluating our simulations against, so we want it to be the same every time to measure the potential benefit of choosing another cutpoint. This may mean that the merits of <code>cost_minimising</code> and <code>value_optimising</code> cutpoints could be overestimated, which will be discussed at the end when we explore <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code>.</p>
+<p>Note that we use our best estimates (without uncertainty) for the <code>fx_nmb_training</code> function. This reflects the fact that when cutpoints are selected in practice, they usually stay fixed rather than varying by scenario. It is this fixed value we are evaluating our simulations against, so we want it to be the same every time to measure the potential benefit of choosing another cutpoint. This may mean that the merits of <code>cost_minimising</code> and <code>value_optimising</code> cutpoints could be overestimated, which will be discussed at the end when we explore <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code>.</p>
 <p>The mean NMB per patient is evaluated at the end of each simulated iteration based on the inputs we have created (our named vector from before). For more information, see the associated vignette using <code>browseVignettes(package = "predictNMB")</code>).</p>
 </div>
 <div class="section level3">
@@ -155,14 +155,14 @@
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -2.752125 -1.159485  0.000000 -3.342250</span></span>
+<span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.8293786 -0.7718487  0.0000000 -3.9594061</span></span>
+<span><span class="co">#&gt; -2.7680876 -0.5523753  0.0000000 -3.5777677</span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -2.702192 -1.116594  0.000000 -3.793955</span></span>
-<span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -4.213476 -1.657308  0.000000 -4.416827</span></span></code></pre></div>
+<span><span class="co">#&gt; -6.250777 -2.674779  0.000000 -5.994839</span></span></code></pre></div>
 <p>Another benefit of allowing the user to define the function structure is that we can also allow the low risk group, or the population whose risk estimates fall below the probability threshold, to receive an intervention rather than nothing.</p>
 <p>This can be preferable when there is more than one available intervention to use, and one is more costly (and presumably effective) than the other. For example, all patients in a hospital might have a medication management plan in place to reduce falls risk as a matter of course, but the high risk group might also receive additional surveillance from nurses. This way, we can assign all high risk patients to receive the high cost and highly effective intervention, and all low risk patients to receive the low cost and less effective intervention. Extending <code>foo2()</code> to create the function below, we assign the low cost intervention $0.5 and a reduction in falls of 30%.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -187,14 +187,14 @@
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.2670614 -0.3255033 -0.6472315 -3.2390348</span></span>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -4.322986 -2.851948 -0.180124 -1.962977</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -3.4615300 -1.5578437 -0.5432416 -2.7653181</span></span>
+<span><span class="co">#&gt; -2.7031136 -1.4543620 -0.4786855 -3.2607435</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -0.6432731 -0.1747731 -0.4015394 -1.5980910</span></span></code></pre></div>
+<span><span class="co">#&gt; -1.7515484 -0.2683334 -0.4874383 -5.6563077</span></span></code></pre></div>
 <p>Now that we are providing an intervention and associated cost to the low risk group, there is a negative NMB assigned to true negative (TN) groups. But in exchange, we have reduced the costs of false negatives (FNs), because at least these patients are now receiving an intervention, albeit a less effective one.</p>
 <p>It’s important to note that while these NMB values are negative, this doesn’t imply that we are worse off by implementing prediction models or treatments. We are simply trying to pick the least bad option in a bad situation. This becomes more apparent when we set a reference strategy, which is discussed at greater length in the other vignettes.</p>
 </div>
@@ -334,14 +334,14 @@
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -3.004429 -1.014768  0.000000 -3.974700</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -2.9869092 -0.9930761  0.0000000 -3.9978819</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -3.004429 -1.014768  0.000000 -3.974700</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -2.9869092 -0.9930761  0.0000000 -3.9978819</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -3.004429 -1.014768  0.000000 -3.974700</span></span></code></pre></div>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -2.9869092 -0.9930761  0.0000000 -3.9978819</span></span></code></pre></div>
 <p>In many cases (including this one), this will give similar values to using the parameter estimates (i.e. <code>foo1()</code>), but not always. The values from this process should be more stable than using the estimates.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">simulation_res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_nmb_sim.html">do_nmb_sim</a></span><span class="op">(</span></span>
