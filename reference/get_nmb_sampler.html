@@ -129,30 +129,36 @@ returns the expected values.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">get_nmb_training</span> <span class="op">&lt;-</span> <span class="fu">get_nmb_sampler</span><span class="op">(</span>outcome_cost <span class="op">=</span> <span class="fl">100</span>,</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">get_nmb_training</span> <span class="op">&lt;-</span> <span class="fu">get_nmb_sampler</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  outcome_cost <span class="op">=</span> <span class="fl">100</span>,</span></span>
 <span class="r-in"><span>  high_risk_group_treatment_effect <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  high_risk_group_treatment_cost <span class="op">=</span> <span class="fl">10</span>,</span></span>
 <span class="r-in"><span>  use_expected_values <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">get_nmb_evaluation</span> <span class="op">&lt;-</span> <span class="fu">get_nmb_sampler</span><span class="op">(</span>outcome_cost <span class="op">=</span> <span class="fl">100</span>,</span></span>
+<span class="r-in"><span><span class="va">get_nmb_evaluation</span> <span class="op">&lt;-</span> <span class="fu">get_nmb_sampler</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  outcome_cost <span class="op">=</span> <span class="fl">100</span>,</span></span>
 <span class="r-in"><span>  high_risk_group_treatment_effect <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  high_risk_group_treatment_cost <span class="op">=</span> <span class="fl">10</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">get_nmb_training</span><span class="op">(</span><span class="op">)</span>; <span class="fu">get_nmb_training</span><span class="op">(</span><span class="op">)</span>; <span class="fu">get_nmb_training</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">get_nmb_training</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         TP         FP         TN         FN </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  -76.61063  -10.00000    0.00000 -100.00000 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -77.04732  -10.00000    0.00000 -100.00000 </span>
+<span class="r-in"><span><span class="fu">get_nmb_training</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         TP         FP         TN         FN </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  -76.61063  -10.00000    0.00000 -100.00000 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -77.04732  -10.00000    0.00000 -100.00000 </span>
+<span class="r-in"><span><span class="fu">get_nmb_training</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         TP         FP         TN         FN </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  -76.61063  -10.00000    0.00000 -100.00000 </span>
-<span class="r-in"><span><span class="fu">get_nmb_evaluation</span><span class="op">(</span><span class="op">)</span>; <span class="fu">get_nmb_evaluation</span><span class="op">(</span><span class="op">)</span>; <span class="fu">get_nmb_evaluation</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -77.04732  -10.00000    0.00000 -100.00000 </span>
+<span class="r-in"><span><span class="fu">get_nmb_evaluation</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        TP        FP        TN        FN </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -104.5995  -10.0000    0.0000 -100.0000 </span>
+<span class="r-in"><span><span class="fu">get_nmb_evaluation</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         TP         FP         TN         FN </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  -64.35213  -10.00000    0.00000 -100.00000 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -57.45013  -10.00000    0.00000 -100.00000 </span>
+<span class="r-in"><span><span class="fu">get_nmb_evaluation</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         TP         FP         TN         FN </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  -42.48054  -10.00000    0.00000 -100.00000 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         TP         FP         TN         FN </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  -75.21027  -10.00000    0.00000 -100.00000 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -43.77965  -10.00000    0.00000 -100.00000 </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

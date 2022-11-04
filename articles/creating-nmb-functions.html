@@ -155,14 +155,14 @@
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -2.752125 -1.159485  0.000000 -3.342250</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -1.6133256 -0.4409494  0.0000000 -2.8184127</span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.7680876 -0.5523753  0.0000000 -3.5777677</span></span>
+<span><span class="co">#&gt; -3.3993368 -0.3854172  0.0000000 -4.8485177</span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -6.250777 -2.674779  0.000000 -5.994839</span></span></code></pre></div>
+<span><span class="co">#&gt; -3.546641 -1.687946  0.000000 -2.951384</span></span></code></pre></div>
 <p>Another benefit of allowing the user to define the function structure is that we can also allow the low risk group, or the population whose risk estimates fall below the probability threshold, to receive an intervention rather than nothing.</p>
 <p>This can be preferable when there is more than one available intervention to use, and one is more costly (and presumably effective) than the other. For example, all patients in a hospital might have a medication management plan in place to reduce falls risk as a matter of course, but the high risk group might also receive additional surveillance from nurses. This way, we can assign all high risk patients to receive the high cost and highly effective intervention, and all low risk patients to receive the low cost and less effective intervention. Extending <code>foo2()</code> to create the function below, we assign the low cost intervention $0.5 and a reduction in falls of 30%.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -187,14 +187,14 @@
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -4.322986 -2.851948 -0.180124 -1.962977</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -3.0066031 -0.2713519 -0.6921592 -4.6342621</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.7031136 -1.4543620 -0.4786855 -3.2607435</span></span>
+<span><span class="co">#&gt; -5.6838391 -1.3605234 -0.1638329 -7.1735823</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -1.7515484 -0.2683334 -0.4874383 -5.6563077</span></span></code></pre></div>
+<span><span class="co">#&gt; -2.9816173 -0.9379344 -0.2533745 -2.3866614</span></span></code></pre></div>
 <p>Now that we are providing an intervention and associated cost to the low risk group, there is a negative NMB assigned to true negative (TN) groups. But in exchange, we have reduced the costs of false negatives (FNs), because at least these patients are now receiving an intervention, albeit a less effective one.</p>
 <p>It’s important to note that while these NMB values are negative, this doesn’t imply that we are worse off by implementing prediction models or treatments. We are simply trying to pick the least bad option in a bad situation. This becomes more apparent when we set a reference strategy, which is discussed at greater length in the other vignettes.</p>
 </div>
@@ -247,7 +247,7 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foo2_remake</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/get_nmb_sampler.html">get_nmb_sampler</a></span><span class="op">(</span></span>
-<span>    outcome_cost <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>, <span class="co">#our blank function, followed by a sampler</span></span>
+<span>    outcome_cost <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>, <span class="co"># our blank function, followed by a sampler</span></span>
 <span>    high_risk_group_treatment_cost <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
 <span>    high_risk_group_treatment_effect <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape1 <span class="op">=</span> <span class="fl">10</span>, shape2 <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
@@ -335,13 +335,13 @@
 <span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.9869092 -0.9930761  0.0000000 -3.9978819</span></span>
+<span><span class="co">#&gt; -2.9757269 -0.9909017  0.0000000 -3.9882160</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.9869092 -0.9930761  0.0000000 -3.9978819</span></span>
+<span><span class="co">#&gt; -2.9757269 -0.9909017  0.0000000 -3.9882160</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.9869092 -0.9930761  0.0000000 -3.9978819</span></span></code></pre></div>
+<span><span class="co">#&gt; -2.9757269 -0.9909017  0.0000000 -3.9882160</span></span></code></pre></div>
 <p>In many cases (including this one), this will give similar values to using the parameter estimates (i.e. <code>foo1()</code>), but not always. The values from this process should be more stable than using the estimates.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">simulation_res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_nmb_sim.html">do_nmb_sim</a></span><span class="op">(</span></span>

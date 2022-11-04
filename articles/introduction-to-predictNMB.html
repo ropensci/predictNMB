@@ -151,6 +151,7 @@
 <code>do_nmb_sim()</code><a class="anchor" aria-label="anchor" href="#do_nmb_sim"></a>
 </h2>
 <p><code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> does a single simulation with a set of inputs for the hypothetical model and NMB related functions. For the model, we need to know the sample size for training and evaluation sets, the model’s discrimination (Area Under the Receiver Operating Characteristic Curve, also known as the Area Under the Curve, or AUC) and the event rate of the outcome being predicted.</p>
+<p>(Note that it may take some time to run the simulation. The one below may take up to a minute, depending on your computer’s performance.)</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nmb_simulation</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_nmb_sim.html">do_nmb_sim</a></span><span class="op">(</span></span>
 <span>  sample_size <span class="op">=</span> <span class="fl">1000</span>,</span>
@@ -180,17 +181,20 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">nmb_simulation</span><span class="op">$</span><span class="va">df_result</span><span class="op">$</span><span class="va">all</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
 <span><span class="co">#&gt;  -27.87  -26.39  -25.99  -26.02  -25.66  -24.41</span></span></code></pre></div>
-<p>We have options to include multiple cutpoint methods, and the default is to use all of the available inbuilt methods as well as the treat-all and treat-none strategies.</p>
+<p>The simulation under the various cutpoints can be visualised using <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>. The default is to visualise the distributions of NMB across all (500) simulations. In the plot below, the spread (light blue) shows the variability in results due to repeated simulation. The median is represented with the dark blue line in the centre of each distribution.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
+<p>Treating all looks like a bad option here. The rest are relatively similar at this AUC and event rate, with an edge to treat none or the models using either the value optimisation or cost minimisation cutpoint method.</p>
+<p>We have options to include multiple cutpoint methods, and the default is to use all of the available inbuilt methods as well as the treat-all and treat-none strategies. We can specify which methods are shown in the plots when creating the plot. (For more details on plotting, see the other vignettes.)</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_inbuilt_cutpoint.html">get_inbuilt_cutpoint</a></span><span class="op">(</span>return_all_methods <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "all"              "none"             "value_optimising" "youden"          </span></span>
-<span><span class="co">#&gt; [5] "cost_minimising"  "prod_sens_spec"   "roc01"            "index_of_union"</span></span></code></pre></div>
-<p>The simulation under the various cutpoints can be visualised using <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>. The default is to visualise the distributions of NMB across all (500) simulations. In the plot below, the spread (light blue) shows the variability in results due to repeated simulation. The median is represented with the dark blue line in the centre of each distribution.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; [5] "cost_minimising"  "prod_sens_spec"   "roc01"            "index_of_union"</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"youden"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
-<p>Treating all looks like a bad option here. The rest are relatively similar at this AUC and event rate, with an edge to treat none or the thresholds using value optimisation and cost minimisation.</p>
-<p>However, we can also use this same function to visualise cutpoints or the incremental net monetary benefit (INB) if we have a known reference strategy, in this case treat-all:</p>
+<p>We can also use this same plotting function to visualise cutpoints or the incremental net monetary benefit (INB) if we have a known reference strategy, in this case treat-all:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"cutpoints"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
@@ -254,7 +258,7 @@
 <span>  cl <span class="op">=</span> <span class="va">cl</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">stopCluster</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></span></code></pre></div>
-<p>Here we can see that, for our hypothetical costed outcome, the classification model when the cutpoint is selected by maximising the Youden index only out-performs the treat-none strategy when the model has a AUC of about 0.9. This is pretty high, and may be better than the model that we expect to be able to get. Also, when the event rate is 0.1, rather than 0.2, we are only able the match the treat-none strategy when our model has an AUC of 0.95.</p>
+<p>Here we can see that, for our hypothetical costed outcome, the classification model when the cutpoint is selected by maximising the Youden index only out-performs the treat-none strategy when the model has a AUC of about 0.9. This is pretty high, and may be better than the model that we expect to be able to get (predicting what patients will get a pressure ulcer is challenging)! Also, when the event rate is 0.1, rather than 0.2, we are only able the match the treat-none strategy when our model has an AUC of 0.95.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -290,10 +294,10 @@
 <span>  <span class="va">eff_pup</span> <span class="op">&lt;-</span> <span class="fl">0.96</span></span>
 <span>  <span class="va">cost_pup</span> <span class="op">&lt;-</span> <span class="fl">140</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"TP"</span> <span class="op">=</span> <span class="op">-</span><span class="va">cost_of_pi</span><span class="op">*</span><span class="va">eff_pup</span> <span class="op">-</span> <span class="va">cost_pup</span>, <span class="co"># True positive = Correctly predicted event savings - intervention cost</span></span>
-<span>    <span class="st">"FP"</span> <span class="op">=</span> <span class="op">-</span><span class="va">cost_pup</span>,                      <span class="co"># False positive: Cost of (unnecessary) treatment from incorrectly predicted positive</span></span>
-<span>    <span class="st">"TN"</span> <span class="op">=</span> <span class="fl">0</span>,                              <span class="co"># True negative: No cost of treatment or event from correctly predicted negative</span></span>
-<span>    <span class="st">"FN"</span> <span class="op">=</span> <span class="op">-</span><span class="va">cost_of_pi</span>                     <span class="co"># False negative: Full cost of event from incorrectly predicted negative</span></span>
+<span>    <span class="st">"TP"</span> <span class="op">=</span> <span class="op">-</span><span class="va">cost_of_pi</span> <span class="op">*</span> <span class="va">eff_pup</span> <span class="op">-</span> <span class="va">cost_pup</span>, <span class="co"># True positive = Correctly predicted event savings - intervention cost</span></span>
+<span>    <span class="st">"FP"</span> <span class="op">=</span> <span class="op">-</span><span class="va">cost_pup</span>, <span class="co"># False positive: Cost of (unnecessary) treatment from incorrectly predicted positive</span></span>
+<span>    <span class="st">"TN"</span> <span class="op">=</span> <span class="fl">0</span>, <span class="co"># True negative: No cost of treatment or event from correctly predicted negative</span></span>
+<span>    <span class="st">"FN"</span> <span class="op">=</span> <span class="op">-</span><span class="va">cost_of_pi</span> <span class="co"># False negative: Full cost of event from incorrectly predicted negative</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
@@ -303,12 +307,12 @@
 <p>For a first pass, we want to see how our current values affect the estimated NMB from model implementation. We will just use our best guesses for now, but for a rigorous simulation, we will want to use Monte Carlo methods to sample from input distributions.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nmb_simulation</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_nmb_sim.html">do_nmb_sim</a></span><span class="op">(</span></span>
-<span>  sample_size <span class="op">=</span> <span class="fl">1000</span>,         <span class="co"># Evaluating a theoretical cohort of 1,000 patients</span></span>
-<span>  n_sims <span class="op">=</span> <span class="fl">500</span>,               <span class="co"># The larger the number of samples, the longer it takes to run, but the more reproducible the results</span></span>
-<span>  n_valid <span class="op">=</span> <span class="fl">10000</span>,            <span class="co"># Number of times the NMB is evaluated under each cutpoint</span></span>
-<span>  sim_auc <span class="op">=</span> <span class="fl">0.820</span>,            <span class="co"># The AUC of our proposed model</span></span>
-<span>  event_rate <span class="op">=</span> <span class="fl">0.1</span>,           <span class="co"># The incidence of pressure ulcers at our hypothetical hospital</span></span>
-<span>  fx_nmb_training <span class="op">=</span> <span class="va">fx_nmb</span>,   <span class="co"># As a first pass, we will just use our confusion matrix vector above for training and evaluation</span></span>
+<span>  sample_size <span class="op">=</span> <span class="fl">1000</span>, <span class="co"># Evaluating a theoretical cohort of 1,000 patients</span></span>
+<span>  n_sims <span class="op">=</span> <span class="fl">500</span>, <span class="co"># The larger the number of samples, the longer it takes to run, but the more reproducible the results</span></span>
+<span>  n_valid <span class="op">=</span> <span class="fl">10000</span>, <span class="co"># Number of times the NMB is evaluated under each cutpoint</span></span>
+<span>  sim_auc <span class="op">=</span> <span class="fl">0.820</span>, <span class="co"># The AUC of our proposed model</span></span>
+<span>  event_rate <span class="op">=</span> <span class="fl">0.1</span>, <span class="co"># The incidence of pressure ulcers at our hypothetical hospital</span></span>
+<span>  fx_nmb_training <span class="op">=</span> <span class="va">fx_nmb</span>, <span class="co"># As a first pass, we will just use our confusion matrix vector above for training and evaluation</span></span>
 <span>  fx_nmb_evaluation <span class="op">=</span> <span class="va">fx_nmb</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -322,7 +326,7 @@
 <span><span class="co">#&gt; Simulated AUC:  0.82</span></span>
 <span><span class="co">#&gt; Simulated event rate:  0.1</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span><span class="va">nmb_simulation</span><span class="op">)</span>                      <span class="co"># Get the mean incremental NMB for each threshold selection method</span></span>
+<span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span><span class="va">nmb_simulation</span><span class="op">)</span> <span class="co"># Get the mean incremental NMB for each threshold selection method</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 3</span></span></span>
 <span><span class="co">#&gt;   method           median `95% CI`          </span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             </span></span>
@@ -335,7 +339,7 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> value_optimising  -<span style="color: #BB0000;">799.</span> -845.02 to -752.02</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> youden            -<span style="color: #BB0000;">820.</span> -872.62 to -769.95</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"cutpoints"</span><span class="op">)</span>                <span class="co"># Demonstrates the range of selected cutpoints under each method</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"cutpoints"</span><span class="op">)</span> <span class="co"># Demonstrates the range of selected cutpoints under each method</span></span></code></pre></div>
 <p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -349,7 +353,7 @@
 <span>  <span class="va">eff_pup</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, mean <span class="op">=</span> <span class="fl">0.04</span>, sd <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
 <span>  <span class="va">cost_pup</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, mean <span class="op">=</span> <span class="fl">140</span>, sd <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"TP"</span> <span class="op">=</span> <span class="op">-</span><span class="va">cost_of_pi</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">eff_pup</span><span class="op">)</span> <span class="op">-</span> <span class="va">cost_pup</span>,</span>
+<span>    <span class="st">"TP"</span> <span class="op">=</span> <span class="op">-</span><span class="va">cost_of_pi</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">eff_pup</span><span class="op">)</span> <span class="op">-</span> <span class="va">cost_pup</span>,</span>
 <span>    <span class="st">"FP"</span> <span class="op">=</span> <span class="op">-</span><span class="va">cost_pup</span>,</span>
 <span>    <span class="st">"TN"</span> <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>    <span class="st">"FN"</span> <span class="op">=</span> <span class="op">-</span><span class="va">cost_of_pi</span></span>
@@ -385,53 +389,53 @@
 <span></span>
 <span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span><span class="va">sim_pup_screen</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    sim_auc event_rate all_median           all_95% CI none_median</span></span>
-<span><span class="co">#&gt; 1     0.72       0.02  -292.9460   -343.91 to -240.18   -158.4862</span></span>
-<span><span class="co">#&gt; 2     0.72       0.10  -908.0126   -1029.51 to -786.5   -799.9755</span></span>
-<span><span class="co">#&gt; 3     0.72       0.18 -1514.1796 -1739.37 to -1325.43  -1443.1889</span></span>
-<span><span class="co">#&gt; 4     0.77       0.02  -290.9740   -345.68 to -242.05   -159.8549</span></span>
-<span><span class="co">#&gt; 5     0.77       0.10  -909.6898   -1038.8 to -770.75   -801.4532</span></span>
-<span><span class="co">#&gt; 6     0.77       0.18 -1519.2482 -1751.65 to -1302.43  -1440.3601</span></span>
-<span><span class="co">#&gt; 7     0.82       0.02  -294.1027   -342.97 to -246.62   -160.8562</span></span>
-<span><span class="co">#&gt; 8     0.82       0.10  -907.6968   -1054.45 to -778.3   -802.0558</span></span>
-<span><span class="co">#&gt; 9     0.82       0.18 -1524.4822 -1755.06 to -1316.74  -1437.7329</span></span>
-<span><span class="co">#&gt; 10    0.87       0.02  -294.5618   -346.78 to -245.84   -160.0144</span></span>
-<span><span class="co">#&gt; 11    0.87       0.10  -906.7729   -1028.87 to -782.3   -801.0716</span></span>
-<span><span class="co">#&gt; 12    0.87       0.18 -1524.1797  -1747.26 to -1307.3  -1440.5100</span></span>
-<span><span class="co">#&gt; 13    0.92       0.02  -289.9631   -337.28 to -247.12   -157.3823</span></span>
-<span><span class="co">#&gt; 14    0.92       0.10  -906.3169  -1044.26 to -783.88   -803.7596</span></span>
-<span><span class="co">#&gt; 15    0.92       0.18 -1520.4885 -1732.18 to -1303.68  -1433.3123</span></span>
+<span><span class="co">#&gt; 1     0.72       0.02  -296.0018   -345.26 to -243.31   -160.2795</span></span>
+<span><span class="co">#&gt; 2     0.72       0.10  -906.8239  -1019.89 to -784.74   -798.9961</span></span>
+<span><span class="co">#&gt; 3     0.72       0.18 -1517.7748 -1750.64 to -1338.27  -1440.7380</span></span>
+<span><span class="co">#&gt; 4     0.77       0.02  -291.2745      -346.72 to -245   -159.0008</span></span>
+<span><span class="co">#&gt; 5     0.77       0.10  -909.3749  -1045.21 to -776.59   -801.2241</span></span>
+<span><span class="co">#&gt; 6     0.77       0.18 -1512.5568 -1739.73 to -1303.75  -1426.0303</span></span>
+<span><span class="co">#&gt; 7     0.82       0.02  -292.7256    -348.72 to -247.4   -158.9201</span></span>
+<span><span class="co">#&gt; 8     0.82       0.10  -908.6082  -1037.47 to -783.52   -804.0774</span></span>
+<span><span class="co">#&gt; 9     0.82       0.18 -1518.3499  -1750.9 to -1303.78  -1432.1701</span></span>
+<span><span class="co">#&gt; 10    0.87       0.02  -295.1068   -342.34 to -248.74   -160.0674</span></span>
+<span><span class="co">#&gt; 11    0.87       0.10  -906.7170   -1030.5 to -782.65   -799.4961</span></span>
+<span><span class="co">#&gt; 12    0.87       0.18 -1522.4897 -1742.56 to -1295.46  -1440.9370</span></span>
+<span><span class="co">#&gt; 13    0.92       0.02  -288.9377   -335.83 to -245.89   -156.7835</span></span>
+<span><span class="co">#&gt; 14    0.92       0.10  -904.5183   -1057.6 to -784.88   -801.8784</span></span>
+<span><span class="co">#&gt; 15    0.92       0.18 -1520.0539 -1749.16 to -1308.68  -1439.4693</span></span>
 <span><span class="co">#&gt;             none_95% CI value_optimising_median value_optimising_95% CI</span></span>
-<span><span class="co">#&gt; 1    -192.55 to -127.12               -158.6751       -194.33 to -127.3</span></span>
-<span><span class="co">#&gt; 2     -914.74 to -689.3               -799.8087       -916.43 to -689.5</span></span>
-<span><span class="co">#&gt; 3   -1657.2 to -1244.27              -1440.9054    -1655.18 to -1244.79</span></span>
-<span><span class="co">#&gt; 4    -195.22 to -132.92               -159.9975      -195.18 to -133.25</span></span>
-<span><span class="co">#&gt; 5    -915.06 to -678.34               -803.0918       -912.54 to -678.5</span></span>
-<span><span class="co">#&gt; 6  -1648.87 to -1213.58              -1438.1122    -1644.95 to -1209.93</span></span>
-<span><span class="co">#&gt; 7    -193.85 to -132.22               -161.3265      -193.82 to -132.22</span></span>
-<span><span class="co">#&gt; 8       -932 to -683.56               -802.5912      -930.75 to -682.12</span></span>
-<span><span class="co">#&gt; 9  -1661.45 to -1242.47              -1437.6471    -1647.29 to -1246.74</span></span>
-<span><span class="co">#&gt; 10   -194.58 to -130.57               -160.1884       -194.8 to -131.36</span></span>
-<span><span class="co">#&gt; 11   -909.26 to -696.57               -800.0405       -910.8 to -691.04</span></span>
-<span><span class="co">#&gt; 12 -1636.18 to -1234.05              -1430.8847    -1633.82 to -1233.25</span></span>
-<span><span class="co">#&gt; 13   -189.57 to -132.39               -157.2613      -189.74 to -133.25</span></span>
-<span><span class="co">#&gt; 14   -930.96 to -686.37               -795.6987      -920.62 to -682.36</span></span>
-<span><span class="co">#&gt; 15 -1626.28 to -1232.86              -1417.8465    -1626.55 to -1216.27</span></span>
+<span><span class="co">#&gt; 1    -192.04 to -129.47               -160.5086      -193.54 to -129.47</span></span>
+<span><span class="co">#&gt; 2    -919.21 to -690.87               -798.4692      -921.53 to -690.55</span></span>
+<span><span class="co">#&gt; 3  -1655.66 to -1263.86              -1438.7714    -1657.71 to -1262.79</span></span>
+<span><span class="co">#&gt; 4    -193.69 to -132.04               -159.0403      -195.04 to -132.31</span></span>
+<span><span class="co">#&gt; 5     -920.2 to -682.06               -801.0096       -923.66 to -682.2</span></span>
+<span><span class="co">#&gt; 6  -1647.43 to -1232.84              -1427.8407    -1636.56 to -1231.56</span></span>
+<span><span class="co">#&gt; 7     -193.57 to -132.1               -159.0458      -194.39 to -131.96</span></span>
+<span><span class="co">#&gt; 8    -917.91 to -683.76               -803.5301      -918.34 to -681.39</span></span>
+<span><span class="co">#&gt; 9  -1652.91 to -1237.55              -1427.9337    -1669.39 to -1235.39</span></span>
+<span><span class="co">#&gt; 10   -189.13 to -131.28               -160.4466      -189.33 to -131.34</span></span>
+<span><span class="co">#&gt; 11   -916.83 to -694.01               -794.7827      -907.15 to -690.99</span></span>
+<span><span class="co">#&gt; 12 -1632.88 to -1233.62              -1431.3754     -1627.3 to -1218.04</span></span>
+<span><span class="co">#&gt; 13   -186.66 to -130.56               -156.3973      -185.99 to -130.43</span></span>
+<span><span class="co">#&gt; 14       -923 to -689.9               -792.2398       -923.3 to -681.61</span></span>
+<span><span class="co">#&gt; 15 -1648.67 to -1244.29              -1426.7714    -1637.92 to -1227.62</span></span>
 <span><span class="co">#&gt;    youden_median        youden_95% CI</span></span>
-<span><span class="co">#&gt; 1      -199.7845   -252.49 to -153.52</span></span>
-<span><span class="co">#&gt; 2      -829.2829   -954.72 to -718.71</span></span>
-<span><span class="co">#&gt; 3     -1452.6877 -1675.99 to -1264.28</span></span>
-<span><span class="co">#&gt; 4      -197.2059   -246.28 to -155.06</span></span>
-<span><span class="co">#&gt; 5      -828.7819   -946.56 to -695.76</span></span>
-<span><span class="co">#&gt; 6     -1452.0997 -1663.51 to -1231.51</span></span>
-<span><span class="co">#&gt; 7      -189.4917   -247.53 to -148.07</span></span>
-<span><span class="co">#&gt; 8      -819.5138   -953.29 to -697.19</span></span>
-<span><span class="co">#&gt; 9     -1447.4167  -1664.4 to -1249.36</span></span>
-<span><span class="co">#&gt; 10     -182.9412   -235.59 to -141.66</span></span>
-<span><span class="co">#&gt; 11     -810.4809    -935.8 to -704.12</span></span>
-<span><span class="co">#&gt; 12    -1436.8185  -1645.8 to -1237.23</span></span>
-<span><span class="co">#&gt; 13     -169.7591   -217.05 to -137.71</span></span>
-<span><span class="co">#&gt; 14     -806.8516   -933.05 to -686.31</span></span>
-<span><span class="co">#&gt; 15    -1426.7440  -1633.7 to -1218.74</span></span></code></pre></div>
+<span><span class="co">#&gt; 1      -203.3617   -256.35 to -155.48</span></span>
+<span><span class="co">#&gt; 2      -831.0513   -946.94 to -717.41</span></span>
+<span><span class="co">#&gt; 3     -1453.5060 -1681.65 to -1280.33</span></span>
+<span><span class="co">#&gt; 4      -194.6010    -251.91 to -155.5</span></span>
+<span><span class="co">#&gt; 5      -826.4119    -944.26 to -710.7</span></span>
+<span><span class="co">#&gt; 6     -1444.3103  -1660.74 to -1237.5</span></span>
+<span><span class="co">#&gt; 7      -186.5131   -243.69 to -149.21</span></span>
+<span><span class="co">#&gt; 8      -819.1844   -941.62 to -693.74</span></span>
+<span><span class="co">#&gt; 9     -1440.8632  -1673.12 to -1232.8</span></span>
+<span><span class="co">#&gt; 10     -183.5543   -235.75 to -144.29</span></span>
+<span><span class="co">#&gt; 11     -809.0349   -932.33 to -698.63</span></span>
+<span><span class="co">#&gt; 12    -1438.5302 -1643.68 to -1229.49</span></span>
+<span><span class="co">#&gt; 13     -171.3292   -215.09 to -136.26</span></span>
+<span><span class="co">#&gt; 14     -801.1329   -937.27 to -687.45</span></span>
+<span><span class="co">#&gt; 15    -1430.2731 -1649.34 to -1226.45</span></span></code></pre></div>
 <p>We can see from these results that as our event rate increases, treatment decisions based on the model, like the Youden index, begin to look better, but there are still very marginal gains from using the prediction model regardless of threshold. It might be that the program could be beneficial mostly in those settings where patients are at a very high risk. If the event rates 0.02, 0.10 and 0.18 corresponded to different wards of the hospital, our simulation could represent the estimated effectiveness of different strategies in each setting.</p>
 <p>We can also represent these results visually.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
