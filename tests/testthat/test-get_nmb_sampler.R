@@ -1,17 +1,20 @@
 test_that("get_nmb_sampler() works when used with do_nmb_sim() in parallel", {
+  get_nmb_train <- get_nmb_sampler(
+    outcome_cost = function() rgamma(1, 1000, 10),
+    wtp = 28000,
+    qalys_lost = function() rgamma(1, 1),
+    high_risk_group_treatment_cost = 50,
+    high_risk_group_treatment_effect = function() rbeta(1, 10, 20),
+    use_expected_values = TRUE
+  )
 
-  get_nmb_train <- get_nmb_sampler(outcome_cost = function() rgamma(1, 1000, 10),
-                                   wtp=28000,
-                                   qalys_lost=function() rgamma(1, 1),
-                                   high_risk_group_treatment_cost = 50,
-                                   high_risk_group_treatment_effect = function() rbeta(1, 10, 20),
-                                   use_expected_values = TRUE)
-
-  get_nmb_eval <- get_nmb_sampler(outcome_cost = function() rgamma(1, 1000, 10),
-                                  wtp=28000,
-                                  qalys_lost=function() rgamma(1, 1),
-                                  high_risk_group_treatment_cost = 50,
-                                  high_risk_group_treatment_effect = function() rbeta(1, 10, 20))
+  get_nmb_eval <- get_nmb_sampler(
+    outcome_cost = function() rgamma(1, 1000, 10),
+    wtp = 28000,
+    qalys_lost = function() rgamma(1, 1),
+    high_risk_group_treatment_cost = 50,
+    high_risk_group_treatment_effect = function() rbeta(1, 10, 20)
+  )
 
   if (!requireNamespace("parallel", quietly = TRUE)) {
     skip()

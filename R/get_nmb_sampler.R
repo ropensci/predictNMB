@@ -27,18 +27,24 @@
 #' @export
 #'
 #' @examples
-#' get_nmb_training <- get_nmb_sampler(outcome_cost = 100,
+#' get_nmb_training <- get_nmb_sampler(
+#'   outcome_cost = 100,
 #'   high_risk_group_treatment_effect = function() rbeta(1, 1, 2),
 #'   high_risk_group_treatment_cost = 10,
 #'   use_expected_values = TRUE
 #' )
-#' get_nmb_evaluation <- get_nmb_sampler(outcome_cost = 100,
+#' get_nmb_evaluation <- get_nmb_sampler(
+#'   outcome_cost = 100,
 #'   high_risk_group_treatment_effect = function() rbeta(1, 1, 2),
 #'   high_risk_group_treatment_cost = 10
 #' )
 #'
-#' get_nmb_training(); get_nmb_training(); get_nmb_training()
-#' get_nmb_evaluation(); get_nmb_evaluation(); get_nmb_evaluation()
+#' get_nmb_training()
+#' get_nmb_training()
+#' get_nmb_training()
+#' get_nmb_evaluation()
+#' get_nmb_evaluation()
+#' get_nmb_evaluation()
 get_nmb_sampler <- function(outcome_cost,
                             wtp,
                             qalys_lost,
@@ -48,46 +54,49 @@ get_nmb_sampler <- function(outcome_cost,
                             low_risk_group_treatment_cost = 0,
                             use_expected_values = FALSE,
                             nboot = 10000) {
-
-  if((missing(wtp) | missing(qalys_lost)) & !(missing(wtp) & missing(qalys_lost))) {
-    stop("willingness to pay (wtp) or QALYS lost (qalys_lost) are provided but not both.",
-         "please provide both or neither.")
+  if ((missing(wtp) | missing(qalys_lost)) & !(missing(wtp) & missing(qalys_lost))) {
+    stop(
+      "willingness to pay (wtp) or QALYS lost (qalys_lost) are provided but not both.",
+      "please provide both or neither."
+    )
   }
-  if(missing(outcome_cost) & missing(wtp)) {
-    stop("no costs provided for making nmb function. Please provide either a",
-         " willingness to pay and qalys lost,",
-         " or the cost of the outcome (outcome_cost), or both.")
+  if (missing(outcome_cost) & missing(wtp)) {
+    stop(
+      "no costs provided for making nmb function. Please provide either a",
+      " willingness to pay and qalys lost,",
+      " or the cost of the outcome (outcome_cost), or both."
+    )
   }
 
-  if(missing(outcome_cost)) {
+  if (missing(outcome_cost)) {
     outcome_cost <- 0
   }
-  if(missing(wtp)) {
+  if (missing(wtp)) {
     wtp <- 0
   }
-  if(missing(qalys_lost)) {
+  if (missing(qalys_lost)) {
     qalys_lost <- 0
   }
   .f <- function() {
-    if(inherits(outcome_cost, "function")) {
+    if (inherits(outcome_cost, "function")) {
       outcome_cost <- outcome_cost()
     }
-    if(inherits(wtp, "function")) {
+    if (inherits(wtp, "function")) {
       wtp <- wtp()
     }
-    if(inherits(qalys_lost, "function")) {
+    if (inherits(qalys_lost, "function")) {
       qalys_lost <- qalys_lost()
     }
-    if(inherits(high_risk_group_treatment_effect, "function")) {
+    if (inherits(high_risk_group_treatment_effect, "function")) {
       high_risk_group_treatment_effect <- high_risk_group_treatment_effect()
     }
-    if(inherits(high_risk_group_treatment_cost, "function")) {
+    if (inherits(high_risk_group_treatment_cost, "function")) {
       high_risk_group_treatment_cost <- high_risk_group_treatment_cost()
     }
-    if(inherits(low_risk_group_treatment_effect, "function")) {
+    if (inherits(low_risk_group_treatment_effect, "function")) {
       low_risk_group_treatment_effect <- low_risk_group_treatment_effect()
     }
-    if(inherits(low_risk_group_treatment_cost, "function")) {
+    if (inherits(low_risk_group_treatment_cost, "function")) {
       low_risk_group_treatment_cost <- low_risk_group_treatment_cost()
     }
 

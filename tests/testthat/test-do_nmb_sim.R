@@ -43,7 +43,8 @@ test_that("summary table method works", {
   expect_s3_class(
     make_summary_table(
       obj,
-      rename_vector = c("Treat All" = "all", "Treat None" = "none")),
+      rename_vector = c("Treat All" = "all", "Treat None" = "none")
+    ),
     "data.frame"
   )
 })

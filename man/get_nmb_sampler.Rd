@@ -55,16 +55,22 @@ function
 Make a NMB sampler for use in \code{do_nmb_sim()} or \code{screen_simulation_inputs()}
 }
 \examples{
-get_nmb_training <- get_nmb_sampler(outcome_cost = 100,
+get_nmb_training <- get_nmb_sampler(
+  outcome_cost = 100,
   high_risk_group_treatment_effect = function() rbeta(1, 1, 2),
   high_risk_group_treatment_cost = 10,
   use_expected_values = TRUE
 )
-get_nmb_evaluation <- get_nmb_sampler(outcome_cost = 100,
+get_nmb_evaluation <- get_nmb_sampler(
+  outcome_cost = 100,
   high_risk_group_treatment_effect = function() rbeta(1, 1, 2),
   high_risk_group_treatment_cost = 10
 )
 
-get_nmb_training(); get_nmb_training(); get_nmb_training()
-get_nmb_evaluation(); get_nmb_evaluation(); get_nmb_evaluation()
+get_nmb_training()
+get_nmb_training()
+get_nmb_training()
+get_nmb_evaluation()
+get_nmb_evaluation()
+get_nmb_evaluation()
 }

@@ -175,7 +175,7 @@ Now we can incorporate uncertainty by passing argument-less, or blank functions 
 ```{r, fig.show='hold'}
 foo2_remake <-
   get_nmb_sampler(
-    outcome_cost = function() rgamma(n = 1, shape = 4), #our blank function, followed by a sampler
+    outcome_cost = function() rgamma(n = 1, shape = 4), # our blank function, followed by a sampler
     high_risk_group_treatment_cost = function() rgamma(n = 1, shape = 1),
     high_risk_group_treatment_effect = function() rbeta(n = 1, shape1 = 10, shape2 = 10)
   )

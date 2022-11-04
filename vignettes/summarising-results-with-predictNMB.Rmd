@@ -138,7 +138,7 @@ The cutpoint methods can be renamed or removed. To rename them, pass a named vec
 ```{r, message=FALSE}
 plot(sim_screen_obj)
 plot(
-  sim_screen_obj, 
+  sim_screen_obj,
   rename_vector = c("Treat All" = "all", "Treat None" = "none", "Youden Index" = "youden", "Value Optimisation" = "value_optimising")
 )
 ```
@@ -150,8 +150,8 @@ plot(sim_screen_obj)
 plot(sim_screen_obj, methods_order = c("all", "none"))
 plot(
   sim_screen_obj,
-  rename_vector = c("Treat All" = "all", "Treat None" = "none"), #Assign new names to the two methods of interest 
-  methods_order = c("Treat All", "Treat None")                   #Call the methods by their new names
+  rename_vector = c("Treat All" = "all", "Treat None" = "none"), # Assign new names to the two methods of interest
+  methods_order = c("Treat All", "Treat None") # Call the methods by their new names
 )
 ```
 
@@ -194,16 +194,18 @@ The y-axis variable and names and orders of methods can be controlled in the sam
 ```{r}
 plot(do_nmb_sim_obj, what = "nmb")
 plot(
-  do_nmb_sim_obj, 
-  what = "inb", 
-  inb_ref_col = "all", 
-  rename_vector = c("Value-Optimising" = "value_optimising", 
-                    "Treat-None" = "none",
-                    "Youden Index" = "youden")
+  do_nmb_sim_obj,
+  what = "inb",
+  inb_ref_col = "all",
+  rename_vector = c(
+    "Value-Optimising" = "value_optimising",
+    "Treat-None" = "none",
+    "Youden Index" = "youden"
+  )
 )
 plot(
-  do_nmb_sim_obj, 
-  what = "cutpoints", 
+  do_nmb_sim_obj,
+  what = "cutpoints",
   methods_order = c("all", "none", "youden", "value_optimising")
 )
 ```
@@ -212,8 +214,8 @@ These plots display the median as the solid bar, the grey part of the distributi
 
 ```{r}
 plot(
-  do_nmb_sim_obj, 
-  fill_cols = c("red", "blue"), 
+  do_nmb_sim_obj,
+  fill_cols = c("red", "blue"),
   median_line_col = "yellow",
   median_line_alpha = 1,
   median_line_size = 0.9
@@ -226,10 +228,12 @@ The `n_bins` argument controls the number of bins used for the histograms and th
 plot(
   do_nmb_sim_obj,
   n_bins = 15,
-  rename_vector = c("Value- Optimising" = "value_optimising", 
-                    "Treat- None" = "none",
-                    "Treat- All" = "all",
-                    "Youden Index" = "youden"),
+  rename_vector = c(
+    "Value- Optimising" = "value_optimising",
+    "Treat- None" = "none",
+    "Treat- All" = "all",
+    "Youden Index" = "youden"
+  ),
   label_wrap_width = 12,
   ci = 0.8
 )
@@ -240,7 +244,7 @@ By default there is an additional theme applied to the facets to bring them clos
 ```{r}
 plot(do_nmb_sim_obj, extra_theme = NULL)
 plot(
-  do_nmb_sim_obj, 
+  do_nmb_sim_obj,
   extra_theme = theme(
     panel.spacing = unit(0, "lines"),
     axis.text.x = element_blank(),
@@ -272,15 +276,15 @@ By default, the methods are aggregated by the median and the 95% confidence inte
 
 ```{r, eval=FALSE}
 make_summary_table(
-  do_nmb_sim_obj, 
+  do_nmb_sim_obj,
   agg_functions = list("mean" = mean, "min" = min, "max" = max)
 )
 ```
 ```{r, echo=FALSE}
 make_summary_table(
-  do_nmb_sim_obj, 
+  do_nmb_sim_obj,
   agg_functions = list("mean" = mean, "min" = min, "max" = max)
-) %>% 
+) %>%
   knitr::kable()
 ```
 
@@ -288,23 +292,28 @@ The `what` and `rename_vector` arguments work in the same way as they did when u
 
 ```{r, eval=FALSE}
 make_summary_table(
-  do_nmb_sim_obj, 
+  do_nmb_sim_obj,
   what = "inb",
   inb_ref_col = "all",
-  rename_vector = c("Value-Optimising" = "value_optimising", 
-                    "Treat-None" = "none",
-                    "Youden Index" = "youden")
+  rename_vector = c(
+    "Value-Optimising" = "value_optimising",
+    "Treat-None" = "none",
+    "Youden Index" = "youden"
+  )
 )
 ```
+
 ```{r, echo=FALSE}
 make_summary_table(
-  do_nmb_sim_obj, 
+  do_nmb_sim_obj,
   what = "inb",
   inb_ref_col = "all",
-  rename_vector = c("Value-Optimising" = "value_optimising", 
-                    "Treat-None" = "none",
-                    "Youden Index" = "youden")
-) %>% 
+  rename_vector = c(
+    "Value-Optimising" = "value_optimising",
+    "Treat-None" = "none",
+    "Youden Index" = "youden"
+  )
+) %>%
   knitr::kable()
 ```
 
