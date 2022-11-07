@@ -41,7 +41,7 @@ The mean NMB per patient is evaluated at the end of each simulated iteration bas
 
 ## Making functions by hand
 
-This first section describes how to make the functions described above by hand. For users unfamiliar with R functions, this section may be unintuitive to follow, and the subsequent `get_nmb_sampler()` section may be a gentler introduction. This section introduces all the flexibility that the user can express when creating these functions, but may be overkill for many cases.
+This first section describes how to make the functions described above by hand. For users unfamiliar with R functions, this section may be unintuitive, and the subsequent `get_nmb_sampler()` section may be a gentler introduction. This section introduces all the flexibility that the user can express when creating these functions, but may be overkill for many cases.
 
 The following function applies exact estimates for each square of a confusion matrix: 
 
@@ -64,9 +64,9 @@ For our possible classifications:
 - $TP = -\$1 - \frac{\$4}{2} = -\$3$ (receive the intervention (\$1) and falls (\$4) occur at half the rate (/2))
 - $FP = -\$1$ (receive the intervention (\$1) and avoid the cost of the fall)
 - $TN = \$0$ (do not receive the intervention and avoid the cost of the fall)
-- $FN -\$4$ (do not have the intervention but experience the (full) cost of the fall (\$4))
+- $FN -\$4$ (do not have the intervention but experience the full cost of the fall (\$4))
 
-Users may provide any function without arguments in this form to be more flexible. This allows the user to incorporate uncertainty for model evaluation, because we may not know our inputs exactly. For example, in the function below, we have sampled from distributions of values, rather than setting our expected value of each outcome. Every time we call the function, we get different values based on our sampling procedure - with the exception of true negative (TN) as it neither costs us the intervention or leads to a negative outcome. This sampling procedure is crucial for evaluation, and is often referred to in health economics as Probabilistic Sensitivity Analysis (PSA).
+Users may provide any function without arguments in this form to be more flexible. This allows the user to incorporate uncertainty for model evaluation, because we may not know our inputs exactly. For example, in the function below, we have sampled from distributions of values, rather than setting our expected value of each outcome. Every time we call the function, we get different values based on our chosen distributions - with the exception of true negative (TN) as it is fixed at zero. This sampling procedure is crucial for evaluation, and is often referred to in health economics as Probabilistic Sensitivity Analysis (PSA).
 
 
 ```{r}
@@ -120,11 +120,11 @@ foo3()
 
 Now that we are providing an intervention and associated cost to the low risk group, there is a negative NMB assigned to true negative (TN) groups. But in exchange, we have reduced the costs of false negatives (FNs), because at least these patients are now receiving an intervention, albeit a less effective one.
 
-It's important to note that while these NMB values are negative, this doesn't imply that we are worse off by implementing prediction models or treatments. We are simply trying to pick the least bad option in a bad situation. This becomes more apparent when we set a reference strategy, which is discussed at greater length in the other vignettes.
+It's important to note that while these NMB values are negative, this doesn't imply that we are worse off by implementing prediction models or treatments. We are simply trying to pick the least bad option in a bad situation. This becomes more apparent when we set a reference strategy, which is discussed in the other vignettes.
 
 ## Making functions using `get_nmb_sampler()`
 
-The previous section demonstrates how to make functions by hand and a general approach to thinking about intervention costs and effects. This same approach is used by `get_nmb_sampler()` but abstracts the actual creation of the function away to make things more straight forward for the user. It can be easier to apply for simple cases, but removes some of the ability to do complex modelling.
+The previous section demonstrates how to make functions by hand and a general approach to thinking about intervention costs and effects. This same approach is used by `get_nmb_sampler()` but abstracts the actual creation of the function away to make things more straightforward for the user. It can be easier to apply for simple cases, but removes some of the ability to do complex modelling.
 
 To replicate what we created as `foo1()`, we pass these costs as separate arguments. The function is created, with the output `get_nmb_sampler()`. Recall:
 
