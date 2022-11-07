@@ -210,7 +210,7 @@ plot(
 )
 ```
 
-These plots display the median as the solid bar, the grey part of the distributions are the outer 5% of the simulated values and the light blue region is the 95% CI. For the methods that select thresholds based on the values in the 2x2 table, such as value-optimising thresholds, this may look a little strange as the cutpoints are highly variable. This can be stabilised with more simulations. The fill colours of the histogram are controlled with `fill_cols` and the line for the median is controlled with `median_line_col`. The thickness of the median line is controlled with `median_line_size` and it's transparency with `median_line_alpha`. 
+These plots display the median as the solid bar, the grey part of the distributions are the outer 5% of the simulated values and the light blue region is the 95% CI. For the methods that select thresholds based on the values in the 2x2 table, such as value-optimising thresholds, this may look a little strange as the cutpoints are highly variable. This can be stabilised with more simulations. The fill colours of the histogram are controlled with `fill_cols` and the line for the median is controlled with `median_line_col`. The thickness of the median line is controlled with `median_line_size` and its transparency with `median_line_alpha`. 
 
 ```{r}
 plot(
