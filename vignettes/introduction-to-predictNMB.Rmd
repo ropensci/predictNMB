@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 # `{predictNMB}`
 
-`{predictNMB}` can be used to evaluate existing or hypothetical clinical prediction models based on their Net Monetary Benefit (NMB). This can be relevant to both prognostic and diagnostic models where a cutpoint (AKA, probability threshold) is used to generate predicted classes rather than probabilities. While it is often beneficial in clinical settings to present the user with a predicted probability, it may be helpful to simulate the effect of the decision arising from this probability. For example, in a hospital setting, a user might want to specify the probability threshold for a clinical prediction model at which best practice suggests treatment over non-treatment as the default strategy. By weighing the NMB of these decisions, users can assess the impact of the model and the suggested threshold prior to implementation.
+`{predictNMB}` can be used to evaluate existing or hypothetical clinical prediction models based on their Net Monetary Benefit (NMB). This can be relevant to both prognostic and diagnostic models where a cutpoint (AKA, probability threshold) is used to generate predicted classes rather than probabilities. While it is often beneficial in clinical settings to present the user with a predicted probability, it may be helpful to simulate the effect of the decision arising from this probability. For example, in a hospital setting, a user might want to specify the probability threshold for a clinical prediction model that predicts inpatient falls at which best practice suggests providing a fall-prevention intervention over non-treatment as the default strategy. By weighing the NMB of these decisions, users can assess the impact of the model and the suggested threshold prior to implementation.
 
 `{predictNMB}` was born out of related work that investigates cutpoint selection methods which maximise the NMB, and includes several options for inbuilt and user-specified cutpoint selection functions. 
 
@@ -56,7 +56,9 @@ get_nmb_sampler()
 get_nmb_sampler()
 ```
 
-Every time we run this function, we get a new named vector for the NMB associated with each prediction. We can inform the distributions that we sample from based on the literature for the specific clinical prediction model at hand. See the examples at the end for a more in-depth example based on the literature. 
+Every time we run this function, we get a new named vector for the NMB associated with each prediction. We can inform the distributions that we sample from based on the literature for the specific clinical prediction model at hand. See the example in the 'detailed-example' vignette for a more in-depth description based on the literature. 
+
+In this example function, the value returned for the True Negative (TN) is zero. This may reflect a scenario where patients categorised as low risk are not given any treatment and do not experience the event being predicted (e.g. a fall) so do not have those associated costs either. The False Negative (FN) is the most negative value; this is because this reflects the worst possible outcome: the patient experiences the event and no intervention was provided to reduce it's rate or the effect of it's associated costs. The True Positive value is similar to the FN, but is not AS negative, because the patient received the intervention and this reduced the associated costs, possibly by reducing the rate of the event. These two classifications have uncertainty associated with them since the costs associated with the outcome are uncertain. This is unlike the False Positive (FP), which has a fixed cost of \$20. This may be realistic when there are set costs for providing the intervention. For example, if the intervention is to give conduct a falls education session with the patient, this may have an exact, known cost. See the detailed example vignette for further description and an example of how to decide on which values to use.
 
 Since we would expect to use our best estimates, in this case the expected value of the NMB associated with each prediction for an actual model (and not take a random sample from its underlying distributions), we will make a separate function for the purpose of obtaining the cutpoint, separately from the one we used (above) to evaluate it.
 
@@ -187,136 +189,3 @@ plot(sim_screen_obj, x_axis_var = "sim_auc", constants = c(event_rate = 0.2))
 plot(sim_screen_obj, x_axis_var = "sim_auc", constants = c(event_rate = 0.1))
 ```
 
-# Detailed example
-
-Economic analysis typically combines information from a variety of sources, including randomised controlled trials, costing studies, and local data. An advantage of simulation is that it can estimate the utility of a proposed intervention prior to implementation. 
-
-In this example, we simulate the decision process for a hospital analyst at an Australian hospital with a high rate of pressure injuries, also known as pressure ulcers. Pressure ulcers are significant adverse events for patients, often leading to additional discomfort, prolonged length of hospital stay, and increased costs. The hospital currently has a pressure ulcer prevention program in place, but our analyst is examining whether to implement a clinical prediction model to identify patients who may not benefit from the program and potentially save on costs.
-
-Let's begin by generating some realistic costs and probabilities. Keep in mind, we are trying to avoid a negative event, so the net monetary benefit of every strategy is going to be negative. In economic parlance, costs are typically negative, while cost savings are positive. If we were also interested in improving quality of life, we could estimate quality-adjusted life years (QALYs), multiply them by a willingness-to-pay threshold (WTP), and add this gain or loss to our true positive and false negative squares to signify the impact on the patient. For simplicity's sake, let's say we're only interested in hospital costs.
-
-Model inputs:
-<br>
-- Mean incremental cost per pressure injury: $8,000 (SD 550)
-<br>
-- Per-patient cost of pressure ulcer prevention strategy (PUP): $140 (SD 20)
-<br>
-- Odds ratio of pressure ulcer with intervention compared to non-intervention: 0.96 (SD 0.03)
-<br>
-- AUC: 0.820 (SD 0.02)
-<br>
-- Hypothetical hospital pressure injury incidence/event rate: 0.1 (SD 0.02)
-<br>
-
-With these inputs, we can populate our confusion matrix (2x2 table), which helps us understand the outcomes resulting from correct and incorrect predictions.
-
-## Model inputs
-
-First, we need to define our NMB function, which provides data for our simulation. In this case, the intervention is associated with a 4% reduction in the odds of a pressure ulcer, so it's only moderately effective at reducing the chance of a pressure injury. We can use a probability-weighted cost savings for successful prevention, at 8000*(0.96) = a small improvement of around \$320. After including \$140 in program costs, the net benefit is around \$180 for a successfully prevented pressure ulcer.
-
-The AUC is 0.820, which is essentially the proportion of random positive patients that received a higher probability of an injury than random negative patients (and vice versa). A useful property of the AUC is that it is the same no matter what probability threshold we use. In our case, an AUC of 0.820 means that the model will assign higher probabilities of a pressure ulcer to around 82% of patients who go on to develop an ulcer compared to patients that don't.
-
-```{r}
-
-fx_nmb <- function() {
-  cost_of_pi <- 8000
-  eff_pup <- 0.96
-  cost_pup <- 140
-  c(
-    "TP" = -cost_of_pi * eff_pup - cost_pup, # True positive = Correctly predicted event savings - intervention cost
-    "FP" = -cost_pup, # False positive: Cost of (unnecessary) treatment from incorrectly predicted positive
-    "TN" = 0, # True negative: No cost of treatment or event from correctly predicted negative
-    "FN" = -cost_of_pi # False negative: Full cost of event from incorrectly predicted negative
-  )
-}
-
-fx_nmb()
-```
-
-For a first pass, we want to see how our current values affect the estimated NMB from model implementation. We will just use our best guesses for now, but for a rigorous simulation, we will want to use Monte Carlo methods to sample from input distributions.
-
-```{r}
-nmb_simulation <- do_nmb_sim(
-  sample_size = 1000, # Evaluating a theoretical cohort of 1,000 patients
-  n_sims = 500, # The larger the number of samples, the longer it takes to run, but the more reproducible the results
-  n_valid = 10000, # Number of times the NMB is evaluated under each cutpoint
-  sim_auc = 0.820, # The AUC of our proposed model
-  event_rate = 0.1, # The incidence of pressure ulcers at our hypothetical hospital
-  fx_nmb_training = fx_nmb, # As a first pass, we will just use our confusion matrix vector above for training and evaluation
-  fx_nmb_evaluation = fx_nmb
-)
-
-nmb_simulation
-
-make_summary_table(nmb_simulation) # Get the mean incremental NMB for each threshold selection method
-
-plot(nmb_simulation, what = "cutpoints") # Demonstrates the range of selected cutpoints under each method
-```
-
-```{r}
-plot(nmb_simulation, what = "inb", inb_ref_col = "all") # Compares the incremental benefit of each alternate strategy to our current practice (treat all)
-```
-
-Our first pass shows treating all is a bad option, outperformed by every other method (as the reference strategy, treat all has an NMB of 0). Treat none looks like a good choice; we should definitely consider scrapping the program and looking for something else that costs less or provides better results. However, this doesn't tell the full story. There may be some incremental benefit from using a model to select patients depending on how our input values change, as the median for value-optimising and cost-minimising strategies is higher than treating none. So our intervention might be worth using, but only for the highest risk patients. 
-Results from the ROC-based methods like the Youden index and index of union are quite uncertain, so we may not want to use them for these input parameters. However, the utility of these models and the threshold selection methods based on the ROC might improve as they get more accurate, or as the event rate increases; what we really want to know is how robust our results are to changes in the input parameters. This is the purpose of `screen_simulation_inputs()`. We can not only simulate from a distribution for our cost inputs, we can pass a vector to the AUC and incidence arguments to understand how these impact our findings.
-
-First, let's specify our sampler function for the confusion matrix. We can replace our inputs with normal distributions, as our values are all means. Make sure to pass distribution definitions within the function so that they are resampled every simulation, but pull the same value for the same patient.
-
-```{r}
-fx_nmb_sampler <- function() {
-  cost_of_pi <- rnorm(n = 1, mean = 8000, sd = 550)
-  eff_pup <- rnorm(n = 1, mean = 0.04, sd = 0.03)
-  cost_pup <- rnorm(n = 1, mean = 140, sd = 20)
-  c(
-    "TP" = -cost_of_pi * (1 - eff_pup) - cost_pup,
-    "FP" = -cost_pup,
-    "TN" = 0,
-    "FN" = -cost_of_pi
-  )
-}
-
-fx_nmb_sampler()
-fx_nmb_sampler()
-fx_nmb_sampler()
-```
-
-The sampler function shows that we can expect some significant variation, especially due to the probability that our intervention is effective. It's always possible that an intervention could lead to worse patient outcomes. In our case, some true positives could actually be worse than false negatives!
-
-We should also check whether changing the other inputs can lead to different results. Perhaps the authors of the clinical prediction model reported a misleading AUC and when we implement the model it turns out to be lower, or perhaps our pressure ulcer rate in some wards is actually quite different to the average incidence at the hospital. By replacing our `sim_auc` and `event_rate` arguments with vectors, we can run simulations for each possible combination we are interested in. 
-
-In the snippet below, we will compare the treat all strategy to scrapping the program altogether ("none") and to a couple of alternative strategies, using the "value_optimising" and "youden" thresholds.
-
-We can also do this in parallel to speed things up.
-
-```{r}
-cl <- makeCluster(2)
-sim_pup_screen <- screen_simulation_inputs(
-  n_sims = 500,
-  n_valid = 10000,
-  sim_auc = seq(0.72, 0.92, 0.05),
-  event_rate = c(0.02, 0.1, 0.18),
-  cutpoint_methods = c("all", "none", "value_optimising", "youden"),
-  fx_nmb_training = fx_nmb,
-  fx_nmb_evaluation = fx_nmb_sampler,
-  cl = cl
-)
-stopCluster(cl)
-
-make_summary_table(sim_pup_screen)
-```
-
-As our event rate increases, treatment decisions based on the model, like the Youden index, begin to look better, but there are still very marginal gains from using the prediction model regardless of threshold. It might be that the program could be beneficial mostly in settings where patients are at a very high risk. If the event rates 0.02, 0.10 and 0.18 corresponded to different wards of the hospital, our simulation could represent the estimated effectiveness of different strategies in each setting.
-
-We can also represent these results visually.
-
-```{r}
-plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.02))
-plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.10))
-plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.18))
-plot(sim_pup_screen, x_axis_var = "event_rate")
-```
-
-
-The nice thing about our cost-effectiveness function is that it tends to follow the best threshold, regardless of AUC or event rate. In this case, it tends to follow the treat none decision as it moves across, which is why the strategies for treat none and cost-effective overlap in the plots. We can also see that the Youden index begins to look better at higher accuracy and higher incidence rates, but predicting what patients will get a pressure ulcer is challenging. 
-
-Ultimately at our given AUC and event rate, it might be best to stop using the intervention for the time being across all patients. This is actually the finding in the analysis this vignette was based off, a cost-effectiveness analysis of a pressure ulcer prevention care bundle by Whitty et al in 2017 ([10.1016/j.ijnurstu.2017.06.014](https://pubmed.ncbi.nlm.nih.gov/28711725/)).
