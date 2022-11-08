@@ -33,6 +33,7 @@ Imports:
     tibble,
     tidyr
 Suggests: 
+    flextable,
     knitr,
     parallel,
     rmarkdown,
