@@ -11,7 +11,7 @@ make_summary_table(
   agg_functions = list(median = stats::median, `95\% CI` = function(x)
     paste0(signif(stats::quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse =
     " to ")),
-  rename_vector = c(),
+  rename_vector,
   ...
 )
 }
