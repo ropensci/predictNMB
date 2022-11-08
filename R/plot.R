@@ -11,9 +11,17 @@ get_plot_data <- function(x,
     data <- x$df_result
   }
 
-  if (!missing(rename_vector)) {
-    data <- dplyr::rename(data, dplyr::any_of(rename_vector))
-  }
+  rename_vector <- update_rename_vector(rename_vector)
+  # if(missing(rename_vector)) {
+  #   rename_vector <- get_inbuilt_cutpoint(return_all_methods = TRUE)
+  #   names(rename_vector) <- gsub("_", " ", rename_vector)
+  # } else {
+  #   user_rename_vector <- rename_vector ## make it so that the values which are not given in rename_vector revert to the default
+  #   rename_vector <- get_inbuilt_cutpoint(return_all_methods = TRUE)
+  #   names(rename_vector) <- gsub("_", " ", rename_vector)
+  # }
+
+  data <- dplyr::rename(data, dplyr::any_of(rename_vector))
 
   if (what == "inb") {
     data <-
@@ -65,7 +73,7 @@ plot.predictNMBsim <- function(x,
                                ci = 0.95,
                                methods_order = NULL,
                                n_bins = 40,
-                               label_wrap_width = 15,
+                               label_wrap_width = 12,
                                fill_cols = c("grey50", "#ADD8E6"),
                                median_line_size = 2,
                                median_line_alpha = 0.5,

@@ -29,7 +29,7 @@ make_summary_table <- function(x,
                                  "median" = stats::median,
                                  "95% CI" = function(x) paste0(signif(stats::quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse = " to ")
                                ),
-                               rename_vector = c(),
+                               rename_vector,
                                ...) {
   UseMethod("make_summary_table")
 }
@@ -57,9 +57,10 @@ make_summary_table.predictNMBscreen <- function(x,
                                                   "median" = stats::median,
                                                   "95% CI" = function(x) paste0(round(stats::quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse = " to ")
                                                 ),
-                                                rename_vector = c(),
+                                                rename_vector,
                                                 show_full_inputs = FALSE,
                                                 ...) {
+  rename_vector <- update_rename_vector(rename_vector)
   get_row_from_sim <- function(sim_idx) {
     get_sim_data(x$simulations[[sim_idx]], what = what[1], inb_ref_col = inb_ref_col) %>%
       dplyr::rename(dplyr::any_of(rename_vector)) %>%
@@ -87,8 +88,9 @@ make_summary_table.predictNMBsim <- function(x,
                                                "median" = stats::median,
                                                "95% CI" = function(x) paste0(round(stats::quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse = " to ")
                                              ),
-                                             rename_vector = c(),
+                                             rename_vector,
                                              ...) {
+  rename_vector <- update_rename_vector(rename_vector)
   get_sim_data(x, what = what[1], inb_ref_col = inb_ref_col) %>%
     dplyr::rename(dplyr::any_of(rename_vector)) %>%
     tidyr::pivot_longer(!n_sim, names_to = "method") %>%

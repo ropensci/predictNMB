@@ -92,3 +92,32 @@ validate_inputs <- function(sample_size,
     stopifnot(inherits(cl, c("SOCKcluster", "cluster")))
   }
 }
+
+
+update_rename_vector <- function(rename_vector) {
+  default_rename_vector <- get_inbuilt_cutpoint(return_all_methods = TRUE)
+  names(default_rename_vector) <- gsub("_", " ", default_rename_vector)
+  if(missing(rename_vector)) {
+    rename_vector <- default_rename_vector
+  } else {
+    new_rename_vector <- default_rename_vector
+
+    # update the new rename vector for the user-defined rename vector, matching to method names with uncerscores
+    if(any(rename_vector %in% new_rename_vector)) {
+      matched_values <- rename_vector[rename_vector %in% new_rename_vector]
+      for(i in seq_along(matched_values)) {
+        names(new_rename_vector)[new_rename_vector == matched_values[i]] <- names(matched_values)[i]
+      }
+    }
+
+    # update the new rename vector for the user-defined rename vector, matching to method names with underscores replaced by spaces
+    matched_values <- rename_vector[rename_vector %in% names(new_rename_vector)]
+    if(any(rename_vector %in% names(new_rename_vector))) {
+      for(i in seq_along(matched_values)) {
+        names(new_rename_vector)[names(new_rename_vector) == matched_values[i]] <- names(matched_values)[i]
+      }
+    }
+    rename_vector <- new_rename_vector
+  }
+  return(rename_vector)
+}
