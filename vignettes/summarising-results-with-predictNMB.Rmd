@@ -19,6 +19,7 @@ knitr::opts_chunk$set(
 library(predictNMB)
 library(parallel)
 library(ggplot2)
+library(flextable)
 set.seed(42)
 ```
 
@@ -88,7 +89,11 @@ In this case, we can visualise the impact on NMB for different methods across va
 
 ```{r}
 plot(sim_screen_obj, x_axis_var = "sim_auc")
-plot(sim_screen_obj, x_axis_var = "event_rate")
+```
+
+(To avoid the overlap of points in this second plot, we can specify the `dodge_width` to be non-zero.)
+```{r}
+plot(sim_screen_obj, x_axis_var = "event_rate", dodge_width = 0.002)
 ```
 
 For these plots, one of the screened inputs will be the x-axis variable, but the other will only be displayed at a single level. The default setting will assume the first level, so when we visualise the change in NMB specifying `sim_auc` as the x-axis variable, we only observe this for the case where `event_rate = 0.1`. We can choose to select another level with the `constants` argument. This argument expects a named list containing the values to keep for the screened inputs which are not shown on the x-axis.
@@ -206,7 +211,7 @@ plot(
 plot(
   do_nmb_sim_obj,
   what = "cutpoints",
-  methods_order = c("all", "none", "youden", "value_optimising")
+  methods_order = c("all", "none", "youden", "value optimising")
 )
 ```
 
@@ -234,7 +239,7 @@ plot(
     "Treat- All" = "all",
     "Youden Index" = "youden"
   ),
-  label_wrap_width = 12,
+  label_wrap_width = 5,
   ci = 0.8
 )
 ```
@@ -255,37 +260,47 @@ plot(
 
 # Making tables with predictNMB
 
-To make tables from the same objects as we used for the plots, we instead use `make_summary_table()`. This can be applied to either type of results (`screen_simulation_inputs()` or `do_nmb_sim()`). Using the `%>%` operator, it is compatible with the `knitr` function `kable()`, which is a simple table generator.
+To make tables from the same objects as we used for the plots, we instead use `make_summary_table()`. This can be applied to either type of results (`screen_simulation_inputs()` or `do_nmb_sim()`). Using the `%>%` operator, we can pass it straight to `flextable()` from the `{flextable}` package that we have already loaded.
 
 
 ```{r, eval=FALSE}
 make_summary_table(sim_screen_obj)
 ```
 ```{r, echo=FALSE}
-make_summary_table(sim_screen_obj) %>% knitr::kable()
+make_summary_table(sim_screen_obj) %>% flextable()
 ```
 
 ```{r, eval=FALSE}
 make_summary_table(do_nmb_sim_obj)
 ```
+
 ```{r, echo=FALSE}
-make_summary_table(do_nmb_sim_obj) %>% knitr::kable()
+make_summary_table(do_nmb_sim_obj) %>% flextable()
 ```
 
-By default, the methods are aggregated by the median and the 95% confidence intervals. These are the default list of functions passed to the `make_summary_table()` as the `agg_functions` argument. These can be changed to any functions which aggregate a numeric vector.
+By default, the methods are aggregated by the median and the 95% confidence intervals (and rounded to 2 and 1 decimal places, respectively). These are the default list of functions passed to the `make_summary_table()` as the `agg_functions` argument. These can be changed to any functions which aggregate a numeric vector.
 
 ```{r, eval=FALSE}
 make_summary_table(
   do_nmb_sim_obj,
-  agg_functions = list("mean" = mean, "min" = min, "max" = max)
+  agg_functions = list(
+    "mean" = function(x) round(mean(x), digits=2),
+    "min" = min, 
+    "max" = max
+  )
 )
 ```
+
 ```{r, echo=FALSE}
 make_summary_table(
   do_nmb_sim_obj,
-  agg_functions = list("mean" = mean, "min" = min, "max" = max)
+  agg_functions = list(
+    "mean" = function(x) round(mean(x), digits=2),
+    "min" = min, 
+    "max" = max
+  )
 ) %>%
-  knitr::kable()
+  flextable()
 ```
 
 The `what` and `rename_vector` arguments work in the same way as they did when using `plot()`.
@@ -314,7 +329,7 @@ make_summary_table(
     "Youden Index" = "youden"
   )
 ) %>%
-  knitr::kable()
+  flextable()
 ```
 
 The summary table contains the same outputs for both `do_nmb_sim()` and `screen_simulation_inputs()`, but they are arranged slightly differently. Each row in the screen over inputs object is a unique set of inputs. By default, this is trimmed to include only those inputs that vary in our function call - here, `sim_auc` and `event_rate` - by using the `show_full_inputs` argument. By default, only the inputs that vary are shown. However, we can set `show_full_inputs = TRUE` to see more.
@@ -322,13 +337,20 @@ The summary table contains the same outputs for both `do_nmb_sim()` and `screen_
 ```{r, eval=FALSE}
 make_summary_table(sim_screen_obj)
 ```
+
 ```{r, echo=FALSE}
-make_summary_table(sim_screen_obj) %>% knitr::kable()
+make_summary_table(sim_screen_obj) %>% flextable()
 ```
 
 ```{r, eval=FALSE}
 make_summary_table(sim_screen_obj, show_full_inputs = TRUE)
 ```
+
+(In this table below, we merge repeated values using `merge_v()` and add the `theme_box()` to make it a bit easier to read. You can see more about making tables with `{flextable}` [here](https://davidgohel.github.io/flextable/).)
+
 ```{r, echo=FALSE}
-make_summary_table(sim_screen_obj, show_full_inputs = TRUE) %>% knitr::kable()
+make_summary_table(sim_screen_obj, show_full_inputs = TRUE) %>%
+  flextable() %>%
+  merge_v(j = 1:9) %>% 
+  theme_box()
 ```
