@@ -83,7 +83,8 @@ plot.predictNMBsim <- function(x,
                                  panel.spacing = ggplot2::unit(0, "lines"),
                                  axis.ticks.x = ggplot2::element_blank(),
                                  axis.text.x = ggplot2::element_blank(),
-                                 strip.background = ggplot2::element_rect(fill = "#f1f1f1")
+                                 strip.background = ggplot2::element_rect(fill = "#f1f1f1"),
+                                 panel.grid.minor = ggplot2::element_blank()
                                ),
                                ...) {
   p_data <- get_plot_data(
@@ -171,7 +172,9 @@ plot.predictNMBscreen <- function(x,
                                   ci = 0.95,
                                   methods_order = NULL,
                                   rename_vector,
-                                  extra_theme = NULL,
+                                  extra_theme = ggplot2::theme(
+                                    panel.grid.minor = ggplot2::element_blank()
+                                  ),
                                   ...) {
   if (is.null(x_axis_var)) {
     message("No value for 'x_axis_var' given.")
