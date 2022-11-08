@@ -49,6 +49,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/creating-nmb-functions.html">Creating NMB functions</a>
+    <a class="dropdown-item" href="../articles/detailed-example.html">Detailed example: pressure injury model</a>
     <a class="dropdown-item" href="../articles/introduction-to-predictNMB.html">Introduction to predictNMB</a>
     <a class="dropdown-item" href="../articles/summarising-results-with-predictNMB.html">Summarising results from predictNMB</a>
   </div>
@@ -155,14 +156,14 @@
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -5.349880 -2.601061  0.000000 -5.497744</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -3.5544649 -0.3347643  0.0000000 -4.8877640</span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -4.317565 -1.412613  0.000000 -5.934514</span></span>
+<span><span class="co">#&gt; -2.002076 -0.190125  0.000000 -4.638725</span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -3.766685 -1.091028  0.000000 -4.992452</span></span></code></pre></div>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -3.4958975 -0.8240157  0.0000000 -3.9368560</span></span></code></pre></div>
 <p>Another benefit of allowing the user to define the function structure is that we can also allow the low risk group, or the population whose risk estimates fall below the probability threshold, to receive an intervention rather than nothing.</p>
 <p>This can be preferable when there is more than one available intervention to use, and one is more costly (and presumably effective) than the other. For example, all patients in a hospital might have a medication management plan in place to reduce falls risk as a matter of course, but the high risk group might also receive additional surveillance from nurses. This way, we can assign all high risk patients to receive the high cost and highly effective intervention, and all low risk patients to receive the low cost and less effective intervention. Extending <code>foo2()</code> to create the function below, we assign the low cost intervention $0.5 and a reduction in falls of 30%.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -188,13 +189,13 @@
 <span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.2263618 -0.6566235 -0.5380973 -2.2578692</span></span>
+<span><span class="co">#&gt; -4.6503187 -0.3432949 -0.2637403 -7.4496294</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -7.8694433 -1.4365756 -0.5581384 -7.0246352</span></span>
+<span><span class="co">#&gt; -2.7735387 -0.3863591 -0.2174499 -2.8059638</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.6080282 -0.1886322 -0.6985897 -4.9664768</span></span></code></pre></div>
+<span><span class="co">#&gt; -2.8284830 -0.1147654 -0.5809806 -4.6285180</span></span></code></pre></div>
 <p>Now that we are providing an intervention and associated cost to the low risk group, there is a negative NMB assigned to true negative (TN) groups. But in exchange, we have reduced the costs of false negatives (FNs), because at least these patients are now receiving an intervention, albeit a less effective one.</p>
 <p>It’s important to note that while these NMB values are negative, this doesn’t imply that we are worse off by implementing prediction models or treatments. We are simply trying to pick the least bad option in a bad situation. This becomes more apparent when we set a reference strategy, which is discussed in the other vignettes.</p>
 </div>
@@ -335,13 +336,13 @@
 <span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.9854713 -0.9936421  0.0000000 -4.0008190</span></span>
+<span><span class="co">#&gt; -3.0097539 -0.9972377  0.0000000 -4.0219530</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.9854713 -0.9936421  0.0000000 -4.0008190</span></span>
+<span><span class="co">#&gt; -3.0097539 -0.9972377  0.0000000 -4.0219530</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.9854713 -0.9936421  0.0000000 -4.0008190</span></span></code></pre></div>
+<span><span class="co">#&gt; -3.0097539 -0.9972377  0.0000000 -4.0219530</span></span></code></pre></div>
 <p>In many cases (including this one), this will give similar values to using the parameter estimates (i.e. <code>foo1()</code>), but not always. The values from this process should be more stable than using the estimates.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">simulation_res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_nmb_sim.html">do_nmb_sim</a></span><span class="op">(</span></span>

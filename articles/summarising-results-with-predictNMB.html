@@ -49,6 +49,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/creating-nmb-functions.html">Creating NMB functions</a>
+    <a class="dropdown-item" href="../articles/detailed-example.html">Detailed example: pressure injury model</a>
     <a class="dropdown-item" href="../articles/introduction-to-predictNMB.html">Introduction to predictNMB</a>
     <a class="dropdown-item" href="../articles/summarising-results-with-predictNMB.html">Summarising results from predictNMB</a>
   </div>
@@ -74,7 +75,8 @@
 
 
 
-<script src="summarising-results-with-predictNMB_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+<script src="summarising-results-with-predictNMB_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="summarising-results-with-predictNMB_files/tabwid-1.1.2/tabwid.css" rel="stylesheet">
+<div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Summarising results from predictNMB</h1>
             
@@ -89,6 +91,7 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rwparsons.github.io/predictNMB/">predictNMB</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">parallel</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ardata-fr.github.io/flextable-book/" class="external-link">flextable</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span></code></pre></div>
 <p>This vignette is purely about how to use the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> method and <code><a href="../reference/make_summary_table.html">make_summary_table()</a></code> to visualise and summarise the simulations made using <a href="https://rwparsons.github.io/predictNMB/">predictNMB</a>. For an introduction to <a href="https://rwparsons.github.io/predictNMB/">predictNMB</a>, please see the other vignette.</p>
 <p>Firstly, as an example case, we will run <code><a href="../reference/screen_simulation_inputs.html">screen_simulation_inputs()</a></code>.</p>
@@ -142,13 +145,14 @@
 <span><span class="co">#&gt; Varying simulation inputs, other than sim_auc, are being held constant:</span></span>
 <span><span class="co">#&gt; event_rate: 0.1</span></span></code></pre></div>
 <p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p>(To avoid the overlap of points in this second plot, we can specify the <code>dodge_width</code> to be non-zero.)</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, x_axis_var <span class="op">=</span> <span class="st">"event_rate"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, x_axis_var <span class="op">=</span> <span class="st">"event_rate"</span>, dodge_width <span class="op">=</span> <span class="fl">0.002</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Varying simulation inputs, other than event_rate, are being held constant:</span></span>
 <span><span class="co">#&gt; sim_auc: 0.7</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-6-2.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 <p>For these plots, one of the screened inputs will be the x-axis variable, but the other will only be displayed at a single level. The default setting will assume the first level, so when we visualise the change in NMB specifying <code>sim_auc</code> as the x-axis variable, we only observe this for the case where <code>event_rate = 0.1</code>. We can choose to select another level with the <code>constants</code> argument. This argument expects a named list containing the values to keep for the screened inputs which are not shown on the x-axis.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span>
@@ -156,14 +160,14 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Varying simulation inputs, other than sim_auc, are being held constant:</span></span>
 <span><span class="co">#&gt; event_rate: 0.1</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Varying simulation inputs, other than sim_auc, are being held constant:</span></span>
 <span><span class="co">#&gt; event_rate: 0.2</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-7-2.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-8-2.png" width="700"></p>
 <p>We see both a change to the plot as well as the message produced when the plot is made.</p>
 </div>
 <div class="section level4">
@@ -172,13 +176,13 @@
 <p>There are three options for the y-axis. The default is the NMB, but you can also visualise the Incremental Net Monetary Benefit (INB) and the selected cutpoints. These are controlled by the <code>what</code> argument, which can be any of <code>c("nmb", "inb", "cutpoints")</code>. If a vector is used, only the first value will be selected. If you choose to visualise the INB, you must list your chosen reference strategy for the calculation in the <code>inb_ref_col</code>. In this case, we use treat all (<code>"all"</code>).</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, what <span class="op">=</span> <span class="st">"nmb"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, what <span class="op">=</span> <span class="st">"inb"</span>, inb_ref_col <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-8-2.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-9-2.png" width="700"></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, what <span class="op">=</span> <span class="st">"cutpoints"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-8-3.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-9-3.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="selecting-what-to-show-on-the-plot">Selecting what to show on the plot<a class="anchor" aria-label="anchor" href="#selecting-what-to-show-on-the-plot"></a>
@@ -186,19 +190,19 @@
 <p>The plots show the median (the dot), the 95% confidence interval (thick vertical lines), the range (thin vertical lines), and the lines between the points by default. These can each be shown or hidden independently, and the width of the confidence interval can be controlled using the <code>ci</code> argument.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, plot_range <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-9-2.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-10-2.png" width="700"></p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, plot_ci <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-9-3.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-10-3.png" width="700"></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, plot_ci <span class="op">=</span> <span class="cn">FALSE</span>, plot_range <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-9-4.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-10-4.png" width="700"></p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, plot_ci <span class="op">=</span> <span class="cn">FALSE</span>, plot_range <span class="op">=</span> <span class="cn">FALSE</span>, plot_line <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-9-5.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-10-5.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="other-plot-modifications">Other plot modifications<a class="anchor" aria-label="anchor" href="#other-plot-modifications"></a>
@@ -206,44 +210,44 @@
 <p>Currently, the lines and dots overlap. We can use <code>dodge_width</code> to apply a horizontal dodge for all layers.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, dodge_width <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-10-2.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-11-2.png" width="700"></p>
 <p>The cutpoint methods can be renamed or removed. To rename them, pass a named vector to the <code>rename_vector</code> argument. The names of the vector are the new names and the values are the names you wish to replace.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">sim_screen_obj</span>,</span>
 <span>  rename_vector <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treat All"</span> <span class="op">=</span> <span class="st">"all"</span>, <span class="st">"Treat None"</span> <span class="op">=</span> <span class="st">"none"</span>, <span class="st">"Youden Index"</span> <span class="op">=</span> <span class="st">"youden"</span>, <span class="st">"Value Optimisation"</span> <span class="op">=</span> <span class="st">"value_optimising"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-11-2.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-12-2.png" width="700"></p>
 <p>You can reorder the methods by passing the order as the <code>methods_order</code> argument. Also note that this will remove all methods which aren’t included, and it will factor the names AFTER it has renamed them. So, if you are both renaming and re-ordering, you must provide the updated names when you order them:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, methods_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-12-2.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-13-2.png" width="700"></p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">sim_screen_obj</span>,</span>
 <span>  rename_vector <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treat All"</span> <span class="op">=</span> <span class="st">"all"</span>, <span class="st">"Treat None"</span> <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span>, <span class="co"># Assign new names to the two methods of interest</span></span>
 <span>  methods_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treat All"</span>, <span class="st">"Treat None"</span><span class="op">)</span> <span class="co"># Call the methods by their new names</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-12-3.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-13-3.png" width="700"></p>
 <p>The transparency of all layers can be controlled with <code>plot_alpha</code>.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, plot_alpha <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-13-2.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-14-2.png" width="700"></p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, plot_alpha <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-13-3.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-14-3.png" width="700"></p>
 </div>
 </div>
 <div class="section level3">
@@ -263,11 +267,11 @@
 <p>The plots here show the results of a single simulation and compare the available cutpoints.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">do_nmb_sim_obj</span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
 <p>The y-axis variable and names and orders of methods can be controlled in the same way as previously:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">do_nmb_sim_obj</span>, what <span class="op">=</span> <span class="st">"nmb"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">do_nmb_sim_obj</span>,</span>
@@ -279,14 +283,14 @@
 <span>    <span class="st">"Youden Index"</span> <span class="op">=</span> <span class="st">"youden"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-17-2.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-18-2.png" width="700"></p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">do_nmb_sim_obj</span>,</span>
 <span>  what <span class="op">=</span> <span class="st">"cutpoints"</span>,</span>
-<span>  methods_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"youden"</span>, <span class="st">"value_optimising"</span><span class="op">)</span></span>
+<span>  methods_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"youden"</span>, <span class="st">"value optimising"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-17-3.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-18-3.png" width="700"></p>
 <p>These plots display the median as the solid bar, the grey part of the distributions are the outer 5% of the simulated values and the light blue region is the 95% CI. For the methods that select thresholds based on the values in the 2x2 table, such as value-optimising thresholds, this may look a little strange as the cutpoints are highly variable. This can be stabilised with more simulations. The fill colours of the histogram are controlled with <code>fill_cols</code> and the line for the median is controlled with <code>median_line_col</code>. The thickness of the median line is controlled with <code>median_line_size</code> and its transparency with <code>median_line_alpha</code>.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
@@ -296,7 +300,7 @@
 <span>  median_line_alpha <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  median_line_size <span class="op">=</span> <span class="fl">0.9</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-19-1.png" width="700"></p>
 <p>The <code>n_bins</code> argument controls the number of bins used for the histograms and the <code>label_wrap_width</code> is the number of characters above which to start a new line for the facet labels. This can be handy when using detailed names for the methods when the font of the label is relatively large compared to the plot, though a space is needed to determine where to split the label. The width of the confidence intervals can also be controlled by the <code>ci</code> argument in this <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> call.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
@@ -308,14 +312,14 @@
 <span>    <span class="st">"Treat- All"</span> <span class="op">=</span> <span class="st">"all"</span>,</span>
 <span>    <span class="st">"Youden Index"</span> <span class="op">=</span> <span class="st">"youden"</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  label_wrap_width <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>  label_wrap_width <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  ci <span class="op">=</span> <span class="fl">0.8</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-19-1.png" width="576"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-20-1.png" width="576"></p>
 <p>By default there is an additional theme applied to the facets to bring them closer to each other. Replace the <code>extra_theme</code> with <code>NULL</code> to revert to the default behaviour, or use your own theme here.</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">do_nmb_sim_obj</span>, extra_theme <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-20-1.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-21-1.png" width="700"></p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">do_nmb_sim_obj</span>,</span>
@@ -325,259 +329,395 @@
 <span>    strip.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-20-2.png" width="700"></p>
+<p><img src="summarising-results-with-predictNMB_files/figure-html/unnamed-chunk-21-2.png" width="700"></p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="making-tables-with-predictnmb">Making tables with predictNMB<a class="anchor" aria-label="anchor" href="#making-tables-with-predictnmb"></a>
 </h2>
-<p>To make tables from the same objects as we used for the plots, we instead use <code><a href="../reference/make_summary_table.html">make_summary_table()</a></code>. This can be applied to either type of results (<code><a href="../reference/screen_simulation_inputs.html">screen_simulation_inputs()</a></code> or <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code>). Using the <code>%&gt;%</code> operator, it is compatible with the <code>knitr</code> function <code>kable()</code>, which is a simple table generator.</p>
+<p>To make tables from the same objects as we used for the plots, we instead use <code><a href="../reference/make_summary_table.html">make_summary_table()</a></code>. This can be applied to either type of results (<code><a href="../reference/screen_simulation_inputs.html">screen_simulation_inputs()</a></code> or <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code>). Using the <code>%&gt;%</code> operator, we can pass it straight to <code><a href="https://davidgohel.github.io/flextable/reference/flextable.html" class="external-link">flextable()</a></code> from the <a href="https://ardata-fr.github.io/flextable-book/" class="external-link">flextable</a> package that we have already loaded.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span><span class="va">sim_screen_obj</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
-<colgroup>
-<col width="5%">
-<col width="7%">
-<col width="7%">
-<col width="10%">
-<col width="7%">
-<col width="10%">
-<col width="9%">
-<col width="10%">
-<col width="15%">
-<col width="15%">
-</colgroup>
-<thead><tr class="header">
-<th align="right">sim_auc</th>
-<th align="right">event_rate</th>
-<th align="right">all_median</th>
-<th align="left">all_95% CI</th>
-<th align="right">none_median</th>
-<th align="left">none_95% CI</th>
-<th align="right">youden_median</th>
-<th align="left">youden_95% CI</th>
-<th align="right">value_optimising_median</th>
-<th align="left">value_optimising_95% CI</th>
+<template id="102bd594-0f31-4b93-9b61-9fd49d26d910"><style>
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  border-color: transparent;
+  caption-side: top;
+}
+.tabwid-caption-bottom table{
+  caption-side: bottom;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td, .tabwid th {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+.katex-display {
+    margin: 0 0 !important;
+}
+</style>
+<div class="tabwid">
+<style>.cl-dcbaacf4{}.cl-dcb0aaf6{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-dcb4e850{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-dcb4e85a{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-dcb50fd8{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dcb50fe2{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dcb50fe3{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dcb50fe4{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dcb50fec{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dcb50fed{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table class="table cl-dcbaacf4">
+<thead><tr style="overflow-wrap:break-word;">
+<th class="cl-dcb50fd8"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">sim_auc</span></p></th>
+<th class="cl-dcb50fd8"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">event_rate</span></p></th>
+<th class="cl-dcb50fd8"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">all_median</span></p></th>
+<th class="cl-dcb50fe2"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">all_95% CI</span></p></th>
+<th class="cl-dcb50fd8"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">none_median</span></p></th>
+<th class="cl-dcb50fe2"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">none_95% CI</span></p></th>
+<th class="cl-dcb50fd8"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">youden_median</span></p></th>
+<th class="cl-dcb50fe2"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">youden_95% CI</span></p></th>
+<th class="cl-dcb50fd8"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">value optimising_median</span></p></th>
+<th class="cl-dcb50fe2"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">value optimising_95% CI</span></p></th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="right">0.70</td>
-<td align="right">0.1</td>
-<td align="right">-26.018</td>
-<td align="left">-26.34 to -25.67</td>
-<td align="right">-10.03</td>
-<td align="left">-10.57 to -9.45</td>
-<td align="right">-14.928</td>
-<td align="left">-19.99 to -11.09</td>
-<td align="right">-10.080</td>
-<td align="left">-11.18 to -9.48</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.70</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.1</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-25.99</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-26.4 to -25.6</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-9.98</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-10.6 to -9.4</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-14.78</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-19.5 to -11.1</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-10.05</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-10.9 to -9.4</span></p></td>
 </tr>
-<tr class="even">
-<td align="right">0.70</td>
-<td align="right">0.2</td>
-<td align="right">-31.994</td>
-<td align="left">-32.48 to -31.57</td>
-<td align="right">-19.99</td>
-<td align="left">-20.8 to -19.28</td>
-<td align="right">-22.975</td>
-<td align="left">-26.62 to -20.6</td>
-<td align="right">-20.055</td>
-<td align="left">-21.39 to -19.29</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.70</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.2</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-31.99</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-32.5 to -31.5</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-19.98</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-20.8 to -19.2</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-22.99</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-26.3 to -20.6</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-20.02</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-21.2 to -19.2</span></p></td>
 </tr>
-<tr class="odd">
-<td align="right">0.75</td>
-<td align="right">0.1</td>
-<td align="right">-25.988</td>
-<td align="left">-26.37 to -25.64</td>
-<td align="right">-9.98</td>
-<td align="left">-10.61 to -9.4</td>
-<td align="right">-13.704</td>
-<td align="left">-19.17 to -10.59</td>
-<td align="right">-10.043</td>
-<td align="left">-11.01 to -9.43</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.75</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.1</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-26.01</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-26.3 to -25.6</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-10.01</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-10.5 to -9.4</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-13.94</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-18.7 to -10.7</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-10.06</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-11 to -9.4</span></p></td>
 </tr>
-<tr class="even">
-<td align="right">0.75</td>
-<td align="right">0.2</td>
-<td align="right">-32.006</td>
-<td align="left">-32.48 to -31.5</td>
-<td align="right">-20.01</td>
-<td align="left">-20.8 to -19.17</td>
-<td align="right">-22.169</td>
-<td align="left">-24.74 to -20.19</td>
-<td align="right">-19.932</td>
-<td align="left">-21.15 to -19.12</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.75</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.2</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-31.98</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-32.5 to -31.6</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-19.98</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-20.8 to -19.3</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-22.30</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-25.3 to -20.3</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-19.93</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-21.1 to -19.2</span></p></td>
 </tr>
-<tr class="odd">
-<td align="right">0.80</td>
-<td align="right">0.1</td>
-<td align="right">-26.000</td>
-<td align="left">-26.36 to -25.64</td>
-<td align="right">-10.00</td>
-<td align="left">-10.6 to -9.39</td>
-<td align="right">-13.038</td>
-<td align="left">-17.94 to -10.41</td>
-<td align="right">-10.020</td>
-<td align="left">-10.81 to -9.4</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.80</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.1</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-26.00</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-26.3 to -25.6</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-10.00</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-10.5 to -9.4</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-13.28</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-17.5 to -10.5</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-10.03</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-10.9 to -9.4</span></p></td>
 </tr>
-<tr class="even">
-<td align="right">0.80</td>
-<td align="right">0.2</td>
-<td align="right">-31.994</td>
-<td align="left">-32.43 to -31.57</td>
-<td align="right">-19.99</td>
-<td align="left">-20.72 to -19.28</td>
-<td align="right">-21.301</td>
-<td align="left">-24.15 to -19.74</td>
-<td align="right">-19.666</td>
-<td align="left">-20.72 to -18.96</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.80</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.2</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-32.01</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-32.5 to -31.6</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-20.01</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-20.9 to -19.3</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-21.45</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-23.9 to -19.7</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-19.73</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-20.7 to -18.9</span></p></td>
 </tr>
-<tr class="odd">
-<td align="right">0.85</td>
-<td align="right">0.1</td>
-<td align="right">-25.994</td>
-<td align="left">-26.38 to -25.62</td>
-<td align="right">-9.99</td>
-<td align="left">-10.64 to -9.36</td>
-<td align="right">-12.361</td>
-<td align="left">-16.49 to -10.03</td>
-<td align="right">-9.890</td>
-<td align="left">-10.84 to -9.24</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.85</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.1</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-26.01</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-26.4 to -25.6</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-10.02</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-10.6 to -9.4</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-12.48</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-16.1 to -10.2</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-9.92</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-10.7 to -9.2</span></p></td>
 </tr>
-<tr class="even">
-<td align="right">0.85</td>
-<td align="right">0.2</td>
-<td align="right">-31.988</td>
-<td align="left">-32.48 to -31.52</td>
-<td align="right">-19.98</td>
-<td align="left">-20.8 to -19.19</td>
-<td align="right">-20.503</td>
-<td align="left">-22.65 to -19.2</td>
-<td align="right">-19.293</td>
-<td align="left">-20.28 to -18.45</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.85</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.2</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-31.99</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-32.5 to -31.5</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-19.99</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-20.9 to -19.1</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-20.56</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-22.8 to -19.1</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-19.31</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-20.3 to -18.4</span></p></td>
 </tr>
-<tr class="odd">
-<td align="right">0.90</td>
-<td align="right">0.1</td>
-<td align="right">-26.000</td>
-<td align="left">-26.34 to -25.69</td>
-<td align="right">-10.00</td>
-<td align="left">-10.57 to -9.49</td>
-<td align="right">-11.303</td>
-<td align="left">-14.7 to -9.73</td>
-<td align="right">-9.691</td>
-<td align="left">-10.34 to -9.15</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.90</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.1</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-25.98</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-26.4 to -25.6</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-9.97</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-10.6 to -9.4</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-11.36</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-14.3 to -9.6</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-9.68</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-10.4 to -9.1</span></p></td>
 </tr>
-<tr class="even">
-<td align="right">0.90</td>
-<td align="right">0.2</td>
-<td align="right">-32.012</td>
-<td align="left">-32.41 to -31.5</td>
-<td align="right">-20.02</td>
-<td align="left">-20.69 to -19.17</td>
-<td align="right">-19.550</td>
-<td align="left">-21.58 to -18.3</td>
-<td align="right">-18.735</td>
-<td align="left">-19.79 to -17.87</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.90</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.2</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-32.00</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-32.5 to -31.5</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-20.00</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-20.8 to -19.2</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-19.60</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-21.5 to -18.4</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-18.69</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-20 to -18</span></p></td>
 </tr>
-<tr class="odd">
-<td align="right">0.95</td>
-<td align="right">0.1</td>
-<td align="right">-26.000</td>
-<td align="left">-26.34 to -25.66</td>
-<td align="right">-10.00</td>
-<td align="left">-10.56 to -9.44</td>
-<td align="right">-10.222</td>
-<td align="left">-13.17 to -9</td>
-<td align="right">-9.278</td>
-<td align="left">-10.09 to -8.73</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.95</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.1</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-25.99</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-26.4 to -25.6</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-9.99</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-10.6 to -9.4</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-10.16</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-12.7 to -9</span></p></td>
+<td class="cl-dcb50fe3"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-9.30</span></p></td>
+<td class="cl-dcb50fe4"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-10 to -8.6</span></p></td>
 </tr>
-<tr class="even">
-<td align="right">0.95</td>
-<td align="right">0.2</td>
-<td align="right">-31.982</td>
-<td align="left">-32.47 to -31.56</td>
-<td align="right">-19.97</td>
-<td align="left">-20.79 to -19.26</td>
-<td align="right">-18.380</td>
-<td align="left">-19.89 to -17.41</td>
-<td align="right">-17.903</td>
-<td align="left">-19.42 to -17.24</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dcb50fec"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.95</span></p></td>
+<td class="cl-dcb50fec"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">0.2</span></p></td>
+<td class="cl-dcb50fec"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-32.01</span></p></td>
+<td class="cl-dcb50fed"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-32.5 to -31.6</span></p></td>
+<td class="cl-dcb50fec"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-20.01</span></p></td>
+<td class="cl-dcb50fed"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-20.8 to -19.2</span></p></td>
+<td class="cl-dcb50fec"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-18.46</span></p></td>
+<td class="cl-dcb50fed"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-19.8 to -17.4</span></p></td>
+<td class="cl-dcb50fec"><p class="cl-dcb4e850"><span class="cl-dcb0aaf6">-17.92</span></p></td>
+<td class="cl-dcb50fed"><p class="cl-dcb4e85a"><span class="cl-dcb0aaf6">-19.6 to -17.2</span></p></td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+</div></template><div class="flextable-shadow-host" id="89e0861c-e49f-4523-b86d-b9e251862939"></div>
+<script>
+var dest = document.getElementById("89e0861c-e49f-4523-b86d-b9e251862939");
+var template = document.getElementById("102bd594-0f31-4b93-9b61-9fd49d26d910");
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+</script><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span><span class="va">do_nmb_sim_obj</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="left">method</th>
-<th align="right">median</th>
-<th align="left">95% CI</th>
+<template id="f4b45d92-74a7-424f-9e27-5466ac0fa53c"><style>
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  border-color: transparent;
+  caption-side: top;
+}
+.tabwid-caption-bottom table{
+  caption-side: bottom;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td, .tabwid th {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+.katex-display {
+    margin: 0 0 !important;
+}
+</style>
+<div class="tabwid">
+<style>.cl-dce086fe{}.cl-dcd84b38{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-dcdbe130{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-dcdbe13a{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-dcdbf72e{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dcdbf738{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dcdbf739{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dcdbf73a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dcdbf742{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dcdbf743{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table class="table cl-dce086fe">
+<thead><tr style="overflow-wrap:break-word;">
+<th class="cl-dcdbf72e"><p class="cl-dcdbe130"><span class="cl-dcd84b38">method</span></p></th>
+<th class="cl-dcdbf738"><p class="cl-dcdbe13a"><span class="cl-dcd84b38">median</span></p></th>
+<th class="cl-dcdbf72e"><p class="cl-dcdbe130"><span class="cl-dcd84b38">95% CI</span></p></th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="left">all</td>
-<td align="right">-26.018</td>
-<td align="left">-26.34 to -25.67</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dcdbf739"><p class="cl-dcdbe130"><span class="cl-dcd84b38">all</span></p></td>
+<td class="cl-dcdbf73a"><p class="cl-dcdbe13a"><span class="cl-dcd84b38">-25.988</span></p></td>
+<td class="cl-dcdbf739"><p class="cl-dcdbe130"><span class="cl-dcd84b38">-26.38 to -25.61</span></p></td>
 </tr>
-<tr class="even">
-<td align="left">none</td>
-<td align="right">-10.030</td>
-<td align="left">-10.57 to -9.45</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dcdbf739"><p class="cl-dcdbe130"><span class="cl-dcd84b38">none</span></p></td>
+<td class="cl-dcdbf73a"><p class="cl-dcdbe13a"><span class="cl-dcd84b38">-9.980</span></p></td>
+<td class="cl-dcdbf739"><p class="cl-dcdbe130"><span class="cl-dcd84b38">-10.63 to -9.35</span></p></td>
 </tr>
-<tr class="odd">
-<td align="left">value_optimising</td>
-<td align="right">-10.080</td>
-<td align="left">-11.18 to -9.48</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dcdbf739"><p class="cl-dcdbe130"><span class="cl-dcd84b38">value optimising</span></p></td>
+<td class="cl-dcdbf73a"><p class="cl-dcdbe13a"><span class="cl-dcd84b38">-10.050</span></p></td>
+<td class="cl-dcdbf739"><p class="cl-dcdbe130"><span class="cl-dcd84b38">-10.86 to -9.43</span></p></td>
 </tr>
-<tr class="even">
-<td align="left">youden</td>
-<td align="right">-14.928</td>
-<td align="left">-19.99 to -11.09</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dcdbf742"><p class="cl-dcdbe130"><span class="cl-dcd84b38">youden</span></p></td>
+<td class="cl-dcdbf743"><p class="cl-dcdbe13a"><span class="cl-dcd84b38">-14.776</span></p></td>
+<td class="cl-dcdbf742"><p class="cl-dcdbe130"><span class="cl-dcd84b38">-19.53 to -11.09</span></p></td>
 </tr>
 </tbody>
 </table>
-<p>By default, the methods are aggregated by the median and the 95% confidence intervals. These are the default list of functions passed to the <code><a href="../reference/make_summary_table.html">make_summary_table()</a></code> as the <code>agg_functions</code> argument. These can be changed to any functions which aggregate a numeric vector.</p>
+</div></template><div class="flextable-shadow-host" id="3a620da9-393c-44c2-a365-ef5ca3ebabe9"></div>
+<script>
+var dest = document.getElementById("3a620da9-393c-44c2-a365-ef5ca3ebabe9");
+var template = document.getElementById("f4b45d92-74a7-424f-9e27-5466ac0fa53c");
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+</script><p>By default, the methods are aggregated by the median and the 95% confidence intervals (and rounded to 2 and 1 decimal places, respectively). These are the default list of functions passed to the <code><a href="../reference/make_summary_table.html">make_summary_table()</a></code> as the <code>agg_functions</code> argument. These can be changed to any functions which aggregate a numeric vector.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span></span>
 <span>  <span class="va">do_nmb_sim_obj</span>,</span>
-<span>  agg_functions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"mean"</span> <span class="op">=</span> <span class="va">mean</span>, <span class="st">"min"</span> <span class="op">=</span> <span class="va">min</span>, <span class="st">"max"</span> <span class="op">=</span> <span class="va">max</span><span class="op">)</span></span>
+<span>  agg_functions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    <span class="st">"mean"</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span>,</span>
+<span>    <span class="st">"min"</span> <span class="op">=</span> <span class="va">min</span>, </span>
+<span>    <span class="st">"max"</span> <span class="op">=</span> <span class="va">max</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="left">method</th>
-<th align="right">mean</th>
-<th align="right">min</th>
-<th align="right">max</th>
+<template id="9aaec9ae-5534-4244-9037-16a6742a7e58"><style>
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  border-color: transparent;
+  caption-side: top;
+}
+.tabwid-caption-bottom table{
+  caption-side: bottom;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td, .tabwid th {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+.katex-display {
+    margin: 0 0 !important;
+}
+</style>
+<div class="tabwid">
+<style>.cl-dd08a2b0{}.cl-dd008a6c{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-dd0402be{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-dd0402c8{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-dd04189e{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dd0418a8{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dd0418b2{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dd0418b3{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dd0418b4{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dd0418bc{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table class="table cl-dd08a2b0">
+<thead><tr style="overflow-wrap:break-word;">
+<th class="cl-dd04189e"><p class="cl-dd0402be"><span class="cl-dd008a6c">method</span></p></th>
+<th class="cl-dd0418a8"><p class="cl-dd0402c8"><span class="cl-dd008a6c">mean</span></p></th>
+<th class="cl-dd0418a8"><p class="cl-dd0402c8"><span class="cl-dd008a6c">min</span></p></th>
+<th class="cl-dd0418a8"><p class="cl-dd0402c8"><span class="cl-dd008a6c">max</span></p></th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="left">all</td>
-<td align="right">-26.01146</td>
-<td align="right">-26.558</td>
-<td align="right">-25.436</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dd0418b2"><p class="cl-dd0402be"><span class="cl-dd008a6c">all</span></p></td>
+<td class="cl-dd0418b3"><p class="cl-dd0402c8"><span class="cl-dd008a6c">-25.99</span></p></td>
+<td class="cl-dd0418b3"><p class="cl-dd0402c8"><span class="cl-dd008a6c">-26.534</span></p></td>
+<td class="cl-dd0418b3"><p class="cl-dd0402c8"><span class="cl-dd008a6c">-25.388</span></p></td>
 </tr>
-<tr class="even">
-<td align="left">none</td>
-<td align="right">-10.01910</td>
-<td align="right">-10.930</td>
-<td align="right">-9.060</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dd0418b2"><p class="cl-dd0402be"><span class="cl-dd008a6c">none</span></p></td>
+<td class="cl-dd0418b3"><p class="cl-dd0402c8"><span class="cl-dd008a6c">-9.99</span></p></td>
+<td class="cl-dd0418b3"><p class="cl-dd0402c8"><span class="cl-dd008a6c">-10.890</span></p></td>
+<td class="cl-dd0418b3"><p class="cl-dd0402c8"><span class="cl-dd008a6c">-8.980</span></p></td>
 </tr>
-<tr class="odd">
-<td align="left">value_optimising</td>
-<td align="right">-10.21634</td>
-<td align="right">-25.814</td>
-<td align="right">-9.150</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dd0418b2"><p class="cl-dd0402be"><span class="cl-dd008a6c">value optimising</span></p></td>
+<td class="cl-dd0418b3"><p class="cl-dd0402c8"><span class="cl-dd008a6c">-10.13</span></p></td>
+<td class="cl-dd0418b3"><p class="cl-dd0402c8"><span class="cl-dd008a6c">-26.294</span></p></td>
+<td class="cl-dd0418b3"><p class="cl-dd0402c8"><span class="cl-dd008a6c">-9.002</span></p></td>
 </tr>
-<tr class="even">
-<td align="left">youden</td>
-<td align="right">-15.16934</td>
-<td align="right">-22.228</td>
-<td align="right">-10.174</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dd0418b4"><p class="cl-dd0402be"><span class="cl-dd008a6c">youden</span></p></td>
+<td class="cl-dd0418bc"><p class="cl-dd0402c8"><span class="cl-dd008a6c">-14.91</span></p></td>
+<td class="cl-dd0418bc"><p class="cl-dd0402c8"><span class="cl-dd008a6c">-23.342</span></p></td>
+<td class="cl-dd0418bc"><p class="cl-dd0402c8"><span class="cl-dd008a6c">-9.920</span></p></td>
 </tr>
 </tbody>
 </table>
-<p>The <code>what</code> and <code>rename_vector</code> arguments work in the same way as they did when using <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>.</p>
+</div></template><div class="flextable-shadow-host" id="bec8801b-1a7e-4b13-992b-d59b4d98583b"></div>
+<script>
+var dest = document.getElementById("bec8801b-1a7e-4b13-992b-d59b4d98583b");
+var template = document.getElementById("9aaec9ae-5534-4244-9037-16a6742a7e58");
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+</script><p>The <code>what</code> and <code>rename_vector</code> arguments work in the same way as they did when using <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>.</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span></span>
 <span>  <span class="va">do_nmb_sim_obj</span>,</span>
@@ -589,477 +729,531 @@
 <span>    <span class="st">"Youden Index"</span> <span class="op">=</span> <span class="st">"youden"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="left">method</th>
-<th align="right">median</th>
-<th align="left">95% CI</th>
+<template id="924c6234-32d9-4dd1-b397-7ed38115d3f2"><style>
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  border-color: transparent;
+  caption-side: top;
+}
+.tabwid-caption-bottom table{
+  caption-side: bottom;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td, .tabwid th {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+.katex-display {
+    margin: 0 0 !important;
+}
+</style>
+<div class="tabwid">
+<style>.cl-dd2f78ea{}.cl-dd277302{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-dd2af162{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-dd2af16c{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-dd2b0f94{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dd2b0f9e{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dd2b0f9f{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dd2b0fa8{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dd2b0fa9{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dd2b0faa{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table class="table cl-dd2f78ea">
+<thead><tr style="overflow-wrap:break-word;">
+<th class="cl-dd2b0f94"><p class="cl-dd2af162"><span class="cl-dd277302">method</span></p></th>
+<th class="cl-dd2b0f9e"><p class="cl-dd2af16c"><span class="cl-dd277302">median</span></p></th>
+<th class="cl-dd2b0f94"><p class="cl-dd2af162"><span class="cl-dd277302">95% CI</span></p></th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="left">Treat-None</td>
-<td align="right">15.988</td>
-<td align="left">15.77 to 16.22</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dd2b0f9f"><p class="cl-dd2af162"><span class="cl-dd277302">Treat-None</span></p></td>
+<td class="cl-dd2b0fa8"><p class="cl-dd2af16c"><span class="cl-dd277302">16.008</span></p></td>
+<td class="cl-dd2b0f9f"><p class="cl-dd2af162"><span class="cl-dd277302">15.75 to 16.26</span></p></td>
 </tr>
-<tr class="even">
-<td align="left">Value-Optimising</td>
-<td align="right">15.952</td>
-<td align="left">15 to 16.2</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dd2b0f9f"><p class="cl-dd2af162"><span class="cl-dd277302">Value-Optimising</span></p></td>
+<td class="cl-dd2b0fa8"><p class="cl-dd2af16c"><span class="cl-dd277302">15.960</span></p></td>
+<td class="cl-dd2b0f9f"><p class="cl-dd2af162"><span class="cl-dd277302">15.35 to 16.22</span></p></td>
 </tr>
-<tr class="odd">
-<td align="left">Youden Index</td>
-<td align="right">11.100</td>
-<td align="left">6.04 to 14.9</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dd2b0fa9"><p class="cl-dd2af162"><span class="cl-dd277302">Youden Index</span></p></td>
+<td class="cl-dd2b0faa"><p class="cl-dd2af16c"><span class="cl-dd277302">11.249</span></p></td>
+<td class="cl-dd2b0fa9"><p class="cl-dd2af162"><span class="cl-dd277302">6.31 to 14.99</span></p></td>
 </tr>
 </tbody>
 </table>
-<p>The summary table contains the same outputs for both <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> and <code><a href="../reference/screen_simulation_inputs.html">screen_simulation_inputs()</a></code>, but they are arranged slightly differently. Each row in the screen over inputs object is a unique set of inputs. By default, this is trimmed to include only those inputs that vary in our function call - here, <code>sim_auc</code> and <code>event_rate</code> - by using the <code>show_full_inputs</code> argument. By default, only the inputs that vary are shown. However, we can set <code>show_full_inputs = TRUE</code> to see more.</p>
+</div></template><div class="flextable-shadow-host" id="c27c2511-f3c6-40d0-ac63-c69e45c99659"></div>
+<script>
+var dest = document.getElementById("c27c2511-f3c6-40d0-ac63-c69e45c99659");
+var template = document.getElementById("924c6234-32d9-4dd1-b397-7ed38115d3f2");
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+</script><p>The summary table contains the same outputs for both <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> and <code><a href="../reference/screen_simulation_inputs.html">screen_simulation_inputs()</a></code>, but they are arranged slightly differently. Each row in the screen over inputs object is a unique set of inputs. By default, this is trimmed to include only those inputs that vary in our function call - here, <code>sim_auc</code> and <code>event_rate</code> - by using the <code>show_full_inputs</code> argument. By default, only the inputs that vary are shown. However, we can set <code>show_full_inputs = TRUE</code> to see more.</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span><span class="va">sim_screen_obj</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
-<colgroup>
-<col width="5%">
-<col width="7%">
-<col width="7%">
-<col width="10%">
-<col width="7%">
-<col width="10%">
-<col width="9%">
-<col width="10%">
-<col width="15%">
-<col width="15%">
-</colgroup>
-<thead><tr class="header">
-<th align="right">sim_auc</th>
-<th align="right">event_rate</th>
-<th align="right">all_median</th>
-<th align="left">all_95% CI</th>
-<th align="right">none_median</th>
-<th align="left">none_95% CI</th>
-<th align="right">youden_median</th>
-<th align="left">youden_95% CI</th>
-<th align="right">value_optimising_median</th>
-<th align="left">value_optimising_95% CI</th>
+<template id="ecde75f6-970e-433f-8a31-00f20233033b"><style>
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  border-color: transparent;
+  caption-side: top;
+}
+.tabwid-caption-bottom table{
+  caption-side: bottom;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td, .tabwid th {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+.katex-display {
+    margin: 0 0 !important;
+}
+</style>
+<div class="tabwid">
+<style>.cl-dd6f111c{}.cl-dd6586ba{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-dd69b5e6{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-dd69b5f0{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-dd69cdba{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dd69cdc4{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dd69cdc5{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dd69cdc6{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dd69cdc7{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dd69cdce{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table class="table cl-dd6f111c">
+<thead><tr style="overflow-wrap:break-word;">
+<th class="cl-dd69cdba"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">sim_auc</span></p></th>
+<th class="cl-dd69cdba"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">event_rate</span></p></th>
+<th class="cl-dd69cdba"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">all_median</span></p></th>
+<th class="cl-dd69cdc4"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">all_95% CI</span></p></th>
+<th class="cl-dd69cdba"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">none_median</span></p></th>
+<th class="cl-dd69cdc4"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">none_95% CI</span></p></th>
+<th class="cl-dd69cdba"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">youden_median</span></p></th>
+<th class="cl-dd69cdc4"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">youden_95% CI</span></p></th>
+<th class="cl-dd69cdba"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">value optimising_median</span></p></th>
+<th class="cl-dd69cdc4"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">value optimising_95% CI</span></p></th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="right">0.70</td>
-<td align="right">0.1</td>
-<td align="right">-26.018</td>
-<td align="left">-26.34 to -25.67</td>
-<td align="right">-10.03</td>
-<td align="left">-10.57 to -9.45</td>
-<td align="right">-14.928</td>
-<td align="left">-19.99 to -11.09</td>
-<td align="right">-10.080</td>
-<td align="left">-11.18 to -9.48</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.70</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.1</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-25.99</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-26.4 to -25.6</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-9.98</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-10.6 to -9.4</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-14.78</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-19.5 to -11.1</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-10.05</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-10.9 to -9.4</span></p></td>
 </tr>
-<tr class="even">
-<td align="right">0.70</td>
-<td align="right">0.2</td>
-<td align="right">-31.994</td>
-<td align="left">-32.48 to -31.57</td>
-<td align="right">-19.99</td>
-<td align="left">-20.8 to -19.28</td>
-<td align="right">-22.975</td>
-<td align="left">-26.62 to -20.6</td>
-<td align="right">-20.055</td>
-<td align="left">-21.39 to -19.29</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.70</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.2</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-31.99</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-32.5 to -31.5</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-19.98</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-20.8 to -19.2</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-22.99</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-26.3 to -20.6</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-20.02</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-21.2 to -19.2</span></p></td>
 </tr>
-<tr class="odd">
-<td align="right">0.75</td>
-<td align="right">0.1</td>
-<td align="right">-25.988</td>
-<td align="left">-26.37 to -25.64</td>
-<td align="right">-9.98</td>
-<td align="left">-10.61 to -9.4</td>
-<td align="right">-13.704</td>
-<td align="left">-19.17 to -10.59</td>
-<td align="right">-10.043</td>
-<td align="left">-11.01 to -9.43</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.75</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.1</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-26.01</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-26.3 to -25.6</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-10.01</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-10.5 to -9.4</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-13.94</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-18.7 to -10.7</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-10.06</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-11 to -9.4</span></p></td>
 </tr>
-<tr class="even">
-<td align="right">0.75</td>
-<td align="right">0.2</td>
-<td align="right">-32.006</td>
-<td align="left">-32.48 to -31.5</td>
-<td align="right">-20.01</td>
-<td align="left">-20.8 to -19.17</td>
-<td align="right">-22.169</td>
-<td align="left">-24.74 to -20.19</td>
-<td align="right">-19.932</td>
-<td align="left">-21.15 to -19.12</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.75</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.2</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-31.98</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-32.5 to -31.6</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-19.98</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-20.8 to -19.3</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-22.30</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-25.3 to -20.3</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-19.93</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-21.1 to -19.2</span></p></td>
 </tr>
-<tr class="odd">
-<td align="right">0.80</td>
-<td align="right">0.1</td>
-<td align="right">-26.000</td>
-<td align="left">-26.36 to -25.64</td>
-<td align="right">-10.00</td>
-<td align="left">-10.6 to -9.39</td>
-<td align="right">-13.038</td>
-<td align="left">-17.94 to -10.41</td>
-<td align="right">-10.020</td>
-<td align="left">-10.81 to -9.4</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.80</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.1</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-26.00</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-26.3 to -25.6</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-10.00</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-10.5 to -9.4</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-13.28</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-17.5 to -10.5</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-10.03</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-10.9 to -9.4</span></p></td>
 </tr>
-<tr class="even">
-<td align="right">0.80</td>
-<td align="right">0.2</td>
-<td align="right">-31.994</td>
-<td align="left">-32.43 to -31.57</td>
-<td align="right">-19.99</td>
-<td align="left">-20.72 to -19.28</td>
-<td align="right">-21.301</td>
-<td align="left">-24.15 to -19.74</td>
-<td align="right">-19.666</td>
-<td align="left">-20.72 to -18.96</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.80</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.2</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-32.01</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-32.5 to -31.6</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-20.01</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-20.9 to -19.3</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-21.45</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-23.9 to -19.7</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-19.73</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-20.7 to -18.9</span></p></td>
 </tr>
-<tr class="odd">
-<td align="right">0.85</td>
-<td align="right">0.1</td>
-<td align="right">-25.994</td>
-<td align="left">-26.38 to -25.62</td>
-<td align="right">-9.99</td>
-<td align="left">-10.64 to -9.36</td>
-<td align="right">-12.361</td>
-<td align="left">-16.49 to -10.03</td>
-<td align="right">-9.890</td>
-<td align="left">-10.84 to -9.24</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.85</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.1</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-26.01</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-26.4 to -25.6</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-10.02</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-10.6 to -9.4</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-12.48</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-16.1 to -10.2</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-9.92</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-10.7 to -9.2</span></p></td>
 </tr>
-<tr class="even">
-<td align="right">0.85</td>
-<td align="right">0.2</td>
-<td align="right">-31.988</td>
-<td align="left">-32.48 to -31.52</td>
-<td align="right">-19.98</td>
-<td align="left">-20.8 to -19.19</td>
-<td align="right">-20.503</td>
-<td align="left">-22.65 to -19.2</td>
-<td align="right">-19.293</td>
-<td align="left">-20.28 to -18.45</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.85</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.2</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-31.99</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-32.5 to -31.5</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-19.99</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-20.9 to -19.1</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-20.56</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-22.8 to -19.1</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-19.31</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-20.3 to -18.4</span></p></td>
 </tr>
-<tr class="odd">
-<td align="right">0.90</td>
-<td align="right">0.1</td>
-<td align="right">-26.000</td>
-<td align="left">-26.34 to -25.69</td>
-<td align="right">-10.00</td>
-<td align="left">-10.57 to -9.49</td>
-<td align="right">-11.303</td>
-<td align="left">-14.7 to -9.73</td>
-<td align="right">-9.691</td>
-<td align="left">-10.34 to -9.15</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.90</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.1</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-25.98</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-26.4 to -25.6</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-9.97</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-10.6 to -9.4</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-11.36</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-14.3 to -9.6</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-9.68</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-10.4 to -9.1</span></p></td>
 </tr>
-<tr class="even">
-<td align="right">0.90</td>
-<td align="right">0.2</td>
-<td align="right">-32.012</td>
-<td align="left">-32.41 to -31.5</td>
-<td align="right">-20.02</td>
-<td align="left">-20.69 to -19.17</td>
-<td align="right">-19.550</td>
-<td align="left">-21.58 to -18.3</td>
-<td align="right">-18.735</td>
-<td align="left">-19.79 to -17.87</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.90</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.2</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-32.00</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-32.5 to -31.5</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-20.00</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-20.8 to -19.2</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-19.60</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-21.5 to -18.4</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-18.69</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-20 to -18</span></p></td>
 </tr>
-<tr class="odd">
-<td align="right">0.95</td>
-<td align="right">0.1</td>
-<td align="right">-26.000</td>
-<td align="left">-26.34 to -25.66</td>
-<td align="right">-10.00</td>
-<td align="left">-10.56 to -9.44</td>
-<td align="right">-10.222</td>
-<td align="left">-13.17 to -9</td>
-<td align="right">-9.278</td>
-<td align="left">-10.09 to -8.73</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.95</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.1</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-25.99</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-26.4 to -25.6</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-9.99</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-10.6 to -9.4</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-10.16</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-12.7 to -9</span></p></td>
+<td class="cl-dd69cdc5"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-9.30</span></p></td>
+<td class="cl-dd69cdc6"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-10 to -8.6</span></p></td>
 </tr>
-<tr class="even">
-<td align="right">0.95</td>
-<td align="right">0.2</td>
-<td align="right">-31.982</td>
-<td align="left">-32.47 to -31.56</td>
-<td align="right">-19.97</td>
-<td align="left">-20.79 to -19.26</td>
-<td align="right">-18.380</td>
-<td align="left">-19.89 to -17.41</td>
-<td align="right">-17.903</td>
-<td align="left">-19.42 to -17.24</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-dd69cdc7"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.95</span></p></td>
+<td class="cl-dd69cdc7"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">0.2</span></p></td>
+<td class="cl-dd69cdc7"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-32.01</span></p></td>
+<td class="cl-dd69cdce"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-32.5 to -31.6</span></p></td>
+<td class="cl-dd69cdc7"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-20.01</span></p></td>
+<td class="cl-dd69cdce"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-20.8 to -19.2</span></p></td>
+<td class="cl-dd69cdc7"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-18.46</span></p></td>
+<td class="cl-dd69cdce"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-19.8 to -17.4</span></p></td>
+<td class="cl-dd69cdc7"><p class="cl-dd69b5e6"><span class="cl-dd6586ba">-17.92</span></p></td>
+<td class="cl-dd69cdce"><p class="cl-dd69b5f0"><span class="cl-dd6586ba">-19.6 to -17.2</span></p></td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+</div></template><div class="flextable-shadow-host" id="3bbbaf85-9719-4275-97a1-db40bb707fdb"></div>
+<script>
+var dest = document.getElementById("3bbbaf85-9719-4275-97a1-db40bb707fdb");
+var template = document.getElementById("ecde75f6-970e-433f-8a31-00f20233033b");
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+</script><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, show_full_inputs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<colgroup>
-<col width="2%">
-<col width="3%">
-<col width="9%">
-<col width="9%">
-<col width="4%">
-<col width="3%">
-<col width="4%">
-<col width="4%">
-<col width="6%">
-<col width="4%">
-<col width="6%">
-<col width="4%">
-<col width="6%">
-<col width="5%">
-<col width="6%">
-<col width="9%">
-<col width="9%">
-</colgroup>
-<thead><tr class="header">
-<th align="right">n_sims</th>
-<th align="right">n_valid</th>
-<th align="left">fx_nmb_training</th>
-<th align="left">fx_nmb_evaluation</th>
-<th align="right">sample_size</th>
-<th align="right">sim_auc</th>
-<th align="right">event_rate</th>
-<th align="right">min_events</th>
-<th align="left">meet_min_events</th>
-<th align="right">all_median</th>
-<th align="left">all_95% CI</th>
-<th align="right">none_median</th>
-<th align="left">none_95% CI</th>
-<th align="right">youden_median</th>
-<th align="left">youden_95% CI</th>
-<th align="right">value_optimising_median</th>
-<th align="left">value_optimising_95% CI</th>
+<p>(In this table below, we merge repeated values using <code><a href="https://davidgohel.github.io/flextable/reference/merge_v.html" class="external-link">merge_v()</a></code> and add the <code><a href="https://davidgohel.github.io/flextable/reference/theme_box.html" class="external-link">theme_box()</a></code> to make it a bit easier to read. You can see more about making tables with <a href="https://ardata-fr.github.io/flextable-book/" class="external-link">flextable</a> <a href="https://davidgohel.github.io/flextable/" class="external-link">here</a>.)</p>
+<template id="81390aca-1e99-4ae3-a014-0059d9f9fb90"><style>
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  border-color: transparent;
+  caption-side: top;
+}
+.tabwid-caption-bottom table{
+  caption-side: bottom;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td, .tabwid th {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+.katex-display {
+    margin: 0 0 !important;
+}
+</style>
+<div class="tabwid">
+<style>.cl-ddbdada4{}.cl-ddb39b98{font-family:'DejaVu Sans';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-ddb39ba2{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-ddb7b692{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ddb7b69c{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ddb7cf92{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(102, 102, 102, 1.00);border-top: 1pt solid rgba(102, 102, 102, 1.00);border-left: 1pt solid rgba(102, 102, 102, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ddb7cf9c{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(102, 102, 102, 1.00);border-top: 1pt solid rgba(102, 102, 102, 1.00);border-left: 1pt solid rgba(102, 102, 102, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ddb7cfa6{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 1pt solid rgba(102, 102, 102, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ddb7cfa7{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 1pt solid rgba(102, 102, 102, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table class="table cl-ddbdada4">
+<thead><tr style="overflow-wrap:break-word;">
+<th class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39b98">n_sims</span></p></th>
+<th class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39b98">n_valid</span></p></th>
+<th class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39b98">fx_nmb_training</span></p></th>
+<th class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39b98">fx_nmb_evaluation</span></p></th>
+<th class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39b98">sample_size</span></p></th>
+<th class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39b98">sim_auc</span></p></th>
+<th class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39b98">event_rate</span></p></th>
+<th class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39b98">min_events</span></p></th>
+<th class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39b98">meet_min_events</span></p></th>
+<th class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39b98">all_median</span></p></th>
+<th class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39b98">all_95% CI</span></p></th>
+<th class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39b98">none_median</span></p></th>
+<th class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39b98">none_95% CI</span></p></th>
+<th class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39b98">youden_median</span></p></th>
+<th class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39b98">youden_95% CI</span></p></th>
+<th class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39b98">value optimising_median</span></p></th>
+<th class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39b98">value optimising_95% CI</span></p></th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="right">189</td>
-<td align="right">0.70</td>
-<td align="right">0.1</td>
-<td align="right">19</td>
-<td align="left">TRUE</td>
-<td align="right">-26.018</td>
-<td align="left">-26.34 to -25.67</td>
-<td align="right">-10.03</td>
-<td align="left">-10.57 to -9.45</td>
-<td align="right">-14.928</td>
-<td align="left">-19.99 to -11.09</td>
-<td align="right">-10.080</td>
-<td align="left">-11.18 to -9.48</td>
+<tr style="overflow-wrap:break-word;">
+<td rowspan="12" class="cl-ddb7cfa6"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">500</span></p></td>
+<td rowspan="12" class="cl-ddb7cfa6"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">10,000</span></p></td>
+<td rowspan="12" class="cl-ddb7cfa7"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">unnamed-nmb-function-1</span></p></td>
+<td rowspan="12" class="cl-ddb7cfa7"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">unnamed-nmb-function-1</span></p></td>
+<td class="cl-ddb7cfa6"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">189</span></p></td>
+<td rowspan="2" class="cl-ddb7cfa6"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">0.70</span></p></td>
+<td class="cl-ddb7cfa6"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">0.1</span></p></td>
+<td class="cl-ddb7cfa6"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">19</span></p></td>
+<td rowspan="12" class="cl-ddb7cfa6"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">TRUE</span></p></td>
+<td class="cl-ddb7cfa6"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-25.99</span></p></td>
+<td class="cl-ddb7cfa7"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-26.4 to -25.6</span></p></td>
+<td class="cl-ddb7cfa6"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-9.98</span></p></td>
+<td class="cl-ddb7cfa7"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-10.6 to -9.4</span></p></td>
+<td class="cl-ddb7cfa6"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-14.78</span></p></td>
+<td class="cl-ddb7cfa7"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-19.5 to -11.1</span></p></td>
+<td class="cl-ddb7cfa6"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-10.05</span></p></td>
+<td class="cl-ddb7cfa7"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-10.9 to -9.4</span></p></td>
 </tr>
-<tr class="even">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="right">246</td>
-<td align="right">0.70</td>
-<td align="right">0.2</td>
-<td align="right">49</td>
-<td align="left">TRUE</td>
-<td align="right">-31.994</td>
-<td align="left">-32.48 to -31.57</td>
-<td align="right">-19.99</td>
-<td align="left">-20.8 to -19.28</td>
-<td align="right">-22.975</td>
-<td align="left">-26.62 to -20.6</td>
-<td align="right">-20.055</td>
-<td align="left">-21.39 to -19.29</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">246</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">0.2</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">49</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-31.99</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-32.5 to -31.5</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-19.98</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-20.8 to -19.2</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-22.99</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-26.3 to -20.6</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-20.02</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-21.2 to -19.2</span></p></td>
 </tr>
-<tr class="odd">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="right">139</td>
-<td align="right">0.75</td>
-<td align="right">0.1</td>
-<td align="right">14</td>
-<td align="left">TRUE</td>
-<td align="right">-25.988</td>
-<td align="left">-26.37 to -25.64</td>
-<td align="right">-9.98</td>
-<td align="left">-10.61 to -9.4</td>
-<td align="right">-13.704</td>
-<td align="left">-19.17 to -10.59</td>
-<td align="right">-10.043</td>
-<td align="left">-11.01 to -9.43</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">139</span></p></td>
+<td rowspan="2" class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">0.75</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">0.1</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">14</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-26.01</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-26.3 to -25.6</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-10.01</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-10.5 to -9.4</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-13.94</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-18.7 to -10.7</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-10.06</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-11 to -9.4</span></p></td>
 </tr>
-<tr class="even">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="right">246</td>
-<td align="right">0.75</td>
-<td align="right">0.2</td>
-<td align="right">49</td>
-<td align="left">TRUE</td>
-<td align="right">-32.006</td>
-<td align="left">-32.48 to -31.5</td>
-<td align="right">-20.01</td>
-<td align="left">-20.8 to -19.17</td>
-<td align="right">-22.169</td>
-<td align="left">-24.74 to -20.19</td>
-<td align="right">-19.932</td>
-<td align="left">-21.15 to -19.12</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">246</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">0.2</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">49</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-31.98</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-32.5 to -31.6</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-19.98</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-20.8 to -19.3</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-22.30</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-25.3 to -20.3</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-19.93</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-21.1 to -19.2</span></p></td>
 </tr>
-<tr class="odd">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="right">139</td>
-<td align="right">0.80</td>
-<td align="right">0.1</td>
-<td align="right">14</td>
-<td align="left">TRUE</td>
-<td align="right">-26.000</td>
-<td align="left">-26.36 to -25.64</td>
-<td align="right">-10.00</td>
-<td align="left">-10.6 to -9.39</td>
-<td align="right">-13.038</td>
-<td align="left">-17.94 to -10.41</td>
-<td align="right">-10.020</td>
-<td align="left">-10.81 to -9.4</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">139</span></p></td>
+<td rowspan="2" class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">0.80</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">0.1</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">14</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-26.00</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-26.3 to -25.6</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-10.00</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-10.5 to -9.4</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-13.28</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-17.5 to -10.5</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-10.03</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-10.9 to -9.4</span></p></td>
 </tr>
-<tr class="even">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="right">246</td>
-<td align="right">0.80</td>
-<td align="right">0.2</td>
-<td align="right">49</td>
-<td align="left">TRUE</td>
-<td align="right">-31.994</td>
-<td align="left">-32.43 to -31.57</td>
-<td align="right">-19.99</td>
-<td align="left">-20.72 to -19.28</td>
-<td align="right">-21.301</td>
-<td align="left">-24.15 to -19.74</td>
-<td align="right">-19.666</td>
-<td align="left">-20.72 to -18.96</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">246</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">0.2</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">49</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-32.01</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-32.5 to -31.6</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-20.01</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-20.9 to -19.3</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-21.45</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-23.9 to -19.7</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-19.73</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-20.7 to -18.9</span></p></td>
 </tr>
-<tr class="odd">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="right">139</td>
-<td align="right">0.85</td>
-<td align="right">0.1</td>
-<td align="right">14</td>
-<td align="left">TRUE</td>
-<td align="right">-25.994</td>
-<td align="left">-26.38 to -25.62</td>
-<td align="right">-9.99</td>
-<td align="left">-10.64 to -9.36</td>
-<td align="right">-12.361</td>
-<td align="left">-16.49 to -10.03</td>
-<td align="right">-9.890</td>
-<td align="left">-10.84 to -9.24</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">139</span></p></td>
+<td rowspan="2" class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">0.85</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">0.1</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">14</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-26.01</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-26.4 to -25.6</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-10.02</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-10.6 to -9.4</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-12.48</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-16.1 to -10.2</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-9.92</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-10.7 to -9.2</span></p></td>
 </tr>
-<tr class="even">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="right">246</td>
-<td align="right">0.85</td>
-<td align="right">0.2</td>
-<td align="right">49</td>
-<td align="left">TRUE</td>
-<td align="right">-31.988</td>
-<td align="left">-32.48 to -31.52</td>
-<td align="right">-19.98</td>
-<td align="left">-20.8 to -19.19</td>
-<td align="right">-20.503</td>
-<td align="left">-22.65 to -19.2</td>
-<td align="right">-19.293</td>
-<td align="left">-20.28 to -18.45</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">246</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">0.2</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">49</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-31.99</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-32.5 to -31.5</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-19.99</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-20.9 to -19.1</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-20.56</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-22.8 to -19.1</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-19.31</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-20.3 to -18.4</span></p></td>
 </tr>
-<tr class="odd">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="right">139</td>
-<td align="right">0.90</td>
-<td align="right">0.1</td>
-<td align="right">14</td>
-<td align="left">TRUE</td>
-<td align="right">-26.000</td>
-<td align="left">-26.34 to -25.69</td>
-<td align="right">-10.00</td>
-<td align="left">-10.57 to -9.49</td>
-<td align="right">-11.303</td>
-<td align="left">-14.7 to -9.73</td>
-<td align="right">-9.691</td>
-<td align="left">-10.34 to -9.15</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">139</span></p></td>
+<td rowspan="2" class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">0.90</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">0.1</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">14</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-25.98</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-26.4 to -25.6</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-9.97</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-10.6 to -9.4</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-11.36</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-14.3 to -9.6</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-9.68</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-10.4 to -9.1</span></p></td>
 </tr>
-<tr class="even">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="right">246</td>
-<td align="right">0.90</td>
-<td align="right">0.2</td>
-<td align="right">49</td>
-<td align="left">TRUE</td>
-<td align="right">-32.012</td>
-<td align="left">-32.41 to -31.5</td>
-<td align="right">-20.02</td>
-<td align="left">-20.69 to -19.17</td>
-<td align="right">-19.550</td>
-<td align="left">-21.58 to -18.3</td>
-<td align="right">-18.735</td>
-<td align="left">-19.79 to -17.87</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">246</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">0.2</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">49</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-32.00</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-32.5 to -31.5</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-20.00</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-20.8 to -19.2</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-19.60</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-21.5 to -18.4</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-18.69</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-20 to -18</span></p></td>
 </tr>
-<tr class="odd">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="right">139</td>
-<td align="right">0.95</td>
-<td align="right">0.1</td>
-<td align="right">14</td>
-<td align="left">TRUE</td>
-<td align="right">-26.000</td>
-<td align="left">-26.34 to -25.66</td>
-<td align="right">-10.00</td>
-<td align="left">-10.56 to -9.44</td>
-<td align="right">-10.222</td>
-<td align="left">-13.17 to -9</td>
-<td align="right">-9.278</td>
-<td align="left">-10.09 to -8.73</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">139</span></p></td>
+<td rowspan="2" class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">0.95</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">0.1</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">14</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-25.99</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-26.4 to -25.6</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-9.99</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-10.6 to -9.4</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-10.16</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-12.7 to -9</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-9.30</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-10 to -8.6</span></p></td>
 </tr>
-<tr class="even">
-<td align="right">500</td>
-<td align="right">10000</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="left">unnamed-nmb-function-1</td>
-<td align="right">246</td>
-<td align="right">0.95</td>
-<td align="right">0.2</td>
-<td align="right">49</td>
-<td align="left">TRUE</td>
-<td align="right">-31.982</td>
-<td align="left">-32.47 to -31.56</td>
-<td align="right">-19.97</td>
-<td align="left">-20.79 to -19.26</td>
-<td align="right">-18.380</td>
-<td align="left">-19.89 to -17.41</td>
-<td align="right">-17.903</td>
-<td align="left">-19.42 to -17.24</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">246</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">0.2</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">49</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-32.01</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-32.5 to -31.6</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-20.01</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-20.8 to -19.2</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-18.46</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-19.8 to -17.4</span></p></td>
+<td class="cl-ddb7cf92"><p class="cl-ddb7b692"><span class="cl-ddb39ba2">-17.92</span></p></td>
+<td class="cl-ddb7cf9c"><p class="cl-ddb7b69c"><span class="cl-ddb39ba2">-19.6 to -17.2</span></p></td>
 </tr>
 </tbody>
 </table>
+</div></template><div class="flextable-shadow-host" id="824bdac4-6599-4588-946f-0ae6b8ba7723"></div>
+<script>
+var dest = document.getElementById("824bdac4-6599-4588-946f-0ae6b8ba7723");
+var template = document.getElementById("81390aca-1e99-4ae3-a014-0059d9f9fb90");
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+</script>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
