@@ -26,8 +26,8 @@ make_summary_table <- function(x,
                                what = c("nmb", "inb", "cutpoints"),
                                inb_ref_col = NULL,
                                agg_functions = list(
-                                 "median" = stats::median,
-                                 "95% CI" = function(x) paste0(signif(stats::quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse = " to ")
+                                 "median" = function(x) round(stats::median(x), digits = 2),
+                                 "95% CI" = function(x) paste0(round(stats::quantile(x, probs = c(0.025, 0.975)), digits = 1), collapse = " to ")
                                ),
                                rename_vector,
                                ...) {
@@ -85,8 +85,8 @@ make_summary_table.predictNMBsim <- function(x,
                                              what = c("nmb", "inb", "cutpoints"),
                                              inb_ref_col = NULL,
                                              agg_functions = list(
-                                               "median" = stats::median,
-                                               "95% CI" = function(x) paste0(round(stats::quantile(x, probs = c(0.025, 0.975)), digits = 2), collapse = " to ")
+                                               "median" = function(x) round(stats::median(x), digits = 2),
+                                               "95% CI" = function(x) paste0(round(stats::quantile(x, probs = c(0.025, 0.975)), digits = 1), collapse = " to ")
                                              ),
                                              rename_vector,
                                              ...) {
