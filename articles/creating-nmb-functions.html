@@ -75,7 +75,8 @@
 
 
 
-<script src="creating-nmb-functions_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+
+<div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Creating NMB functions</h1>
             
@@ -89,33 +90,86 @@
 <div class="section level2">
 <h2 id="nmb-functions">NMB functions<a class="anchor" aria-label="anchor" href="#nmb-functions"></a>
 </h2>
-<p>The most important aspect of <code>predictNMB</code> is its ability to evaluate simulated prediction models in terms of Net Monetary Benefit (NMB). To do so, it requires the user to create and provide functions that assign NMB values to each of the four possible classifications in a confusion matrix. These functions create named vectors, which are vectors of values that provide an NMB value for each possible outcome:</p>
+<p>The most important aspect of <code>predictNMB</code> is its ability
+to evaluate simulated prediction models in terms of Net Monetary Benefit
+(NMB). To do so, it requires the user to create and provide functions
+that assign NMB values to each of the four possible classifications in a
+confusion matrix. These functions create named vectors, which are
+vectors of values that provide an NMB value for each possible
+outcome:</p>
 <ul>
-<li>TP: True Positives, correctly predicted events that lead to necessary treatment</li>
-<li>TN: True Negatives, correctly predicted non-events that avoid unnecessary treatment</li>
-<li>FP: False Positives, incorrectly predicted positives that lead to unnecessary treatment</li>
-<li>FN: False Negatives, incorrectly predicted non-events that lead to a lack of necessary treatment</li>
+<li>TP: True Positives, correctly predicted events that lead to
+necessary treatment</li>
+<li>TN: True Negatives, correctly predicted non-events that avoid
+unnecessary treatment</li>
+<li>FP: False Positives, incorrectly predicted positives that lead to
+unnecessary treatment</li>
+<li>FN: False Negatives, incorrectly predicted non-events that lead to a
+lack of necessary treatment</li>
 </ul>
-<p>This vignette will guide you through creating these functions by hand, as well as using the helper function, <code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code>. We start with key considerations for the user when creating these functions to best reflect their clinical context, and finish by using the created functions with <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code>.</p>
+<p>This vignette will guide you through creating these functions by
+hand, as well as using the helper function,
+<code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code>. We start with key considerations for the
+user when creating these functions to best reflect their clinical
+context, and finish by using the created functions with
+<code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code>.</p>
 <div class="section level3">
 <h3 id="key-considerations">Key considerations<a class="anchor" aria-label="anchor" href="#key-considerations"></a>
 </h3>
-<p>The functions created here are used for two purposes, depending on which argument they are passed to, within <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> or <code><a href="../reference/screen_simulation_inputs.html">screen_simulation_inputs()</a></code>. The arguments that require these functions are:</p>
+<p>The functions created here are used for two purposes, depending on
+which argument they are passed to, within <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> or
+<code><a href="../reference/screen_simulation_inputs.html">screen_simulation_inputs()</a></code>. The arguments that require
+these functions are:</p>
 <ul>
 <li>
-<code>fx_nmb_training</code>: only ever used if the <code>cost_minimising</code> or <code>value_optimising</code> cutpoint methods are used. These cutpoints aim to maximise the NMB, therefore requiring our best estimates of the NMB values assigned to each classification.</li>
+<code>fx_nmb_training</code>: only ever used if the
+<code>cost_minimising</code> or <code>value_optimising</code> cutpoint
+methods are used. These cutpoints aim to maximise the NMB, therefore
+requiring our best estimates of the NMB values assigned to each
+classification.</li>
 <li>
-<code>fx_nmb_evaluation</code>: used for evaluation for all methods. This argument is required to run all simulations in <code>predictNMB</code>.</li>
+<code>fx_nmb_evaluation</code>: used for evaluation for all methods.
+This argument is required to run all simulations in
+<code>predictNMB</code>.</li>
 </ul>
-<p>The function that generates the named vector used by the <code>fx_nmb_evaluation</code> argument is re-evaluated at every iteration of the simulation. In other words, we are sampling from a range of plausible values for our simulation inputs. This allows us to “bake in” uncertainty, since it is unlikely that we know these costs or outcomes exactly. By incorporating uncertainty this way, we are propagating the uncertainty throughout the whole model. This is good practice in simulation modelling, because our simulation will never be able to perfectly mirror the reality of finding the best method. If we include no uncertainty in <code>fx_nmb_evaluation</code>, we are making the assumption that we know each input of the model <strong>exactly</strong>.</p>
-<p>Note that we use our best estimates (without uncertainty) for the <code>fx_nmb_training</code> function. This reflects the fact that when cutpoints are selected in practice, they usually stay fixed rather than varying by scenario. It is this fixed value we are evaluating our simulations against, so we want it to be the same every time to measure the potential benefit of choosing another cutpoint. This may mean that the merits of <code>cost_minimising</code> and <code>value_optimising</code> cutpoints could be overestimated, which will be discussed at the end when we explore <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code>.</p>
-<p>The mean NMB per patient is evaluated at the end of each simulated iteration based on the inputs we have created (our named vector from before). For more information, see the associated vignette using <code>browseVignettes(package = "predictNMB")</code>).</p>
+<p>The function that generates the named vector used by the
+<code>fx_nmb_evaluation</code> argument is re-evaluated at every
+iteration of the simulation. In other words, we are sampling from a
+range of plausible values for our simulation inputs. This allows us to
+“bake in” uncertainty, since it is unlikely that we know these costs or
+outcomes exactly. By incorporating uncertainty this way, we are
+propagating the uncertainty throughout the whole model. This is good
+practice in simulation modelling, because our simulation will never be
+able to perfectly mirror the reality of finding the best method. If we
+include no uncertainty in <code>fx_nmb_evaluation</code>, we are making
+the assumption that we know each input of the model
+<strong>exactly</strong>.</p>
+<p>Note that we use our best estimates (without uncertainty) for the
+<code>fx_nmb_training</code> function. This reflects the fact that when
+cutpoints are selected in practice, they usually stay fixed rather than
+varying by scenario. It is this fixed value we are evaluating our
+simulations against, so we want it to be the same every time to measure
+the potential benefit of choosing another cutpoint. This may mean that
+the merits of <code>cost_minimising</code> and
+<code>value_optimising</code> cutpoints could be overestimated, which
+will be discussed at the end when we explore
+<code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code>.</p>
+<p>The mean NMB per patient is evaluated at the end of each simulated
+iteration based on the inputs we have created (our named vector from
+before). For more information, see the associated vignette using
+<code>browseVignettes(package = "predictNMB")</code>).</p>
 </div>
 <div class="section level3">
 <h3 id="making-functions-by-hand">Making functions by hand<a class="anchor" aria-label="anchor" href="#making-functions-by-hand"></a>
 </h3>
-<p>This first section describes how to make the functions described above by hand. For users unfamiliar with R functions, this section may be unintuitive, and the subsequent <code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code> section may be a gentler introduction. This section introduces all the flexibility that the user can express when creating these functions, but may be overkill for many cases.</p>
-<p>The following function applies exact estimates for each square of a confusion matrix:</p>
+<p>This first section describes how to make the functions described
+above by hand. For users unfamiliar with R functions, this section may
+be unintuitive, and the subsequent <code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code>
+section may be a gentler introduction. This section introduces all the
+flexibility that the user can express when creating these functions, but
+may be overkill for many cases.</p>
+<p>The following function applies exact estimates for each square of a
+confusion matrix:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foo1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -128,19 +182,39 @@
 <span><span class="fu">foo1</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; TP FP TN FN </span></span>
 <span><span class="co">#&gt; -3 -1  0 -4</span></span></code></pre></div>
-<p>Note that NMB values for each classification are equal to or less than zero. If we frame this around an adverse healthcare event, for example inpatient falls, our best case scenario is avoiding a fall without needing to provide any preventive care (<code>TN = 0</code>). The outcomes are negative because falls impose an additional burden. The remaining outcomes can be calculated if we know that the cost of a fall is $4, the cost of the intervention is $1, and the intervention reduces falls rate by 50%.</p>
+<p>Note that NMB values for each classification are equal to or less
+than zero. If we frame this around an adverse healthcare event, for
+example inpatient falls, our best case scenario is avoiding a fall
+without needing to provide any preventive care (<code>TN = 0</code>).
+The outcomes are negative because falls impose an additional burden. The
+remaining outcomes can be calculated if we know that the cost of a fall
+is $4, the cost of the intervention is $1, and the intervention reduces
+falls rate by 50%.</p>
 <p>For our possible classifications:</p>
 <ul>
 <li>
-<span class="math inline">\(TP = -\$1 - \frac{\$4}{2} = -\$3\)</span> (receive the intervention ($1) and falls ($4) occur at half the rate (/2))</li>
+<span class="math inline">\(TP = -\$1 - \frac{\$4}{2} =
+-\$3\)</span> (receive the intervention ($1) and falls ($4) occur at
+half the rate (/2))</li>
 <li>
-<span class="math inline">\(FP = -\$1\)</span> (receive the intervention ($1) and avoid the cost of the fall)</li>
+<span class="math inline">\(FP = -\$1\)</span> (receive the
+intervention ($1) and avoid the cost of the fall)</li>
 <li>
-<span class="math inline">\(TN = \$0\)</span> (do not receive the intervention and avoid the cost of the fall)</li>
+<span class="math inline">\(TN = \$0\)</span> (do not receive the
+intervention and avoid the cost of the fall)</li>
 <li>
-<span class="math inline">\(FN -\$4\)</span> (do not have the intervention but experience the full cost of the fall ($4))</li>
+<span class="math inline">\(FN -\$4\)</span> (do not have the
+intervention but experience the full cost of the fall ($4))</li>
 </ul>
-<p>Users may provide any function without arguments in this form to be more flexible. This allows the user to incorporate uncertainty for model evaluation, because we may not know our inputs exactly. For example, in the function below, we have sampled from distributions of values, rather than setting our expected value of each outcome. Every time we call the function, we get different values based on our chosen distributions - with the exception of true negative (TN) as it is fixed at zero. This sampling procedure is crucial for evaluation, and is often referred to in health economics as Probabilistic Sensitivity Analysis (PSA).</p>
+<p>Users may provide any function without arguments in this form to be
+more flexible. This allows the user to incorporate uncertainty for model
+evaluation, because we may not know our inputs exactly. For example, in
+the function below, we have sampled from distributions of values, rather
+than setting our expected value of each outcome. Every time we call the
+function, we get different values based on our chosen distributions -
+with the exception of true negative (TN) as it is fixed at zero. This
+sampling procedure is crucial for evaluation, and is often referred to
+in health economics as Probabilistic Sensitivity Analysis (PSA).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foo2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">intervention_cost</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
@@ -156,16 +230,28 @@
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -1.1436680 -0.1633528  0.0000000 -2.2407030</span></span>
+<span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -2.0810403 -0.7343509  0.0000000 -1.9925228</span></span>
+<span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -3.579438 -1.720018  0.000000 -4.530269</span></span>
-<span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -4.0858618 -0.3613294  0.0000000 -5.8137696</span></span>
-<span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -3.4864946 -0.1932119  0.0000000 -5.9842911</span></span></code></pre></div>
-<p>Another benefit of allowing the user to define the function structure is that we can also allow the low risk group, or the population whose risk estimates fall below the probability threshold, to receive an intervention rather than nothing.</p>
-<p>This can be preferable when there is more than one available intervention to use, and one is more costly (and presumably effective) than the other. For example, all patients in a hospital might have a medication management plan in place to reduce falls risk as a matter of course, but the high risk group might also receive additional surveillance from nurses. This way, we can assign all high risk patients to receive the high cost and highly effective intervention, and all low risk patients to receive the low cost and less effective intervention. Extending <code>foo2()</code> to create the function below, we assign the low cost intervention $0.5 and a reduction in falls of 30%.</p>
+<span><span class="co">#&gt; -3.309154 -1.064849  0.000000 -4.497743</span></span></code></pre></div>
+<p>Another benefit of allowing the user to define the function structure
+is that we can also allow the low risk group, or the population whose
+risk estimates fall below the probability threshold, to receive an
+intervention rather than nothing.</p>
+<p>This can be preferable when there is more than one available
+intervention to use, and one is more costly (and presumably effective)
+than the other. For example, all patients in a hospital might have a
+medication management plan in place to reduce falls risk as a matter of
+course, but the high risk group might also receive additional
+surveillance from nurses. This way, we can assign all high risk patients
+to receive the high cost and highly effective intervention, and all low
+risk patients to receive the low cost and less effective intervention.
+Extending <code>foo2()</code> to create the function below, we assign
+the low cost intervention $0.5 and a reduction in falls of 30%.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foo3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># intervention for high risk (hr) group</span></span>
@@ -189,23 +275,39 @@
 <span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -5.2642603 -1.8431925 -0.2990474 -5.5875640</span></span>
+<span><span class="co">#&gt; -3.0358006 -0.7951660 -0.2955343 -3.3488039</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.1610105 -0.8423840 -0.8878246 -3.0848414</span></span>
+<span><span class="co">#&gt; -3.0501335 -2.3279614 -0.5353656 -1.9071167</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.3498168 -0.5850514 -0.3745589 -3.0696884</span></span></code></pre></div>
-<p>Now that we are providing an intervention and associated cost to the low risk group, there is a negative NMB assigned to true negative (TN) groups. But in exchange, we have reduced the costs of false negatives (FNs), because at least these patients are now receiving an intervention, albeit a less effective one.</p>
-<p>It’s important to note that while these NMB values are negative, this doesn’t imply that we are worse off by implementing prediction models or treatments. We are simply trying to pick the least bad option in a bad situation. This becomes more apparent when we set a reference strategy, which is discussed in the other vignettes.</p>
+<span><span class="co">#&gt; -3.2166996 -0.6642773 -0.5086207 -6.4017972</span></span></code></pre></div>
+<p>Now that we are providing an intervention and associated cost to the
+low risk group, there is a negative NMB assigned to true negative (TN)
+groups. But in exchange, we have reduced the costs of false negatives
+(FNs), because at least these patients are now receiving an
+intervention, albeit a less effective one.</p>
+<p>It’s important to note that while these NMB values are negative, this
+doesn’t imply that we are worse off by implementing prediction models or
+treatments. We are simply trying to pick the least bad option in a bad
+situation. This becomes more apparent when we set a reference strategy,
+which is discussed in the other vignettes.</p>
 </div>
 <div class="section level3">
 <h3 id="making-functions-using-get_nmb_sampler">Making functions using <code>get_nmb_sampler()</code><a class="anchor" aria-label="anchor" href="#making-functions-using-get_nmb_sampler"></a>
 </h3>
-<p>The previous section demonstrates how to make functions by hand and a general approach to thinking about intervention costs and effects. This same approach is used by <code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code> but abstracts the actual creation of the function away to make things more straightforward for the user. It can be easier to apply for simple cases, but removes some of the ability to do complex modelling.</p>
-<p>To replicate what we created as <code>foo1()</code>, we pass these costs as separate arguments. The function is created, with the output <code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code>. Recall:</p>
+<p>The previous section demonstrates how to make functions by hand and a
+general approach to thinking about intervention costs and effects. This
+same approach is used by <code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code> but abstracts
+the actual creation of the function away to make things more
+straightforward for the user. It can be easier to apply for simple
+cases, but removes some of the ability to do complex modelling.</p>
+<p>To replicate what we created as <code>foo1()</code>, we pass these
+costs as separate arguments. The function is created, with the output
+<code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code>. Recall:</p>
 <blockquote>
-<p>The cost of the fall is $4, the cost of the intervention is $1, and the intervention reduces the rate of falls by 50%.</p>
+<p>The cost of the fall is $4, the cost of the intervention is $1, and
+the intervention reduces the rate of falls by 50%.</p>
 </blockquote>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rwparsons.github.io/predictNMB/">predictNMB</a></span><span class="op">)</span></span>
@@ -223,8 +325,13 @@
 <span><span class="fu">foo1</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; TP FP TN FN </span></span>
 <span><span class="co">#&gt; -3 -1  0 -4</span></span></code></pre></div>
-<p>The arguments are passed as costs (<code>outcome_cost</code> and <code>high_risk_group_treatment_cost</code>) and the treatment effect. <code>high_risk_group_treatment_effect</code> is the rate reduction of the event for those receiving the treatment, which in our case is a 50% reduction (0.5).</p>
-<p>First, we write some code for making plots of sampled NMB values from a given function:</p>
+<p>The arguments are passed as costs (<code>outcome_cost</code> and
+<code>high_risk_group_treatment_cost</code>) and the treatment effect.
+<code>high_risk_group_treatment_effect</code> is the rate reduction of
+the event for those receiving the treatment, which in our case is a 50%
+reduction (0.5).</p>
+<p>First, we write some code for making plots of sampled NMB values from
+a given function:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
@@ -244,7 +351,13 @@
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">""</span>, x <span class="op">=</span> <span class="st">"Net Monetary Benefit ($)"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>Now we can incorporate uncertainty by passing argument-less, or blank functions (<code>function()</code>), followed by a sampler (e.g. <code>rgamma</code>), which generate sampled values as the arguments. When calling <code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code>, we specify the values as the blank functions, which are evaluated every time the returned function is called. These let us see the uncertainty of each classification graphically.</p>
+<p>Now we can incorporate uncertainty by passing argument-less, or blank
+functions (<code>function()</code>), followed by a sampler
+(e.g. <code>rgamma</code>), which generate sampled values as the
+arguments. When calling <code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code>, we specify the
+values as the blank functions, which are evaluated every time the
+returned function is called. These let us see the uncertainty of each
+classification graphically.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foo2_remake</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/get_nmb_sampler.html">get_nmb_sampler</a></span><span class="op">(</span></span>
@@ -258,7 +371,9 @@
 <span><span class="fu">plot_nmb_dist</span><span class="op">(</span><span class="va">foo2</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"foo2()"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></span></code></pre></div>
 <p><img src="creating-nmb-functions_files/figure-html/unnamed-chunk-7-1.png" width="700"><img src="creating-nmb-functions_files/figure-html/unnamed-chunk-7-2.png" width="700"></p>
-<p>We can also create a NMB function which replicates our prior scenario where the low-risk group is given a cheaper and less effective intervention.</p>
+<p>We can also create a NMB function which replicates our prior scenario
+where the low-risk group is given a cheaper and less effective
+intervention.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foo3_remake</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/get_nmb_sampler.html">get_nmb_sampler</a></span><span class="op">(</span></span>
@@ -274,17 +389,39 @@
 <span><span class="fu">plot_nmb_dist</span><span class="op">(</span><span class="va">foo3</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"foo3()"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></span></code></pre></div>
 <p><img src="creating-nmb-functions_files/figure-html/unnamed-chunk-8-1.png" width="700"><img src="creating-nmb-functions_files/figure-html/unnamed-chunk-8-2.png" width="700"></p>
-<p>In addition to specifying the cost of the outcome, we can also incorporate health-related quality of life in the form of quality-adjusted life years (QALYs), and our willingness to pay (WTP) for these QALYs. These are included as inputs to <code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code> to evaluate the overall net monetary benefit using:</p>
+<p>In addition to specifying the cost of the outcome, we can also
+incorporate health-related quality of life in the form of
+quality-adjusted life years (QALYs), and our willingness to pay (WTP)
+for these QALYs. These are included as inputs to
+<code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code> to evaluate the overall net monetary
+benefit using:</p>
 <ul>
 <li>
-<code>outcome_cost</code>: single value associated with the event</li>
+<code>outcome_cost</code>: single value associated with the
+event</li>
 <li>
-<code>wtp</code>: willingness to pay. <code>wtp</code> is multiplied by the <code>qalys_lost</code> input to evaluate NMB associated with the the event.</li>
+<code>wtp</code>: willingness to pay. <code>wtp</code> is multiplied
+by the <code>qalys_lost</code> input to evaluate NMB associated with the
+the event.</li>
 <li>
-<code>qalys_lost</code>: quality-adjusted life-years lost due to the event. <code>qalys_lost</code> is multiplied by the <code>wtp</code> input to evaluate NMB associated with the event.</li>
+<code>qalys_lost</code>: quality-adjusted life-years lost due to the
+event. <code>qalys_lost</code> is multiplied by the <code>wtp</code>
+input to evaluate NMB associated with the event.</li>
 </ul>
-<p>You must provide EITHER the <code>outcome_cost</code> alone OR the <code>wtp</code> AND <code>qalys_lost</code>. You can also provide all three if, for example, there are some fixed costs associated with the event separate to the QALYs lost. For example, following a fall, every patient may have an X-ray, and this would be a separate cost to the QALYs lost and our willingness to pay for those QALYs due to the fall.</p>
-<p>Returning to our falls function, if our WTP is $8 and each fall is associated with a 0.5 QALY lost (on average), then this would be equivalent to our fixed cost of $4. By having these included in the function as separate arguments, we can more clearly represent each input to the model and provide more realistic representations of reality. We can use this to generate estimates (and uncertainty) for the QALYs lost due to the event we are evaluating and our WTP to avoid the event.</p>
+<p>You must provide EITHER the <code>outcome_cost</code> alone OR the
+<code>wtp</code> AND <code>qalys_lost</code>. You can also provide all
+three if, for example, there are some fixed costs associated with the
+event separate to the QALYs lost. For example, following a fall, every
+patient may have an X-ray, and this would be a separate cost to the
+QALYs lost and our willingness to pay for those QALYs due to the
+fall.</p>
+<p>Returning to our falls function, if our WTP is $8 and each fall is
+associated with a 0.5 QALY lost (on average), then this would be
+equivalent to our fixed cost of $4. By having these included in the
+function as separate arguments, we can more clearly represent each input
+to the model and provide more realistic representations of reality. We
+can use this to generate estimates (and uncertainty) for the QALYs lost
+due to the event we are evaluating and our WTP to avoid the event.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foo4</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/get_nmb_sampler.html">get_nmb_sampler</a></span><span class="op">(</span></span>
@@ -304,8 +441,20 @@
 <div class="section level3">
 <h3 id="passing-these-functions-to-do_nmb_sim">Passing these functions to <code>do_nmb_sim()</code><a class="anchor" aria-label="anchor" href="#passing-these-functions-to-do_nmb_sim"></a>
 </h3>
-<p>The NMB functions are passed to the <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> function via the <code>fx_nmb_training</code> and <code>fx_nmb_evaluation</code> arguments. The former is purely for selecting a cutpoint if you’re using either the <code>'cost_minimising'</code> or <code>'value_optimising'</code> cutpoint methods. Here, we will use the <code>'value_optimising'</code> cutpoint method alongside the Youden index and a treat all/none strategy.</p>
-<p>In this first example, we pass <code>foo1</code> to the <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> function, which is our function that always provides the same values for every simulation, as if we <strong>know</strong> the exact outcome of each possible prediction. As mentioned before, see the other vignettes for more information on the inputs for the <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> function.</p>
+<p>The NMB functions are passed to the <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code>
+function via the <code>fx_nmb_training</code> and
+<code>fx_nmb_evaluation</code> arguments. The former is purely for
+selecting a cutpoint if you’re using either the
+<code>'cost_minimising'</code> or <code>'value_optimising'</code>
+cutpoint methods. Here, we will use the <code>'value_optimising'</code>
+cutpoint method alongside the Youden index and a treat all/none
+strategy.</p>
+<p>In this first example, we pass <code>foo1</code> to the
+<code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> function, which is our function that always
+provides the same values for every simulation, as if we
+<strong>know</strong> the exact outcome of each possible prediction. As
+mentioned before, see the other vignettes for more information on the
+inputs for the <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> function.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">simulation_res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_nmb_sim.html">do_nmb_sim</a></span><span class="op">(</span></span>
 <span>  sample_size <span class="op">=</span> <span class="fl">200</span>, n_sims <span class="op">=</span> <span class="fl">500</span>, n_valid <span class="op">=</span> <span class="fl">10000</span>, sim_auc <span class="op">=</span> <span class="fl">0.7</span>,</span>
@@ -315,9 +464,24 @@
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">simulation_res1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="creating-nmb-functions_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
-<p>As mentioned previously, the problem with using <code>foo1</code> for <code>fx_nmb_evaluation</code> is that we don’t really know for sure how effective our intervention is, what the burden of the event is, and how much things cost. This is why we incorporate uncertainty into the evaluation function, but ONLY the evaluation function and not the training function. If we use a NMB function that incorporates uncertainty for selecting the cutpoint in <code>fx_nmb_training</code>, this would mean we picked costs randomly and used those on our data to select a cutpoint. This would be unlikely in practice, as we would use our expected value (best estimates) to determine cutpoints in reality.</p>
-<p><code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code> also offers the ability to extract these fixed (expected) values by sampling from the distributions and using the column means for <code>fx_nmb_training</code>.</p>
-<p>For example, using <code>foo2_remake()</code>, we use <code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code> in the same way but include <code>use_expected_values = TRUE</code> so that it returns a function that gives fixed values for training:</p>
+<p>As mentioned previously, the problem with using <code>foo1</code> for
+<code>fx_nmb_evaluation</code> is that we don’t really know for sure how
+effective our intervention is, what the burden of the event is, and how
+much things cost. This is why we incorporate uncertainty into the
+evaluation function, but ONLY the evaluation function and not the
+training function. If we use a NMB function that incorporates
+uncertainty for selecting the cutpoint in <code>fx_nmb_training</code>,
+this would mean we picked costs randomly and used those on our data to
+select a cutpoint. This would be unlikely in practice, as we would use
+our expected value (best estimates) to determine cutpoints in
+reality.</p>
+<p><code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code> also offers the ability to extract
+these fixed (expected) values by sampling from the distributions and
+using the column means for <code>fx_nmb_training</code>.</p>
+<p>For example, using <code>foo2_remake()</code>, we use
+<code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code> in the same way but include
+<code>use_expected_values = TRUE</code> so that it returns a function
+that gives fixed values for training:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foo2_remake</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/get_nmb_sampler.html">get_nmb_sampler</a></span><span class="op">(</span></span>
@@ -335,15 +499,18 @@
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.9894692 -0.9969452  0.0000000 -3.9902082</span></span>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -2.994597 -1.001191  0.000000 -3.986203</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.9894692 -0.9969452  0.0000000 -3.9902082</span></span>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -2.994597 -1.001191  0.000000 -3.986203</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.9894692 -0.9969452  0.0000000 -3.9902082</span></span></code></pre></div>
-<p>In many cases (including this one), this will give similar values to using the parameter estimates (i.e. <code>foo1()</code>), but not always. The values from this process should be more stable than using the estimates.</p>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -2.994597 -1.001191  0.000000 -3.986203</span></span></code></pre></div>
+<p>In many cases (including this one), this will give similar values to
+using the parameter estimates (i.e. <code>foo1()</code>), but not
+always. The values from this process should be more stable than using
+the estimates.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">simulation_res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_nmb_sim.html">do_nmb_sim</a></span><span class="op">(</span></span>
 <span>  sample_size <span class="op">=</span> <span class="fl">200</span>, n_sims <span class="op">=</span> <span class="fl">500</span>, n_valid <span class="op">=</span> <span class="fl">10000</span>, sim_auc <span class="op">=</span> <span class="fl">0.7</span>,</span>
@@ -353,7 +520,12 @@
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">simulation_res2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="creating-nmb-functions_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
-<p>This changes our results to incorporate more uncertainty. This is important in simulation modelling as it accounts for the possible differences between our simulation and reality. Using values from the literature would likely reduce the uncertainty somewhat, but that might only be desirable if we are confident that our simulated model closely resembles the scenario in the literature.</p>
+<p>This changes our results to incorporate more uncertainty. This is
+important in simulation modelling as it accounts for the possible
+differences between our simulation and reality. Using values from the
+literature would likely reduce the uncertainty somewhat, but that might
+only be desirable if we are confident that our simulated model closely
+resembles the scenario in the literature.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
