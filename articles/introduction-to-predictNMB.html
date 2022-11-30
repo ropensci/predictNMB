@@ -161,23 +161,24 @@ called.</p>
 <p>Every time we run this function, we get a new named vector for the
 NMB associated with each prediction. We can inform the distributions
 that we sample from based on the literature for the specific clinical
-prediction model at hand. See the example in the ‘detailed-example’
-vignette for a more in-depth description based on the literature.</p>
+prediction model at hand. See the <a href="https://rwparsons.github.io/predictNMB/articles/detailed-example.html">detailed
+example vignette</a> for a more in-depth description of using estimates
+from the literature.</p>
 <p>In this example function, the value returned for the True Negative
 (TN) is zero. This may reflect a scenario where patients categorised as
 low risk are not given any treatment and do not experience the event
 being predicted (e.g. a fall) so do not have those associated costs
 either. The False Negative (FN) is the most negative value; this is
 because this reflects the worst possible outcome: the patient
-experiences the event and no intervention was provided to reduce it’s
-rate or the effect of it’s associated costs. The True Positive value is
-similar to the FN, but is not AS negative, because the patient received
+experiences the event and no intervention was provided to reduce its
+rate or the effect of its associated costs. The True Positive value is
+similar to the FN, but is not as negative, because the patient received
 the intervention and this reduced the associated costs, possibly by
 reducing the rate of the event. These two classifications have
 uncertainty associated with them since the costs associated with the
 outcome are uncertain. This is unlike the False Positive (FP), which has
 a fixed cost of $20. This may be realistic when there are set costs for
-providing the intervention. For example, if the intervention is to give
+providing the intervention. For example, if the intervention is to
 conduct a falls education session with the patient, this may have an
 exact, known cost. See the detailed example vignette for further
 description and an example of how to decide on which values to use.</p>
@@ -236,11 +237,11 @@ may take up to a minute, depending on your computer’s performance.)</p>
 <span><span class="co">#&gt; Number of simulations:  500</span></span>
 <span><span class="co">#&gt; Simulated AUC:  0.7</span></span>
 <span><span class="co">#&gt; Simulated event rate:  0.1</span></span></code></pre></div>
-<p>We can call simulation outputs like NMB and cutpoints directly from
-our simulation object, and choose strategies to examine using this list.
-This is useful to examine histograms or get summary values. For example,
-our current default strategy might be to treat all, which is the same as
-setting our probability threshold for treatment to 0:</p>
+<p>We can access simulation outputs like NMB and cutpoints directly from
+our simulation object, and choose strategies to examine further using
+this list. This is useful to examine histograms or get summary values.
+For example, our current default strategy might be to treat all, which
+is the same as setting our probability threshold for treatment to 0:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">nmb_simulation</span><span class="op">$</span><span class="va">df_result</span><span class="op">$</span><span class="va">all</span>, main <span class="op">=</span> <span class="st">"Simulation results - treat all"</span>, xlab <span class="op">=</span> <span class="st">"Net monetary benefit (NMB)"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
@@ -265,8 +266,8 @@ method.</p>
 <p>We have options to include multiple cutpoint methods, and the default
 is to use all of the available inbuilt methods as well as the treat-all
 and treat-none strategies. We can specify which methods are shown in the
-plots when creating the plot. (For more details on plotting, see the
-other vignettes.)</p>
+plots when creating the plot. (For more details on plotting, see the <a href="https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html">summarising
+results vignettes</a>.)</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_inbuilt_cutpoint.html">get_inbuilt_cutpoint</a></span><span class="op">(</span>return_all_methods <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "all"              "none"             "value_optimising" "youden"          </span></span>
@@ -332,17 +333,16 @@ required performance for the model to outperform a default strategy of
 treat all or treat none. In this example, cutpoints are selected using
 the Youden index and the cost-effectiveness approach, which maximises
 NMB.</p>
-<p>To do this, we can screen over many of these simulations with
-different inputs using <code><a href="../reference/screen_simulation_inputs.html">screen_simulation_inputs()</a></code>. This
-function takes the same inputs as <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> but can take
-a vector of inputs rather than only a single value. Here, we pass
-vectors for both the <code>sim_auc</code> and the
-<code>event_rate</code>.</p>
-<p>Here, we run the simulations in parallel by creating a cluster and
-passing this as an argument. This can also be done to
-<code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> in the same way. This can take some time - the
-fewer cores used, the longer it takes. For more details on running in
-parallel, see the <code>parallel</code> package.</p>
+<p>To do this, we compare multiple simulations with different inputs
+using <code><a href="../reference/screen_simulation_inputs.html">screen_simulation_inputs()</a></code>. This function takes the
+same inputs as <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code> but can take a vector of inputs
+rather than only a single value. Here, we pass vectors for both the
+<code>sim_auc</code> and the <code>event_rate</code>.</p>
+<p>We run the simulations in parallel by creating a cluster and passing
+this as an argument. This can also be done to <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code>
+in the same way. This can take some time — the fewer cores used, the
+longer it takes. For more details on running in parallel, see the
+<code>parallel</code> package.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -360,7 +360,7 @@ parallel, see the <code>parallel</code> package.</p>
 <p>For our hypothetical costed outcome, the classification model when
 the cutpoint is selected by maximising the Youden index, only
 out-performs the treat-none strategy when the model has a AUC of about
-0.9. This is pretty high, and may be impossible when the outcome is
+0.9. This is quite high, and may be impossible when the outcome is
 highly unpredictable. Also, when the event rate is 0.1, rather than 0.2,
 we are only able the match the treat-none strategy when our model has an
 AUC of 0.95.</p>

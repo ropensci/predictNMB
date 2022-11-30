@@ -104,7 +104,7 @@ events for patients, often leading to additional discomfort, prolonged
 length of hospital stay, and increased costs. The hospital currently has
 a pressure ulcer prevention program in place, but our analyst is
 examining whether to implement a clinical prediction model to identify
-patients who may not benefit from the program and potentially save on
+patients who may not benefit from the program and potentially reduce
 costs.</p>
 <p>Let’s begin by generating some realistic costs and probabilities.
 Keep in mind, we are trying to avoid a negative event, so the net
@@ -113,9 +113,9 @@ parlance, costs are typically negative, while cost savings are positive.
 If we were also interested in improving quality of life, we could
 estimate quality-adjusted life years (QALYs), multiply them by a
 willingness-to-pay threshold (WTP), and add this gain or loss to our
-true positive and false negative squares to signify the impact on the
-patient. For simplicity’s sake, let’s say we’re only interested in
-hospital costs.</p>
+true positive and false negative estimates to signify the impact on the
+patient. For simplicity, let’s say we’re only interested in hospital
+costs.</p>
 <p>Model inputs: <br> - Mean incremental cost per pressure injury:
 $8,000 (SD 550) <br> - Per-patient cost of pressure ulcer prevention
 strategy (PUP): $140 (SD 20) <br> - Odds ratio of pressure ulcer with
@@ -132,7 +132,7 @@ incorrect predictions.</p>
 our simulation. In this case, the intervention is associated with a 4%
 reduction in the odds of a pressure ulcer, so it’s only moderately
 effective at reducing the chance of a pressure injury. We can use a
-probability-weighted cost savings for successful prevention, at
+probability-weighted cost saving for successful prevention, at
 8000*(0.96) = a small improvement of around $320. After including $140
 in program costs, the net benefit is around $180 for a successfully
 prevented pressure ulcer.</p>
@@ -185,18 +185,18 @@ Monte Carlo methods to sample from input distributions.</p>
 <span><span class="co">#&gt; Simulated AUC:  0.82</span></span>
 <span><span class="co">#&gt; Simulated event rate:  0.1</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span><span class="va">nmb_simulation</span><span class="op">)</span> <span class="co"># Get the mean incremental NMB for each threshold selection method</span></span>
+<span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span><span class="va">nmb_simulation</span><span class="op">)</span> <span class="co"># Get the median incremental NMB for each threshold selection method</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 3</span></span></span>
-<span><span class="co">#&gt;   method           median `95% CI`          </span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> all               -<span style="color: #BB0000;">908.</span> -954.08 to -869.2 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> cost minimising   -<span style="color: #BB0000;">798.</span> -846.29 to -758.21</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> index of union    -<span style="color: #BB0000;">818.</span> -865.52 to -776.47</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> none              -<span style="color: #BB0000;">800.</span> -848 to -759.58   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> prod sens spec    -<span style="color: #BB0000;">818.</span> -865.52 to -774.94</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> roc01             -<span style="color: #BB0000;">818.</span> -866.09 to -777.32</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> value optimising  -<span style="color: #BB0000;">798.</span> -846.38 to -758.11</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> youden            -<span style="color: #BB0000;">818.</span> -868.5 to -775.63</span></span>
+<span><span class="co">#&gt;   method           median `95% CI`        </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> all               -<span style="color: #BB0000;">908</span>  -952.5 to -866.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> cost minimising   -<span style="color: #BB0000;">799.</span> -844.9 to -755.4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> index of union    -<span style="color: #BB0000;">820.</span> -866.5 to -775.8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> none              -<span style="color: #BB0000;">800</span>  -846.4 to -756.8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> prod sens spec    -<span style="color: #BB0000;">820.</span> -866.2 to -775.8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> roc01             -<span style="color: #BB0000;">819.</span> -865.1 to -776.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> value optimising  -<span style="color: #BB0000;">799.</span> -845.3 to -755.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> youden            -<span style="color: #BB0000;">821.</span> -867.7 to -775.8</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"cutpoints"</span><span class="op">)</span> <span class="co"># Demonstrates the range of selected cutpoints under each method</span></span></code></pre></div>
 <p><img src="detailed-example_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
@@ -206,8 +206,8 @@ Monte Carlo methods to sample from input distributions.</p>
 <p>Our first pass shows treating all is a bad option, outperformed by
 every other method (as the reference strategy, treat all has an NMB of
 0). Treat none looks like a good choice; we should definitely consider
-scrapping the program and looking for something else that costs less or
-provides better results. However, this doesn’t tell the full story.
+scrapping the program and look for something else that either costs less
+or provides better results. However, this doesn’t tell the full story.
 There may be some incremental benefit from using a model to select
 patients depending on how our input values change, as the median for
 value-optimising and cost-minimising strategies is higher than treating
@@ -242,13 +242,13 @@ value for the same patient.</p>
 <span></span>
 <span><span class="fu">fx_nmb_sampler</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -7194.2936  -152.8513     0.0000 -7490.8216</span></span>
-<span><span class="fu">fx_nmb_sampler</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -8030.745  -145.908     0.000 -8235.650</span></span>
+<span><span class="co">#&gt; -7226.9060  -156.2557     0.0000 -7902.5654</span></span>
 <span><span class="fu">fx_nmb_sampler</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -8816.6987  -132.7934     0.0000 -9038.3680</span></span></code></pre></div>
+<span><span class="co">#&gt; -7383.0546  -128.5086     0.0000 -7436.9821</span></span>
+<span><span class="fu">fx_nmb_sampler</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -8587.0209  -120.6142     0.0000 -8406.6751</span></span></code></pre></div>
 <p>The sampler function shows that we can expect some significant
 variation, especially due to the probability that our intervention is
 effective. It’s always possible that an intervention could lead to worse
@@ -282,53 +282,53 @@ strategies, using the “value_optimising” and “youden” thresholds.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span><span class="va">sim_pup_screen</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    sim_auc event_rate all_median         all_95% CI none_median</span></span>
-<span><span class="co">#&gt; 1     0.72       0.02    -293.88   -343.9 to -241.6     -157.53</span></span>
-<span><span class="co">#&gt; 2     0.72       0.10    -909.20  -1029.7 to -782.3     -803.44</span></span>
-<span><span class="co">#&gt; 3     0.72       0.18   -1515.43 -1748.6 to -1327.6    -1438.01</span></span>
-<span><span class="co">#&gt; 4     0.77       0.02    -291.56     -345 to -246.8     -159.66</span></span>
-<span><span class="co">#&gt; 5     0.77       0.10    -907.89  -1033.6 to -778.2     -795.18</span></span>
-<span><span class="co">#&gt; 6     0.77       0.18   -1520.99 -1733.7 to -1300.1    -1432.61</span></span>
-<span><span class="co">#&gt; 7     0.82       0.02    -291.82   -346.3 to -246.6     -158.53</span></span>
-<span><span class="co">#&gt; 8     0.82       0.10    -906.53  -1043.4 to -781.3     -801.54</span></span>
-<span><span class="co">#&gt; 9     0.82       0.18   -1520.01 -1761.4 to -1307.7    -1443.12</span></span>
-<span><span class="co">#&gt; 10    0.87       0.02    -294.28   -345.3 to -249.7     -158.47</span></span>
-<span><span class="co">#&gt; 11    0.87       0.10    -905.26  -1035.3 to -780.3     -801.69</span></span>
-<span><span class="co">#&gt; 12    0.87       0.18   -1520.77   -1749.9 to -1310    -1441.29</span></span>
-<span><span class="co">#&gt; 13    0.92       0.02    -290.13   -338.6 to -247.7     -159.20</span></span>
-<span><span class="co">#&gt; 14    0.92       0.10    -905.29  -1041.2 to -788.3     -798.28</span></span>
-<span><span class="co">#&gt; 15    0.92       0.18   -1524.25 -1746.6 to -1309.9    -1440.74</span></span>
+<span><span class="co">#&gt; 1     0.72       0.02    -293.66   -342.2 to -237.9     -158.23</span></span>
+<span><span class="co">#&gt; 2     0.72       0.10    -908.11    -1026.6 to -784     -801.33</span></span>
+<span><span class="co">#&gt; 3     0.72       0.18   -1520.50   -1742 to -1334.8    -1444.38</span></span>
+<span><span class="co">#&gt; 4     0.77       0.02    -292.22   -347.6 to -246.3     -159.94</span></span>
+<span><span class="co">#&gt; 5     0.77       0.10    -909.96  -1043.3 to -777.7     -802.60</span></span>
+<span><span class="co">#&gt; 6     0.77       0.18   -1518.25 -1723.7 to -1303.8    -1435.19</span></span>
+<span><span class="co">#&gt; 7     0.82       0.02    -293.14   -345.4 to -249.4     -160.16</span></span>
+<span><span class="co">#&gt; 8     0.82       0.10    -904.06  -1050.9 to -780.3     -798.89</span></span>
+<span><span class="co">#&gt; 9     0.82       0.18   -1518.84 -1758.8 to -1317.3    -1435.84</span></span>
+<span><span class="co">#&gt; 10    0.87       0.02    -293.94   -345.8 to -245.7     -159.91</span></span>
+<span><span class="co">#&gt; 11    0.87       0.10    -904.13    -1039 to -786.5     -798.21</span></span>
+<span><span class="co">#&gt; 12    0.87       0.18   -1524.58 -1751.2 to -1284.9    -1437.20</span></span>
+<span><span class="co">#&gt; 13    0.92       0.02    -290.53     -342.4 to -247     -158.46</span></span>
+<span><span class="co">#&gt; 14    0.92       0.10    -909.73  -1038.5 to -782.9     -800.13</span></span>
+<span><span class="co">#&gt; 15    0.92       0.18   -1525.08 -1764.8 to -1296.1    -1435.96</span></span>
 <span><span class="co">#&gt;           none_95% CI value optimising_median value optimising_95% CI</span></span>
-<span><span class="co">#&gt; 1    -191.1 to -131.3                 -157.61          -192 to -131.4</span></span>
-<span><span class="co">#&gt; 2    -926.7 to -682.3                 -803.26        -928.4 to -682.3</span></span>
-<span><span class="co">#&gt; 3  -1652.1 to -1253.7                -1437.87      -1650.6 to -1252.2</span></span>
-<span><span class="co">#&gt; 4    -192.4 to -130.9                 -159.78        -192.9 to -131.4</span></span>
-<span><span class="co">#&gt; 5      -921.9 to -686                 -795.26        -918.5 to -685.7</span></span>
-<span><span class="co">#&gt; 6  -1640.8 to -1220.5                -1434.80      -1641.5 to -1217.8</span></span>
-<span><span class="co">#&gt; 7      -194 to -129.7                 -158.75          -194 to -129.7</span></span>
-<span><span class="co">#&gt; 8    -930.6 to -681.8                 -802.02        -927.1 to -683.4</span></span>
-<span><span class="co">#&gt; 9    -1669 to -1232.9                -1437.32      -1663.7 to -1230.5</span></span>
-<span><span class="co">#&gt; 10       -195 to -134                 -158.76        -196.3 to -134.3</span></span>
-<span><span class="co">#&gt; 11   -920.2 to -700.7                 -795.41        -917.5 to -698.4</span></span>
-<span><span class="co">#&gt; 12 -1646.3 to -1242.9                -1430.02      -1651.1 to -1239.4</span></span>
-<span><span class="co">#&gt; 13     -191.8 to -130                 -159.15        -191.7 to -130.6</span></span>
-<span><span class="co">#&gt; 14     -923 to -696.1                 -789.76        -929.1 to -684.2</span></span>
-<span><span class="co">#&gt; 15 -1645.9 to -1244.9                -1430.01          -1620 to -1227</span></span>
+<span><span class="co">#&gt; 1    -190.3 to -128.6                 -158.46        -191.8 to -128.6</span></span>
+<span><span class="co">#&gt; 2      -913 to -693.6                 -801.20        -915.5 to -693.6</span></span>
+<span><span class="co">#&gt; 3  -1650.2 to -1257.2                -1444.51        -1650.9 to -1259</span></span>
+<span><span class="co">#&gt; 4    -192.1 to -132.2                 -160.05        -193.9 to -132.5</span></span>
+<span><span class="co">#&gt; 5    -919.8 to -682.1                 -803.58          -918 to -681.1</span></span>
+<span><span class="co">#&gt; 6  -1634.5 to -1223.8                -1431.48      -1622.5 to -1219.1</span></span>
+<span><span class="co">#&gt; 7      -190.4 to -131                 -160.61        -190.4 to -131.1</span></span>
+<span><span class="co">#&gt; 8    -926.5 to -685.5                 -797.33        -923.9 to -685.6</span></span>
+<span><span class="co">#&gt; 9  -1661.2 to -1247.9                -1432.60      -1664.1 to -1241.4</span></span>
+<span><span class="co">#&gt; 10   -191.5 to -130.8                 -160.03        -191.7 to -131.5</span></span>
+<span><span class="co">#&gt; 11   -916.7 to -702.6                 -795.55          -921 to -698.6</span></span>
+<span><span class="co">#&gt; 12 -1640.3 to -1240.7                -1429.28      -1639.2 to -1222.6</span></span>
+<span><span class="co">#&gt; 13   -191.8 to -133.7                 -158.80        -192.2 to -133.6</span></span>
+<span><span class="co">#&gt; 14   -922.4 to -687.8                 -794.71        -917.5 to -679.1</span></span>
+<span><span class="co">#&gt; 15   -1653.7 to -1232                -1430.81      -1650.5 to -1216.6</span></span>
 <span><span class="co">#&gt;    youden_median      youden_95% CI</span></span>
-<span><span class="co">#&gt; 1        -197.50   -253.4 to -152.2</span></span>
-<span><span class="co">#&gt; 2        -832.24   -961.5 to -710.9</span></span>
-<span><span class="co">#&gt; 3       -1457.95 -1671.8 to -1275.2</span></span>
-<span><span class="co">#&gt; 4        -195.43   -250.5 to -156.8</span></span>
-<span><span class="co">#&gt; 5        -822.57   -946.4 to -702.6</span></span>
-<span><span class="co">#&gt; 6       -1452.19 -1658.1 to -1229.9</span></span>
-<span><span class="co">#&gt; 7        -188.41   -245.2 to -149.4</span></span>
-<span><span class="co">#&gt; 8        -817.06   -950.6 to -702.6</span></span>
-<span><span class="co">#&gt; 9       -1443.52 -1679.1 to -1246.8</span></span>
-<span><span class="co">#&gt; 10       -180.99   -234.4 to -143.9</span></span>
-<span><span class="co">#&gt; 11       -810.31     -928.5 to -702</span></span>
-<span><span class="co">#&gt; 12      -1439.52 -1662.2 to -1238.2</span></span>
-<span><span class="co">#&gt; 13       -172.70   -223.6 to -137.7</span></span>
-<span><span class="co">#&gt; 14       -802.04   -936.2 to -687.4</span></span>
-<span><span class="co">#&gt; 15      -1433.34 -1632.6 to -1235.4</span></span></code></pre></div>
+<span><span class="co">#&gt; 1        -198.47   -260.4 to -155.7</span></span>
+<span><span class="co">#&gt; 2        -828.98     -943.9 to -718</span></span>
+<span><span class="co">#&gt; 3       -1456.79 -1664.8 to -1274.6</span></span>
+<span><span class="co">#&gt; 4        -195.14   -250.2 to -154.7</span></span>
+<span><span class="co">#&gt; 5        -828.51   -951.5 to -696.2</span></span>
+<span><span class="co">#&gt; 6       -1443.40   -1652.4 to -1231</span></span>
+<span><span class="co">#&gt; 7        -191.00     -249.5 to -148</span></span>
+<span><span class="co">#&gt; 8        -816.76   -944.4 to -697.6</span></span>
+<span><span class="co">#&gt; 9       -1440.71 -1672.4 to -1247.5</span></span>
+<span><span class="co">#&gt; 10       -181.29     -236 to -146.4</span></span>
+<span><span class="co">#&gt; 11       -811.27   -932.2 to -704.3</span></span>
+<span><span class="co">#&gt; 12      -1436.68 -1657.8 to -1218.2</span></span>
+<span><span class="co">#&gt; 13       -172.47   -217.3 to -138.3</span></span>
+<span><span class="co">#&gt; 14       -803.76   -928.9 to -686.2</span></span>
+<span><span class="co">#&gt; 15      -1435.04 -1664.4 to -1217.8</span></span></code></pre></div>
 <p>As our event rate increases, treatment decisions based on the model,
 like the Youden index, begin to look better, but there are still very
 marginal gains from using the prediction model regardless of threshold.
@@ -377,7 +377,7 @@ patients will get a pressure ulcer is challenging.</p>
 using the intervention for the time being across all patients. This is
 actually the finding in the analysis this vignette was based off, a
 cost-effectiveness analysis of a pressure ulcer prevention care bundle
-by Whitty et al in 2017 (<a href="https://pubmed.ncbi.nlm.nih.gov/28711725/" class="external-link">10.1016/j.ijnurstu.2017.06.014</a>).</p>
+by Whitty et al in 2017 (<a href="https://doi.org/10.1016/j.ijnurstu.2017.06.014" class="external-link">10.1016/j.ijnurstu.2017.06.014</a>).</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
