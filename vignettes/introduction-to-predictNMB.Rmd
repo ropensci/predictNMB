@@ -56,9 +56,9 @@ get_nmb_sampler()
 get_nmb_sampler()
 ```
 
-Every time we run this function, we get a new named vector for the NMB associated with each prediction. We can inform the distributions that we sample from based on the literature for the specific clinical prediction model at hand. See the example in the 'detailed-example' vignette for a more in-depth description based on the literature. 
+Every time we run this function, we get a new named vector for the NMB associated with each prediction. We can inform the distributions that we sample from based on the literature for the specific clinical prediction model at hand. See the [detailed example vignette](https://rwparsons.github.io/predictNMB/articles/detailed-example.html) for a more in-depth description of using estimates from the literature. 
 
-In this example function, the value returned for the True Negative (TN) is zero. This may reflect a scenario where patients categorised as low risk are not given any treatment and do not experience the event being predicted (e.g. a fall) so do not have those associated costs either. The False Negative (FN) is the most negative value; this is because this reflects the worst possible outcome: the patient experiences the event and no intervention was provided to reduce it's rate or the effect of it's associated costs. The True Positive value is similar to the FN, but is not AS negative, because the patient received the intervention and this reduced the associated costs, possibly by reducing the rate of the event. These two classifications have uncertainty associated with them since the costs associated with the outcome are uncertain. This is unlike the False Positive (FP), which has a fixed cost of \$20. This may be realistic when there are set costs for providing the intervention. For example, if the intervention is to give conduct a falls education session with the patient, this may have an exact, known cost. See the detailed example vignette for further description and an example of how to decide on which values to use.
+In this example function, the value returned for the True Negative (TN) is zero. This may reflect a scenario where patients categorised as low risk are not given any treatment and do not experience the event being predicted (e.g. a fall) so do not have those associated costs either. The False Negative (FN) is the most negative value; this is because this reflects the worst possible outcome: the patient experiences the event and no intervention was provided to reduce its rate or the effect of its associated costs. The True Positive value is similar to the FN, but is not as negative, because the patient received the intervention and this reduced the associated costs, possibly by reducing the rate of the event. These two classifications have uncertainty associated with them since the costs associated with the outcome are uncertain. This is unlike the False Positive (FP), which has a fixed cost of \$20. This may be realistic when there are set costs for providing the intervention. For example, if the intervention is to conduct a falls education session with the patient, this may have an exact, known cost. See the detailed example vignette for further description and an example of how to decide on which values to use.
 
 Since we would expect to use our best estimates, in this case the expected value of the NMB associated with each prediction for an actual model (and not take a random sample from its underlying distributions), we will make a separate function for the purpose of obtaining the cutpoint, separately from the one we used (above) to evaluate it.
 
@@ -96,7 +96,7 @@ nmb_simulation <- do_nmb_sim(
 nmb_simulation
 ```
 
-We can call simulation outputs like NMB and cutpoints directly from our simulation object, and choose strategies to examine using this list. This is useful to examine histograms or get summary values. For example, our current default strategy might be to treat all, which is the same as setting our probability threshold for treatment to 0:
+We can access simulation outputs like NMB and cutpoints directly from our simulation object, and choose strategies to examine further using this list. This is useful to examine histograms or get summary values. For example, our current default strategy might be to treat all, which is the same as setting our probability threshold for treatment to 0:
 
 ```{r}
 hist(nmb_simulation$df_result$all, main = "Simulation results - treat all", xlab = "Net monetary benefit (NMB)")
@@ -113,7 +113,7 @@ plot(nmb_simulation)
 
 Treating all looks like a bad option here. The rest are relatively similar at this AUC and event rate, with an edge to treat none or the models using either the value optimisation or cost minimisation cutpoint method.
 
-We have options to include multiple cutpoint methods, and the default is to use all of the available inbuilt methods as well as the treat-all and treat-none strategies. We can specify which methods are shown in the plots when creating the plot. (For more details on plotting, see the other vignettes.)
+We have options to include multiple cutpoint methods, and the default is to use all of the available inbuilt methods as well as the treat-all and treat-none strategies. We can specify which methods are shown in the plots when creating the plot. (For more details on plotting, see the [summarising results vignettes](https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html).)
 
 ```{r}
 get_inbuilt_cutpoint(return_all_methods = TRUE)
@@ -150,9 +150,9 @@ head(nmb_simulation$df_thresholds)
 
 We may want to investigate what the relative improvement in NMB is when increasing the model performance (AUC) and compare this to the treat all or treat none strategy. The following function assesses the required performance for the model to outperform a default strategy of treat all or treat none. In this example, cutpoints are selected using the Youden index and the cost-effectiveness approach, which maximises NMB.
 
-To do this, we can screen over many of these simulations with different inputs using `screen_simulation_inputs()`. This function takes the same inputs as `do_nmb_sim()` but can take a vector of inputs rather than only a single value. Here, we pass vectors for both the `sim_auc` and the `event_rate`.
+To do this, we compare multiple simulations with different inputs using `screen_simulation_inputs()`. This function takes the same inputs as `do_nmb_sim()` but can take a vector of inputs rather than only a single value. Here, we pass vectors for both the `sim_auc` and the `event_rate`.
 
-Here, we run the simulations in parallel by creating a cluster and passing this as an argument. This can also be done to `do_nmb_sim()` in the same way. This can take some time - the fewer cores used, the longer it takes. For more details on running in parallel, see the `parallel` package.
+We run the simulations in parallel by creating a cluster and passing this as an argument. This can also be done to `do_nmb_sim()` in the same way. This can take some time — the fewer cores used, the longer it takes. For more details on running in parallel, see the `parallel` package.
 
 ```{r, eval=FALSE}
 cl <- makeCluster(detectCores())
@@ -182,7 +182,7 @@ sim_screen_obj <- screen_simulation_inputs(
 stopCluster(cl)
 ```
 
-For our hypothetical costed outcome, the classification model when the cutpoint is selected by maximising the Youden index, only out-performs the treat-none strategy when the model has a AUC of about 0.9. This is pretty high, and may be impossible when the outcome is highly unpredictable. Also, when the event rate is 0.1, rather than 0.2, we are only able the match the treat-none strategy when our model has an AUC of 0.95.
+For our hypothetical costed outcome, the classification model when the cutpoint is selected by maximising the Youden index, only out-performs the treat-none strategy when the model has a AUC of about 0.9. This is quite high, and may be impossible when the outcome is highly unpredictable. Also, when the event rate is 0.1, rather than 0.2, we are only able the match the treat-none strategy when our model has an AUC of 0.95.
 
 ```{r}
 plot(sim_screen_obj, x_axis_var = "sim_auc", constants = c(event_rate = 0.2))
