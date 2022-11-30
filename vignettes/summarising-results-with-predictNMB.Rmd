@@ -23,7 +23,7 @@ library(flextable)
 set.seed(42)
 ```
 
-This vignette is purely about how to use the `plot()` method and `make_summary_table()` to visualise and summarise the simulations made using `{predictNMB}`. For an introduction to `{predictNMB}`, please see the other vignette.
+This vignette is purely about how to use the `plot()` method and `make_summary_table()` to visualise and summarise the simulations made using `{predictNMB}`. For an introduction to `{predictNMB}`, please see the [introductory vignette](https://rwparsons.github.io/predictNMB/articles/introduction-to-predictNMB.html).
 
 Firstly, as an example case, we will run `screen_simulation_inputs()`.
 
@@ -332,8 +332,6 @@ make_summary_table(
   flextable()
 ```
 
-The summary table contains the same outputs for both `do_nmb_sim()` and `screen_simulation_inputs()`, but they are arranged slightly differently. Each row in the screen over inputs object is a unique set of inputs. By default, this is trimmed to include only those inputs that vary in our function call - here, `sim_auc` and `event_rate` - by using the `show_full_inputs` argument. By default, only the inputs that vary are shown. However, we can set `show_full_inputs = TRUE` to see more.
-
 ```{r, eval=FALSE}
 make_summary_table(sim_screen_obj)
 ```
@@ -341,6 +339,8 @@ make_summary_table(sim_screen_obj)
 ```{r, echo=FALSE}
 make_summary_table(sim_screen_obj) %>% flextable()
 ```
+
+The summary table contains the same outputs for both `do_nmb_sim()` and `screen_simulation_inputs()`, but they are arranged slightly differently. Each row in the screen over inputs object is a unique set of inputs. By default, this is trimmed to include only those inputs that vary in our function call — here, `sim_auc` and `event_rate` — by using the `show_full_inputs` argument. By default, only the inputs that vary are shown. However, we can set `show_full_inputs = TRUE` to see more.
 
 ```{r, eval=FALSE}
 make_summary_table(sim_screen_obj, show_full_inputs = TRUE)
