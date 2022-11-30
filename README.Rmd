@@ -90,7 +90,7 @@ sim_screen_obj <- screen_simulation_inputs(
 )
 ```
 
-These simulations can be interpreted as a range of hypothetical situations under different levels of model performance within our specific healthcare setting. We can visualise how this change may affect preferences between the model-guided strategy versus a treat-all or treat-none strategy - in other words, using the model to determine who should get treatment, rather than everyone or no-one.
+These simulations can be interpreted as a range of hypothetical situations under different levels of model performance within our specific healthcare setting. We can visualise how this change may affect preferences between the model-guided strategy versus a treat-all or treat-none strategy — in other words, using the model to determine who should get treatment, rather than everyone or no-one.
 
 `plot()` on the object returned from this function to quickly inspect these trends:
 
