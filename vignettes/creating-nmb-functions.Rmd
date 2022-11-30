@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # NMB functions
 
-The most important aspect of `predictNMB` is its ability to evaluate simulated prediction models in terms of Net Monetary Benefit (NMB). To do so, it requires the user to create and provide functions that assign NMB values to each of the four possible classifications in a confusion matrix. These functions create named vectors, which are vectors of values that provide an NMB value for each possible outcome: 
+The key aspect of `predictNMB` is its ability to evaluate simulated prediction models in terms of Net Monetary Benefit (NMB). To do so, it requires the user to create and provide functions that assign NMB values to each of the four possible classifications in a confusion matrix. These functions create named vectors, which are vectors of values that provide an NMB value for each possible outcome: 
 
 - TP: True Positives, correctly predicted events that lead to necessary treatment
 - TN: True Negatives, correctly predicted non-events that avoid unnecessary treatment
@@ -120,11 +120,11 @@ foo3()
 
 Now that we are providing an intervention and associated cost to the low risk group, there is a negative NMB assigned to true negative (TN) groups. But in exchange, we have reduced the costs of false negatives (FNs), because at least these patients are now receiving an intervention, albeit a less effective one.
 
-It's important to note that while these NMB values are negative, this doesn't imply that we are worse off by implementing prediction models or treatments. We are simply trying to pick the least bad option in a bad situation. This becomes more apparent when we set a reference strategy, which is discussed in the other vignettes.
+It's important to note that while these NMB values are negative, this doesn't imply that we are worse off by implementing prediction models or treatments. We are simply trying to pick the least bad option in a bad situation. This becomes more apparent when we set a reference strategy, which is discussed in more detail in the [introductory](https://rwparsons.github.io/predictNMB/articles/introduction-to-predictNMB.html) and [detailed example](https://rwparsons.github.io/predictNMB/articles/detailed-example.html) vignettes.
 
 ## Making functions using `get_nmb_sampler()`
 
-The previous section demonstrates how to make functions by hand and a general approach to thinking about intervention costs and effects. This same approach is used by `get_nmb_sampler()` but abstracts the actual creation of the function away to make things more straightforward for the user. It can be easier to apply for simple cases, but removes some of the ability to do complex modelling.
+The previous section demonstrates how to make functions by hand and a general approach to thinking about intervention costs and effects. This same approach is used by `get_nmb_sampler()` but abstracts the actual creation of the function away to make things more straight forward for the user. It can be easier to apply for simple cases, but removes some of the ability to do complex modelling.
 
 To replicate what we created as `foo1()`, we pass these costs as separate arguments. The function is created, with the output `get_nmb_sampler()`. Recall:
 
@@ -184,7 +184,7 @@ plot_nmb_dist(foo2_remake) + ggtitle("foo2_remake()")
 plot_nmb_dist(foo2) + ggtitle("foo2()")
 ```
 
-We can also create a NMB function which replicates our prior scenario where the low-risk group is given a cheaper and less effective intervention.
+We can also create an NMB function which replicates our prior scenario where the low-risk group is given a cheaper and less effective intervention.
 
 ```{r, fig.show='hold'}
 foo3_remake <-
@@ -209,7 +209,7 @@ In addition to specifying the cost of the outcome, we can also incorporate healt
 
 You must provide EITHER the `outcome_cost` alone OR the `wtp` AND `qalys_lost`. You can also provide all three if, for example, there are some fixed costs associated with the event separate to the QALYs lost. For example, following a fall, every patient may have an X-ray, and this would be a separate cost to the QALYs lost and our willingness to pay for those QALYs due to the fall.
 
-Returning to our falls function, if our WTP is \$8 and each fall is associated with a 0.5 QALY lost (on average), then this would be equivalent to our fixed cost of \$4. By having these included in the function as separate arguments, we can more clearly represent each input to the model and provide more realistic representations of reality. We can use this to generate estimates (and uncertainty) for the QALYs lost due to the event we are evaluating and our WTP to avoid the event.
+Returning to our falls function, if our WTP is \$8 and each fall is associated with a 0.5 QALY lost (on average), then this would be equivalent to our fixed cost of \$4. By having these included in the function as separate arguments, we can more clearly represent each input to the model and provide more realistic representations. We can use this to generate estimates (and uncertainty) for the QALYs lost due to the event we are evaluating and our WTP to avoid the event.
 
 ```{r}
 foo4 <-
@@ -242,7 +242,7 @@ simulation_res1 <- do_nmb_sim(
 plot(simulation_res1)
 ```
 
-As mentioned previously, the problem with using `foo1` for `fx_nmb_evaluation` is that we don't really know for sure how effective our intervention is, what the burden of the event is, and how much things cost. This is why we incorporate uncertainty into the evaluation function, but ONLY the evaluation function and not the training function. If we use a NMB function that incorporates uncertainty for selecting the cutpoint in `fx_nmb_training`, this would mean we picked costs randomly and used those on our data to select a cutpoint. This would be unlikely in practice, as we would use our expected value (best estimates) to determine cutpoints in reality.
+As mentioned previously, the problem with using `foo1` for `fx_nmb_evaluation` is that we don't really know for sure how effective our intervention is, what the burden of the event is, and how much things cost. This is why we incorporate uncertainty into the evaluation function, but ONLY the evaluation function and not the training function. If we use an NMB function that incorporates uncertainty for selecting the cutpoint in `fx_nmb_training`, this would mean we picked costs randomly and used those on our data to select a cutpoint. This would be unlikely in practice, as we would use our expected value (best estimates) to determine cutpoints in reality.
 
 `get_nmb_sampler()` also offers the ability to extract these fixed (expected) values by sampling from the distributions and using the column means for `fx_nmb_training`.
 
