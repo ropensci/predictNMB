@@ -25,9 +25,9 @@ library(parallel)
 
 Economic analysis typically combines information from a variety of sources, including randomised controlled trials, costing studies, and local data. An advantage of simulation is that it can estimate the utility of a proposed intervention prior to implementation. 
 
-In this example, we simulate the decision process for a hospital analyst at an Australian hospital with a high rate of pressure injuries, also known as pressure ulcers. Pressure ulcers are significant adverse events for patients, often leading to additional discomfort, prolonged length of hospital stay, and increased costs. The hospital currently has a pressure ulcer prevention program in place, but our analyst is examining whether to implement a clinical prediction model to identify patients who may not benefit from the program and potentially save on costs.
+In this example, we simulate the decision process for a hospital analyst at an Australian hospital with a high rate of pressure injuries, also known as pressure ulcers. Pressure ulcers are significant adverse events for patients, often leading to additional discomfort, prolonged length of hospital stay, and increased costs. The hospital currently has a pressure ulcer prevention program in place, but our analyst is examining whether to implement a clinical prediction model to identify patients who may not benefit from the program and potentially reduce costs.
 
-Let's begin by generating some realistic costs and probabilities. Keep in mind, we are trying to avoid a negative event, so the net monetary benefit of every strategy is going to be negative. In economic parlance, costs are typically negative, while cost savings are positive. If we were also interested in improving quality of life, we could estimate quality-adjusted life years (QALYs), multiply them by a willingness-to-pay threshold (WTP), and add this gain or loss to our true positive and false negative squares to signify the impact on the patient. For simplicity's sake, let's say we're only interested in hospital costs.
+Let's begin by generating some realistic costs and probabilities. Keep in mind, we are trying to avoid a negative event, so the net monetary benefit of every strategy is going to be negative. In economic parlance, costs are typically negative, while cost savings are positive. If we were also interested in improving quality of life, we could estimate quality-adjusted life years (QALYs), multiply them by a willingness-to-pay threshold (WTP), and add this gain or loss to our true positive and false negative estimates to signify the impact on the patient. For simplicity, let's say we're only interested in hospital costs.
 
 Model inputs:
 <br>
@@ -46,7 +46,7 @@ With these inputs, we can populate our confusion matrix (2x2 table), which helps
 
 ## Model inputs
 
-First, we need to define our NMB function, which provides data for our simulation. In this case, the intervention is associated with a 4% reduction in the odds of a pressure ulcer, so it's only moderately effective at reducing the chance of a pressure injury. We can use a probability-weighted cost savings for successful prevention, at 8000*(0.96) = a small improvement of around \$320. After including \$140 in program costs, the net benefit is around \$180 for a successfully prevented pressure ulcer.
+First, we need to define our NMB function, which provides data for our simulation. In this case, the intervention is associated with a 4% reduction in the odds of a pressure ulcer, so it's only moderately effective at reducing the chance of a pressure injury. We can use a probability-weighted cost saving for successful prevention, at 8000*(0.96) = a small improvement of around \$320. After including \$140 in program costs, the net benefit is around \$180 for a successfully prevented pressure ulcer.
 
 The AUC is 0.820, which is essentially the proportion of random positive patients that received a higher probability of an injury than random negative patients (and vice versa). A useful property of the AUC is that it is the same no matter what probability threshold we use. In our case, an AUC of 0.820 means that the model will assign higher probabilities of a pressure ulcer to around 82% of patients who go on to develop an ulcer compared to patients that don't.
 
@@ -82,7 +82,7 @@ nmb_simulation <- do_nmb_sim(
 
 nmb_simulation
 
-make_summary_table(nmb_simulation) # Get the mean incremental NMB for each threshold selection method
+make_summary_table(nmb_simulation) # Get the median incremental NMB for each threshold selection method
 
 plot(nmb_simulation, what = "cutpoints") # Demonstrates the range of selected cutpoints under each method
 ```
@@ -91,7 +91,7 @@ plot(nmb_simulation, what = "cutpoints") # Demonstrates the range of selected cu
 plot(nmb_simulation, what = "inb", inb_ref_col = "all") # Compares the incremental benefit of each alternate strategy to our current practice (treat all)
 ```
 
-Our first pass shows treating all is a bad option, outperformed by every other method (as the reference strategy, treat all has an NMB of 0). Treat none looks like a good choice; we should definitely consider scrapping the program and looking for something else that costs less or provides better results. However, this doesn't tell the full story. There may be some incremental benefit from using a model to select patients depending on how our input values change, as the median for value-optimising and cost-minimising strategies is higher than treating none. So our intervention might be worth using, but only for the highest risk patients. 
+Our first pass shows treating all is a bad option, outperformed by every other method (as the reference strategy, treat all has an NMB of 0). Treat none looks like a good choice; we should definitely consider scrapping the program and look for something else that either costs less or provides better results. However, this doesn't tell the full story. There may be some incremental benefit from using a model to select patients depending on how our input values change, as the median for value-optimising and cost-minimising strategies is higher than treating none. So our intervention might be worth using, but only for the highest risk patients. 
 Results from the ROC-based methods like the Youden index and index of union are quite uncertain, so we may not want to use them for these input parameters. However, the utility of these models and the threshold selection methods based on the ROC might improve as they get more accurate, or as the event rate increases; what we really want to know is how robust our results are to changes in the input parameters. This is the purpose of `screen_simulation_inputs()`. We can not only simulate from a distribution for our cost inputs, we can pass a vector to the AUC and incidence arguments to understand how these impact our findings.
 
 First, let's specify our sampler function for the confusion matrix. We can replace our inputs with normal distributions, as our values are all means. Make sure to pass distribution definitions within the function so that they are resampled every simulation, but pull the same value for the same patient.
@@ -153,4 +153,4 @@ plot(sim_pup_screen, x_axis_var = "event_rate")
 
 The nice thing about our cost-effectiveness function is that it tends to follow the best threshold, regardless of AUC or event rate. In this case, it tends to follow the treat none decision as it moves across, which is why the strategies for treat none and cost-effective overlap in the plots. We can also see that the Youden index begins to look better at higher accuracy and higher incidence rates, but predicting what patients will get a pressure ulcer is challenging. 
 
-Ultimately at our given AUC and event rate, it might be best to stop using the intervention for the time being across all patients. This is actually the finding in the analysis this vignette was based off, a cost-effectiveness analysis of a pressure ulcer prevention care bundle by Whitty et al in 2017 ([10.1016/j.ijnurstu.2017.06.014](https://pubmed.ncbi.nlm.nih.gov/28711725/)).
+Ultimately at our given AUC and event rate, it might be best to stop using the intervention for the time being across all patients. This is actually the finding in the analysis this vignette was based off, a cost-effectiveness analysis of a pressure ulcer prevention care bundle by Whitty et al in 2017 ([10.1016/j.ijnurstu.2017.06.014](https://doi.org/10.1016/j.ijnurstu.2017.06.014)).
