@@ -32,16 +32,16 @@ The functions created here are used for two purposes, depending on which argumen
 - `fx_nmb_training`: only ever used if the `cost_minimising` or `value_optimising` cutpoint methods are used. These cutpoints aim to maximise the NMB, therefore requiring our best estimates of the NMB values assigned to each classification.
 - `fx_nmb_evaluation`: used for evaluation for all methods. This argument is required to run all simulations in `predictNMB`.
 
-The function that generates the named vector used by the `fx_nmb_evaluation` argument is re-evaluated at every iteration of the simulation. In other words, we are sampling from a range of plausible values for our simulation inputs. This allows us to "bake in" uncertainty, since it is unlikely that we know these costs or outcomes exactly. By incorporating uncertainty this way, we are propagating the uncertainty throughout the whole model. This is good practice in simulation modelling, because our simulation will never be able to perfectly mirror the reality of finding the best method. If we include no uncertainty in `fx_nmb_evaluation`, we are making the assumption that we know each input of the model **exactly**.
+The function that generates the named vector used by the `fx_nmb_evaluation` argument is re-evaluated at every iteration of the simulation. In other words, we are sampling from a range of plausible values for our simulation inputs. This allows us to incorporate uncertainty, since it is unlikely that we know these costs or outcomes exactly. By incorporating uncertainty this way, we are propagating the uncertainty throughout the whole model. This is good practice in simulation modelling, because our simulation will never be able to perfectly mirror the reality of finding the best method. If we include no uncertainty in `fx_nmb_evaluation`, we are making the assumption that we know each input of the model **exactly**.
 
-Note that we use our best estimates (without uncertainty) for the `fx_nmb_training` function. This reflects the fact that when cutpoints are selected in practice, they usually stay fixed rather than varying by scenario. It is this fixed value we are evaluating our simulations against, so we want it to be the same every time to measure the potential benefit of choosing another cutpoint. This may mean that the merits of `cost_minimising` and `value_optimising` cutpoints could be overestimated, which will be discussed at the end when we explore `do_nmb_sim()`.
+Note that we use our best estimates (without uncertainty) for the `fx_nmb_training` function. This reflects the fact that when cutpoints are selected in practice, they usually stay fixed rather than varying by scenario. It is this fixed value we are evaluating our simulations against, so we want it to be the same every time to measure the potential benefit of choosing another cutpoint. This may indicate that the merits of `cost_minimising` and `value_optimising` cutpoints could be overestimated, which will be discussed at the end when we explore `do_nmb_sim()`.
 
 The mean NMB per patient is evaluated at the end of each simulated iteration based on the inputs we have created (our named vector from before). For more information, see the associated vignette using `browseVignettes(package = "predictNMB")`). 
 
 
 ## Making functions by hand
 
-This first section describes how to make the functions described above by hand. For users unfamiliar with R functions, this section may be unintuitive, and the subsequent `get_nmb_sampler()` section may be a gentler introduction. This section introduces all the flexibility that the user can express when creating these functions, but may be overkill for many cases.
+This first section describes how to make the functions described above by hand. For users unfamiliar with R functions, this section may be unintuitive, and the subsequent `get_nmb_sampler()` section may be a gentler introduction. This section introduces all the flexibility that the user can express when creating these functions, but may be excessive for many cases.
 
 The following function applies exact estimates for each square of a confusion matrix: 
 
@@ -57,7 +57,7 @@ foo1 <- function() {
 foo1()
 ```
 
-Note that NMB values for each classification are equal to or less than zero. If we frame this around an adverse healthcare event, for example inpatient falls, our best case scenario is avoiding a fall without needing to provide any preventive care (`TN = 0`). The outcomes are negative because falls impose an additional burden. The remaining outcomes can be calculated if we know that the cost of a fall is \$4, the cost of the intervention is \$1, and the intervention reduces falls rate by 50%.
+Note that NMB values for each classification are equal to or less than zero. If we frame this around an adverse healthcare event, for example inpatient falls, our best case scenario is avoiding a fall without needing to provide any additional fall prevention care beyond usual patient care (`TN = 0`). The outcomes are negative because falls impose an additional burden. The remaining outcomes can be calculated if we know that the cost of a fall is \$4, the cost of the intervention is \$1, and the intervention reduces falls rate by 50%.
 
 For our possible classifications: 
 
@@ -66,7 +66,7 @@ For our possible classifications:
 - $TN = \$0$ (do not receive the intervention and avoid the cost of the fall)
 - $FN -\$4$ (do not have the intervention but experience the full cost of the fall (\$4))
 
-Users may provide any function without arguments in this form to be more flexible. This allows the user to incorporate uncertainty for model evaluation, because we may not know our inputs exactly. For example, in the function below, we have sampled from distributions of values, rather than setting our expected value of each outcome. Every time we call the function, we get different values based on our chosen distributions - with the exception of true negative (TN) as it is fixed at zero. This sampling procedure is crucial for evaluation, and is often referred to in health economics as Probabilistic Sensitivity Analysis (PSA).
+Users may provide any function without arguments in this form to be more flexible. This allows the user to incorporate uncertainty for model evaluation, because we may not know our inputs exactly. For example, in the function below, we have sampled from distributions of values, rather than setting our expected value of each outcome. Every time we call the function, we get different values based on our chosen distributions - with the exception of true negative (TN) as it is fixed at zero. This sampling procedure is important for evaluation, and is often referred to in health economics as Probabilistic Sensitivity Analysis (PSA).
 
 
 ```{r}
@@ -90,7 +90,7 @@ foo2()
 
 Another benefit of allowing the user to define the function structure is that we can also allow the low risk group, or the population whose risk estimates fall below the probability threshold, to receive an intervention rather than nothing. 
 
-This can be preferable when there is more than one available intervention to use, and one is more costly (and presumably effective) than the other. For example, all patients in a hospital might have a medication management plan in place to reduce falls risk as a matter of course, but the high risk group might also receive additional surveillance from nurses. This way, we can assign all high risk patients to receive the high cost and highly effective intervention, and all low risk patients to receive the low cost and less effective intervention. Extending `foo2()` to create the function below, we assign the low cost intervention \$0.5 and a reduction in falls of 30%.
+This can be preferable when there is more than one available intervention to use, and one is more costly (and presumably effective) than the other. For example, all patients in a hospital might have a medication management plan in place to reduce falls risk but the high risk group might also receive additional surveillance from nurses. This way, we can assign all high risk patients to receive the high cost and highly effective intervention, and all low risk patients to receive the low cost and less effective intervention. Extending `foo2()` to create the function below, we assign the low cost intervention \$0.5 and a reduction in falls of 30%.
 
 ```{r}
 foo3 <- function() {
@@ -120,7 +120,7 @@ foo3()
 
 Now that we are providing an intervention and associated cost to the low risk group, there is a negative NMB assigned to true negative (TN) groups. But in exchange, we have reduced the costs of false negatives (FNs), because at least these patients are now receiving an intervention, albeit a less effective one.
 
-It's important to note that while these NMB values are negative, this doesn't imply that we are worse off by implementing prediction models or treatments. We are simply trying to pick the least bad option in a bad situation. This becomes more apparent when we set a reference strategy, which is discussed in more detail in the [introductory](https://rwparsons.github.io/predictNMB/articles/introduction-to-predictNMB.html) and [detailed example](https://rwparsons.github.io/predictNMB/articles/detailed-example.html) vignettes.
+It's important to note that while these NMB values are negative, this doesn't imply that we are worse off by implementing prediction models or treatments. We are simply trying to pick the least bad option. This becomes more apparent when we set a reference strategy, which is discussed in more detail in the [introductory](https://rwparsons.github.io/predictNMB/articles/introduction-to-predictNMB.html) and [detailed example](https://rwparsons.github.io/predictNMB/articles/detailed-example.html) vignettes.
 
 ## Making functions using `get_nmb_sampler()`
 
