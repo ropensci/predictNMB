@@ -135,8 +135,8 @@ This argument is required to run all simulations in
 <code>fx_nmb_evaluation</code> argument is re-evaluated at every
 iteration of the simulation. In other words, we are sampling from a
 range of plausible values for our simulation inputs. This allows us to
-“bake in” uncertainty, since it is unlikely that we know these costs or
-outcomes exactly. By incorporating uncertainty this way, we are
+incorporate uncertainty, since it is unlikely that we know these costs
+or outcomes exactly. By incorporating uncertainty this way, we are
 propagating the uncertainty throughout the whole model. This is good
 practice in simulation modelling, because our simulation will never be
 able to perfectly mirror the reality of finding the best method. If we
@@ -148,8 +148,8 @@ the assumption that we know each input of the model
 cutpoints are selected in practice, they usually stay fixed rather than
 varying by scenario. It is this fixed value we are evaluating our
 simulations against, so we want it to be the same every time to measure
-the potential benefit of choosing another cutpoint. This may mean that
-the merits of <code>cost_minimising</code> and
+the potential benefit of choosing another cutpoint. This may indicate
+that the merits of <code>cost_minimising</code> and
 <code>value_optimising</code> cutpoints could be overestimated, which
 will be discussed at the end when we explore
 <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></code>.</p>
@@ -166,7 +166,7 @@ above by hand. For users unfamiliar with R functions, this section may
 be unintuitive, and the subsequent <code><a href="../reference/get_nmb_sampler.html">get_nmb_sampler()</a></code>
 section may be a gentler introduction. This section introduces all the
 flexibility that the user can express when creating these functions, but
-may be overkill for many cases.</p>
+may be excessive for many cases.</p>
 <p>The following function applies exact estimates for each square of a
 confusion matrix:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -184,11 +184,11 @@ confusion matrix:</p>
 <p>Note that NMB values for each classification are equal to or less
 than zero. If we frame this around an adverse healthcare event, for
 example inpatient falls, our best case scenario is avoiding a fall
-without needing to provide any preventive care (<code>TN = 0</code>).
-The outcomes are negative because falls impose an additional burden. The
-remaining outcomes can be calculated if we know that the cost of a fall
-is $4, the cost of the intervention is $1, and the intervention reduces
-falls rate by 50%.</p>
+without needing to provide any additional fall prevention care beyond
+usual patient care (<code>TN = 0</code>). The outcomes are negative
+because falls impose an additional burden. The remaining outcomes can be
+calculated if we know that the cost of a fall is $4, the cost of the
+intervention is $1, and the intervention reduces falls rate by 50%.</p>
 <p>For our possible classifications:</p>
 <ul>
 <li>
@@ -212,7 +212,7 @@ the function below, we have sampled from distributions of values, rather
 than setting our expected value of each outcome. Every time we call the
 function, we get different values based on our chosen distributions -
 with the exception of true negative (TN) as it is fixed at zero. This
-sampling procedure is crucial for evaluation, and is often referred to
+sampling procedure is important for evaluation, and is often referred to
 in health economics as Probabilistic Sensitivity Analysis (PSA).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foo2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
@@ -229,14 +229,14 @@ in health economics as Probabilistic Sensitivity Analysis (PSA).</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -1.6534915 -0.2667529  0.0000000 -4.1332200</span></span>
-<span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -2.024567 -1.009865  0.000000 -2.821692</span></span>
+<span><span class="co">#&gt; -4.117412 -3.012954  0.000000 -2.137836</span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -1.0484425 -0.9345747  0.0000000 -0.5916753</span></span></code></pre></div>
+<span><span class="co">#&gt; -1.3174200 -0.7252536  0.0000000 -0.8463207</span></span>
+<span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -1.2450543 -0.5526337  0.0000000 -1.6209668</span></span></code></pre></div>
 <p>Another benefit of allowing the user to define the function structure
 is that we can also allow the low risk group, or the population whose
 risk estimates fall below the probability threshold, to receive an
@@ -244,13 +244,13 @@ intervention rather than nothing.</p>
 <p>This can be preferable when there is more than one available
 intervention to use, and one is more costly (and presumably effective)
 than the other. For example, all patients in a hospital might have a
-medication management plan in place to reduce falls risk as a matter of
-course, but the high risk group might also receive additional
-surveillance from nurses. This way, we can assign all high risk patients
-to receive the high cost and highly effective intervention, and all low
-risk patients to receive the low cost and less effective intervention.
-Extending <code>foo2()</code> to create the function below, we assign
-the low cost intervention $0.5 and a reduction in falls of 30%.</p>
+medication management plan in place to reduce falls risk but the high
+risk group might also receive additional surveillance from nurses. This
+way, we can assign all high risk patients to receive the high cost and
+highly effective intervention, and all low risk patients to receive the
+low cost and less effective intervention. Extending <code>foo2()</code>
+to create the function below, we assign the low cost intervention $0.5
+and a reduction in falls of 30%.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foo3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># intervention for high risk (hr) group</span></span>
@@ -274,13 +274,13 @@ the low cost intervention $0.5 and a reduction in falls of 30%.</p>
 <span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -1.5236391 -0.2626858 -0.8734267 -2.3264546</span></span>
-<span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -3.946245 -1.702891 -0.650116 -4.495814</span></span>
+<span><span class="co">#&gt; -3.3501132 -1.0419270 -0.8111046 -4.6547565</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -3.1145626 -2.3505991 -0.5041802 -1.6983897</span></span></code></pre></div>
+<span><span class="co">#&gt; -3.4278783 -0.3205890 -0.5502177 -4.7052433</span></span>
+<span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -2.1481603 -0.2497103 -0.2270317 -2.7248487</span></span></code></pre></div>
 <p>Now that we are providing an intervention and associated cost to the
 low risk group, there is a negative NMB assigned to true negative (TN)
 groups. But in exchange, we have reduced the costs of false negatives
@@ -288,9 +288,9 @@ groups. But in exchange, we have reduced the costs of false negatives
 intervention, albeit a less effective one.</p>
 <p>It’s important to note that while these NMB values are negative, this
 doesn’t imply that we are worse off by implementing prediction models or
-treatments. We are simply trying to pick the least bad option in a bad
-situation. This becomes more apparent when we set a reference strategy,
-which is discussed in more detail in the <a href="https://rwparsons.github.io/predictNMB/articles/introduction-to-predictNMB.html">introductory</a>
+treatments. We are simply trying to pick the least bad option. This
+becomes more apparent when we set a reference strategy, which is
+discussed in more detail in the <a href="https://rwparsons.github.io/predictNMB/articles/introduction-to-predictNMB.html">introductory</a>
 and <a href="https://rwparsons.github.io/predictNMB/articles/detailed-example.html">detailed
 example</a> vignettes.</p>
 </div>
@@ -500,14 +500,14 @@ that gives fixed values for training:</p>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -3.036203 -1.018159  0.000000 -4.026094</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -3.0212154 -0.9986202  0.0000000 -4.0317992</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -3.036203 -1.018159  0.000000 -4.026094</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -3.0212154 -0.9986202  0.0000000 -4.0317992</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -3.036203 -1.018159  0.000000 -4.026094</span></span></code></pre></div>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -3.0212154 -0.9986202  0.0000000 -4.0317992</span></span></code></pre></div>
 <p>In many cases (including this one), this will give similar values to
 using the parameter estimates (i.e. <code>foo1()</code>), but not
 always. The values from this process should be more stable than using
