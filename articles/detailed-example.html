@@ -93,34 +93,34 @@
 <div class="section level2">
 <h2 id="detailed-example">Detailed example<a class="anchor" aria-label="anchor" href="#detailed-example"></a>
 </h2>
-<p>Economic analysis typically combines information from a variety of
+<p>Economic analyses often combine information from a variety of
 sources, including randomised controlled trials, costing studies, and
 local data. An advantage of simulation is that it can estimate the
 utility of a proposed intervention prior to implementation.</p>
-<p>In this example, we simulate the decision process for a hospital
-analyst at an Australian hospital with a high rate of pressure injuries,
-also known as pressure ulcers. Pressure ulcers are significant adverse
+<p>In this example, we simulate the decision process for an analyst at a
+hospital with a high rate of pressure injuries (or bedsores), also known
+as pressure ulcers. Pressure ulcers are considered significant adverse
 events for patients, often leading to additional discomfort, prolonged
-length of hospital stay, and increased costs. The hospital currently has
-a pressure ulcer prevention program in place, but our analyst is
-examining whether to implement a clinical prediction model to identify
-patients who may not benefit from the program and potentially reduce
-costs.</p>
+length of hospital stay, and increased costs. The hospital currently
+uses pressure ulcer prevention interventions routinely, but our analyst
+is examining whether to implement a new clinical prediction model to
+identify patients who may not benefit from existing interventions and
+provide decision support to reduce non-beneficial care.</p>
 <p>Let’s begin by generating some realistic costs and probabilities.
 Keep in mind, we are trying to avoid a negative event, so the net
-monetary benefit of every strategy is going to be negative. In economic
-parlance, costs are typically negative, while cost savings are positive.
-If we were also interested in improving quality of life, we could
-estimate quality-adjusted life years (QALYs), multiply them by a
-willingness-to-pay threshold (WTP), and add this gain or loss to our
-true positive and false negative estimates to signify the impact on the
-patient. For simplicity, let’s say we’re only interested in hospital
-costs.</p>
+monetary benefit of every strategy in this scenario is going to be
+negative. In this case, negative values will represent costs, we aim to
+maximise these values (reduce costs). If we were also interested in
+improving quality of life, we could estimate quality-adjusted life years
+(QALYs), multiply them by a willingness-to-pay threshold (WTP), and add
+this gain or loss to our true positive and false negative estimates to
+signify the impact on the patient. For simplicity, let’s say we’re only
+interested in hospital costs.</p>
 <p>Model inputs: <br> - Mean incremental cost per pressure injury:
 $8,000 (SD 550) <br> - Per-patient cost of pressure ulcer prevention
-strategy (PUP): $140 (SD 20) <br> - Odds ratio of pressure ulcer with
-intervention compared to non-intervention: 0.96 (SD 0.03) <br> - AUC:
-0.820 (SD 0.02) <br> - Hypothetical hospital pressure injury
+intervention (PUP): $140 (SD 20) <br> - Odds ratio of pressure ulcer
+with intervention compared to non-intervention: 0.96 (SD 0.03) <br> -
+AUC: 0.82 (SD 0.02) <br> - Hypothetical hospital pressure injury
 incidence/event rate: 0.1 (SD 0.02) <br></p>
 <p>With these inputs, we can populate our confusion matrix (2x2 table),
 which helps us understand the outcomes resulting from correct and
@@ -130,19 +130,18 @@ incorrect predictions.</p>
 </h3>
 <p>First, we need to define our NMB function, which provides data for
 our simulation. In this case, the intervention is associated with a 4%
-reduction in the odds of a pressure ulcer, so it’s only moderately
-effective at reducing the chance of a pressure injury. We can use a
+reduction in the odds of a pressure ulcer. We can use a
 probability-weighted cost saving for successful prevention, at
 8000*(0.96) = a small improvement of around $320. After including $140
-in program costs, the net benefit is around $180 for a successfully
+in intervention costs, the net benefit is around $180 for a successfully
 prevented pressure ulcer.</p>
-<p>The AUC is 0.820, which is essentially the proportion of random
-positive patients that received a higher probability of an injury than
-random negative patients (and vice versa). A useful property of the AUC
-is that it is the same no matter what probability threshold we use. In
-our case, an AUC of 0.820 means that the model will assign higher
-probabilities of a pressure ulcer to around 82% of patients who go on to
-develop an ulcer compared to patients that don’t.</p>
+<p>The AUC is 0.82, which represents the proportion of random positive
+patients that received a higher probability of an injury than random
+negative patients (and vice versa). A useful property of the AUC is that
+it is the same no matter what probability threshold we use. In our case,
+an AUC of 0.82 means that the model will assign higher probabilities of
+a pressure ulcer to around 82% of patients who go on to develop an ulcer
+compared to patients that don’t.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">fx_nmb</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
@@ -169,7 +168,7 @@ Monte Carlo methods to sample from input distributions.</p>
 <span>  sample_size <span class="op">=</span> <span class="fl">1000</span>, <span class="co"># Evaluating a theoretical cohort of 1,000 patients</span></span>
 <span>  n_sims <span class="op">=</span> <span class="fl">500</span>, <span class="co"># The larger the number of samples, the longer it takes to run, but the more reproducible the results</span></span>
 <span>  n_valid <span class="op">=</span> <span class="fl">10000</span>, <span class="co"># Number of times the NMB is evaluated under each cutpoint</span></span>
-<span>  sim_auc <span class="op">=</span> <span class="fl">0.820</span>, <span class="co"># The AUC of our proposed model</span></span>
+<span>  sim_auc <span class="op">=</span> <span class="fl">0.82</span>, <span class="co"># The AUC of our proposed model</span></span>
 <span>  event_rate <span class="op">=</span> <span class="fl">0.1</span>, <span class="co"># The incidence of pressure ulcers at our hypothetical hospital</span></span>
 <span>  fx_nmb_training <span class="op">=</span> <span class="va">fx_nmb</span>, <span class="co"># As a first pass, we will just use our confusion matrix vector above for training and evaluation</span></span>
 <span>  fx_nmb_evaluation <span class="op">=</span> <span class="va">fx_nmb</span></span>
@@ -189,39 +188,39 @@ Monte Carlo methods to sample from input distributions.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 3</span></span></span>
 <span><span class="co">#&gt;   method           median `95% CI`        </span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> all               -<span style="color: #BB0000;">909.</span> -952.5 to -861.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> cost minimising   -<span style="color: #BB0000;">800.</span> -844.6 to -749.6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> index of union    -<span style="color: #BB0000;">819.</span> -864.1 to -770  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> none              -<span style="color: #BB0000;">801.</span> -846.4 to -751.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> prod sens spec    -<span style="color: #BB0000;">818.</span> -864.2 to -768  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> roc01             -<span style="color: #BB0000;">819.</span> -863.1 to -769.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> value optimising  -<span style="color: #BB0000;">800.</span> -845 to -749.8  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> youden            -<span style="color: #BB0000;">820.</span> -865.1 to -768.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> all               -<span style="color: #BB0000;">906.</span> -951.4 to -861.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> cost minimising   -<span style="color: #BB0000;">797.</span> -843.3 to -749.6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> index of union    -<span style="color: #BB0000;">818.</span> -863.9 to -768.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> none              -<span style="color: #BB0000;">798.</span> -845.2 to -751.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> prod sens spec    -<span style="color: #BB0000;">818.</span> -864.3 to -768.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> roc01             -<span style="color: #BB0000;">817.</span> -864.3 to -768.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> value optimising  -<span style="color: #BB0000;">797.</span> -843.8 to -749.7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> youden            -<span style="color: #BB0000;">817.</span> -864.9 to -768.3</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"cutpoints"</span><span class="op">)</span> <span class="co"># Demonstrates the range of selected cutpoints under each method</span></span></code></pre></div>
 <p><img src="detailed-example_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"inb"</span>, inb_ref_col <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span> <span class="co"># Compares the incremental benefit of each alternate strategy to our current practice (treat all)</span></span></code></pre></div>
 <p><img src="detailed-example_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
-<p>Our first pass shows treating all is a bad option, outperformed by
-every other method (as the reference strategy, treat all has an NMB of
-0). Treat none looks like a good choice; we should definitely consider
-scrapping the program and look for something else that either costs less
-or provides better results. However, this doesn’t tell the full story.
-There may be some incremental benefit from using a model to select
-patients depending on how our input values change, as the median for
-value-optimising and cost-minimising strategies is higher than treating
-none. So our intervention might be worth using, but only for the highest
-risk patients. Results from the ROC-based methods like the Youden index
-and index of union are quite uncertain, so we may not want to use them
-for these input parameters. However, the utility of these models and the
-threshold selection methods based on the ROC might improve as they get
-more accurate, or as the event rate increases; what we really want to
-know is how robust our results are to changes in the input parameters.
-This is the purpose of <code><a href="../reference/screen_simulation_inputs.html">screen_simulation_inputs()</a></code>. We can
-not only simulate from a distribution for our cost inputs, we can pass a
-vector to the AUC and incidence arguments to understand how these impact
-our findings.</p>
+<p>Our first pass shows treating all likely to be an undesirable option,
+outperformed by every other method (as the reference strategy, treat all
+has an NMB of 0). Treat none looks like a good choice; we should
+definitely consider not using the intervention and look for something
+else that either costs less or provides better results. However, this
+doesn’t tell the full story. There may be some incremental benefit from
+using a model to select patients depending on how our input values
+change, as the median for value-optimising and cost-minimising
+strategies is higher than treating none. So our intervention might be
+worth using, but only for the highest risk patients. Results from the
+ROC-based methods like the Youden index and index of union are quite
+uncertain, so we may not want to use them for these input parameters.
+However, the utility of these models and the threshold selection methods
+based on the ROC might improve as they get more accurate, or as the
+event rate increases; what we really want to know is how robust our
+results are to changes in the input parameters. This is the purpose of
+<code><a href="../reference/screen_simulation_inputs.html">screen_simulation_inputs()</a></code>. We can not only simulate from a
+distribution for our cost inputs, we can pass a vector to the AUC and
+incidence arguments to understand how these impact our findings.</p>
 <p>First, let’s specify our sampler function for the confusion matrix.
 We can replace our inputs with normal distributions, as our values are
 all means. Make sure to pass distribution definitions within the
@@ -242,13 +241,13 @@ value for the same patient.</p>
 <span></span>
 <span><span class="fu">fx_nmb_sampler</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -9216.6530  -122.2567     0.0000 -9446.3004</span></span>
+<span><span class="co">#&gt; -7908.0528  -139.6144     0.0000 -8205.1211</span></span>
 <span><span class="fu">fx_nmb_sampler</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -7873.0197  -142.7304     0.0000 -7823.6836</span></span>
+<span><span class="co">#&gt; -8602.9701  -122.2635     0.0000 -8702.2801</span></span>
 <span><span class="fu">fx_nmb_sampler</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -8322.1746  -158.6321     0.0000 -8454.7294</span></span></code></pre></div>
+<span><span class="co">#&gt; -7970.8184  -125.6313     0.0000 -8045.6236</span></span></code></pre></div>
 <p>The sampler function shows that we can expect some significant
 variation, especially due to the probability that our intervention is
 effective. It’s always possible that an intervention could lead to worse
@@ -262,9 +261,10 @@ actually quite different to the average incidence at the hospital. By
 replacing our <code>sim_auc</code> and <code>event_rate</code> arguments
 with vectors, we can run simulations for each possible combination we
 are interested in.</p>
-<p>In the snippet below, we will compare the treat all strategy to
-scrapping the program altogether (“none”) and to a couple of alternative
-strategies, using the “value_optimising” and “youden” thresholds.</p>
+<p>In the snippet below, we will compare the treat all strategy to total
+disinvestment from the intervention (“none”) and to a couple of
+alternative, model-guided strategies, using the “value_optimising” and
+“youden” thresholds.</p>
 <p>We can also do this in parallel to speed things up.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
@@ -282,57 +282,57 @@ strategies, using the “value_optimising” and “youden” thresholds.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span><span class="va">sim_pup_screen</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    sim_auc event_rate all_median         all_95% CI none_median</span></span>
-<span><span class="co">#&gt; 1     0.72       0.02    -295.75     -344 to -243.3     -160.52</span></span>
-<span><span class="co">#&gt; 2     0.72       0.10    -909.72    -1032.6 to -793     -800.25</span></span>
-<span><span class="co">#&gt; 3     0.72       0.18   -1516.25 -1739.1 to -1327.1    -1439.80</span></span>
-<span><span class="co">#&gt; 4     0.77       0.02    -293.52   -347.2 to -249.3     -161.88</span></span>
-<span><span class="co">#&gt; 5     0.77       0.10    -907.75  -1039.3 to -772.6     -798.23</span></span>
-<span><span class="co">#&gt; 6     0.77       0.18   -1517.72   -1735 to -1290.7    -1430.97</span></span>
-<span><span class="co">#&gt; 7     0.82       0.02    -292.65     -348.2 to -242     -161.24</span></span>
-<span><span class="co">#&gt; 8     0.82       0.10    -908.39  -1045.1 to -782.8     -805.02</span></span>
-<span><span class="co">#&gt; 9     0.82       0.18   -1516.69 -1737.6 to -1324.2    -1436.81</span></span>
-<span><span class="co">#&gt; 10    0.87       0.02    -296.27   -344.7 to -249.5     -160.43</span></span>
-<span><span class="co">#&gt; 11    0.87       0.10    -904.07  -1031.6 to -784.1     -797.85</span></span>
-<span><span class="co">#&gt; 12    0.87       0.18   -1521.66 -1741.1 to -1302.5    -1437.04</span></span>
-<span><span class="co">#&gt; 13    0.92       0.02    -289.04     -339 to -245.8     -156.67</span></span>
-<span><span class="co">#&gt; 14    0.92       0.10    -903.10  -1046.5 to -784.8     -798.98</span></span>
-<span><span class="co">#&gt; 15    0.92       0.18   -1520.67     -1739 to -1307    -1437.57</span></span>
+<span><span class="co">#&gt; 1     0.72       0.02    -295.72   -347.8 to -241.2     -160.10</span></span>
+<span><span class="co">#&gt; 2     0.72       0.10    -907.73  -1029.7 to -785.4     -800.78</span></span>
+<span><span class="co">#&gt; 3     0.72       0.18   -1518.62 -1740.3 to -1342.8    -1442.82</span></span>
+<span><span class="co">#&gt; 4     0.77       0.02    -291.35   -345.8 to -244.9     -158.42</span></span>
+<span><span class="co">#&gt; 5     0.77       0.10    -907.82  -1043.6 to -770.6     -799.30</span></span>
+<span><span class="co">#&gt; 6     0.77       0.18   -1509.62 -1729.7 to -1308.9    -1428.47</span></span>
+<span><span class="co">#&gt; 7     0.82       0.02    -293.92   -347.1 to -247.1     -160.32</span></span>
+<span><span class="co">#&gt; 8     0.82       0.10    -908.22  -1052.6 to -780.4     -803.68</span></span>
+<span><span class="co">#&gt; 9     0.82       0.18   -1515.67 -1771.5 to -1318.7    -1433.50</span></span>
+<span><span class="co">#&gt; 10    0.87       0.02    -294.45   -347.2 to -245.8     -159.26</span></span>
+<span><span class="co">#&gt; 11    0.87       0.10    -902.88  -1033.1 to -794.7     -802.16</span></span>
+<span><span class="co">#&gt; 12    0.87       0.18   -1523.14 -1745.8 to -1309.8    -1437.12</span></span>
+<span><span class="co">#&gt; 13    0.92       0.02    -290.02   -339.6 to -246.9     -158.55</span></span>
+<span><span class="co">#&gt; 14    0.92       0.10    -905.40  -1035.2 to -787.9     -800.91</span></span>
+<span><span class="co">#&gt; 15    0.92       0.18   -1517.41 -1730.4 to -1312.1    -1434.84</span></span>
 <span><span class="co">#&gt;           none_95% CI value optimising_median value optimising_95% CI</span></span>
-<span><span class="co">#&gt; 1    -189.6 to -131.2                 -160.96        -194.3 to -131.2</span></span>
-<span><span class="co">#&gt; 2    -915.6 to -692.2                 -801.94        -917.3 to -694.3</span></span>
-<span><span class="co">#&gt; 3  -1661.7 to -1248.6                -1439.94        -1654 to -1246.9</span></span>
-<span><span class="co">#&gt; 4    -193.3 to -134.2                 -162.06        -195.4 to -134.5</span></span>
-<span><span class="co">#&gt; 5    -905.2 to -684.2                 -798.48          -907.3 to -683</span></span>
-<span><span class="co">#&gt; 6  -1640.2 to -1229.5                -1432.11      -1635.9 to -1228.3</span></span>
-<span><span class="co">#&gt; 7    -189.2 to -129.9                 -161.57        -189.1 to -129.8</span></span>
-<span><span class="co">#&gt; 8    -918.9 to -684.1                 -803.57        -911.8 to -683.5</span></span>
-<span><span class="co">#&gt; 9    -1654.4 to -1251                -1433.05        -1647 to -1246.8</span></span>
-<span><span class="co">#&gt; 10   -194.5 to -131.6                 -160.39          -195.1 to -132</span></span>
-<span><span class="co">#&gt; 11     -913.2 to -692                 -795.52        -911.4 to -690.4</span></span>
-<span><span class="co">#&gt; 12   -1639 to -1236.9                -1427.04      -1633.3 to -1229.5</span></span>
-<span><span class="co">#&gt; 13   -187.7 to -130.9                 -157.27        -188.5 to -131.3</span></span>
-<span><span class="co">#&gt; 14     -925.4 to -697                 -790.53        -925.6 to -687.4</span></span>
-<span><span class="co">#&gt; 15   -1638 to -1247.1                -1424.06      -1626.8 to -1223.7</span></span>
+<span><span class="co">#&gt; 1      -191 to -131.7                 -160.26        -194.7 to -131.7</span></span>
+<span><span class="co">#&gt; 2      -911.8 to -690                 -801.44          -916.1 to -691</span></span>
+<span><span class="co">#&gt; 3  -1652.1 to -1257.4                -1441.59      -1645.1 to -1256.6</span></span>
+<span><span class="co">#&gt; 4    -197.2 to -131.1                 -158.70        -198.5 to -131.1</span></span>
+<span><span class="co">#&gt; 5    -927.8 to -675.9                 -800.53        -925.3 to -673.6</span></span>
+<span><span class="co">#&gt; 6  -1651.5 to -1217.4                -1427.62      -1642.2 to -1222.2</span></span>
+<span><span class="co">#&gt; 7    -190.4 to -131.5                 -160.34        -190.6 to -131.3</span></span>
+<span><span class="co">#&gt; 8      -925.6 to -691                 -800.96        -923.9 to -692.9</span></span>
+<span><span class="co">#&gt; 9    -1682.5 to -1237                -1430.56      -1678.3 to -1234.9</span></span>
+<span><span class="co">#&gt; 10     -191 to -128.3                 -159.48        -191.2 to -128.9</span></span>
+<span><span class="co">#&gt; 11   -919.6 to -696.4                 -798.52        -920.5 to -699.4</span></span>
+<span><span class="co">#&gt; 12 -1636.9 to -1241.6                -1431.94      -1630.9 to -1236.6</span></span>
+<span><span class="co">#&gt; 13   -191.3 to -129.6                 -158.33        -191.4 to -129.3</span></span>
+<span><span class="co">#&gt; 14   -915.5 to -697.7                 -793.55        -914.6 to -684.9</span></span>
+<span><span class="co">#&gt; 15   -1630.3 to -1245                -1421.87      -1628.4 to -1228.2</span></span>
 <span><span class="co">#&gt;    youden_median      youden_95% CI</span></span>
-<span><span class="co">#&gt; 1        -199.61   -253.2 to -158.3</span></span>
-<span><span class="co">#&gt; 2        -832.17   -962.4 to -720.2</span></span>
-<span><span class="co">#&gt; 3       -1455.33   -1682.3 to -1272</span></span>
-<span><span class="co">#&gt; 4        -196.03   -250.9 to -153.6</span></span>
-<span><span class="co">#&gt; 5        -822.97     -939 to -694.3</span></span>
-<span><span class="co">#&gt; 6       -1441.20 -1648.5 to -1231.3</span></span>
-<span><span class="co">#&gt; 7        -190.81   -244.3 to -148.8</span></span>
-<span><span class="co">#&gt; 8        -821.21   -949.1 to -699.9</span></span>
-<span><span class="co">#&gt; 9       -1442.03 -1654.7 to -1254.1</span></span>
-<span><span class="co">#&gt; 10       -182.32   -237.9 to -140.4</span></span>
-<span><span class="co">#&gt; 11       -812.23   -931.5 to -701.1</span></span>
-<span><span class="co">#&gt; 12      -1435.33   -1650 to -1228.7</span></span>
-<span><span class="co">#&gt; 13       -170.85   -222.3 to -139.1</span></span>
-<span><span class="co">#&gt; 14       -801.57   -934.5 to -689.2</span></span>
-<span><span class="co">#&gt; 15      -1428.33 -1636.9 to -1226.6</span></span></code></pre></div>
+<span><span class="co">#&gt; 1        -200.77   -259.3 to -157.6</span></span>
+<span><span class="co">#&gt; 2        -826.34   -952.1 to -714.8</span></span>
+<span><span class="co">#&gt; 3       -1458.18   -1666 to -1271.9</span></span>
+<span><span class="co">#&gt; 4        -191.40   -261.6 to -152.4</span></span>
+<span><span class="co">#&gt; 5        -823.10   -959.2 to -696.5</span></span>
+<span><span class="co">#&gt; 6       -1440.30 -1653.5 to -1243.4</span></span>
+<span><span class="co">#&gt; 7        -187.73   -238.8 to -148.3</span></span>
+<span><span class="co">#&gt; 8        -821.42   -953.9 to -699.3</span></span>
+<span><span class="co">#&gt; 9       -1442.25 -1689.8 to -1249.3</span></span>
+<span><span class="co">#&gt; 10       -179.54   -237.3 to -142.8</span></span>
+<span><span class="co">#&gt; 11       -811.38   -936.1 to -708.1</span></span>
+<span><span class="co">#&gt; 12      -1439.19 -1646.3 to -1237.8</span></span>
+<span><span class="co">#&gt; 13       -172.37   -221.5 to -137.1</span></span>
+<span><span class="co">#&gt; 14       -800.09   -919.7 to -687.5</span></span>
+<span><span class="co">#&gt; 15      -1428.56   -1631.9 to -1229</span></span></code></pre></div>
 <p>As our event rate increases, treatment decisions based on the model,
 like the Youden index, begin to look better, but there are still very
 marginal gains from using the prediction model regardless of threshold.
-It might be that the program could be beneficial mostly in settings
+It might be that the intervention could be beneficial mostly in settings
 where patients are at a very high risk. If the event rates 0.02, 0.10
 and 0.18 corresponded to different wards of the hospital, our simulation
 could represent the estimated effectiveness of different strategies in
