@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 set.seed(42)
 ```
 
-# predictNMB <a href='https://github.com/RWParsons/predictNMB'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# predictNMB <a href='https://rwparsons.github.io/predictNMB/'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/RWParsons/predictNMB/workflows/R-CMD-check/badge.svg)](https://github.com/RWParsons/predictNMB/actions)
@@ -32,7 +32,7 @@ predictNMB is a tool to evaluate clinical prediction models based on their estim
 
 ## Installation
 
-You can install the development version of predictNMB from [GitHub](https://github.com/) with:
+You can install the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
@@ -64,7 +64,7 @@ Required arguments:
 - `n_valid`: number of samples the validation set draws within each simulation (evaluating the NMB under each cutpoint)
 - `fx_nmb_training`: function-defined vector used to get cutpoints on the training set. Recommended to use constant values
 - `fx_nmb_evaluation`: function-defined vector used to get cutpoints on the evaluation set. Recommended to use sampled values
-- (Optional) Users can pass a cluster as the `cl` argument. If it is passed, the simulations are run in parallel (faster).
+- `cl`: (Optional) users can pass a cluster as the. If it is passed, the simulations are run in parallel (faster).
 
 ```{r, eval=FALSE}
 library(parallel)
@@ -122,4 +122,9 @@ plot(single_sim_obj)
 
 ## Further reading
 
-The introduction to `predictNMB` vignette is available [here](https://rwparsons.github.io/predictNMB/articles/introduction-to-predictNMB.html) and vignette on plotting and making summary tables from the simulations is [here](https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html)
+The [`predictNMB` website](https://rwparsons.github.io/predictNMB/) and its vignettes:
+
+- [Introduction to `predictNMB`](https://rwparsons.github.io/predictNMB/articles/introduction-to-predictNMB.html)
+- [Summarising results from `predictNMB`](https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html)
+- [Detailed example: pressure injury model](https://rwparsons.github.io/predictNMB/articles/detailed-example.html)
+- [Creating NMB functions](https://rwparsons.github.io/predictNMB/articles/creating-nmb-functions.html)

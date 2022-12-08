@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# predictNMB <a href='https://github.com/RWParsons/predictNMB'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# predictNMB <a href='https://rwparsons.github.io/predictNMB/'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 <!-- badges: start -->
 
@@ -17,16 +17,15 @@ their estimated Net Monetary Benefit (NMB).
 
 `{predictNMB}` has two main functions:
 
--   `do_nmb_sim()`: takes user defined inputs for a given prediction
-    model and population, then evaluates the NMB by performing
-    simulations.
--   `screen_simulation_inputs()`: calls `do_nmb_sim()` many times, using
-    a range of values for any of its inputs. This is useful for
-    sensitivity analysis.
+- `do_nmb_sim()`: takes user defined inputs for a given prediction model
+  and population, then evaluates the NMB by performing simulations.
+- `screen_simulation_inputs()`: calls `do_nmb_sim()` many times, using a
+  range of values for any of its inputs. This is useful for sensitivity
+  analysis.
 
 ## Installation
 
-You can install the development version of predictNMB from
+You can install the development version from
 [GitHub](https://github.com/) with:
 
 ``` r
@@ -55,20 +54,20 @@ fx_nmb()
 
 We can then pass this to the simulation function. Required arguments:
 
--   `n_sims`: number of simulations to run. More simulations take
-    longer, but are more stable
--   `event_rate`: event incidence rate, or the proportion of patients
-    experiencing the event
--   `sim_auc`: vector of hypothetical AUCs; e.g. `seq(0.7, 0.95, 0.05)`
-    or `c(0.75, 0.80, 0.85)`
--   `n_valid`: number of samples the validation set draws within each
-    simulation (evaluating the NMB under each cutpoint)
--   `fx_nmb_training`: function-defined vector used to get cutpoints on
-    the training set. Recommended to use constant values
--   `fx_nmb_evaluation`: function-defined vector used to get cutpoints
-    on the evaluation set. Recommended to use sampled values
--   (Optional) Users can pass a cluster as the `cl` argument. If it is
-    passed, the simulations are run in parallel (faster).
+- `n_sims`: number of simulations to run. More simulations take longer,
+  but are more stable
+- `event_rate`: event incidence rate, or the proportion of patients
+  experiencing the event
+- `sim_auc`: vector of hypothetical AUCs; e.g. `seq(0.7, 0.95, 0.05)` or
+  `c(0.75, 0.80, 0.85)`
+- `n_valid`: number of samples the validation set draws within each
+  simulation (evaluating the NMB under each cutpoint)
+- `fx_nmb_training`: function-defined vector used to get cutpoints on
+  the training set. Recommended to use constant values
+- `fx_nmb_evaluation`: function-defined vector used to get cutpoints on
+  the evaluation set. Recommended to use sampled values
+- `cl`: (Optional) users can pass a cluster as the. If it is passed, the
+  simulations are run in parallel (faster).
 
 ``` r
 library(parallel)
@@ -127,8 +126,14 @@ plot(single_sim_obj)
 
 ## Further reading
 
-The introduction to `predictNMB` vignette is available
-[here](https://rwparsons.github.io/predictNMB/articles/introduction-to-predictNMB.html)
-and vignette on plotting and making summary tables from the simulations
-is
-[here](https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html)
+The [`predictNMB` website](https://rwparsons.github.io/predictNMB/) and
+its vignettes:
+
+- [Introduction to
+  `predictNMB`](https://rwparsons.github.io/predictNMB/articles/introduction-to-predictNMB.html)
+- [Summarising results from
+  `predictNMB`](https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html)
+- [Detailed example: pressure injury
+  model](https://rwparsons.github.io/predictNMB/articles/detailed-example.html)
+- [Creating NMB
+  functions](https://rwparsons.github.io/predictNMB/articles/creating-nmb-functions.html)
