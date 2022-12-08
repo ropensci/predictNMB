@@ -98,7 +98,7 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of predictNMB from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the development version from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"RWParsons/predictNMB"</span><span class="op">)</span></span></code></pre></div>
@@ -134,7 +134,8 @@
 <code>fx_nmb_training</code>: function-defined vector used to get cutpoints on the training set. Recommended to use constant values</li>
 <li>
 <code>fx_nmb_evaluation</code>: function-defined vector used to get cutpoints on the evaluation set. Recommended to use sampled values</li>
-<li>(Optional) Users can pass a cluster as the <code>cl</code> argument. If it is passed, the simulations are run in parallel (faster).</li>
+<li>
+<code>cl</code>: (Optional) users can pass a cluster as the. If it is passed, the simulations are run in parallel (faster).</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">parallel</span><span class="op">)</span></span>
@@ -167,7 +168,13 @@
 <div class="section level2">
 <h2 id="further-reading">Further reading<a class="anchor" aria-label="anchor" href="#further-reading"></a>
 </h2>
-<p>The introduction to <code>predictNMB</code> vignette is available <a href="https://rwparsons.github.io/predictNMB/articles/introduction-to-predictNMB.html">here</a> and vignette on plotting and making summary tables from the simulations is <a href="https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html">here</a></p>
+<p>The <a href="https://rwparsons.github.io/predictNMB/"><code>predictNMB</code> website</a> and its vignettes:</p>
+<ul>
+<li><a href="https://rwparsons.github.io/predictNMB/articles/introduction-to-predictNMB.html">Introduction to <code>predictNMB</code></a></li>
+<li><a href="https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html">Summarising results from <code>predictNMB</code></a></li>
+<li><a href="https://rwparsons.github.io/predictNMB/articles/detailed-example.html">Detailed example: pressure injury model</a></li>
+<li><a href="https://rwparsons.github.io/predictNMB/articles/creating-nmb-functions.html">Creating NMB functions</a></li>
+</ul>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
