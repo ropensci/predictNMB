@@ -14,7 +14,7 @@
 #' @param min_events A value: the minimum number of events to include in the training sample. If less than this number are included in sample of size \code{sample_size}, additional samples are added until the min_events is met. The default (\code{NA}) will use the expected value given the \code{event_rate} and the \code{sample_size}.
 #' @param cl A cluster made using \code{parallel::makeCluster()}. If a cluster is provided, the simulation will be done in parallel.
 #'
-#' @return predictNMBscreen
+#' @return Returns a \code{predictNMBscreen} object
 #' @export
 #'
 #' @examples

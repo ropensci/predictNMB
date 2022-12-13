@@ -58,7 +58,7 @@ See \code{?get_thresholds} for an example of a user-defined cutpoint function.}
 \item{cl}{A cluster made using \code{parallel::makeCluster()}. If a cluster is provided, the simulation will be done in parallel.}
 }
 \value{
-predictNMBsim
+Returns a \code{predictNMBsim} object
 }
 \description{
 Do the predictNMB simulation, evaluating the net monetary benefit of the simulated model.

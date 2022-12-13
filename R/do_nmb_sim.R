@@ -38,7 +38,7 @@
 #'
 #' There is a helper function, \code{get_nmb_sampler()}, to help you create these.
 #'
-#' @return predictNMBsim
+#' @return Returns a \code{predictNMBsim} object
 #' @export
 #'
 #' @examples

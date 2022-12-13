@@ -45,7 +45,7 @@ screen_simulation_inputs(
 \item{cl}{A cluster made using \code{parallel::makeCluster()}. If a cluster is provided, the simulation will be done in parallel.}
 }
 \value{
-predictNMBscreen
+Returns a \code{predictNMBscreen} object
 }
 \description{
 See \code{\link[=do_nmb_sim]{do_nmb_sim()}} for more information.

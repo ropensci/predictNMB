@@ -16,9 +16,9 @@ make_summary_table(
 )
 }
 \arguments{
-\item{x}{\code{predictNMBscreen} or \code{predictNMBsim} object}
+\item{x}{a \code{predictNMBscreen} or \code{predictNMBsim} object.}
 
-\item{what}{what to summarise: one of "nmb", "inb" or "cutpoints". Defaults to "nmb". See `details` for more.}
+\item{what}{what to summarise: one of "nmb", "inb" or "cutpoints". Defaults to "nmb".}
 
 \item{inb_ref_col}{which cutpoint method to use as the reference strategy when calculating the incremental net monetary benefit. See \code{do_nmb_sim} for more information.}
 
