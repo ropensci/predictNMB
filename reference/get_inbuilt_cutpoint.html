@@ -69,30 +69,31 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>predicted</dt>
-<dd><p>vector of predicted probabilities</p></dd>
+<dd><p>A vector of predicted probabilities</p></dd>
 
 
 <dt>actual</dt>
-<dd><p>vector of actual outcomes</p></dd>
+<dd><p>A vector of actual outcomes</p></dd>
 
 
 <dt>nmb</dt>
-<dd><p>named vector containing NMB assigned to each classification</p></dd>
+<dd><p>A named vector containing NMB assigned to each classification</p></dd>
 
 
 <dt>method</dt>
-<dd><p>cutpoint selection method to be used</p></dd>
+<dd><p>A cutpoint selection method to be used</p></dd>
 
 
 <dt>return_all_methods</dt>
-<dd><p>logical: whether to return all available methods that can be used as the method argument</p></dd>
+<dd><p><code>logical</code>. Whether to return all available
+methods that can be used as the method argument</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>a selected cutpoint (numeric)</p>
+<p>Returns a selected cutpoint (numeric)</p>
     </div>
 
     <div class="section level2">
@@ -108,7 +109,7 @@
 <span class="r-in"><span>  actual <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">1000</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  method <span class="op">=</span> <span class="st">"youden"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.6793579</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1039357</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

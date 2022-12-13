@@ -63,26 +63,27 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>predicted</dt>
-<dd><p>vector of predicted probabilities</p></dd>
+<dd><p>A vector of predicted probabilities.</p></dd>
 
 
 <dt>actual</dt>
-<dd><p>vector of actual outcomes</p></dd>
+<dd><p>A vector of actual outcomes.</p></dd>
 
 
 <dt>pt</dt>
-<dd><p>probability threshold</p></dd>
+<dd><p>The probability threshold to be evaluated.</p></dd>
 
 
 <dt>nmb</dt>
-<dd><p>named vector containing NMB assigned to each classification</p></dd>
+<dd><p>A named vector containing NMB assigned to each classification.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>numeric</p>
+<p>Returns a <code>numeric</code> value representing the NMB for that
+cutpoint and data.</p>
     </div>
 
     <div class="section level2">
@@ -93,7 +94,7 @@
 <span class="r-in"><span>  pt <span class="op">=</span> <span class="fl">0.1</span>,</span></span>
 <span class="r-in"><span>  nmb <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TP"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">3</span>, <span class="st">"TN"</span> <span class="op">=</span> <span class="fl">0</span>, <span class="st">"FP"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, <span class="st">"FN"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -2.048</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1.982</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -80,63 +80,81 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
-<dd><p>a <code>predictNMBscreen</code> object.</p></dd>
+<dd><p>A <code>predictNMBscreen</code> object.</p></dd>
 
 
 <dt>x_axis_var</dt>
-<dd><p>the desired screened factor to be displayed along the x axis. For example, if the simulation screen was used with many values for event rate, this could be "event_rate". Defaults to the first detected, varied input.</p></dd>
+<dd><p>The desired screened factor to be displayed along the
+x axis. For example, if the simulation screen was used with many values for
+event rate, this could be "event_rate". Defaults to the first detected,
+varied input.</p></dd>
 
 
 <dt>constants</dt>
-<dd><p>named vector If multiple inputs were screened in this object, this argument can be used to modify the selected values for all those except the input that's varying along the x-axis. See the <a href="https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html">summarising methods vignette</a>.</p></dd>
+<dd><p>Named vector If multiple inputs were screened in this
+object, this argument can be used to modify the selected values for all
+those except the input that's varying along the x-axis. See the
+<a href="https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html">summarising methods vignette</a>.</p></dd>
 
 
 <dt>what</dt>
-<dd><p>what to summarise: one of "nmb", "inb" or "cutpoints". Defaults to "nmb".</p></dd>
+<dd><p>What to summarise: one of "nmb", "inb" or "cutpoints".
+Defaults to "nmb".</p></dd>
 
 
 <dt>inb_ref_col</dt>
-<dd><p>which cutpoint method to use as the reference strategy when calculating the incremental net monetary benefit. See <code>do_nmb_sim</code> for more information.</p></dd>
+<dd><p>Which cutpoint method to use as the reference strategy
+when calculating the incremental net monetary benefit.
+See <code>do_nmb_sim</code> for more information.</p></dd>
 
 
 <dt>plot_range</dt>
-<dd><p>logical. Whether or not to plot the range of the distribution as a thin line. Defaults to TRUE.</p></dd>
+<dd><p><code>logical</code>. Whether or not to plot the range of the
+distribution as a thin line. Defaults to TRUE.</p></dd>
 
 
 <dt>plot_ci</dt>
-<dd><p>logical. Whether or not to plot the confidence region of the distribution as a thicker line. Defaults to TRUE.</p></dd>
+<dd><p><code>logical</code>. Whether or not to plot the confidence region
+of the distribution as a thicker line. Defaults to TRUE.</p></dd>
 
 
 <dt>plot_line</dt>
-<dd><p>logical. Whether or not to connect the medians of the distributions for each method along the x-axis. Defaults to TRUE.</p></dd>
+<dd><p><code>logical</code>. Whether or not to connect the medians of
+the distributions for each method along the x-axis. Defaults to TRUE.</p></dd>
 
 
 <dt>plot_alpha</dt>
-<dd><p>alpha value for all plot elements. Defaults to 0.5.</p></dd>
+<dd><p>Alpha value for all plot elements. Defaults to 0.5.</p></dd>
 
 
 <dt>dodge_width</dt>
-<dd><p>the dodge width of plot elements. Can be used to avoid excessive overlap between methods. Defaults to 0.</p></dd>
+<dd><p>The dodge width of plot elements. Can be used to avoid
+excessive overlap between methods. Defaults to 0.</p></dd>
 
 
 <dt>ci</dt>
-<dd><p>the confidence level. Defaults to 0.95 (coloured area of distribution represents 95% CIs).</p></dd>
+<dd><p>The confidence level.
+Defaults to 0.95 (coloured area of distribution represents 95% CIs).</p></dd>
 
 
 <dt>methods_order</dt>
-<dd><p>the order (left to right) to display the cutpoint methods.</p></dd>
+<dd><p>The order (left to right) to display the cutpoint
+methods.</p></dd>
 
 
 <dt>rename_vector</dt>
-<dd><p>a named vector for renaming the methods in the summary. The values of the vector are the default names and the names given are the desired names in the output.</p></dd>
+<dd><p>A named vector for renaming the methods in the summary.
+The values of the vector are the default names and the names given are the
+desired names in the output.</p></dd>
 
 
 <dt>extra_theme</dt>
-<dd><p>additional theme applied to plot. Defaults to remove minor panel grid.</p></dd>
+<dd><p>Additional theme applied to plot. Defaults to remove
+minor panel grid.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>additional (unused) arguments.</p></dd>
+<dd><p>Additional (unused) arguments.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -147,7 +165,10 @@
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>This plot method works with <code>predictNMBscreen</code> objects that are created using <code><a href="screen_simulation_inputs.html">screen_simulation_inputs()</a></code>. Can be used to visualise distributions from many different simulations and assign a varying input to the x-axis of the plot.</p>
+    <p>This plot method works with <code>predictNMBscreen</code> objects that are
+created using <code><a href="screen_simulation_inputs.html">screen_simulation_inputs()</a></code>. Can be used to visualise
+distributions from many different simulations and assign a varying input
+to the x-axis of the plot.</p>
     </div>
 
     <div class="section level2">
@@ -161,7 +182,7 @@
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, x_axis_var <span class="op">=</span> <span class="st">"event_rate"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>sim_auc <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span>, dodge_width<span class="op">=</span><span class="fl">0.02</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, x_axis_var <span class="op">=</span> <span class="st">"event_rate"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>sim_auc <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span>, dodge_width <span class="op">=</span> <span class="fl">0.02</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>

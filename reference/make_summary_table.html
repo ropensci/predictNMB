@@ -72,33 +72,48 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
-<dd><p>a <code>predictNMBscreen</code> or <code>predictNMBsim</code> object.</p></dd>
+<dd><p>A <code>predictNMBscreen</code> or <code>predictNMBsim</code> object.</p></dd>
 
 
 <dt>what</dt>
-<dd><p>what to summarise: one of "nmb", "inb" or "cutpoints". Defaults to "nmb".</p></dd>
+<dd><p>What to summarise: one of "nmb", "inb" or "cutpoints".
+Defaults to "nmb".</p></dd>
 
 
 <dt>inb_ref_col</dt>
-<dd><p>which cutpoint method to use as the reference strategy when calculating the incremental net monetary benefit. See <code>do_nmb_sim</code> for more information.</p></dd>
+<dd><p>Which cutpoint method to use as the reference strategy
+when calculating the incremental net monetary benefit. See <code>do_nmb_sim</code>
+for more information.</p></dd>
 
 
 <dt>agg_functions</dt>
-<dd><p>named list of functions to use to aggregate the selected values. Defaults to the median and 95% interval.</p></dd>
+<dd><p>A named list of functions to use to aggregate the
+selected values. Defaults to the median and 95% interval.</p></dd>
 
 
 <dt>rename_vector</dt>
-<dd><p>a named vector for renaming the methods in the summary. The values of the vector are the default names and the names given are the desired names in the output.</p></dd>
+<dd><p>A named vector for renaming the methods in the summary.
+The values of the vector are the default names and the names given are the
+desired names in the output.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>additional, optional arguments.</p></dd>
+<dd><p>Additional, ignored arguments.</p></dd>
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<p>Returns a <code>data.frame</code>.</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Table summaries will be based on the `what` argument. Using "nmb" returns the simulated values for NMB, with no reference group;
-"inb" returns the difference between simulated values for NMB and a set strategy defined by `inb_ref_col`; "cutpoints" returns the cutpoints selected (0,1).</p>
+    <p>Table summaries will be based on the `what` argument.
+Using "nmb" returns the simulated values for NMB, with no reference group;
+"inb" returns the difference between simulated values for NMB and a set
+strategy defined by `inb_ref_col`; "cutpoints" returns the cutpoints
+selected (0, 1).</p>
     </div>
 
     <div class="section level2">
