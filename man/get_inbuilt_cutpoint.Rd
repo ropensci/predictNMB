@@ -21,7 +21,8 @@ get_inbuilt_cutpoint(
 
 \item{method}{A cutpoint selection method to be used}
 
-\item{return_all_methods}{\code{logical}. Whether to return all available methods that can be used as the method argument}
+\item{return_all_methods}{\code{logical}. Whether to return all available
+methods that can be used as the method argument}
 }
 \value{
 Returns a selected cutpoint (numeric)

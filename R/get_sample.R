@@ -18,11 +18,24 @@ get_sample <- function(auc, n_samples, prevalence, min_events = 0) {
     (1 + 1.432788 * t + 0.189269 * t**2 + 0.001308 * t**3))
   d <- z * sqrt(2)
 
-  n_pos <- sum(sample(c(0, 1), n_samples, replace = TRUE, prob = c(1 - prevalence, prevalence)))
+  sampled_data <- sample(
+    c(0, 1),
+    n_samples,
+    replace = TRUE,
+    prob = c(1 - prevalence, prevalence)
+  )
+
+  n_pos <- sum(sampled_data)
 
   # if n_pos < min_events, add a new random value to the sample until n_pos == min_events
   while (n_pos < min_events) {
-    added_sample <- sample(c(0, 1), size = 1, replace = TRUE, prob = c(1 - prevalence, prevalence))
+    added_sample <- sample(
+      c(0, 1),
+      size = 1,
+      replace = TRUE,
+      prob = c(1 - prevalence, prevalence)
+    )
+
     if (added_sample == 1) {
       n_pos <- n_pos + 1
     }

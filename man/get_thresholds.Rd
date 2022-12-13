@@ -11,9 +11,11 @@ get_thresholds(predicted, actual, nmb, cutpoint_methods = NULL)
 
 \item{actual}{A vector of actual outcomes.}
 
-\item{nmb}{A named vector containing NMB assigned to true positives, true negatives, false positives and false negatives}
+\item{nmb}{A named vector containing NMB assigned to true positives,
+true negatives, false positives and false negatives}
 
-\item{cutpoint_methods}{Which cutpoint method(s) to return. The default (NULL) uses all the inbuilt methods.}
+\item{cutpoint_methods}{Which cutpoint method(s) to return.
+The default (NULL) uses all the inbuilt methods.}
 }
 \value{
 Returns a \code{list}.

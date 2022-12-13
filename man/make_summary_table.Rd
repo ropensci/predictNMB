@@ -41,8 +41,11 @@ Returns a \code{data.frame}.
 Create table summaries of simulation objects.
 }
 \details{
-Table summaries will be based on the `what` argument. Using "nmb" returns the simulated values for NMB, with no reference group;
-"inb" returns the difference between simulated values for NMB and a set strategy defined by `inb_ref_col`; "cutpoints" returns the cutpoints selected (0,1).
+Table summaries will be based on the `what` argument.
+Using "nmb" returns the simulated values for NMB, with no reference group;
+"inb" returns the difference between simulated values for NMB and a set
+strategy defined by `inb_ref_col`; "cutpoints" returns the cutpoints
+selected (0, 1).
 }
 \examples{
 

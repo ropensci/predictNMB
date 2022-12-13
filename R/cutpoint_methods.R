@@ -1,4 +1,5 @@
-#' Function that calculates the total Net Monetary Benefit (used by the "value_optimising" cutpoint method).
+#' Function that calculates the total Net Monetary Benefit
+#' (used by the "value_optimising" cutpoint method).
 #'
 #' @param tn Number of True Negatives
 #' @param tp Number of True Positives
@@ -12,14 +13,23 @@
 #'
 #' @return Returns the total Net Monetary Benefit.
 #' @noRd
-total_nmb <- function(tn, tp, fn, fp, utility_tp, utility_tn, cost_fp, cost_fn, ...) {
+total_nmb <- function(tn,
+                      tp,
+                      fn,
+                      fp,
+                      utility_tp,
+                      utility_tn,
+                      cost_fp,
+                      cost_fn,
+                      ...) {
   total_nmb <- utility_tp * tp + utility_tn * tn + cost_fp * fp + cost_fn * fn
   total_nmb <- matrix(total_nmb, ncol = 1)
   colnames(total_nmb) <- "total_nmb"
   total_nmb
 }
 
-#' Function that calculates the Index of Union (used by the "index_of_union" cutpoint method).
+#' Function that calculates the Index of Union
+#' (used by the "index_of_union" cutpoint method).
 #'
 #' @param tn Number of True Negatives
 #' @param tp Number of True Positives
@@ -47,7 +57,8 @@ roc_iu <- function(tp, fp, tn, fn, .roc_curve, ...) {
 #' @param actual A vector of actual outcomes
 #' @param nmb A named vector containing NMB assigned to each classification
 #' @param method A cutpoint selection method to be used
-#' @param return_all_methods \code{logical}. Whether to return all available methods that can be used as the method argument
+#' @param return_all_methods \code{logical}. Whether to return all available
+#' methods that can be used as the method argument
 #'
 #' @return Returns a selected cutpoint (numeric)
 #' @export
@@ -64,7 +75,16 @@ roc_iu <- function(tp, fp, tn, fn, .roc_curve, ...) {
 #' )
 #'
 get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_methods = FALSE) {
-  inbuilt_methods <- c("all", "none", "value_optimising", "youden", "cost_minimising", "prod_sens_spec", "roc01", "index_of_union")
+  inbuilt_methods <- c(
+    "all",
+    "none",
+    "value_optimising",
+    "youden",
+    "cost_minimising",
+    "prod_sens_spec",
+    "roc01",
+    "index_of_union"
+  )
 
   if (return_all_methods) {
     return(inbuilt_methods)
@@ -77,7 +97,9 @@ get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_meth
   if (!method %in% inbuilt_methods) {
     stop(
       paste0(
-        "the method, '", method, "' is not within the available inbuilt methods:\n",
+        "the method, '",
+        method,
+        "' is not within the available inbuilt methods:\n",
         paste0(paste0("'", inbuilt_methods, "'"), collapse = ", ")
       )
     )
@@ -93,7 +115,8 @@ get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_meth
 
   if (method == "value_optimising") {
     pt_value_optimising <- cutpointr::cutpointr(
-      x = predicted, class = actual, method = cutpointr::maximize_metric, metric = total_nmb,
+      x = predicted, class = actual, method = cutpointr::maximize_metric,
+      metric = total_nmb,
       utility_tp = nmb["TP"], utility_tn = nmb["TN"],
       cost_fp = nmb["FP"], cost_fn = nmb["FN"],
       silent = TRUE
@@ -106,7 +129,8 @@ get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_meth
 
   if (method == "youden") {
     pt_youden <- cutpointr::cutpointr(
-      x = predicted, class = actual, method = cutpointr::maximize_metric, metric = cutpointr::youden,
+      x = predicted, class = actual, method = cutpointr::maximize_metric,
+      metric = cutpointr::youden,
       silent = TRUE
     )[["optimal_cutpoint"]]
     if (pt_youden > 1) {
@@ -126,7 +150,8 @@ get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_meth
 
   if (method == "prod_sens_spec") {
     pt_cz <- cutpointr::cutpointr(
-      x = predicted, class = actual, method = cutpointr::maximize_metric, metric = cutpointr::prod_sens_spec,
+      x = predicted, class = actual, method = cutpointr::maximize_metric,
+      metric = cutpointr::prod_sens_spec,
       silent = TRUE
     )[["optimal_cutpoint"]]
     if (pt_cz > 1) {
@@ -137,7 +162,8 @@ get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_meth
 
   if (method == "roc01") {
     pt_er <- cutpointr::cutpointr(
-      x = predicted, class = actual, method = cutpointr::minimize_metric, metric = cutpointr::roc01,
+      x = predicted, class = actual, method = cutpointr::minimize_metric,
+      metric = cutpointr::roc01,
       silent = TRUE
     )[["optimal_cutpoint"]]
     if (length(pt_er) > 1) {
@@ -148,7 +174,8 @@ get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_meth
 
   if (method == "index_of_union") {
     pt_iu <- cutpointr::cutpointr(
-      x = predicted, class = actual, method = cutpointr::minimize_metric, metric = roc_iu,
+      x = predicted, class = actual, method = cutpointr::minimize_metric,
+      metric = roc_iu,
       silent = TRUE
     )[["optimal_cutpoint"]]
     if (pt_iu > 1) {
@@ -163,8 +190,10 @@ get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_meth
 #'
 #' @param predicted A vector of predicted probabilities.
 #' @param actual A vector of actual outcomes.
-#' @param nmb A named vector containing NMB assigned to true positives, true negatives, false positives and false negatives
-#' @param cutpoint_methods Which cutpoint method(s) to return. The default (NULL) uses all the inbuilt methods.
+#' @param nmb A named vector containing NMB assigned to true positives,
+#' true negatives, false positives and false negatives
+#' @param cutpoint_methods Which cutpoint method(s) to return.
+#' The default (NULL) uses all the inbuilt methods.
 #'
 #' @return Returns a \code{list}.
 #' @export
@@ -221,7 +250,11 @@ get_thresholds <- function(predicted, actual, nmb, cutpoint_methods = NULL) {
   inbuilt_methods <- cutpoint_methods[cutpoint_methods %in% get_inbuilt_cutpoint(return_all_methods = TRUE)]
   inbuilt_cutpoints <- lapply(
     inbuilt_methods,
-    function(x) get_inbuilt_cutpoint(actual = actual, predicted = predicted, nmb = nmb, method = x)
+    function(x) {
+      get_inbuilt_cutpoint(
+        actual = actual, predicted = predicted, nmb = nmb, method = x
+      )
+    }
   )
 
   names(inbuilt_cutpoints) <- inbuilt_methods
@@ -232,7 +265,12 @@ get_thresholds <- function(predicted, actual, nmb, cutpoint_methods = NULL) {
   if (length(non_inbuilt_methods) != 0) {
     non_inbuilt_cutpoints <- lapply(
       non_inbuilt_methods,
-      function(x) do.call(x, list(predicted = predicted, actual = actual, nmb = nmb))
+      function(x) {
+        do.call(
+          x,
+          list(predicted = predicted, actual = actual, nmb = nmb)
+        )
+      }
     )
 
     names(non_inbuilt_cutpoints) <- non_inbuilt_methods

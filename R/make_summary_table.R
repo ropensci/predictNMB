@@ -13,8 +13,11 @@
 #' desired names in the output.
 #' @param ... Additional, ignored arguments.
 #'
-#' @details Table summaries will be based on the `what` argument. Using "nmb" returns the simulated values for NMB, with no reference group;
-#' "inb" returns the difference between simulated values for NMB and a set strategy defined by `inb_ref_col`; "cutpoints" returns the cutpoints selected (0,1).
+#' @details Table summaries will be based on the `what` argument.
+#' Using "nmb" returns the simulated values for NMB, with no reference group;
+#' "inb" returns the difference between simulated values for NMB and a set
+#' strategy defined by `inb_ref_col`; "cutpoints" returns the cutpoints
+#' selected (0, 1).
 #' @return Returns a \code{data.frame}.
 #' @export
 #' @examples
@@ -46,7 +49,10 @@ get_sim_data <- function(x, what, inb_ref_col = NULL) {
     res <- x$df_result
     if (what == "inb") {
       res <- res %>%
-        dplyr::mutate(dplyr::across(!n_sim, function(x) x - !!rlang::sym(inb_ref_col))) %>%
+        dplyr::mutate(dplyr::across(
+          !n_sim,
+          function(x) x - !!rlang::sym(inb_ref_col)
+        )) %>%
         dplyr::select(-dplyr::all_of(inb_ref_col))
     }
   } else {
@@ -69,7 +75,11 @@ make_summary_table.predictNMBscreen <- function(x,
                                                 ...) {
   rename_vector <- update_rename_vector(rename_vector)
   get_row_from_sim <- function(sim_idx) {
-    get_sim_data(x$simulations[[sim_idx]], what = what[1], inb_ref_col = inb_ref_col) %>%
+    get_sim_data(
+      x$simulations[[sim_idx]],
+      what = what[1],
+      inb_ref_col = inb_ref_col
+    ) %>%
       dplyr::rename(dplyr::any_of(rename_vector)) %>%
       dplyr::summarize(dplyr::across(!n_sim, agg_functions))
   }

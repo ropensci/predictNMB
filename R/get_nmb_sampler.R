@@ -59,7 +59,7 @@ get_nmb_sampler <- function(outcome_cost,
                             use_expected_values = FALSE,
                             nboot = 10000) {
   if ((missing(wtp) | missing(qalys_lost)) &
-      !(missing(wtp) & missing(qalys_lost))) {
+    !(missing(wtp) & missing(qalys_lost))) {
     stop(
       "willingness to pay (wtp) or QALYS lost (qalys_lost) ",
       "are provided but not both. Please provide both or neither."

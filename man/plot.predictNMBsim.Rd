@@ -26,29 +26,45 @@
 \arguments{
 \item{x}{A \code{predictNMBsim} object.}
 
-\item{what}{What to summarise: one of "nmb", "inb" or "cutpoints". Defaults to "nmb".}
+\item{what}{What to summarise: one of "nmb", "inb" or "cutpoints".
+Defaults to "nmb".}
 
-\item{inb_ref_col}{Which cutpoint method to use as the reference strategy when calculating the incremental net monetary benefit. See \code{do_nmb_sim} for more information.}
+\item{inb_ref_col}{Which cutpoint method to use as the reference strategy
+when calculating the incremental net monetary benefit.
+See \code{do_nmb_sim} for more information.}
 
-\item{ci}{The confidence level. Defaults to 0.95 (coloured area of distribution represents 95\% CIs).}
+\item{ci}{The confidence level.
+Defaults to 0.95(coloured area of distribution represents 95\% CIs).}
 
-\item{methods_order}{The order (left to right) to display the cutpoint methods.}
+\item{methods_order}{The order (left to right) to display the
+cutpoint methods.}
 
-\item{n_bins}{The number of bins used when constructing histograms. Defaults to 40.}
+\item{n_bins}{The number of bins used when constructing histograms.
+Defaults to 40.}
 
-\item{label_wrap_width}{The number of characters in facet labels at which the label is wrapped. Default is 12.}
+\item{label_wrap_width}{The number of characters in facet labels at which
+the label is wrapped. Default is 12.}
 
-\item{fill_cols}{Vector containing the colours used for fill aesthetic of histograms. The first colour represents the area outside of the confidence region, second colour shows the confidence region. Defaults to \code{c("grey50", "#ADD8E6")}.}
+\item{fill_cols}{Vector containing the colours used for fill aesthetic of
+histograms. The first colour represents the area outside of the confidence
+region, second colour shows the confidence region. Defaults to
+\code{c("grey50", "#ADD8E6")}.}
 
-\item{median_line_size}{Size of line used to represent the median of distribution. Defaults to 2.}
+\item{median_line_size}{Size of line used to represent the median of
+distribution. Defaults to 2.}
 
-\item{median_line_alpha}{Alpha for line used to represent the median of distribution. Defaults to 0.5.}
+\item{median_line_alpha}{Alpha for line used to represent the median of
+distribution. Defaults to 0.5.}
 
-\item{median_line_col}{Colour of line used to represent the median of distribution. Defaults to \code{"black"}.}
+\item{median_line_col}{Colour of line used to represent the median of
+distribution. Defaults to \code{"black"}.}
 
-\item{rename_vector}{A named vector for renaming the methods in the summary. The values of the vector are the default names and the names given are the desired names in the output.}
+\item{rename_vector}{A named vector for renaming the methods in the summary.
+The values of the vector are the default names and the names given are the
+desired names in the output.}
 
-\item{extra_theme}{Additional theme applied to plot. Defaults to some tasteful changes to reduce clutter in the plot.}
+\item{extra_theme}{Additional theme applied to plot. Defaults to some
+tasteful changes to reduce clutter in the plot.}
 
 \item{...}{Additional (unused) arguments.}
 }
@@ -59,7 +75,9 @@ Returns a \code{ggplot} object
 Create plots of from predictNMB simulations.
 }
 \details{
-This plot method works with \code{predictNMBsim} objects that are created using \code{do_nmb_sim()}. Can be used to visualise distributions from simulations for different cutpoint methods.
+This plot method works with \code{predictNMBsim} objects that are created
+using \code{do_nmb_sim()}. Can be used to visualise distributions from
+simulations for different cutpoint methods.
 }
 \examples{
 
@@ -71,6 +89,6 @@ if (FALSE) {
   )
 
   plot(sim_screen_obj)
-  plot(sim_screen_obj, x_axis_var = "event_rate", constants = c(sim_auc = 0.8), dodge_width=0.02)
+  plot(sim_screen_obj, x_axis_var = "event_rate", constants = c(sim_auc = 0.8), dodge_width = 0.02)
 }
 }

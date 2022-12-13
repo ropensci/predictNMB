@@ -25,31 +25,49 @@
 \arguments{
 \item{x}{A \code{predictNMBscreen} object.}
 
-\item{x_axis_var}{The desired screened factor to be displayed along the x axis. For example, if the simulation screen was used with many values for event rate, this could be "event_rate". Defaults to the first detected, varied input.}
+\item{x_axis_var}{The desired screened factor to be displayed along the
+x axis. For example, if the simulation screen was used with many values for
+event rate, this could be "event_rate". Defaults to the first detected,
+varied input.}
 
-\item{constants}{Named vector If multiple inputs were screened in this object, this argument can be used to modify the selected values for all those except the input that's varying along the x-axis. See the \href{https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html}{summarising methods vignette}.}
+\item{constants}{Named vector If multiple inputs were screened in this
+object, this argument can be used to modify the selected values for all
+those except the input that's varying along the x-axis. See the
+\href{https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html}{summarising methods vignette}.}
 
-\item{what}{What to summarise: one of "nmb", "inb" or "cutpoints". Defaults to "nmb".}
+\item{what}{What to summarise: one of "nmb", "inb" or "cutpoints".
+Defaults to "nmb".}
 
-\item{inb_ref_col}{Which cutpoint method to use as the reference strategy when calculating the incremental net monetary benefit. See \code{do_nmb_sim} for more information.}
+\item{inb_ref_col}{Which cutpoint method to use as the reference strategy
+when calculating the incremental net monetary benefit.
+See \code{do_nmb_sim} for more information.}
 
-\item{plot_range}{\code{logical}. Whether or not to plot the range of the distribution as a thin line. Defaults to TRUE.}
+\item{plot_range}{\code{logical}. Whether or not to plot the range of the
+distribution as a thin line. Defaults to TRUE.}
 
-\item{plot_ci}{\code{logical}. Whether or not to plot the confidence region of the distribution as a thicker line. Defaults to TRUE.}
+\item{plot_ci}{\code{logical}. Whether or not to plot the confidence region
+of the distribution as a thicker line. Defaults to TRUE.}
 
-\item{plot_line}{\code{logical}. Whether or not to connect the medians of the distributions for each method along the x-axis. Defaults to TRUE.}
+\item{plot_line}{\code{logical}. Whether or not to connect the medians of
+the distributions for each method along the x-axis. Defaults to TRUE.}
 
 \item{plot_alpha}{Alpha value for all plot elements. Defaults to 0.5.}
 
-\item{dodge_width}{The dodge width of plot elements. Can be used to avoid excessive overlap between methods. Defaults to 0.}
+\item{dodge_width}{The dodge width of plot elements. Can be used to avoid
+excessive overlap between methods. Defaults to 0.}
 
-\item{ci}{The confidence level. Defaults to 0.95 (coloured area of distribution represents 95\% CIs).}
+\item{ci}{The confidence level.
+Defaults to 0.95 (coloured area of distribution represents 95\% CIs).}
 
-\item{methods_order}{The order (left to right) to display the cutpoint methods.}
+\item{methods_order}{The order (left to right) to display the cutpoint
+methods.}
 
-\item{rename_vector}{A named vector for renaming the methods in the summary. The values of the vector are the default names and the names given are the desired names in the output.}
+\item{rename_vector}{A named vector for renaming the methods in the summary.
+The values of the vector are the default names and the names given are the
+desired names in the output.}
 
-\item{extra_theme}{Additional theme applied to plot. Defaults to remove minor panel grid.}
+\item{extra_theme}{Additional theme applied to plot. Defaults to remove
+minor panel grid.}
 
 \item{...}{Additional (unused) arguments.}
 }
@@ -60,7 +78,10 @@ Returns a \code{ggplot} object
 Create plots of from screened predictNMB simulations.
 }
 \details{
-This plot method works with \code{predictNMBscreen} objects that are created using \code{screen_simulation_inputs()}. Can be used to visualise distributions from many different simulations and assign a varying input to the x-axis of the plot.
+This plot method works with \code{predictNMBscreen} objects that are
+created using \code{screen_simulation_inputs()}. Can be used to visualise
+distributions from many different simulations and assign a varying input
+to the x-axis of the plot.
 }
 \examples{
 
@@ -72,6 +93,6 @@ if (FALSE) {
   )
 
   plot(sim_screen_obj)
-  plot(sim_screen_obj, x_axis_var = "event_rate", constants = c(sim_auc = 0.8), dodge_width=0.02)
+  plot(sim_screen_obj, x_axis_var = "event_rate", constants = c(sim_auc = 0.8), dodge_width = 0.02)
 }
 }

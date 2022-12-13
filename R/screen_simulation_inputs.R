@@ -1,18 +1,39 @@
 #' Screen many simulation inputs: a parent function to \code{do_nmb_sim()}
-#' @description See \code{\link[=do_nmb_sim]{do_nmb_sim()}} for more information.
+#' @description Runs \code{do_nmb_sim()} with a range of inputs.
 #'
-#' @param sample_size A value (or vector of values): Sample size of training set. If missing, a sample size calculation will be performed and the calculated size will be used.
+#' @param sample_size A value (or vector of values): Sample size of training
+#' set. If missing, a sample size calculation will be performed and the
+#' calculated size will be used.
 #' @param n_sims A value (or vector of values): Number of simulations to run.
 #' @param n_valid A value (or vector of values): Sample size for evaluation set.
-#' @param sim_auc A value (or vector of values): Simulated model discrimination (AUC).
-#' @param event_rate A value (or vector of values): simulated event rate of the binary outcome being predicted.
-#' @param cutpoint_methods cutpoint methods to include. Defaults to use the inbuilt methods. This doesn't change across calls to \code{do_nmb_sim()}
-#' @param fx_nmb_training A function (or list of functions) that returns named vector of NMB assigned to classifications use for obtaining cutpoint on training set
-#' @param fx_nmb_evaluation A function (or list of functions) that returns named vector of NMB assigned to classifications use for obtaining cutpoint on evaluation set
-#' @param pair_nmb_train_and_evaluation_functions Logical. Whether or not to pair the lists of functions passed for \code{fx_nmb_training} and \code{fx_nmb_evaluation}. If two treatment strategies are being used, it may make more sense to pair these because selecting a value-optimising or cost-minimising threshold using one strategy but evaluating another is likely unwanted.
-#' @param meet_min_events Whether or not to incrementally add samples until the expected number of events (\code{sample_size * event_rate}) is met. (Applies to sampling of training data only.)
-#' @param min_events A value: the minimum number of events to include in the training sample. If less than this number are included in sample of size \code{sample_size}, additional samples are added until the min_events is met. The default (\code{NA}) will use the expected value given the \code{event_rate} and the \code{sample_size}.
-#' @param cl A cluster made using \code{parallel::makeCluster()}. If a cluster is provided, the simulation will be done in parallel.
+#' @param sim_auc A value (or vector of values): Simulated model discrimination
+#' (AUC).
+#' @param event_rate A value (or vector of values): simulated event rate of the
+#' binary outcome being predicted.
+#' @param cutpoint_methods cutpoint methods to include. Defaults to use the
+#' inbuilt methods. This doesn't change across calls to \code{do_nmb_sim()}.
+#' @param fx_nmb_training A function (or list of functions) that returns named
+#' vector of NMB assigned to classifications use for obtaining cutpoint on
+#' training set.
+#' @param fx_nmb_evaluation A function (or list of functions) that returns
+#' named vector of NMB assigned to classifications use for obtaining cutpoint
+#' on evaluation set.
+#' @param pair_nmb_train_and_evaluation_functions \code{logical}.
+#' Whether or not to pair the lists of functions passed for
+#' \code{fx_nmb_training} and \code{fx_nmb_evaluation}. If two treatment
+#' strategies are being used, it may make more sense to pair these because
+#' selecting a value-optimising or cost-minimising threshold using one strategy
+#' but evaluating another is likely unwanted.
+#' @param meet_min_events Whether or not to incrementally add samples until the
+#' expected number of events (\code{sample_size * event_rate}) is met.
+#' (Applies to sampling of training data only.)
+#' @param min_events A value: the minimum number of events to include in the
+#' training sample. If less than this number are included in sample of size
+#' \code{sample_size}, additional samples are added until the min_events is met.
+#' The default (\code{NA}) will use the expected value given the
+#' \code{event_rate} and the \code{sample_size}.
+#' @param cl A cluster made using \code{parallel::makeCluster()}. If a cluster
+#' is provided, the simulation will be done in parallel.
 #'
 #' @return Returns a \code{predictNMBscreen} object.
 #' @export
@@ -186,14 +207,18 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
 #' @noRd
 fill_fx_names <- function(fx) {
   newnames <- names(fx)
-  newnames[newnames == ""] <- paste0("unnamed-nmb-function-", grep("^$", newnames[newnames == ""]))
+  newnames[newnames == ""] <- paste0(
+    "unnamed-nmb-function-",
+    grep("^$", newnames[newnames == ""])
+  )
   newnames
 }
 
 
 #' Add sample sizes to grid of inputs before running simulations.
 #'
-#' @param x A grid of inputs, including details required to perform sample size calculations.
+#' @param x A grid of inputs, including details required to perform sample
+#' size calculations.
 #' @noRd
 add_sample_size_calcs <- function(x) {
   out <- lapply(
@@ -239,11 +264,16 @@ print.predictNMBscreen <- function(x, ...) {
   cat("There were", nrow(x$grid), "combinations screened\n\n")
 
   if (length(x$screen_meta) == 1) {
-    cat("There was only one input (", names(x$screen_meta), ") that was screened for multiple values:\n")
+    cat(
+      "There was only one input (",
+      names(x$screen_meta),
+      ") that was screened for multiple values:\n"
+    )
     print(x$screen_meta)
   } else {
     cat(
-      "There were multiple inputs (", paste0(names(x$screen_meta), collapse = ", "),
+      "There were multiple inputs (",
+      paste0(names(x$screen_meta), collapse = ", "),
       ") that was screened for multiple values:\n"
     )
     print(x$screen_meta)

@@ -16,7 +16,8 @@ evaluate_cutpoint(predicted, actual, pt, nmb)
 \item{nmb}{A named vector containing NMB assigned to each classification.}
 }
 \value{
-Returns a \code{numeric} value representing the NMB for that cutpoint and data.
+Returns a \code{numeric} value representing the NMB for that
+cutpoint and data.
 }
 \description{
 Evaluates a cutpoint by returning the mean NMB per sample.

@@ -33,7 +33,10 @@ get_plot_data <- function(x,
   if (what == "inb") {
     data <-
       data %>%
-      dplyr::mutate(dplyr::across(!n_sim, function(x) x - !!rlang::sym(inb_ref_col))) %>%
+      dplyr::mutate(dplyr::across(
+        !n_sim,
+        function(x) x - !!rlang::sym(inb_ref_col)
+      )) %>%
       dplyr::select(-dplyr::all_of(inb_ref_col))
   }
 
@@ -68,22 +71,40 @@ add_interval <- function(data, ci) {
 #' Create plots of from predictNMB simulations.
 #'
 #' @param x A \code{predictNMBsim} object.
-#' @param what What to summarise: one of "nmb", "inb" or "cutpoints". Defaults to "nmb".
-#' @param inb_ref_col Which cutpoint method to use as the reference strategy when calculating the incremental net monetary benefit. See \code{do_nmb_sim} for more information.
-#' @param ci The confidence level. Defaults to 0.95 (coloured area of distribution represents 95\% CIs).
-#' @param methods_order The order (left to right) to display the cutpoint methods.
-#' @param n_bins The number of bins used when constructing histograms. Defaults to 40.
-#' @param label_wrap_width The number of characters in facet labels at which the label is wrapped. Default is 12.
-#' @param fill_cols Vector containing the colours used for fill aesthetic of histograms. The first colour represents the area outside of the confidence region, second colour shows the confidence region. Defaults to \code{c("grey50", "#ADD8E6")}.
-#' @param median_line_size Size of line used to represent the median of distribution. Defaults to 2.
-#' @param median_line_alpha Alpha for line used to represent the median of distribution. Defaults to 0.5.
-#' @param median_line_col Colour of line used to represent the median of distribution. Defaults to \code{"black"}.
-#' @param rename_vector A named vector for renaming the methods in the summary. The values of the vector are the default names and the names given are the desired names in the output.
-#' @param extra_theme Additional theme applied to plot. Defaults to some tasteful changes to reduce clutter in the plot.
+#' @param what What to summarise: one of "nmb", "inb" or "cutpoints".
+#' Defaults to "nmb".
+#' @param inb_ref_col Which cutpoint method to use as the reference strategy
+#' when calculating the incremental net monetary benefit.
+#' See \code{do_nmb_sim} for more information.
+#' @param ci The confidence level.
+#' Defaults to 0.95(coloured area of distribution represents 95\% CIs).
+#' @param methods_order The order (left to right) to display the
+#' cutpoint methods.
+#' @param n_bins The number of bins used when constructing histograms.
+#' Defaults to 40.
+#' @param label_wrap_width The number of characters in facet labels at which
+#' the label is wrapped. Default is 12.
+#' @param fill_cols Vector containing the colours used for fill aesthetic of
+#' histograms. The first colour represents the area outside of the confidence
+#' region, second colour shows the confidence region. Defaults to
+#' \code{c("grey50", "#ADD8E6")}.
+#' @param median_line_size Size of line used to represent the median of
+#' distribution. Defaults to 2.
+#' @param median_line_alpha Alpha for line used to represent the median of
+#' distribution. Defaults to 0.5.
+#' @param median_line_col Colour of line used to represent the median of
+#' distribution. Defaults to \code{"black"}.
+#' @param rename_vector A named vector for renaming the methods in the summary.
+#' The values of the vector are the default names and the names given are the
+#' desired names in the output.
+#' @param extra_theme Additional theme applied to plot. Defaults to some
+#' tasteful changes to reduce clutter in the plot.
 #' @param ... Additional (unused) arguments.
 #'
 #' @details
-#' This plot method works with \code{predictNMBsim} objects that are created using \code{do_nmb_sim()}. Can be used to visualise distributions from simulations for different cutpoint methods.
+#' This plot method works with \code{predictNMBsim} objects that are created
+#' using \code{do_nmb_sim()}. Can be used to visualise distributions from
+#' simulations for different cutpoint methods.
 #'
 #' @return Returns a \code{ggplot} object
 #' @export
@@ -98,7 +119,7 @@ add_interval <- function(data, ci) {
 #'   )
 #'
 #'   plot(sim_screen_obj)
-#'   plot(sim_screen_obj, x_axis_var = "event_rate", constants = c(sim_auc = 0.8), dodge_width=0.02)
+#'   plot(sim_screen_obj, x_axis_var = "event_rate", constants = c(sim_auc = 0.8), dodge_width = 0.02)
 #' }
 plot.predictNMBsim <- function(x,
                                what = c("nmb", "inb", "cutpoints"),
@@ -139,7 +160,11 @@ plot.predictNMBsim <- function(x,
     ggplot2::ggplot(ggplot2::aes(value, fill = in_interval)) +
     ggplot2::geom_histogram(bins = n_bins) +
     ggplot2::coord_flip() +
-    ggplot2::facet_wrap(~name, labeller = ggplot2::label_wrap_gen(width = label_wrap_width), nrow = 1) +
+    ggplot2::facet_wrap(
+      ~name,
+      labeller = ggplot2::label_wrap_gen(width = label_wrap_width),
+      nrow = 1
+    ) +
     ggplot2::theme_bw() +
     ggplot2::guides(fill = "none") +
     ggplot2::scale_fill_manual(values = c(NA, fill_cols))
@@ -149,8 +174,8 @@ plot.predictNMBsim <- function(x,
   extracted_points <- tibble::tibble(
     outcome = my_plot_innards[["data"]][[1]][["x"]],
     count = my_plot_innards[["data"]][[1]][["y"]],
-    in_interval = (my_plot_innards[["data"]][[1]][["group"]]) %>% as.factor(),
-    method = (my_plot_innards[["data"]][[1]][["PANEL"]] %>% as.character())
+    in_interval = my_plot_innards[["data"]][[1]][["group"]] %>% as.factor(),
+    method = my_plot_innards[["data"]][[1]][["PANEL"]] %>% as.character()
   )
 
   heights <-
@@ -192,23 +217,44 @@ plot.predictNMBsim <- function(x,
 #' Create plots of from screened predictNMB simulations.
 #'
 #' @param x A \code{predictNMBscreen} object.
-#' @param x_axis_var The desired screened factor to be displayed along the x axis. For example, if the simulation screen was used with many values for event rate, this could be "event_rate". Defaults to the first detected, varied input.
-#' @param constants Named vector If multiple inputs were screened in this object, this argument can be used to modify the selected values for all those except the input that's varying along the x-axis. See the \href{https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html}{summarising methods vignette}.
-#' @param what What to summarise: one of "nmb", "inb" or "cutpoints". Defaults to "nmb".
-#' @param inb_ref_col Which cutpoint method to use as the reference strategy when calculating the incremental net monetary benefit. See \code{do_nmb_sim} for more information.
-#' @param plot_range \code{logical}. Whether or not to plot the range of the distribution as a thin line. Defaults to TRUE.
-#' @param plot_ci \code{logical}. Whether or not to plot the confidence region of the distribution as a thicker line. Defaults to TRUE.
-#' @param plot_line \code{logical}. Whether or not to connect the medians of the distributions for each method along the x-axis. Defaults to TRUE.
+#' @param x_axis_var The desired screened factor to be displayed along the
+#' x axis. For example, if the simulation screen was used with many values for
+#' event rate, this could be "event_rate". Defaults to the first detected,
+#' varied input.
+#' @param constants Named vector If multiple inputs were screened in this
+#' object, this argument can be used to modify the selected values for all
+#' those except the input that's varying along the x-axis. See the
+#' \href{https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html}{summarising methods vignette}.
+#' @param what What to summarise: one of "nmb", "inb" or "cutpoints".
+#' Defaults to "nmb".
+#' @param inb_ref_col Which cutpoint method to use as the reference strategy
+#' when calculating the incremental net monetary benefit.
+#' See \code{do_nmb_sim} for more information.
+#' @param plot_range \code{logical}. Whether or not to plot the range of the
+#' distribution as a thin line. Defaults to TRUE.
+#' @param plot_ci \code{logical}. Whether or not to plot the confidence region
+#' of the distribution as a thicker line. Defaults to TRUE.
+#' @param plot_line \code{logical}. Whether or not to connect the medians of
+#' the distributions for each method along the x-axis. Defaults to TRUE.
 #' @param plot_alpha Alpha value for all plot elements. Defaults to 0.5.
-#' @param dodge_width The dodge width of plot elements. Can be used to avoid excessive overlap between methods. Defaults to 0.
-#' @param ci The confidence level. Defaults to 0.95 (coloured area of distribution represents 95\% CIs).
-#' @param methods_order The order (left to right) to display the cutpoint methods.
-#' @param rename_vector A named vector for renaming the methods in the summary. The values of the vector are the default names and the names given are the desired names in the output.
-#' @param extra_theme Additional theme applied to plot. Defaults to remove minor panel grid.
+#' @param dodge_width The dodge width of plot elements. Can be used to avoid
+#' excessive overlap between methods. Defaults to 0.
+#' @param ci The confidence level.
+#' Defaults to 0.95 (coloured area of distribution represents 95\% CIs).
+#' @param methods_order The order (left to right) to display the cutpoint
+#' methods.
+#' @param rename_vector A named vector for renaming the methods in the summary.
+#' The values of the vector are the default names and the names given are the
+#' desired names in the output.
+#' @param extra_theme Additional theme applied to plot. Defaults to remove
+#' minor panel grid.
 #' @param ... Additional (unused) arguments.
 #'
 #' @details
-#' This plot method works with \code{predictNMBscreen} objects that are created using \code{screen_simulation_inputs()}. Can be used to visualise distributions from many different simulations and assign a varying input to the x-axis of the plot.
+#' This plot method works with \code{predictNMBscreen} objects that are
+#' created using \code{screen_simulation_inputs()}. Can be used to visualise
+#' distributions from many different simulations and assign a varying input
+#' to the x-axis of the plot.
 #'
 #' @return Returns a \code{ggplot} object
 #' @export
@@ -223,7 +269,7 @@ plot.predictNMBsim <- function(x,
 #'   )
 #'
 #'   plot(sim_screen_obj)
-#'   plot(sim_screen_obj, x_axis_var = "event_rate", constants = c(sim_auc = 0.8), dodge_width=0.02)
+#'   plot(sim_screen_obj, x_axis_var = "event_rate", constants = c(sim_auc = 0.8), dodge_width = 0.02)
 #' }
 plot.predictNMBscreen <- function(x,
                                   x_axis_var = NULL,
@@ -251,7 +297,8 @@ plot.predictNMBscreen <- function(x,
         paste0(
           "Screening over ",
           names(x$screen_meta)[1],
-          " by default. Specify the variable in the 'x_axis_var' argument if you want to plot changes over:\n",
+          " by default. Specify the variable in the 'x_axis_var' argument",
+          " if you want to plot changes over:\n",
           paste0(names(x$screen_meta)[-1], collapse = ", ")
         )
       )
@@ -264,7 +311,13 @@ plot.predictNMBscreen <- function(x,
   sim.id_ignore <- c()
 
   if (length(names(x$screen_meta)) > 1) {
-    message(paste0("\n\nVarying simulation inputs, other than ", x_axis_var, ", are being held constant:\n"))
+    message(
+      paste0(
+        "\n\nVarying simulation inputs, other than ",
+        x_axis_var,
+        ", are being held constant:\n"
+      )
+    )
     non_x_axis_vars <- x$screen_meta
     non_x_axis_vars[[x_axis_var]] <- NULL
     for (i in length(non_x_axis_vars)) {
@@ -274,7 +327,8 @@ plot.predictNMBscreen <- function(x,
         v <- non_x_axis_vars[[i]][[1]]
         if (inherits(v, "function")) {
           v <- names(non_x_axis_vars[[i]])[1]
-          if (x$pair_nmb_train_and_evaluation_functions & x_axis_var %in% c("fx_nmb_training", "fx_nmb_evaluation")) {
+          if (x$pair_nmb_train_and_evaluation_functions &
+            x_axis_var %in% c("fx_nmb_training", "fx_nmb_evaluation")) {
             next
           }
         }
@@ -289,8 +343,10 @@ plot.predictNMBscreen <- function(x,
 
       sim.id_ignore <- append(
         sim.id_ignore,
-        which(!unlist(lapply(grid_lookup[[names(non_x_axis_vars)[i]]],
-                             function(x) isTRUE(all.equal(x, v)))))
+        which(!unlist(lapply(
+          grid_lookup[[names(non_x_axis_vars)[i]]],
+          function(x) isTRUE(all.equal(x, v))
+        )))
       )
     }
     sim.id_ignore <- unique(sim.id_ignore)
@@ -320,14 +376,23 @@ plot.predictNMBscreen <- function(x,
   p_data_range <-
     p_data_full %>%
     dplyr::group_by(x_axis_var, name) %>%
-    dplyr::summarize(m = stats::median(value), ymin = min(value), ymax = max(value), .groups = "drop") %>%
+    dplyr::summarize(
+      m = stats::median(value),
+      ymin = min(value),
+      ymax = max(value),
+      .groups = "drop"
+    ) %>%
     dplyr::ungroup()
 
   p_data_interval <-
     p_data_full %>%
     dplyr::filter(in_interval) %>%
     dplyr::group_by(x_axis_var, name) %>%
-    dplyr::summarize(ymin = min(value), ymax = max(value), .groups = "drop") %>%
+    dplyr::summarize(
+      ymin = min(value),
+      ymax = max(value),
+      .groups = "drop"
+    ) %>%
     dplyr::ungroup()
 
   y_axis_title <- switch(what[1],

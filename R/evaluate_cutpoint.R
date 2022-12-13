@@ -5,7 +5,8 @@
 #' @param pt The probability threshold to be evaluated.
 #' @param nmb A named vector containing NMB assigned to each classification.
 #'
-#' @return Returns a \code{numeric} value representing the NMB for that cutpoint and data.
+#' @return Returns a \code{numeric} value representing the NMB for that
+#' cutpoint and data.
 #' @export
 #'
 #' @examples
