@@ -214,7 +214,14 @@ inputs for the hypothetical model and NMB related functions. For the
 model, we need to know the sample size for training and evaluation sets,
 the model’s discrimination (Area Under the Receiver Operating
 Characteristic Curve, also known as the Area Under the Curve, or AUC)
-and the event rate of the outcome being predicted.</p>
+and the event rate of the outcome being predicted. To create this model,
+the specified AUC is transformed to a Cohen’s D value <span class="citation">(<a href="#ref-SalgadoJes%C3%BAsF.2018Ttau" role="doc-biblioref">Salgado 2018</a>)</span>. A single predictor
+variable for the negative events are sampled from a standard normal
+distribution (mean = 0; standard deviation = 1) and the positive events
+have theirs sampled from a normal distribution with a mean equal to the
+calculated Cohen’s D value and standard deviation of 1. These data are
+then used to fit a logistic regression model with the single predictor
+and intercept term.</p>
 <p>Note that it may take some time to run the simulation. (The one below
 may take up to a minute, depending on your computer’s performance.)</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -378,6 +385,18 @@ AUC of 0.95.</p>
 <span><span class="co">#&gt; Varying simulation inputs, other than sim_auc, are being held constant:</span></span>
 <span><span class="co">#&gt; event_rate: 0.1</span></span></code></pre></div>
 <p><img src="introduction-to-predictNMB_files/figure-html/unnamed-chunk-15-2.png" width="672"></p>
+</div>
+<div class="section level2">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-SalgadoJesúsF.2018Ttau" class="csl-entry">
+Salgado, Jesús F. 2018. <span>“Transforming the Area Under the Normal
+Curve (AUC) into Cohen’s d, Pearson’s Rpb, Odds-Ratio, and Natural Log
+Odds-Ratio: Two Conversion Tables.”</span> <em>The European Journal of
+Psychology Applied to Legal Context</em> 10 (1): 35–47.
+</div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
