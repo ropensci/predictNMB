@@ -1,11 +1,11 @@
 #' Evaluates a cutpoint by returning the mean NMB per sample.
 #'
-#' @param predicted vector of predicted probabilities
-#' @param actual vector of actual outcomes
-#' @param pt probability threshold
-#' @param nmb named vector containing NMB assigned to each classification
+#' @param predicted A vector of predicted probabilities.
+#' @param actual A vector of actual outcomes.
+#' @param pt The probability threshold to be evaluated.
+#' @param nmb A named vector containing NMB assigned to each classification.
 #'
-#' @return numeric
+#' @return Returns a \code{numeric} value representing the NMB for that cutpoint and data.
 #' @export
 #'
 #' @examples

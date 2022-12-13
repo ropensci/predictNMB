@@ -7,16 +7,16 @@
 evaluate_cutpoint(predicted, actual, pt, nmb)
 }
 \arguments{
-\item{predicted}{vector of predicted probabilities}
+\item{predicted}{A vector of predicted probabilities.}
 
-\item{actual}{vector of actual outcomes}
+\item{actual}{A vector of actual outcomes.}
 
-\item{pt}{probability threshold}
+\item{pt}{The probability threshold to be evaluated.}
 
-\item{nmb}{named vector containing NMB assigned to each classification}
+\item{nmb}{A named vector containing NMB assigned to each classification.}
 }
 \value{
-numeric
+Returns a \code{numeric} value representing the NMB for that cutpoint and data.
 }
 \description{
 Evaluates a cutpoint by returning the mean NMB per sample.

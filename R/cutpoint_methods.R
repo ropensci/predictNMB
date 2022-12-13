@@ -1,3 +1,17 @@
+#' Function that calculates the total Net Monetary Benefit (used by the "value_optimising" cutpoint method).
+#'
+#' @param tn Number of True Negatives
+#' @param tp Number of True Positives
+#' @param fn Number of False Negatives
+#' @param fp Number of False Positives
+#' @param utility_tp NMB associated with True Positives
+#' @param utility_tn NMB associated with True Negatives
+#' @param cost_fp NMB associated with False Positives
+#' @param cost_fn NMB associated with False Negatives
+#' @param ... Optional (ignored) arguments.
+#'
+#' @return Returns the total Net Monetary Benefit.
+#' @noRd
 total_nmb <- function(tn, tp, fn, fp, utility_tp, utility_tn, cost_fp, cost_fn, ...) {
   total_nmb <- utility_tp * tp + utility_tn * tn + cost_fp * fp + cost_fn * fn
   total_nmb <- matrix(total_nmb, ncol = 1)
@@ -5,6 +19,17 @@ total_nmb <- function(tn, tp, fn, fp, utility_tp, utility_tn, cost_fp, cost_fn, 
   total_nmb
 }
 
+#' Function that calculates the Index of Union (used by the "index_of_union" cutpoint method).
+#'
+#' @param tn Number of True Negatives
+#' @param tp Number of True Positives
+#' @param fn Number of False Negatives
+#' @param fp Number of False Positives
+#' @param .roc_curve A Receiver Operating Characteristic curve.
+#' @param ... Optional (ignored) arguments.
+#'
+#' @return Returns the value (to be minimised) for the Index of Union.
+#' @noRd
 roc_iu <- function(tp, fp, tn, fn, .roc_curve, ...) {
   tempauc <- cutpointr::auc(.roc_curve)
   sens <- cutpointr::sensitivity(tp = tp, fn = fn)
@@ -18,13 +43,13 @@ roc_iu <- function(tp, fp, tn, fn, .roc_curve, ...) {
 
 #' Get a cutpoint using the methods inbuilt to predictNMB
 #'
-#' @param predicted vector of predicted probabilities
-#' @param actual vector of actual outcomes
-#' @param nmb named vector containing NMB assigned to each classification
-#' @param method cutpoint selection method to be used
-#' @param return_all_methods logical: whether to return all available methods that can be used as the method argument
+#' @param predicted A vector of predicted probabilities
+#' @param actual A vector of actual outcomes
+#' @param nmb A named vector containing NMB assigned to each classification
+#' @param method A cutpoint selection method to be used
+#' @param return_all_methods \code{logical}. Whether to return all available methods that can be used as the method argument
 #'
-#' @return a selected cutpoint (numeric)
+#' @return Returns a selected cutpoint (numeric)
 #' @export
 #'
 #' @examples
@@ -136,12 +161,12 @@ get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_meth
 
 #' Gets probability thresholds given predicted probabilities, outcomes and NMB.
 #'
-#' @param predicted vector of predicted probabilities
-#' @param actual vector of actual outcomes
-#' @param nmb named vector containing NMB assigned to true positives, true negatives, false positives and false negatives
-#' @param cutpoint_methods which cutpoint method(s) to return. The default (NULL) uses all the inbuilt methods.
+#' @param predicted A vector of predicted probabilities.
+#' @param actual A vector of actual outcomes.
+#' @param nmb A named vector containing NMB assigned to true positives, true negatives, false positives and false negatives
+#' @param cutpoint_methods Which cutpoint method(s) to return. The default (NULL) uses all the inbuilt methods.
 #'
-#' @return list
+#' @return Returns a \code{list}.
 #' @export
 #'
 #' @examples

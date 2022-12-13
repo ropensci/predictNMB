@@ -2,7 +2,8 @@
 % Please edit documentation in R/get_nmb_sampler.R
 \name{get_nmb_sampler}
 \alias{get_nmb_sampler}
-\title{Make a NMB sampler for use in \code{do_nmb_sim()} or \code{screen_simulation_inputs()}}
+\title{Make a NMB sampler for use in \code{do_nmb_sim()} or
+\code{screen_simulation_inputs()}}
 \usage{
 get_nmb_sampler(
   outcome_cost,
@@ -17,12 +18,15 @@ get_nmb_sampler(
 )
 }
 \arguments{
-\item{outcome_cost}{The cost of the outcome. Must be provided if \code{wtp} and \code{qalys_lost} are not.
-Or can be used in addition to these arguments to represent additional cost to the health burden.}
+\item{outcome_cost}{The cost of the outcome. Must be provided if \code{wtp}
+and \code{qalys_lost} are not.
+Or can be used in addition to these arguments to represent additional cost
+to the health burden.}
 
 \item{wtp}{Willingness-to-pay.}
 
-\item{qalys_lost}{Quality-adjusted life years (QALYs) lost due to healthcare event being predicted.}
+\item{qalys_lost}{Quality-adjusted life years (QALYs) lost due to healthcare
+event being predicted.}
 
 \item{high_risk_group_treatment_effect}{The effect of the treatment provided
 to patients given high risk prediction. Can be a number of a function.
@@ -46,13 +50,14 @@ sensible choice when using the resulting function for selecting the cutpoint.
 See \code{fx_nmb_training}. Defaults to \code{FALSE.}}
 
 \item{nboot}{The number of samples to use when creating a function that
-returns the expected values.}
+returns the expected values. Defaults to 10000.}
 }
 \value{
 function
 }
 \description{
-Make a NMB sampler for use in \code{do_nmb_sim()} or \code{screen_simulation_inputs()}
+Make a NMB sampler for use in \code{do_nmb_sim()} or
+\code{screen_simulation_inputs()}
 }
 \examples{
 get_nmb_training <- get_nmb_sampler(

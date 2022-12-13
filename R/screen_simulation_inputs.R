@@ -14,7 +14,7 @@
 #' @param min_events A value: the minimum number of events to include in the training sample. If less than this number are included in sample of size \code{sample_size}, additional samples are added until the min_events is met. The default (\code{NA}) will use the expected value given the \code{event_rate} and the \code{sample_size}.
 #' @param cl A cluster made using \code{parallel::makeCluster()}. If a cluster is provided, the simulation will be done in parallel.
 #'
-#' @return Returns a \code{predictNMBscreen} object
+#' @return Returns a \code{predictNMBscreen} object.
 #' @export
 #'
 #' @examples
@@ -180,6 +180,10 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
 }
 
 
+#' Fill names for a list of functions if no names are given.
+#'
+#' @param x a (potentially) named list of functions.
+#' @noRd
 fill_fx_names <- function(fx) {
   newnames <- names(fx)
   newnames[newnames == ""] <- paste0("unnamed-nmb-function-", grep("^$", newnames[newnames == ""]))
@@ -187,6 +191,10 @@ fill_fx_names <- function(fx) {
 }
 
 
+#' Add sample sizes to grid of inputs before running simulations.
+#'
+#' @param x A grid of inputs, including details required to perform sample size calculations.
+#' @noRd
 add_sample_size_calcs <- function(x) {
   out <- lapply(
     seq_len(nrow(x)),
@@ -212,8 +220,21 @@ add_sample_size_calcs <- function(x) {
 }
 
 
+#' Print a summary of a predictNMBscreen object
+#'
 #' @export
-print.predictNMBscreen <- function(x, digits = 2, ...) {
+#' @param x A \code{predictNMBscreen} object.
+#' @param ... Optional, ignored arguments.
+#' @return `print` returns `x` invisibly.
+#' if (FALSE) {
+#'   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
+#'   sim_screen_obj <- screen_simulation_inputs(
+#'     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1), event_rate = 0.1,
+#'     fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
+#'   )
+#'   print(sim_screen_obj)
+#' }
+print.predictNMBscreen <- function(x, ...) {
   cat("predictNMBscreen object\n\n")
   cat("There were", nrow(x$grid), "combinations screened\n\n")
 
@@ -227,4 +248,5 @@ print.predictNMBscreen <- function(x, digits = 2, ...) {
     )
     print(x$screen_meta)
   }
+  invisible(x$screen_meta)
 }

@@ -16,17 +16,26 @@ make_summary_table(
 )
 }
 \arguments{
-\item{x}{a \code{predictNMBscreen} or \code{predictNMBsim} object.}
+\item{x}{A \code{predictNMBscreen} or \code{predictNMBsim} object.}
 
-\item{what}{what to summarise: one of "nmb", "inb" or "cutpoints". Defaults to "nmb".}
+\item{what}{What to summarise: one of "nmb", "inb" or "cutpoints".
+Defaults to "nmb".}
 
-\item{inb_ref_col}{which cutpoint method to use as the reference strategy when calculating the incremental net monetary benefit. See \code{do_nmb_sim} for more information.}
+\item{inb_ref_col}{Which cutpoint method to use as the reference strategy
+when calculating the incremental net monetary benefit. See \code{do_nmb_sim}
+for more information.}
 
-\item{agg_functions}{named list of functions to use to aggregate the selected values. Defaults to the median and 95\% interval.}
+\item{agg_functions}{A named list of functions to use to aggregate the
+selected values. Defaults to the median and 95\% interval.}
 
-\item{rename_vector}{a named vector for renaming the methods in the summary. The values of the vector are the default names and the names given are the desired names in the output.}
+\item{rename_vector}{A named vector for renaming the methods in the summary.
+The values of the vector are the default names and the names given are the
+desired names in the output.}
 
-\item{...}{additional, optional arguments.}
+\item{...}{Additional, ignored arguments.}
+}
+\value{
+Returns a \code{data.frame}.
 }
 \description{
 Create table summaries of simulation objects.

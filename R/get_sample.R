@@ -1,15 +1,17 @@
 #' Samples data for a prediction model with a specified AUC and prevalence.
 #'
-#' @param auc The Area Under the (receiver operating characteristic) Curve
-#' @param n_samples Number of samples to draw
-#' @param prevalence Prevalence or event rate of the binary outcome as a proportion (0.1 = 10\%)
-#' @param min_events Minimum number of events required in the sample
+#' @param auc The Area Under the (receiver operating characteristic) Curve.
+#' @param n_samples Number of samples to draw.
+#' @param prevalence Prevalence or event rate of the binary outcome as
+#' a proportion (0.1 = 10\%).
+#' @param min_events Minimum number of events required in the sample.
 #'
-#' @return data.frame
+#' @return Returns a \code{data.frame}.
 #' @export
 #'
 #' @examples get_sample(0.7, 1000, 0.1)
 get_sample <- function(auc, n_samples, prevalence, min_events = 0) {
+  # method for converting of auc to Cohen's D
   # http://dx.doi.org/10.5093/ejpalc2018a5
   t <- sqrt(log(1 / (1 - auc)**2))
   z <- t - ((2.515517 + 0.802853 * t + 0.0103328 * t**2) /
@@ -31,7 +33,7 @@ get_sample <- function(auc, n_samples, prevalence, min_events = 0) {
 
   # if by chance all samples are either positive or negative, repeat the sampling
   # almost all the cutpoint selection methods will fail if there's only 1 class.
-  if ((n_pos == 0 | n_neg == 0) & min_events > 0) {
+  if (n_pos == 0 | n_neg == 0) {
     return(get_sample(auc, n_samples, prevalence, min_events))
   }
 

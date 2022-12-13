@@ -13,18 +13,18 @@ get_inbuilt_cutpoint(
 )
 }
 \arguments{
-\item{predicted}{vector of predicted probabilities}
+\item{predicted}{A vector of predicted probabilities}
 
-\item{actual}{vector of actual outcomes}
+\item{actual}{A vector of actual outcomes}
 
-\item{nmb}{named vector containing NMB assigned to each classification}
+\item{nmb}{A named vector containing NMB assigned to each classification}
 
-\item{method}{cutpoint selection method to be used}
+\item{method}{A cutpoint selection method to be used}
 
-\item{return_all_methods}{logical: whether to return all available methods that can be used as the method argument}
+\item{return_all_methods}{\code{logical}. Whether to return all available methods that can be used as the method argument}
 }
 \value{
-a selected cutpoint (numeric)
+Returns a selected cutpoint (numeric)
 }
 \description{
 Get a cutpoint using the methods inbuilt to predictNMB

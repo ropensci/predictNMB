@@ -38,7 +38,7 @@
 #'
 #' There is a helper function, \code{get_nmb_sampler()}, to help you create these.
 #'
-#' @return Returns a \code{predictNMBsim} object
+#' @return Returns a \code{predictNMBsim} object.
 #' @export
 #'
 #' @examples
@@ -165,6 +165,25 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
 }
 
 
+
+#' Performs a single simulation: sample training and validation data, fit model, evaluate model on new data according to model and cutpoints selected with training data.
+#'
+#' @param x A grid of inputs, including details required to perform sample size calculations.
+#'
+#' @param iter Integer. Iteration number.
+#' @param sim_auc Desired AUC to be simulated.
+#' @param sample_size Desired sample size for training set.
+#' @param n_valid Sample size for validation set.
+#' @param event_rate Prevalence of event.
+#' @param meet_min_events Whether or not to add additional samples to training set so that a minimum number is met.
+#' @param min_events The minimum number of events to meet if \code{meet_min_events=TRUE}.
+#' @param cutpoint_methods The cutpoint methods apply and evaluate.
+#' @param df_nmb_training A named vector of NMB values for each possible classification (TN, TP, FN, FP). Used for estimating cutpoints (only for methods that use this information).
+#' @param df_nmb_evaluation A named vector of NMB values for each possible classification (TN, TP, FN, FP). Used for evaluating selected cutpoints.
+#'
+#' @return \code{list} with results (NMB values) and cutpoints for each cutpoint method.
+#'
+#' @noRd
 do_nmb_iteration <- function(iter,
                              sim_auc,
                              sample_size,
@@ -223,8 +242,21 @@ do_nmb_iteration <- function(iter,
 }
 
 
+#' Print a summary of a predictNMBsim object
+#'
 #' @export
-print.predictNMBsim <- function(x, digits = 2, ...) {
+#' @param x A \code{predictNMBsim} object.
+#' @param ... Optional, ignored arguments.
+#' @return `print` returns `x` invisibly.
+#' if (FALSE) {
+#'   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
+#'   sim_obj <- do_nmb_sim(
+#'     sample_size = 200, n_sims = 50, n_valid = 10000, sim_auc = 0.7,
+#'     event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
+#'   )
+#'   print(sim_obj)
+#' }
+print.predictNMBsim <- function(x, ...) {
   cat("predictNMB object\n")
 
   cat(paste0("\nTraining data sample size: "), x$meta_data$sample_size)

@@ -5,6 +5,18 @@ utils::globalVariables(
   )
 )
 
+
+#' Performs sample size calculation (if required) and minimum events
+#' (if desired).
+#'
+#' @param cstatistic C-statistic AKA Area Under the Curve.
+#' @param prevalence Rate of the event ("event_rate" elsewhere).
+#' @param sample_size Sample size specified by user.
+#' @param min_events Minimum number of events specified by user.
+#' @param meet_min_events Whether or not to meet the minimum number of events.
+#'
+#' @return Returns a named \code{list} with sample size and minumum events.
+#' @noRd
 do_sample_size_calc <- function(cstatistic, prevalence, sample_size, min_events, meet_min_events) {
   if (is.na(sample_size)) {
     pmsamp <- pmsampsize::pmsampsize(
@@ -38,6 +50,23 @@ do_sample_size_calc <- function(cstatistic, prevalence, sample_size, min_events,
   )
 }
 
+#' Check the user's inputs to ensure they are as expected before running
+#' simulation.
+#'
+#' @param sample_size Argument given to \code{do_nmb_sim()}.
+#' @param n_sims Argument given to \code{do_nmb_sim()}.
+#' @param n_valid Argument given to \code{do_nmb_sim()}.
+#' @param sim_auc Argument given to \code{do_nmb_sim()}.
+#' @param event_rate Argument given to \code{do_nmb_sim()}.
+#' @param cutpoint_methods Argument given to \code{do_nmb_sim()}.
+#' @param fx_nmb_training Argument given to \code{do_nmb_sim()}.
+#' @param fx_nmb_evaluation Argument given to \code{do_nmb_sim()}.
+#' @param meet_min_events Argument given to \code{do_nmb_sim()}.
+#' @param min_events Argument given to \code{do_nmb_sim()}.
+#' @param cl Argument given to \code{do_nmb_sim()}.
+#'
+#' @return Returns nothing. Produces error if there's problems with inputs.
+#' @noRd
 validate_inputs <- function(sample_size,
                             n_sims,
                             n_valid,
@@ -94,6 +123,14 @@ validate_inputs <- function(sample_size,
 }
 
 
+#' Updates the \code{rename_vector} from user as necessary before being used
+#' with \code{dplyr::rename()}.
+#'
+#' @param rename_vector user-specified named vector for renaming cutpoint
+#' methods.
+#'
+#' @return Returns (updated) named vector.
+#' @noRd
 update_rename_vector <- function(rename_vector) {
   default_rename_vector <- get_inbuilt_cutpoint(return_all_methods = TRUE)
   names(default_rename_vector) <- gsub("_", " ", default_rename_vector)

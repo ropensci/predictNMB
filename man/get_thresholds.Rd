@@ -7,16 +7,16 @@
 get_thresholds(predicted, actual, nmb, cutpoint_methods = NULL)
 }
 \arguments{
-\item{predicted}{vector of predicted probabilities}
+\item{predicted}{A vector of predicted probabilities.}
 
-\item{actual}{vector of actual outcomes}
+\item{actual}{A vector of actual outcomes.}
 
-\item{nmb}{named vector containing NMB assigned to true positives, true negatives, false positives and false negatives}
+\item{nmb}{A named vector containing NMB assigned to true positives, true negatives, false positives and false negatives}
 
-\item{cutpoint_methods}{which cutpoint method(s) to return. The default (NULL) uses all the inbuilt methods.}
+\item{cutpoint_methods}{Which cutpoint method(s) to return. The default (NULL) uses all the inbuilt methods.}
 }
 \value{
-list
+Returns a \code{list}.
 }
 \description{
 Gets probability thresholds given predicted probabilities, outcomes and NMB.

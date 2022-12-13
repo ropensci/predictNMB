@@ -1,9 +1,13 @@
-#' Make a NMB sampler for use in \code{do_nmb_sim()} or \code{screen_simulation_inputs()}
+#' Make a NMB sampler for use in \code{do_nmb_sim()} or
+#' \code{screen_simulation_inputs()}
 #'
-#' @param outcome_cost The cost of the outcome. Must be provided if \code{wtp} and \code{qalys_lost} are not.
-#' Or can be used in addition to these arguments to represent additional cost to the health burden.
+#' @param outcome_cost The cost of the outcome. Must be provided if \code{wtp}
+#' and \code{qalys_lost} are not.
+#' Or can be used in addition to these arguments to represent additional cost
+#' to the health burden.
 #' @param wtp Willingness-to-pay.
-#' @param qalys_lost Quality-adjusted life years (QALYs) lost due to healthcare event being predicted.
+#' @param qalys_lost Quality-adjusted life years (QALYs) lost due to healthcare
+#' event being predicted.
 #' @param high_risk_group_treatment_effect The effect of the treatment provided
 #' to patients given high risk prediction. Can be a number of a function.
 #' Provide a function to incorporate uncertainty.
@@ -21,7 +25,7 @@
 #' sensible choice when using the resulting function for selecting the cutpoint.
 #' See \code{fx_nmb_training}. Defaults to \code{FALSE.}
 #' @param nboot The number of samples to use when creating a function that
-#' returns the expected values.
+#' returns the expected values. Defaults to 10000.
 #'
 #' @return function
 #' @export
@@ -54,10 +58,11 @@ get_nmb_sampler <- function(outcome_cost,
                             low_risk_group_treatment_cost = 0,
                             use_expected_values = FALSE,
                             nboot = 10000) {
-  if ((missing(wtp) | missing(qalys_lost)) & !(missing(wtp) & missing(qalys_lost))) {
+  if ((missing(wtp) | missing(qalys_lost)) &
+      !(missing(wtp) & missing(qalys_lost))) {
     stop(
-      "willingness to pay (wtp) or QALYS lost (qalys_lost) are provided but not both.",
-      "please provide both or neither."
+      "willingness to pay (wtp) or QALYS lost (qalys_lost) ",
+      "are provided but not both. Please provide both or neither."
     )
   }
   if (missing(outcome_cost) & missing(wtp)) {
@@ -101,10 +106,12 @@ get_nmb_sampler <- function(outcome_cost,
     }
 
     c(
-      "TP" = -(outcome_cost + wtp * qalys_lost) * (1 - high_risk_group_treatment_effect) - high_risk_group_treatment_cost,
+      "TP" = -(outcome_cost + wtp * qalys_lost) *
+        (1 - high_risk_group_treatment_effect) - high_risk_group_treatment_cost,
       "FP" = -high_risk_group_treatment_cost,
       "TN" = -low_risk_group_treatment_cost,
-      "FN" = -(outcome_cost + wtp * qalys_lost) * (1 - low_risk_group_treatment_effect) - low_risk_group_treatment_cost
+      "FN" = -(outcome_cost + wtp * qalys_lost) *
+        (1 - low_risk_group_treatment_effect) - low_risk_group_treatment_cost
     )
   }
 

@@ -1,14 +1,21 @@
 #' Create table summaries of simulation objects.
 #'
-#' @param x a \code{predictNMBscreen} or \code{predictNMBsim} object.
-#' @param what what to summarise: one of "nmb", "inb" or "cutpoints". Defaults to "nmb".
-#' @param inb_ref_col which cutpoint method to use as the reference strategy when calculating the incremental net monetary benefit. See \code{do_nmb_sim} for more information.
-#' @param agg_functions named list of functions to use to aggregate the selected values. Defaults to the median and 95\% interval.
-#' @param rename_vector a named vector for renaming the methods in the summary. The values of the vector are the default names and the names given are the desired names in the output.
-#' @param ... additional, optional arguments.
+#' @param x A \code{predictNMBscreen} or \code{predictNMBsim} object.
+#' @param what What to summarise: one of "nmb", "inb" or "cutpoints".
+#' Defaults to "nmb".
+#' @param inb_ref_col Which cutpoint method to use as the reference strategy
+#' when calculating the incremental net monetary benefit. See \code{do_nmb_sim}
+#' for more information.
+#' @param agg_functions A named list of functions to use to aggregate the
+#' selected values. Defaults to the median and 95\% interval.
+#' @param rename_vector A named vector for renaming the methods in the summary.
+#' The values of the vector are the default names and the names given are the
+#' desired names in the output.
+#' @param ... Additional, ignored arguments.
 #'
 #' @details Table summaries will be based on the `what` argument. Using "nmb" returns the simulated values for NMB, with no reference group;
 #' "inb" returns the difference between simulated values for NMB and a set strategy defined by `inb_ref_col`; "cutpoints" returns the cutpoints selected (0,1).
+#' @return Returns a \code{data.frame}.
 #' @export
 #' @examples
 #'
