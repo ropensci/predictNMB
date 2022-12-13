@@ -1,6 +1,8 @@
 ---
 title: "Detailed example: pressure injury model"
+link-citations: yes
 output: rmarkdown::html_vignette
+bibliography: predictNMB-vignettes.bib
 vignette: >
   %\VignetteIndexEntry{detailed-example}
   %\VignetteEngine{knitr::rmarkdown}
@@ -153,4 +155,6 @@ plot(sim_pup_screen, x_axis_var = "event_rate")
 
 The nice thing about our cost-effectiveness function is that it tends to follow the best threshold, regardless of AUC or event rate. In this case, it tends to follow the treat none decision as it moves across, which is why the strategies for treat none and cost-effective overlap in the plots. We can also see that the Youden index begins to look better at higher accuracy and higher incidence rates, but predicting what patients will get a pressure ulcer is challenging. 
 
-Ultimately at our given AUC and event rate, it might be best to stop using the intervention for the time being across all patients. This is actually the finding in the analysis this vignette was based off, a cost-effectiveness analysis of a pressure ulcer prevention care bundle by Whitty et al in 2017 ([10.1016/j.ijnurstu.2017.06.014](https://doi.org/10.1016/j.ijnurstu.2017.06.014)).
+Ultimately at our given AUC and event rate, it might be best to stop using the intervention for the time being across all patients. This is actually the finding in the analysis this vignette was based off, a cost-effectiveness analysis of a pressure ulcer prevention care bundle in 2017 [@WHITTY201735].
+
+# References
