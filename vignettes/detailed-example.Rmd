@@ -32,17 +32,12 @@ In this example, we simulate the decision process for an analyst at a hospital w
 Let's begin by generating some realistic costs and probabilities. Keep in mind, we are trying to avoid a negative event, so the net monetary benefit of every strategy in this scenario is going to be negative. In this case, negative values will represent costs, we aim to maximise these values (reduce costs). If we were also interested in improving quality of life, we could estimate quality-adjusted life years (QALYs), multiply them by a willingness-to-pay threshold (WTP), and add this gain or loss to our true positive and false negative estimates to signify the impact on the patient. For simplicity, let's say we're only interested in hospital costs.
 
 Model inputs:
-<br>
+
 - Mean incremental cost per pressure injury: $8,000 (SD 550)
-<br>
 - Per-patient cost of pressure ulcer prevention intervention (PUP): $140 (SD 20)
-<br>
 - Odds ratio of pressure ulcer with intervention compared to non-intervention: 0.96 (SD 0.03)
-<br>
 - AUC: 0.82 (SD 0.02)
-<br>
 - Hypothetical hospital pressure injury incidence/event rate: 0.1 (SD 0.02)
-<br>
 
 With these inputs, we can populate our confusion matrix (2x2 table), which helps us understand the outcomes resulting from correct and incorrect predictions.
 
