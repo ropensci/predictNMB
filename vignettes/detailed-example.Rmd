@@ -70,7 +70,7 @@ For a first pass, we want to see how our current values affect the estimated NMB
 ```{r}
 nmb_simulation <- do_nmb_sim(
   sample_size = 1000, # Evaluating a theoretical cohort of 1,000 patients
-  n_sims = 500, # The larger the number of samples, the longer it takes to run, but the more reproducible the results
+  n_sims = 500, # The larger the number of simulations, the longer it takes to run, but the more reliable the results
   n_valid = 10000, # Number of times the NMB is evaluated under each cutpoint
   sim_auc = 0.82, # The AUC of our proposed model
   event_rate = 0.1, # The incidence of pressure ulcers at our hypothetical hospital
@@ -80,20 +80,23 @@ nmb_simulation <- do_nmb_sim(
 
 nmb_simulation
 
-make_summary_table(nmb_simulation) # Get the median incremental NMB for each threshold selection method
+# Get the median incremental NMB for each threshold selection method
+make_summary_table(nmb_simulation) 
 
-plot(nmb_simulation, what = "cutpoints") # Demonstrates the range of selected cutpoints under each method
+# Demonstrates the range of selected cutpoints under each method
+plot(nmb_simulation, what = "cutpoints") 
 ```
 
 ```{r}
-plot(nmb_simulation, what = "inb", inb_ref_col = "all") # Compares the incremental benefit of each alternate strategy to our current practice (treat all)
+# Compares the incremental benefit of each alternate strategy to our current practice (treat all)
+plot(nmb_simulation, what = "inb", inb_ref_col = "all") 
 ```
 
-Our first pass shows treating none is likely to be an undesirable option, outperformed by every other method. If we set treat none as the reference strategy, it would have an NMB of \$0. Treat all looks like a pretty good choice, so we could consider making the intervention standard practice. The best option from a NMB perspective looks to be our value-optimising method. The first plot shows that this is actually a lower threshold than the Youden index and other equivalents, which means that we can be a bit less strict in deciding who gets the intervention. So our intervention might be worth using even for some low risk patients.
+Our first pass shows treating none is likely to be an undesirable option, outperformed by every other method. If we set treat none as the reference strategy, it would have an NMB of \$0. Treat all looks like a pretty good choice, so we could consider making the intervention standard practice. The best option from a NMB perspective looks to be our value optimising or the cost minimising method. The first plot shows that this is actually a lower threshold than the Youden index and other equivalents, which means that we can be a bit less strict in deciding who gets the intervention. So our intervention might be worth using even for some low risk patients.
 
 Results from the ROC-based methods like the Youden index and index of union are also quite uncertain, so we may not want to use them for these input parameters. However, the utility of these models and the threshold selection methods based on the ROC might improve as they get more accurate, or as the event rate increases; what we really want to know is how robust our results are to changes in the input parameters. This is the purpose of `screen_simulation_inputs()`. We can not only simulate from a distribution for our cost inputs, we can pass a vector to the AUC and incidence arguments to understand how these impact our findings.
 
-First, let's specify our sampler function for the confusion matrix. We can replace our inputs with normal distributions, as our values are all means. Make sure to pass distribution definitions within the function so that they are resampled every simulation, but pull the same value for the same patient.
+First, let's specify our sampler function for the confusion matrix. We can replace our inputs with single samples from distributions. Make sure use code within the function to generate the samples so that they are resampled every simulation. This propagates the uncertainty of these distributions into the NMB values in the many simulations that we run.
 
 ```{r}
 fx_nmb_sampler <- function() {
@@ -127,7 +130,7 @@ sim_pup_screen <- screen_simulation_inputs(
   n_sims = 500,
   n_valid = 10000,
   sim_auc = seq(0.72, 0.92, 0.05),
-  event_rate = c(0.02, 0.1, 0.18),
+  event_rate = c(0.05, 0.1, 0.15),
   cutpoint_methods = c("all", "none", "value_optimising", "youden"),
   fx_nmb_training = fx_nmb,
   fx_nmb_evaluation = fx_nmb_sampler,
@@ -138,15 +141,15 @@ stopCluster(cl)
 make_summary_table(sim_pup_screen)
 ```
 
-As our model accuracy increases and event rate decreases, treatment decisions based on the model, like the Youden index, begin to look better. There are reasonable gains from using the prediction model, even though there is some uncertainty. If the event rates 0.02, 0.10 and 0.18 corresponded to different wards of the hospital, our simulation could represent the estimated effectiveness of different strategies in each setting.
+As our model accuracy increases and event rate decreases, treatment decisions based on the model, like the Youden index, begin to look better. There are reasonable gains from using the prediction model, even though there is some uncertainty. If the event rates 0.05, 0.10 and 0.15 corresponded to different wards of the hospital, our simulation could represent the estimated effectiveness of different strategies in each setting.
 
 We can also represent these results visually.
 
 ```{r}
-plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.02))
-plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.10))
-plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.18))
-plot(sim_pup_screen, x_axis_var = "event_rate")
+plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.05), dodge_width = 0.01)
+plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.10), dodge_width = 0.01)
+plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.15), dodge_width = 0.01)
+plot(sim_pup_screen, x_axis_var = "event_rate", dodge_width = 0.0075)
 ```
 
 
