@@ -33,26 +33,27 @@ Let's begin by generating some realistic costs and probabilities. Keep in mind, 
 
 Model inputs:
 
-- Mean incremental cost per pressure injury: $8,000 (SD 550)
-- Per-patient cost of pressure ulcer prevention intervention (PUP): $140 (SD 20)
-- Odds ratio of pressure ulcer with intervention compared to non-intervention: 0.96 (SD 0.03)
-- AUC: 0.82 (SD 0.02)
-- Hypothetical hospital pressure injury incidence/event rate: 0.1 (SD 0.02)
+- Mean incremental cost per pressure injury: $9,324 (SE 814), adapted from a study of Australian public hospitals and updated to 2021 AUD [@nguyen2015pressure]
+- Per-patient cost of pressure ulcer prevention intervention (PUP): $161 (SE 49), taken from a 2017 study and updated to 2021 AUD [@WHITTY201735]
+- Hazard ratio of pressure ulcer with intervention compared to non-intervention: 0.58 (SE 0.43) [@chaboyer2016effect] 
+- AUC: 0.82 [@cichosz2019prediction]
+- Hypothetical hospital pressure injury incidence/event rate: 0.1 (SE 0.02)
 
-With these inputs, we can populate our confusion matrix (2x2 table), which helps us understand the outcomes resulting from correct and incorrect predictions.
+With these inputs, we can populate our confusion matrix (2 $\times$ 2 table), which helps us understand the outcomes resulting from correct and incorrect predictions.
+
 
 ## Model inputs
 
-First, we need to define our NMB function, which provides data for our simulation. In this case, the intervention is associated with a 4% reduction in the odds of a pressure ulcer. We can use a probability-weighted cost saving for successful prevention, at 8000*(0.96) = a small improvement of around \$320. After including \$140 in intervention costs, the net benefit is around \$180 for a successfully prevented pressure ulcer.
+First, we need to define our NMB function, which provides data for our simulation. In this case, the intervention is associated with a hazard ratio of 0.58 for pressure ulcer under intervention conditions compared to standard care. We can use a probability-weighted cost saving for successful prevention, at \$9324*(0.58) = an improvement of around \$5048. After including \$161 in intervention costs, the net benefit is around \$4888 for a successfully prevented pressure ulcer.
 
 The AUC is 0.82, which represents the proportion of random positive patients that received a higher probability of an injury than random negative patients (and vice versa). A useful property of the AUC is that it is the same no matter what probability threshold we use. In our case, an AUC of 0.82 means that the model will assign higher probabilities of a pressure ulcer to around 82% of patients who go on to develop an ulcer compared to patients that don't.
 
 ```{r}
 
 fx_nmb <- function() {
-  cost_of_pi <- 8000
-  eff_pup <- 0.96
-  cost_pup <- 140
+  cost_of_pi <- 9324
+  eff_pup <- 0.58
+  cost_pup <- 161
   c(
     "TP" = -cost_of_pi * eff_pup - cost_pup, # True positive = Correctly predicted event savings - intervention cost
     "FP" = -cost_pup, # False positive: Cost of (unnecessary) treatment from incorrectly predicted positive
@@ -88,18 +89,19 @@ plot(nmb_simulation, what = "cutpoints") # Demonstrates the range of selected cu
 plot(nmb_simulation, what = "inb", inb_ref_col = "all") # Compares the incremental benefit of each alternate strategy to our current practice (treat all)
 ```
 
-Our first pass shows treating all likely to be an undesirable option, outperformed by every other method (as the reference strategy, treat all has an NMB of 0). Treat none looks like a good choice; we should definitely consider not using the intervention and look for something else that either costs less or provides better results. However, this doesn't tell the full story. There may be some incremental benefit from using a model to select patients depending on how our input values change, as the median for value-optimising and cost-minimising strategies is higher than treating none. So our intervention might be worth using, but only for the highest risk patients. 
-Results from the ROC-based methods like the Youden index and index of union are quite uncertain, so we may not want to use them for these input parameters. However, the utility of these models and the threshold selection methods based on the ROC might improve as they get more accurate, or as the event rate increases; what we really want to know is how robust our results are to changes in the input parameters. This is the purpose of `screen_simulation_inputs()`. We can not only simulate from a distribution for our cost inputs, we can pass a vector to the AUC and incidence arguments to understand how these impact our findings.
+Our first pass shows treating none is likely to be an undesirable option, outperformed by every other method. If we set treat none as the reference strategy, it would have an NMB of \$0. Treat all looks like a pretty good choice, so we could consider making the intervention standard practice. The best option from a NMB perspective looks to be our value-optimising method. The first plot shows that this is actually a lower threshold than the Youden index and other equivalents, which means that we can be a bit less strict in deciding who gets the intervention. So our intervention might be worth using even for some low risk patients.
+
+Results from the ROC-based methods like the Youden index and index of union are also quite uncertain, so we may not want to use them for these input parameters. However, the utility of these models and the threshold selection methods based on the ROC might improve as they get more accurate, or as the event rate increases; what we really want to know is how robust our results are to changes in the input parameters. This is the purpose of `screen_simulation_inputs()`. We can not only simulate from a distribution for our cost inputs, we can pass a vector to the AUC and incidence arguments to understand how these impact our findings.
 
 First, let's specify our sampler function for the confusion matrix. We can replace our inputs with normal distributions, as our values are all means. Make sure to pass distribution definitions within the function so that they are resampled every simulation, but pull the same value for the same patient.
 
 ```{r}
 fx_nmb_sampler <- function() {
-  cost_of_pi <- rnorm(n = 1, mean = 8000, sd = 550)
-  eff_pup <- rnorm(n = 1, mean = 0.04, sd = 0.03)
-  cost_pup <- rnorm(n = 1, mean = 140, sd = 20)
+  cost_of_pi <- rnorm(n = 1, mean = 9234, sd = 814)
+  eff_pup <- rnorm(n = 1, mean = 0.58, sd = 0.43)
+  cost_pup <- rnorm(n = 1, mean = 161, sd = 49)
   c(
-    "TP" = -cost_of_pi * (1 - eff_pup) - cost_pup,
+    "TP" = -cost_of_pi * eff_pup - cost_pup,
     "FP" = -cost_pup,
     "TN" = 0,
     "FN" = -cost_of_pi
@@ -136,7 +138,7 @@ stopCluster(cl)
 make_summary_table(sim_pup_screen)
 ```
 
-As our event rate increases, treatment decisions based on the model, like the Youden index, begin to look better, but there are still very marginal gains from using the prediction model regardless of threshold. It might be that the intervention could be beneficial mostly in settings where patients are at a very high risk. If the event rates 0.02, 0.10 and 0.18 corresponded to different wards of the hospital, our simulation could represent the estimated effectiveness of different strategies in each setting.
+As our model accuracy increases and event rate decreases, treatment decisions based on the model, like the Youden index, begin to look better. There are reasonable gains from using the prediction model, even though there is some uncertainty. If the event rates 0.02, 0.10 and 0.18 corresponded to different wards of the hospital, our simulation could represent the estimated effectiveness of different strategies in each setting.
 
 We can also represent these results visually.
 
@@ -148,8 +150,8 @@ plot(sim_pup_screen, x_axis_var = "event_rate")
 ```
 
 
-The nice thing about our cost-effectiveness function is that it tends to follow the best threshold, regardless of AUC or event rate. In this case, it tends to follow the treat none decision as it moves across, which is why the strategies for treat none and cost-effective overlap in the plots. We can also see that the Youden index begins to look better at higher accuracy and higher incidence rates, but predicting what patients will get a pressure ulcer is challenging. 
+The nice thing about our cost-effectiveness function is that it tends to follow the best threshold, regardless of AUC or event rate. In this case, it tends to dynamically follow the best treatment decision as it moves across, which is why the value optimising strategy tends to overlap with the best alternative in the plots. We can also see that the Youden index begins to look better at higher accuracy and higher incidence rates, but predicting what patients will get a pressure ulcer is challenging. 
 
-Ultimately at our given AUC and event rate, it might be best to stop using the intervention for the time being across all patients. This is actually the finding in the analysis this vignette was based off, a cost-effectiveness analysis of a pressure ulcer prevention care bundle in 2017 [@WHITTY201735].
+Ultimately at our given AUC and event rate, the prediction model might be worth using. In the original study, Whitty and colleagues found that the prevention program was not cost-effective; however, by combining it with a prediction model, it could be worth implementing, especially in wards where the event might be rarer. [@WHITTY201735].
 
 # References
