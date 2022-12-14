@@ -35,7 +35,7 @@ Model inputs:
 
 - Mean incremental cost per pressure injury: $9,324 (SE 814), adapted from a study of Australian public hospitals and updated to 2021 AUD [@nguyen2015pressure]
 - Per-patient cost of pressure ulcer prevention intervention (PUP): $161 (SE 49), taken from a 2017 study and updated to 2021 AUD [@WHITTY201735]
-- Hazard ratio of pressure ulcer with intervention compared to non-intervention: 0.58 (SE 0.43) [@chaboyer2016effect] 
+- Hazard ratio of pressure ulcer with intervention compared to non-intervention: 0.58 (log hazard ratio SE 0.43) [@chaboyer2016effect] 
 - AUC: 0.82 [@cichosz2019prediction]
 - Hypothetical hospital pressure injury incidence/event rate: 0.1 (SE 0.02)
 
@@ -98,7 +98,7 @@ First, let's specify our sampler function for the confusion matrix. We can repla
 ```{r}
 fx_nmb_sampler <- function() {
   cost_of_pi <- rnorm(n = 1, mean = 9234, sd = 814)
-  eff_pup <- rnorm(n = 1, mean = 0.58, sd = 0.43)
+  eff_pup <- exp(rnorm(n = 1, mean = log(0.58), sd = 0.43))
   cost_pup <- rnorm(n = 1, mean = 161, sd = 49)
   c(
     "TP" = -cost_of_pi * eff_pup - cost_pup,
