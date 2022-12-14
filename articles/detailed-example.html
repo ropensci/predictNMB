@@ -126,8 +126,7 @@ from a study of Australian public hospitals and updated to 2021 AUD
 $161 (SE 49), taken from a 2017 study and updated to 2021 AUD <span class="citation">(<a href="#ref-WHITTY201735" role="doc-biblioref">Whitty et al. 2017</a>)</span>
 </li>
 <li>Hazard ratio of pressure ulcer with intervention compared to
-non-intervention: 0.58 (SE 0.43) <span class="citation">(<a href="#ref-chaboyer2016effect" role="doc-biblioref">Chaboyer et al.
-2016</a>)</span>
+non-intervention: 0.58 (log hazard ratio SE 0.43) <span class="citation">(<a href="#ref-chaboyer2016effect" role="doc-biblioref">Chaboyer et al. 2016</a>)</span>
 </li>
 <li>AUC: 0.82 <span class="citation">(<a href="#ref-cichosz2019prediction" role="doc-biblioref">Cichosz et al.
 2019</a>)</span>
@@ -179,7 +178,7 @@ Monte Carlo methods to sample from input distributions.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nmb_simulation</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_nmb_sim.html">do_nmb_sim</a></span><span class="op">(</span></span>
 <span>  sample_size <span class="op">=</span> <span class="fl">1000</span>, <span class="co"># Evaluating a theoretical cohort of 1,000 patients</span></span>
-<span>  n_sims <span class="op">=</span> <span class="fl">500</span>, <span class="co"># The larger the number of samples, the longer it takes to run, but the more reproducible the results</span></span>
+<span>  n_sims <span class="op">=</span> <span class="fl">500</span>, <span class="co"># The larger the number of simulations, the longer it takes to run, but the more reliable the results</span></span>
 <span>  n_valid <span class="op">=</span> <span class="fl">10000</span>, <span class="co"># Number of times the NMB is evaluated under each cutpoint</span></span>
 <span>  sim_auc <span class="op">=</span> <span class="fl">0.82</span>, <span class="co"># The AUC of our proposed model</span></span>
 <span>  event_rate <span class="op">=</span> <span class="fl">0.1</span>, <span class="co"># The incidence of pressure ulcers at our hypothetical hospital</span></span>
@@ -197,34 +196,37 @@ Monte Carlo methods to sample from input distributions.</p>
 <span><span class="co">#&gt; Simulated AUC:  0.82</span></span>
 <span><span class="co">#&gt; Simulated event rate:  0.1</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span><span class="va">nmb_simulation</span><span class="op">)</span> <span class="co"># Get the median incremental NMB for each threshold selection method</span></span>
+<span><span class="co"># Get the median incremental NMB for each threshold selection method</span></span>
+<span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span><span class="va">nmb_simulation</span><span class="op">)</span> </span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 3</span></span></span>
 <span><span class="co">#&gt;   method           median `95% CI`        </span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> all               -<span style="color: #BB0000;">703.</span> -737.2 to -669.6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> cost minimising   -<span style="color: #BB0000;">668.</span> -705.3 to -630.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> index of union    -<span style="color: #BB0000;">695.</span> -745.9 to -652.9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> none              -<span style="color: #BB0000;">935.</span> -993.5 to -876.9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> prod sens spec    -<span style="color: #BB0000;">696.</span> -748.4 to -652.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> roc01             -<span style="color: #BB0000;">695.</span> -742 to -653.4  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> value optimising  -<span style="color: #BB0000;">670.</span> -709.7 to -632  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> youden            -<span style="color: #BB0000;">695.</span> -758.8 to -647.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> all               -<span style="color: #BB0000;">702.</span> -734.8 to -672.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> cost minimising   -<span style="color: #BB0000;">667.</span> -701.8 to -633.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> index of union    -<span style="color: #BB0000;">697.</span> -738.2 to -655.7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> none              -<span style="color: #BB0000;">932.</span> -989.3 to -881.6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> prod sens spec    -<span style="color: #BB0000;">697.</span> -744 to -655.3  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> roc01             -<span style="color: #BB0000;">696.</span> -737.7 to -656.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> value optimising  -<span style="color: #BB0000;">669.</span> -704.8 to -634.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> youden            -<span style="color: #BB0000;">698.</span> -751.1 to -653.1</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"cutpoints"</span><span class="op">)</span> <span class="co"># Demonstrates the range of selected cutpoints under each method</span></span></code></pre></div>
+<span><span class="co"># Demonstrates the range of selected cutpoints under each method</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"cutpoints"</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="detailed-example_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"inb"</span>, inb_ref_col <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span> <span class="co"># Compares the incremental benefit of each alternate strategy to our current practice (treat all)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Compares the incremental benefit of each alternate strategy to our current practice (treat all)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"inb"</span>, inb_ref_col <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="detailed-example_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
 <p>Our first pass shows treating none is likely to be an undesirable
 option, outperformed by every other method. If we set treat none as the
 reference strategy, it would have an NMB of $0. Treat all looks like a
 pretty good choice, so we could consider making the intervention
 standard practice. The best option from a NMB perspective looks to be
-our value-optimising method. The first plot shows that this is actually
-a lower threshold than the Youden index and other equivalents, which
-means that we can be a bit less strict in deciding who gets the
-intervention. So our intervention might be worth using even for some low
-risk patients.</p>
+our value optimising or the cost minimising method. The first plot shows
+that this is actually a lower threshold than the Youden index and other
+equivalents, which means that we can be a bit less strict in deciding
+who gets the intervention. So our intervention might be worth using even
+for some low risk patients.</p>
 <p>Results from the ROC-based methods like the Youden index and index of
 union are also quite uncertain, so we may not want to use them for these
 input parameters. However, the utility of these models and the threshold
@@ -236,14 +238,15 @@ simulate from a distribution for our cost inputs, we can pass a vector
 to the AUC and incidence arguments to understand how these impact our
 findings.</p>
 <p>First, let’s specify our sampler function for the confusion matrix.
-We can replace our inputs with normal distributions, as our values are
-all means. Make sure to pass distribution definitions within the
-function so that they are resampled every simulation, but pull the same
-value for the same patient.</p>
+We can replace our inputs with single samples from distributions. Make
+sure use code within the function to generate the samples so that they
+are resampled every simulation. This propagates the uncertainty of these
+distributions into the NMB values in the many simulations that we
+run.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fx_nmb_sampler</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">cost_of_pi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, mean <span class="op">=</span> <span class="fl">9234</span>, sd <span class="op">=</span> <span class="fl">814</span><span class="op">)</span></span>
-<span>  <span class="va">eff_pup</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, mean <span class="op">=</span> <span class="fl">0.58</span>, sd <span class="op">=</span> <span class="fl">0.43</span><span class="op">)</span></span>
+<span>  <span class="va">eff_pup</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.58</span><span class="op">)</span>, sd <span class="op">=</span> <span class="fl">0.43</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="va">cost_pup</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, mean <span class="op">=</span> <span class="fl">161</span>, sd <span class="op">=</span> <span class="fl">49</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"TP"</span> <span class="op">=</span> <span class="op">-</span><span class="va">cost_of_pi</span> <span class="op">*</span> <span class="va">eff_pup</span> <span class="op">-</span> <span class="va">cost_pup</span>,</span>
@@ -254,14 +257,14 @@ value for the same patient.</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">fx_nmb_sampler</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -7747.3371  -169.6792     0.0000 -8285.3341</span></span>
-<span><span class="fu">fx_nmb_sampler</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -4205.8175  -193.4739     0.0000 -9212.3192</span></span>
-<span><span class="fu">fx_nmb_sampler</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;          TP          FP          TN          FN </span></span>
-<span><span class="co">#&gt; -11714.4137   -211.6667      0.0000  -9576.0972</span></span></code></pre></div>
+<span><span class="co">#&gt; -10507.8405   -213.5298      0.0000  -9220.6099</span></span>
+<span><span class="fu">fx_nmb_sampler</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -4928.0110  -147.5554     0.0000 -8333.9254</span></span>
+<span><span class="fu">fx_nmb_sampler</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -2638.6411  -161.7456     0.0000 -9819.3779</span></span></code></pre></div>
 <p>The sampler function shows that we can expect some significant
 variation, especially due to the probability that our intervention is
 effective. It’s always possible that an intervention could lead to worse
@@ -286,7 +289,7 @@ alternative, model-guided strategies, using the “value_optimising” and
 <span>  n_sims <span class="op">=</span> <span class="fl">500</span>,</span>
 <span>  n_valid <span class="op">=</span> <span class="fl">10000</span>,</span>
 <span>  sim_auc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.72</span>, <span class="fl">0.92</span>, <span class="fl">0.05</span><span class="op">)</span>,</span>
-<span>  event_rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.02</span>, <span class="fl">0.1</span>, <span class="fl">0.18</span><span class="op">)</span>,</span>
+<span>  event_rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">0.1</span>, <span class="fl">0.15</span><span class="op">)</span>,</span>
 <span>  cutpoint_methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"value_optimising"</span>, <span class="st">"youden"</span><span class="op">)</span>,</span>
 <span>  fx_nmb_training <span class="op">=</span> <span class="va">fx_nmb</span>,</span>
 <span>  fx_nmb_evaluation <span class="op">=</span> <span class="va">fx_nmb_sampler</span>,</span>
@@ -295,85 +298,85 @@ alternative, model-guided strategies, using the “value_optimising” and
 <span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">stopCluster</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span><span class="va">sim_pup_screen</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    sim_auc event_rate all_median       all_95% CI none_median</span></span>
-<span><span class="co">#&gt; 1     0.72       0.02    -266.00  -448.1 to -77.5     -182.65</span></span>
-<span><span class="co">#&gt; 2     0.72       0.10    -707.85  -1541.5 to 11.9     -921.59</span></span>
-<span><span class="co">#&gt; 3     0.72       0.18   -1148.14 -2623.1 to 227.2    -1665.48</span></span>
-<span><span class="co">#&gt; 4     0.77       0.02    -274.26    -458 to -98.5     -184.34</span></span>
-<span><span class="co">#&gt; 5     0.77       0.10    -666.84  -1499.2 to 19.9     -920.27</span></span>
-<span><span class="co">#&gt; 6     0.77       0.18   -1068.19 -2444.7 to 297.6    -1652.16</span></span>
-<span><span class="co">#&gt; 7     0.82       0.02    -260.46  -447.3 to -85.3     -184.82</span></span>
-<span><span class="co">#&gt; 8     0.82       0.10    -705.26    -1477 to 10.9     -923.27</span></span>
-<span><span class="co">#&gt; 9     0.82       0.18   -1118.31 -2581.5 to 348.7    -1654.63</span></span>
-<span><span class="co">#&gt; 10    0.87       0.02    -278.32 -471.9 to -112.1     -183.28</span></span>
-<span><span class="co">#&gt; 11    0.87       0.10    -732.26  -1534.6 to 41.2     -927.54</span></span>
-<span><span class="co">#&gt; 12    0.87       0.18   -1119.80   -2536.4 to 314    -1662.62</span></span>
-<span><span class="co">#&gt; 13    0.92       0.02    -265.03    -445.3 to -93     -182.25</span></span>
-<span><span class="co">#&gt; 14    0.92       0.10    -719.66   -1515.7 to 110     -921.93</span></span>
-<span><span class="co">#&gt; 15    0.92       0.18   -1067.10 -2720.5 to 394.2    -1658.81</span></span>
+<span><span class="co">#&gt;    sim_auc event_rate all_median        all_95% CI none_median</span></span>
+<span><span class="co">#&gt; 1     0.72       0.05    -434.80  -756.7 to -232.4     -461.18</span></span>
+<span><span class="co">#&gt; 2     0.72       0.10    -707.69 -1474.9 to -379.8     -921.48</span></span>
+<span><span class="co">#&gt; 3     0.72       0.15    -979.35   -2060 to -485.9    -1385.23</span></span>
+<span><span class="co">#&gt; 4     0.77       0.05    -441.24  -782.5 to -254.2     -462.17</span></span>
+<span><span class="co">#&gt; 5     0.77       0.10    -680.68   -1417 to -366.4     -924.39</span></span>
+<span><span class="co">#&gt; 6     0.77       0.15    -938.08 -1976.6 to -484.8    -1384.59</span></span>
+<span><span class="co">#&gt; 7     0.82       0.05    -424.31    -796 to -234.7     -462.56</span></span>
+<span><span class="co">#&gt; 8     0.82       0.10    -705.92 -1405.9 to -398.3     -928.06</span></span>
+<span><span class="co">#&gt; 9     0.82       0.15    -969.67 -1992.1 to -466.2    -1372.70</span></span>
+<span><span class="co">#&gt; 10    0.87       0.05    -450.68  -809.3 to -259.1     -462.72</span></span>
+<span><span class="co">#&gt; 11    0.87       0.10    -717.18 -1456.5 to -383.2     -927.20</span></span>
+<span><span class="co">#&gt; 12    0.87       0.15    -965.33   -2086 to -485.6    -1387.77</span></span>
+<span><span class="co">#&gt; 13    0.92       0.05    -424.32    -752.9 to -251     -456.80</span></span>
+<span><span class="co">#&gt; 14    0.92       0.10    -711.58 -1466.5 to -372.7     -922.75</span></span>
+<span><span class="co">#&gt; 15    0.92       0.15    -940.35 -2211.8 to -473.2    -1387.05</span></span>
 <span><span class="co">#&gt;           none_95% CI value optimising_median value optimising_95% CI</span></span>
-<span><span class="co">#&gt; 1    -224.3 to -140.3                 -175.18        -246.4 to -107.3</span></span>
-<span><span class="co">#&gt; 2   -1086.4 to -763.3                 -706.40        -1442.9 to -62.1</span></span>
-<span><span class="co">#&gt; 3  -1978.1 to -1393.7                -1147.05          -2526.1 to 112</span></span>
-<span><span class="co">#&gt; 4    -226.2 to -147.8                 -174.92        -254.6 to -100.1</span></span>
-<span><span class="co">#&gt; 5   -1081.8 to -758.2                 -669.88          -1370 to -28.9</span></span>
-<span><span class="co">#&gt; 6    -1955.7 to -1353                -1070.04        -2395.8 to 186.7</span></span>
-<span><span class="co">#&gt; 7    -224.8 to -145.1                 -163.47         -260.4 to -78.2</span></span>
-<span><span class="co">#&gt; 8   -1114.2 to -767.3                 -674.90        -1360.1 to -79.8</span></span>
-<span><span class="co">#&gt; 9  -2006.2 to -1382.1                -1112.59        -2539.1 to 290.2</span></span>
-<span><span class="co">#&gt; 10   -227.1 to -148.6                 -162.11         -287.5 to -71.5</span></span>
-<span><span class="co">#&gt; 11  -1098.6 to -774.7                 -685.19           -1395.6 to 34</span></span>
-<span><span class="co">#&gt; 12 -1946.2 to -1370.7                -1106.02        -2414.8 to 303.4</span></span>
-<span><span class="co">#&gt; 13   -222.3 to -144.2                 -151.07         -247.2 to -40.6</span></span>
-<span><span class="co">#&gt; 14  -1101.8 to -767.4                 -657.29           -1308.5 to 98</span></span>
-<span><span class="co">#&gt; 15 -1942.5 to -1378.8                -1023.09          -2569 to 350.8</span></span>
+<span><span class="co">#&gt; 1      -553.4 to -370                 -394.03        -628.1 to -256.7</span></span>
+<span><span class="co">#&gt; 2   -1098.5 to -769.2                 -708.40       -1395.4 to -417.9</span></span>
+<span><span class="co">#&gt; 3  -1653.7 to -1163.1                 -985.67       -1990.6 to -522.5</span></span>
+<span><span class="co">#&gt; 4    -544.7 to -381.6                 -399.01        -645.3 to -249.5</span></span>
+<span><span class="co">#&gt; 5   -1094.5 to -749.2                 -679.07         -1309 to -417.8</span></span>
+<span><span class="co">#&gt; 6    -1631.3 to -1122                 -939.28       -1921.2 to -500.5</span></span>
+<span><span class="co">#&gt; 7    -554.2 to -369.3                 -369.12          -652.3 to -240</span></span>
+<span><span class="co">#&gt; 8   -1087.6 to -756.3                 -680.83       -1292.1 to -406.3</span></span>
+<span><span class="co">#&gt; 9  -1668.5 to -1155.7                 -955.56       -1950.1 to -487.5</span></span>
+<span><span class="co">#&gt; 10   -556.5 to -378.9                 -375.87        -645.1 to -220.7</span></span>
+<span><span class="co">#&gt; 11    -1085 to -771.7                 -671.88         -1300 to -382.7</span></span>
+<span><span class="co">#&gt; 12 -1631.1 to -1134.2                 -933.92       -1958.8 to -490.1</span></span>
+<span><span class="co">#&gt; 13   -534.6 to -376.4                 -341.21        -584.9 to -204.6</span></span>
+<span><span class="co">#&gt; 14  -1099.2 to -776.2                 -650.38       -1303.1 to -360.5</span></span>
+<span><span class="co">#&gt; 15 -1622.6 to -1139.8                 -887.70       -2024.6 to -452.9</span></span>
 <span><span class="co">#&gt;    youden_median     youden_95% CI</span></span>
-<span><span class="co">#&gt; 1        -183.90     -301.3 to -76</span></span>
-<span><span class="co">#&gt; 2        -760.87 -1298.3 to -235.6</span></span>
-<span><span class="co">#&gt; 3       -1278.72 -2288.1 to -323.9</span></span>
-<span><span class="co">#&gt; 4        -179.48   -310.7 to -76.5</span></span>
-<span><span class="co">#&gt; 5        -713.30   -1261 to -150.3</span></span>
-<span><span class="co">#&gt; 6       -1215.23   -2156.8 to -262</span></span>
-<span><span class="co">#&gt; 7        -162.96   -297.5 to -59.9</span></span>
-<span><span class="co">#&gt; 8        -708.07 -1252.9 to -154.3</span></span>
-<span><span class="co">#&gt; 9       -1196.39 -2272.2 to -142.8</span></span>
-<span><span class="co">#&gt; 10       -164.94   -306.4 to -57.4</span></span>
-<span><span class="co">#&gt; 11       -706.08  -1306.6 to -71.8</span></span>
-<span><span class="co">#&gt; 12      -1164.00  -2287.5 to -88.9</span></span>
-<span><span class="co">#&gt; 13       -152.09   -270.9 to -28.8</span></span>
-<span><span class="co">#&gt; 14       -670.88    -1286.7 to 6.9</span></span>
-<span><span class="co">#&gt; 15      -1078.77  -2443.2 to 161.7</span></span></code></pre></div>
+<span><span class="co">#&gt; 1        -394.77  -603.8 to -263.7</span></span>
+<span><span class="co">#&gt; 2        -755.43 -1253.1 to -505.8</span></span>
+<span><span class="co">#&gt; 3       -1089.62 -1824.5 to -672.2</span></span>
+<span><span class="co">#&gt; 4        -398.05    -600.5 to -261</span></span>
+<span><span class="co">#&gt; 5        -726.79 -1214.1 to -470.8</span></span>
+<span><span class="co">#&gt; 6       -1042.71 -1724.2 to -645.1</span></span>
+<span><span class="co">#&gt; 7        -363.49      -649 to -240</span></span>
+<span><span class="co">#&gt; 8        -710.30 -1182.4 to -462.7</span></span>
+<span><span class="co">#&gt; 9       -1024.42 -1733.5 to -595.1</span></span>
+<span><span class="co">#&gt; 10       -374.55  -634.2 to -223.8</span></span>
+<span><span class="co">#&gt; 11       -706.14 -1217.6 to -424.1</span></span>
+<span><span class="co">#&gt; 12       -989.36 -1815.1 to -594.8</span></span>
+<span><span class="co">#&gt; 13       -341.02  -580.6 to -209.2</span></span>
+<span><span class="co">#&gt; 14       -659.30 -1283.2 to -383.6</span></span>
+<span><span class="co">#&gt; 15       -920.70 -2005.6 to -533.6</span></span></code></pre></div>
 <p>As our model accuracy increases and event rate decreases, treatment
 decisions based on the model, like the Youden index, begin to look
 better. There are reasonable gains from using the prediction model, even
-though there is some uncertainty. If the event rates 0.02, 0.10 and 0.18
+though there is some uncertainty. If the event rates 0.05, 0.10 and 0.15
 corresponded to different wards of the hospital, our simulation could
 represent the estimated effectiveness of different strategies in each
 setting.</p>
 <p>We can also represent these results visually.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_pup_screen</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.02</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_pup_screen</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span>, dodge_width <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Varying simulation inputs, other than sim_auc, are being held constant:</span></span>
-<span><span class="co">#&gt; event_rate: 0.02</span></span></code></pre></div>
+<span><span class="co">#&gt; event_rate: 0.05</span></span></code></pre></div>
 <p><img src="detailed-example_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_pup_screen</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.10</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_pup_screen</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.10</span><span class="op">)</span>, dodge_width <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Varying simulation inputs, other than sim_auc, are being held constant:</span></span>
 <span><span class="co">#&gt; event_rate: 0.1</span></span></code></pre></div>
 <p><img src="detailed-example_files/figure-html/unnamed-chunk-7-2.png" width="672"></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_pup_screen</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.18</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_pup_screen</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.15</span><span class="op">)</span>, dodge_width <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Varying simulation inputs, other than sim_auc, are being held constant:</span></span>
-<span><span class="co">#&gt; event_rate: 0.18</span></span></code></pre></div>
+<span><span class="co">#&gt; event_rate: 0.15</span></span></code></pre></div>
 <p><img src="detailed-example_files/figure-html/unnamed-chunk-7-3.png" width="672"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_pup_screen</span>, x_axis_var <span class="op">=</span> <span class="st">"event_rate"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_pup_screen</span>, x_axis_var <span class="op">=</span> <span class="st">"event_rate"</span>, dodge_width <span class="op">=</span> <span class="fl">0.0075</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Varying simulation inputs, other than event_rate, are being held constant:</span></span>
