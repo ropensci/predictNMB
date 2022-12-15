@@ -17,7 +17,7 @@
 <link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Detailed example: pressure injury model">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Detailed example: pressure injury model">
 <meta property="og:description" content="predictNMB">
 <meta property="og:image" content="https://rwparsons.github.io/predictNMB/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -201,14 +201,14 @@ Monte Carlo methods to sample from input distributions.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 3</span></span></span>
 <span><span class="co">#&gt;   method           median `95% CI`        </span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> all               -<span style="color: #BB0000;">701.</span> -731.5 to -670.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> cost minimising   -<span style="color: #BB0000;">665.</span> -698.8 to -633.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> index of union    -<span style="color: #BB0000;">693.</span> -738.8 to -651.3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> none              -<span style="color: #BB0000;">931.</span> -983.7 to -877.8</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> prod sens spec    -<span style="color: #BB0000;">692.</span> -739.5 to -651.3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> roc01             -<span style="color: #BB0000;">692.</span> -736.5 to -651.3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> value optimising  -<span style="color: #BB0000;">668.</span> -703.5 to -634.3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> youden            -<span style="color: #BB0000;">693.</span> -748.2 to -647.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> all               -<span style="color: #BB0000;">701.</span> -732.1 to -672.8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> cost minimising   -<span style="color: #BB0000;">666.</span> -699.1 to -634.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> index of union    -<span style="color: #BB0000;">692.</span> -743.5 to -652.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> none              -<span style="color: #BB0000;">931.</span> -984.7 to -882.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> prod sens spec    -<span style="color: #BB0000;">692.</span> -748.1 to -651.6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> roc01             -<span style="color: #BB0000;">692.</span> -739.1 to -652.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> value optimising  -<span style="color: #BB0000;">669.</span> -701.3 to -634.7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> youden            -<span style="color: #BB0000;">693.</span> -756.3 to -650</span></span>
 <span></span>
 <span><span class="co"># Demonstrates the range of selected cutpoints under each method</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"cutpoints"</span><span class="op">)</span> </span></code></pre></div>
@@ -257,14 +257,14 @@ run.</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">fx_nmb_sampler</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -3666.4701  -150.2634     0.0000 -7784.2980</span></span>
+<span><span class="co">#&gt;          TP          FP          TN          FN </span></span>
+<span><span class="co">#&gt;  -9924.3367   -300.3074      0.0000 -10522.9775</span></span>
 <span><span class="fu">fx_nmb_sampler</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -4812.3558  -115.0957     0.0000 -9949.4416</span></span>
+<span><span class="co">#&gt; -4499.5031  -167.0261     0.0000 -7520.6097</span></span>
 <span><span class="fu">fx_nmb_sampler</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2668.8641  -108.1041     0.0000 -8156.3638</span></span></code></pre></div>
+<span><span class="co">#&gt; -6234.4977  -184.5533     0.0000 -9564.2883</span></span></code></pre></div>
 <p>The sampler function shows that we can expect some significant
 variation, especially due to the probability that our intervention is
 effective. It’s always possible that an intervention could lead to worse
@@ -299,53 +299,53 @@ alternative, model-guided strategies, using the “value_optimising” and
 <span></span>
 <span><span class="fu"><a href="../reference/make_summary_table.html">make_summary_table</a></span><span class="op">(</span><span class="va">sim_pup_screen</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    sim_auc event_rate all_median        all_95% CI none_median</span></span>
-<span><span class="co">#&gt; 1     0.72       0.05    -429.91  -739.4 to -235.9     -460.26</span></span>
-<span><span class="co">#&gt; 2     0.72       0.10    -707.82 -1495.9 to -374.6     -924.34</span></span>
-<span><span class="co">#&gt; 3     0.72       0.15    -984.72 -2074.2 to -484.7    -1388.93</span></span>
-<span><span class="co">#&gt; 4     0.77       0.05    -442.61  -775.8 to -252.1     -460.36</span></span>
-<span><span class="co">#&gt; 5     0.77       0.10    -679.11 -1432.3 to -362.8     -927.35</span></span>
-<span><span class="co">#&gt; 6     0.77       0.15    -938.58 -1945.9 to -478.3    -1371.41</span></span>
-<span><span class="co">#&gt; 7     0.82       0.05    -422.14  -801.6 to -239.5     -462.59</span></span>
-<span><span class="co">#&gt; 8     0.82       0.10    -707.28 -1425.7 to -393.3     -927.52</span></span>
-<span><span class="co">#&gt; 9     0.82       0.15    -972.34 -2030.7 to -461.1    -1376.22</span></span>
-<span><span class="co">#&gt; 10    0.87       0.05    -450.61  -844.7 to -259.3     -467.31</span></span>
-<span><span class="co">#&gt; 11    0.87       0.10    -717.20 -1437.6 to -386.8     -927.69</span></span>
-<span><span class="co">#&gt; 12    0.87       0.15    -964.61   -2065 to -485.2    -1385.08</span></span>
-<span><span class="co">#&gt; 13    0.92       0.05    -426.78  -764.4 to -254.9     -454.21</span></span>
-<span><span class="co">#&gt; 14    0.92       0.10    -708.49 -1436.5 to -372.7     -923.14</span></span>
-<span><span class="co">#&gt; 15    0.92       0.15    -942.95 -2202.2 to -474.8    -1386.48</span></span>
+<span><span class="co">#&gt; 1     0.72       0.05    -429.70  -755.2 to -231.6     -458.49</span></span>
+<span><span class="co">#&gt; 2     0.72       0.10    -704.64 -1488.9 to -383.9     -923.91</span></span>
+<span><span class="co">#&gt; 3     0.72       0.15    -979.63 -2045.6 to -489.5    -1386.24</span></span>
+<span><span class="co">#&gt; 4     0.77       0.05    -446.36  -786.6 to -251.5     -460.09</span></span>
+<span><span class="co">#&gt; 5     0.77       0.10    -688.20 -1393.6 to -373.7     -932.13</span></span>
+<span><span class="co">#&gt; 6     0.77       0.15    -937.54 -1986.3 to -482.2    -1374.75</span></span>
+<span><span class="co">#&gt; 7     0.82       0.05    -424.37  -791.8 to -237.7     -465.89</span></span>
+<span><span class="co">#&gt; 8     0.82       0.10    -703.98 -1442.3 to -397.9     -919.79</span></span>
+<span><span class="co">#&gt; 9     0.82       0.15    -978.14 -2034.1 to -461.6    -1379.36</span></span>
+<span><span class="co">#&gt; 10    0.87       0.05    -454.81  -828.8 to -256.2     -461.09</span></span>
+<span><span class="co">#&gt; 11    0.87       0.10    -715.78 -1453.8 to -389.1     -927.11</span></span>
+<span><span class="co">#&gt; 12    0.87       0.15    -960.53 -1999.8 to -479.8    -1385.70</span></span>
+<span><span class="co">#&gt; 13    0.92       0.05    -430.38  -746.4 to -257.7     -458.89</span></span>
+<span><span class="co">#&gt; 14    0.92       0.10    -714.67 -1443.7 to -374.1     -924.41</span></span>
+<span><span class="co">#&gt; 15    0.92       0.15    -934.60 -2272.4 to -469.2    -1383.45</span></span>
 <span><span class="co">#&gt;           none_95% CI value optimising_median value optimising_95% CI</span></span>
-<span><span class="co">#&gt; 1    -552.4 to -371.2                 -392.65        -616.4 to -254.8</span></span>
-<span><span class="co">#&gt; 2   -1094.8 to -760.3                 -712.66       -1404.8 to -420.9</span></span>
-<span><span class="co">#&gt; 3    -1645.7 to -1160                 -988.60         -2029 to -518.3</span></span>
-<span><span class="co">#&gt; 4    -551.3 to -380.2                 -396.63        -657.7 to -253.3</span></span>
-<span><span class="co">#&gt; 5     -1088.2 to -734                 -674.20       -1304.9 to -385.1</span></span>
-<span><span class="co">#&gt; 6  -1637.5 to -1129.7                 -929.61       -1876.6 to -502.7</span></span>
-<span><span class="co">#&gt; 7    -543.5 to -368.9                 -368.74            -662 to -231</span></span>
-<span><span class="co">#&gt; 8   -1103.9 to -754.1                 -676.63       -1310.3 to -386.7</span></span>
-<span><span class="co">#&gt; 9  -1659.4 to -1158.7                 -949.19       -2003.9 to -482.1</span></span>
-<span><span class="co">#&gt; 10   -545.5 to -379.5                 -373.05        -660.5 to -228.8</span></span>
-<span><span class="co">#&gt; 11  -1098.9 to -770.3                 -677.73       -1336.5 to -386.1</span></span>
-<span><span class="co">#&gt; 12   -1642.5 to -1141                 -933.09       -1912.7 to -505.6</span></span>
-<span><span class="co">#&gt; 13     -544.7 to -375                 -337.81        -595.8 to -206.1</span></span>
-<span><span class="co">#&gt; 14    -1101 to -765.4                 -645.04       -1323.4 to -352.3</span></span>
-<span><span class="co">#&gt; 15 -1645.4 to -1142.4                 -897.10       -2084.4 to -442.1</span></span>
+<span><span class="co">#&gt; 1    -549.8 to -372.8                 -394.65          -634 to -262.2</span></span>
+<span><span class="co">#&gt; 2   -1099.6 to -756.4                 -697.99       -1409.7 to -409.5</span></span>
+<span><span class="co">#&gt; 3  -1641.2 to -1160.6                 -987.57       -2006.7 to -527.7</span></span>
+<span><span class="co">#&gt; 4    -556.1 to -380.9                 -396.85        -654.3 to -257.8</span></span>
+<span><span class="co">#&gt; 5   -1092.8 to -754.5                 -688.21       -1289.9 to -398.9</span></span>
+<span><span class="co">#&gt; 6  -1637.3 to -1109.7                 -933.59       -1905.3 to -511.9</span></span>
+<span><span class="co">#&gt; 7    -541.4 to -370.9                 -364.96        -640.7 to -232.7</span></span>
+<span><span class="co">#&gt; 8   -1092.4 to -760.6                 -673.58       -1307.5 to -405.4</span></span>
+<span><span class="co">#&gt; 9  -1647.5 to -1126.4                 -953.71       -1942.4 to -498.4</span></span>
+<span><span class="co">#&gt; 10   -547.5 to -375.7                 -374.10        -656.5 to -224.4</span></span>
+<span><span class="co">#&gt; 11  -1086.9 to -773.8                 -677.58       -1273.8 to -378.7</span></span>
+<span><span class="co">#&gt; 12 -1627.7 to -1136.8                 -935.27       -1858.3 to -493.9</span></span>
+<span><span class="co">#&gt; 13     -545 to -378.9                 -346.59        -587.7 to -206.3</span></span>
+<span><span class="co">#&gt; 14  -1095.6 to -771.5                 -651.99       -1311.9 to -344.2</span></span>
+<span><span class="co">#&gt; 15   -1628.3 to -1132                 -891.34       -2136.4 to -455.5</span></span>
 <span><span class="co">#&gt;    youden_median     youden_95% CI</span></span>
-<span><span class="co">#&gt; 1        -394.31  -609.8 to -265.1</span></span>
-<span><span class="co">#&gt; 2        -763.39 -1265.2 to -468.7</span></span>
-<span><span class="co">#&gt; 3       -1103.22 -1844.5 to -738.2</span></span>
-<span><span class="co">#&gt; 4        -395.96    -621.8 to -255</span></span>
-<span><span class="co">#&gt; 5        -727.83 -1215.3 to -464.1</span></span>
-<span><span class="co">#&gt; 6       -1042.31 -1708.8 to -674.2</span></span>
-<span><span class="co">#&gt; 7        -369.33  -611.5 to -234.9</span></span>
-<span><span class="co">#&gt; 8        -705.71 -1237.5 to -433.1</span></span>
-<span><span class="co">#&gt; 9       -1017.91 -1786.6 to -596.4</span></span>
-<span><span class="co">#&gt; 10       -371.88  -659.6 to -228.4</span></span>
-<span><span class="co">#&gt; 11       -692.18 -1294.9 to -403.2</span></span>
-<span><span class="co">#&gt; 12       -989.33 -1819.1 to -580.2</span></span>
-<span><span class="co">#&gt; 13       -338.06  -595.8 to -205.2</span></span>
-<span><span class="co">#&gt; 14       -658.81 -1250.9 to -384.1</span></span>
-<span><span class="co">#&gt; 15       -930.29 -1942.8 to -539.5</span></span></code></pre></div>
+<span><span class="co">#&gt; 1        -394.51  -615.4 to -269.1</span></span>
+<span><span class="co">#&gt; 2        -750.82 -1285.1 to -486.5</span></span>
+<span><span class="co">#&gt; 3       -1088.71 -1876.4 to -684.8</span></span>
+<span><span class="co">#&gt; 4        -395.93  -638.1 to -263.6</span></span>
+<span><span class="co">#&gt; 5        -735.43 -1197.3 to -471.5</span></span>
+<span><span class="co">#&gt; 6       -1036.95 -1695.3 to -643.6</span></span>
+<span><span class="co">#&gt; 7        -370.18  -640.7 to -234.8</span></span>
+<span><span class="co">#&gt; 8        -703.72 -1237.4 to -467.3</span></span>
+<span><span class="co">#&gt; 9       -1020.18 -1810.9 to -618.3</span></span>
+<span><span class="co">#&gt; 10       -372.57  -656.5 to -224.8</span></span>
+<span><span class="co">#&gt; 11       -702.06 -1273.8 to -407.3</span></span>
+<span><span class="co">#&gt; 12       -993.32 -1756.8 to -584.9</span></span>
+<span><span class="co">#&gt; 13       -348.29    -583 to -211.3</span></span>
+<span><span class="co">#&gt; 14       -667.14 -1249.2 to -358.6</span></span>
+<span><span class="co">#&gt; 15       -934.95 -2006.3 to -537.7</span></span></code></pre></div>
 <p>As our model accuracy increases and event rate decreases, treatment
 decisions based on the model, like the Youden index, begin to look
 better. There are reasonable gains from using the prediction model, even
@@ -442,7 +442,7 @@ Trial.”</span> <em>International Journal of Nursing Studies</em> 75:
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer>

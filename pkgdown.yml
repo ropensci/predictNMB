@@ -1,12 +1,12 @@
 pandoc: 2.19.2
-pkgdown: 2.0.6
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   creating-nmb-functions: creating-nmb-functions.html
   detailed-example: detailed-example.html
   introduction-to-predictNMB: introduction-to-predictNMB.html
   summarising-results-with-predictNMB: summarising-results-with-predictNMB.html
-last_built: 2022-12-15T06:51Z
+last_built: 2022-12-15T22:30Z
 urls:
   reference: https://rwparsons.github.io/predictNMB/reference
   article: https://rwparsons.github.io/predictNMB/articles
