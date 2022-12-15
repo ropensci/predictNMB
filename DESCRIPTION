@@ -33,6 +33,7 @@ Imports:
     tibble,
     tidyr
 Suggests: 
+    covr,
     flextable,
     knitr,
     parallel,
