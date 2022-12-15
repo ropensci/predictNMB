@@ -200,7 +200,9 @@ plot.predictNMBsim <- function(x,
     ggplot2::geom_segment(
       data = heights,
       ggplot2::aes(x = m, xend = m, y = 0, yend = count),
-      size = median_line_size, alpha = median_line_alpha, col = median_line_col
+      linewidth = median_line_size,
+      alpha = median_line_alpha,
+      col = median_line_col
     ) +
     ggplot2::labs(
       x = x_axis_title,
@@ -325,7 +327,7 @@ plot.predictNMBscreen <- function(x,
         v <- constants[[names(non_x_axis_vars)[i]]]
         possible_values <- sort(unique(grid_lookup[[names(non_x_axis_vars)[i]]]))
 
-        if(!any(approx_match(vec=possible_values, val=v))) {
+        if (!any(approx_match(vec = possible_values, val = v))) {
           stop(
             paste0(
               "A ",
@@ -462,7 +464,7 @@ plot.predictNMBscreen <- function(x,
       ggplot2::geom_linerange(
         data = p_data_interval,
         ggplot2::aes(x = x_axis_var, col = name, ymin = ymin, ymax = ymax),
-        size = 1.2, alpha = plot_alpha,
+        linewidth = 1.2, alpha = plot_alpha,
         position = position
       )
   }
