@@ -33,6 +33,11 @@ test_that("do_nmb_sim() works in parallel", {
   expect_s3_class(out_par, "predictNMBsim")
 })
 
+test_that("print method - works", {
+  obj <- readRDS(test_path("fixtures", "predictNMBsim_object.rds"))
+  expect_output(print.predictNMBsim(obj))
+})
+
 test_that("plot method works", {
   obj <- readRDS(test_path("fixtures", "predictNMBsim_object.rds"))
   expect_s3_class(plot(obj), "gg")

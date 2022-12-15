@@ -57,6 +57,11 @@ test_that("screen_simulation_inputs() works in parallel", {
   expect_s3_class(sim_screen_obj_par, "predictNMBscreen")
 })
 
+test_that("print method - works", {
+  obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
+  expect_output(print.predictNMBscreen(obj))
+})
+
 test_that("plot method - defaults - works", {
   obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
   expect_s3_class(plot(obj), "gg")
@@ -86,15 +91,11 @@ test_that("plot method - selected constants - works", {
   expect_s3_class(p, "gg")
 })
 
-test_that("make_summary_table method works", {
-  obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
-  tbl <- make_summary_table(obj)
-
-  expect_s3_class(tbl, "data.frame")
-})
-
 test_that("summary table method works", {
   obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
+
+  expect_s3_class(make_summary_table(obj), "data.frame")
+
   expect_s3_class(
     make_summary_table(
       obj,
@@ -102,6 +103,19 @@ test_that("summary table method works", {
     ),
     "data.frame"
   )
+
+  expect_s3_class(
+    make_summary_table(
+      obj,
+      what = "inb",
+      inb_ref_col = "all",
+      rename_vector = c("Treat All" = "all", "Treat None" = "none")
+    ),
+    "data.frame"
+  )
+
+  tbl_with_full_inputs <- make_summary_table(obj, show_full_inputs = TRUE)
+  expect_true(ncol(tbl_with_full_inputs) > ncol(make_summary_table(obj)))
 })
 
 # cl <- parallel::makeCluster(parallel::detectCores())
