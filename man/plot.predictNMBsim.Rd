@@ -34,7 +34,7 @@ when calculating the incremental net monetary benefit.
 See \code{do_nmb_sim} for more information.}
 
 \item{ci}{The confidence level.
-Defaults to 0.95(coloured area of distribution represents 95\% CIs).}
+Defaults to 0.95(coloured area of distribution represents 95\\% CIs).}
 
 \item{methods_order}{The order (left to right) to display the
 cutpoint methods.}

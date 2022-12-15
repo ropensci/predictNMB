@@ -35,36 +35,36 @@ Also known as prevalence.}
 \item{cutpoint_methods}{A value or vector of cutpoint methods to include.
 Defaults to use the inbuilt methods:
 \itemize{
- \item{"all" = treat all patients (cutpoint = 0)}
- \item{"none" = treat no patients (cutpoint = 1)}
- \item{"value_optimising" = select the cutpoint that maximises NMB}
- \item{"youden" = select cutpoint based on the Youden index, also known as
- the J-index (sensitivity + specificity - 1)}
- \item{"cost_minimising" = select the cutpoint that minimises expected value
- of costs}
- \item{"prod_sens_spec" = product of sensitivity and specificity
- (sensitivity * specificity)}
- \item{"roc01" = selects the closest threshold to the (0,1) point on the ROC
- curve}
+\item{"all" = treat all patients (cutpoint = 0)}
+\item{"none" = treat no patients (cutpoint = 1)}
+\item{"value_optimising" = select the cutpoint that maximises NMB}
+\item{"youden" = select cutpoint based on the Youden index, also known as
+the J-index (sensitivity + specificity - 1)}
+\item{"cost_minimising" = select the cutpoint that minimises expected value
+of costs}
+\item{"prod_sens_spec" = product of sensitivity and specificity
+(sensitivity * specificity)}
+\item{"roc01" = selects the closest threshold to the (0,1) point on the ROC
+curve}
 }
 User-defined cutpoint methods can be used by passing the name of a function
 that takes the following arguments:
 \itemize{
- \item{\code{predicted} (predicted probabilities)}
- \item{\code{actual} (the actual, binary outcome)}
- \item{\code{nmb} (a named vector containing NMB values assigned to each
- predicted class (i.e. c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)))}
+\item{\code{predicted} (predicted probabilities)}
+\item{\code{actual} (the actual, binary outcome)}
+\item{\code{nmb} (a named vector containing NMB values assigned to each
+predicted class (i.e. c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)))}
 }
 See \code{?get_thresholds} for an example of a user-defined cutpoint
 function.}
 
 \item{fx_nmb_training}{Function that returns a named vector of NMB assigned
-to classifications used for obtaining cutpoint on training set. See `details`
+to classifications used for obtaining cutpoint on training set. See \code{details}
 for more information.}
 
 \item{fx_nmb_evaluation}{Function that returns a named vector of NMB
 assigned to classifications used for obtaining cutpoint on evaluation set.
-See `details` for more information.}
+See \code{details} for more information.}
 
 \item{meet_min_events}{Whether or not to incrementally add samples until the
 expected number of events (\code{sample_size * event_rate}) is met.
@@ -97,7 +97,6 @@ called and are used for obtaining and evaluating cutpoints, respectively.
 For example, the following function returns the appropriately named vector.
 \cr\cr
 \code{get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)}
-
 
 There is a helper function, \code{get_nmb_sampler()}, to help you create these.
 }

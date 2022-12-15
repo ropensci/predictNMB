@@ -57,7 +57,7 @@ the distributions for each method along the x-axis. Defaults to TRUE.}
 excessive overlap between methods. Defaults to 0.}
 
 \item{ci}{The confidence level.
-Defaults to 0.95 (coloured area of distribution represents 95\% CIs).}
+Defaults to 0.95 (coloured area of distribution represents 95\\% CIs).}
 
 \item{methods_order}{The order (left to right) to display the cutpoint
 methods.}

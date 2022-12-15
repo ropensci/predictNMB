@@ -12,7 +12,7 @@ get_sample(auc, n_samples, prevalence, min_events = 0)
 \item{n_samples}{Number of samples to draw.}
 
 \item{prevalence}{Prevalence or event rate of the binary outcome as
-a proportion (0.1 = 10\%).}
+a proportion (0.1 = 10\\%).}
 
 \item{min_events}{Minimum number of events required in the sample.}
 }

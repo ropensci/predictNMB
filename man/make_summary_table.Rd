@@ -26,7 +26,7 @@ when calculating the incremental net monetary benefit. See \code{do_nmb_sim}
 for more information.}
 
 \item{agg_functions}{A named list of functions to use to aggregate the
-selected values. Defaults to the median and 95\% interval.}
+selected values. Defaults to the median and 95\\% interval.}
 
 \item{rename_vector}{A named vector for renaming the methods in the summary.
 The values of the vector are the default names and the names given are the
@@ -41,10 +41,10 @@ Returns a \code{data.frame}.
 Create table summaries of simulation objects.
 }
 \details{
-Table summaries will be based on the `what` argument.
+Table summaries will be based on the \code{what} argument.
 Using "nmb" returns the simulated values for NMB, with no reference group;
 "inb" returns the difference between simulated values for NMB and a set
-strategy defined by `inb_ref_col`; "cutpoints" returns the cutpoints
+strategy defined by \code{inb_ref_col}; "cutpoints" returns the cutpoints
 selected (0, 1).
 }
 \examples{
