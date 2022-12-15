@@ -158,3 +158,23 @@ update_rename_vector <- function(rename_vector) {
   }
   return(rename_vector)
 }
+
+
+#' Returns a logical vector for near-equal matches for a vector to a value.
+#'
+#' @param vec Vector of values.
+#' @param val Single value for which a (near) match in the `vec` is being
+#' searched.
+#'
+#' @return Returns a logical vector the same length as the input vector.
+#' @noRd
+approx_match <- function(vec, val) {
+  # find indices of vec which match val
+  # use this approach for matching constants to simulation inputs as simulations
+  # input vectors can be passed from seq() and there are precision issues with
+  # matching values to those vectors.
+  # all.equal() performs a test for 'near equality' and therefore doesn't have this issue.
+  unlist(lapply(vec, function(x) isTRUE(all.equal(x, val))))
+}
+
+

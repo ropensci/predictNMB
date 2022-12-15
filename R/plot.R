@@ -323,6 +323,24 @@ plot.predictNMBscreen <- function(x,
     for (i in length(non_x_axis_vars)) {
       if (names(non_x_axis_vars)[i] %in% names(constants)) {
         v <- constants[[names(non_x_axis_vars)[i]]]
+        possible_values <- sort(unique(grid_lookup[[names(non_x_axis_vars)[i]]]))
+
+        if(!any(approx_match(vec=possible_values, val=v))) {
+          stop(
+            paste0(
+              "A ",
+              names(non_x_axis_vars)[i],
+              " value of [",
+              v,
+              "] was not included in the screened inputs and cannot be used as",
+              " a specified constant.",
+              "\n\nScreened input values that can be used for ",
+              names(non_x_axis_vars)[i],
+              " are: ",
+              paste0(possible_values, collapse = ", ")
+            )
+          )
+        }
       } else {
         v <- non_x_axis_vars[[i]][[1]]
         if (inherits(v, "function")) {
@@ -340,13 +358,14 @@ plot.predictNMBscreen <- function(x,
         v
       ))
 
-
       sim.id_ignore <- append(
         sim.id_ignore,
-        which(!unlist(lapply(
-          grid_lookup[[names(non_x_axis_vars)[i]]],
-          function(x) isTRUE(all.equal(x, v))
-        )))
+        which(
+          !approx_match(
+            vec = grid_lookup[[names(non_x_axis_vars)[i]]],
+            val = v
+          )
+        )
       )
     }
     sim.id_ignore <- unique(sim.id_ignore)

@@ -78,6 +78,9 @@ test_that("plot method - selected constants - works", {
   p <- plot(obj, x_axis_var = "fx_nmb_training", constants = list(sim_auc = 0.8))
   expect_s3_class(p, "gg")
 
+  # test on a *BAD* numeric input being held constant
+  expect_error(plot(obj, x_axis_var = "fx_nmb_training", constants = list(sim_auc = 0.81)))
+
   # test on a function input being held constant
   p <- plot(obj, x_axis_var = "sim_auc", constants = list(fx_nmb_training = "f2"))
   expect_s3_class(p, "gg")
