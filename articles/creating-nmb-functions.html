@@ -230,13 +230,13 @@ in health economics as Probabilistic Sensitivity Analysis (PSA).</p>
 <span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -0.9617808 -0.3181077  0.0000000 -1.9229789</span></span>
+<span><span class="co">#&gt; -0.7953209 -0.2958408  0.0000000 -1.0327595</span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -3.916720 -1.958186  0.000000 -3.078835</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -2.3730942 -0.5199695  0.0000000 -4.0162727</span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -3.543202 -2.136293  0.000000 -3.034306</span></span></code></pre></div>
+<span><span class="co">#&gt;          TP          FP          TN          FN </span></span>
+<span><span class="co">#&gt; -1.85486032 -0.09050895  0.00000000 -5.80730851</span></span></code></pre></div>
 <p>Another benefit of allowing the user to define the function structure
 is that we can also allow the low risk group, or the population whose
 risk estimates fall below the probability threshold, to receive an
@@ -274,13 +274,13 @@ and a reduction in falls of 30%.</p>
 <span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.3551476 -0.8301383 -0.4503025 -2.6191272</span></span>
+<span><span class="co">#&gt; -3.4579679 -0.4553160 -0.4595158 -4.8314693</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -6.6440598 -4.2530050 -0.3801726 -3.8445667</span></span>
+<span><span class="co">#&gt; -1.4710379 -0.1596496 -0.7289665 -2.7886503</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -1.9787551 -1.2532264 -0.4565736 -1.7990729</span></span></code></pre></div>
+<span><span class="co">#&gt; -4.7610720 -1.3946321 -0.3528563 -4.5466484</span></span></code></pre></div>
 <p>Now that we are providing an intervention and associated cost to the
 low risk group, there is a negative NMB assigned to true negative (TN)
 groups. But in exchange, we have reduced the costs of false negatives
@@ -501,13 +501,13 @@ that gives fixed values for training:</p>
 <span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -3.0042373 -0.9962743  0.0000000 -4.0331127</span></span>
+<span><span class="co">#&gt; -2.9857198 -0.9893144  0.0000000 -4.0037316</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -3.0042373 -0.9962743  0.0000000 -4.0331127</span></span>
+<span><span class="co">#&gt; -2.9857198 -0.9893144  0.0000000 -4.0037316</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -3.0042373 -0.9962743  0.0000000 -4.0331127</span></span></code></pre></div>
+<span><span class="co">#&gt; -2.9857198 -0.9893144  0.0000000 -4.0037316</span></span></code></pre></div>
 <p>In many cases (including this one), this will give similar values to
 using the parameter estimates (i.e. <code>foo1()</code>), but not
 always. The values from this process should be more stable than using
