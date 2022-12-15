@@ -77,7 +77,7 @@ add_interval <- function(data, ci) {
 #' when calculating the incremental net monetary benefit.
 #' See \code{do_nmb_sim} for more information.
 #' @param ci The confidence level.
-#' Defaults to 0.95(coloured area of distribution represents 95\% CIs).
+#' Defaults to 0.95(coloured area of distribution represents 95% CIs).
 #' @param methods_order The order (left to right) to display the
 #' cutpoint methods.
 #' @param n_bins The number of bins used when constructing histograms.
@@ -242,7 +242,7 @@ plot.predictNMBsim <- function(x,
 #' @param dodge_width The dodge width of plot elements. Can be used to avoid
 #' excessive overlap between methods. Defaults to 0.
 #' @param ci The confidence level.
-#' Defaults to 0.95 (coloured area of distribution represents 95\% CIs).
+#' Defaults to 0.95 (coloured area of distribution represents 95% CIs).
 #' @param methods_order The order (left to right) to display the cutpoint
 #' methods.
 #' @param rename_vector A named vector for renaming the methods in the summary.

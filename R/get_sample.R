@@ -3,7 +3,7 @@
 #' @param auc The Area Under the (receiver operating characteristic) Curve.
 #' @param n_samples Number of samples to draw.
 #' @param prevalence Prevalence or event rate of the binary outcome as
-#' a proportion (0.1 = 10\%).
+#' a proportion (0.1 = 10%).
 #' @param min_events Minimum number of events required in the sample.
 #'
 #' @return Returns a \code{data.frame}.

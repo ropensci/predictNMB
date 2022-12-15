@@ -26,7 +26,7 @@ when calculating the incremental net monetary benefit. See \code{do_nmb_sim}
 for more information.}
 
 \item{agg_functions}{A named list of functions to use to aggregate the
-selected values. Defaults to the median and 95\\% interval.}
+selected values. Defaults to the median and 95\% interval.}
 
 \item{rename_vector}{A named vector for renaming the methods in the summary.
 The values of the vector are the default names and the names given are the
