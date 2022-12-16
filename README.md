@@ -8,8 +8,8 @@
 [![R-CMD-check](https://github.com/RWParsons/predictNMB/workflows/R-CMD-check/badge.svg)](https://github.com/RWParsons/predictNMB/actions)
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Coveralls test
-coverage](https://coveralls.io/repos/github/RWParsons/predictNMB/badge.svg)](https://coveralls.io/r/RWParsons/predictNMB?branch=master)
+[![Codecov test
+coverage](https://codecov.io/gh/RWParsons/predictNMB/branch/master/graph/badge.svg)](https://app.codecov.io/gh/RWParsons/predictNMB?branch=master)
 <!-- badges: end -->
 
 ## Overview
