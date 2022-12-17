@@ -78,6 +78,33 @@ validate_inputs <- function(sample_size,
                             meet_min_events,
                             min_events,
                             cl) {
+
+  input_list <- list(
+    n_sims = n_sims,
+    n_valid = n_valid,
+    sim_auc = sim_auc,
+    event_rate = event_rate,
+    fx_nmb_training = fx_nmb_training,
+    fx_nmb_evaluation = fx_nmb_evaluation,
+    meet_min_events = meet_min_events,
+    min_events = min_events
+  )
+
+  if(!missing(sample_size)) {
+    input_list <- c( list(sample_size = sample_size), input_list)
+  }
+
+  input_lengths <- sapply(input_list, length)
+
+  if(any(input_lengths > 1)) {
+    stop(
+      "Input(s) for [",
+      "[", paste0(names(which(input_lengths > 1)), collapse = ", "), "]",
+      " have length greater than 1!\n\n",
+      "Did you mean to use screen_simulation_inputs() instead of do_nmb_sim()?"
+    )
+  }
+
   if (!missing(sample_size)) {
     stopifnot(assertthat::is.count(sample_size))
   }
