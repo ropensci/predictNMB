@@ -81,7 +81,6 @@ validate_inputs <- function(sample_size,
                             meet_min_events,
                             min_events,
                             cl) {
-
   input_list <- list(
     n_sims = n_sims,
     n_valid = n_valid,
@@ -93,13 +92,13 @@ validate_inputs <- function(sample_size,
     min_events = min_events
   )
 
-  if(!missing(sample_size)) {
-    input_list <- c( list(sample_size = sample_size), input_list)
+  if (!missing(sample_size)) {
+    input_list <- c(list(sample_size = sample_size), input_list)
   }
 
   input_lengths <- sapply(input_list, length)
 
-  if(any(input_lengths > 1)) {
+  if (any(input_lengths > 1)) {
     stop(
       "Input(s) for ",
       "[", paste0(names(which(input_lengths > 1)), collapse = ", "), "]",
@@ -208,5 +207,3 @@ approx_match <- function(vec, val) {
   # all.equal() performs a test for 'near equality' and therefore doesn't have this issue.
   unlist(lapply(vec, function(x) isTRUE(all.equal(x, val))))
 }
-
-

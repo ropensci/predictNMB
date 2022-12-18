@@ -32,12 +32,12 @@ test_that("do_nmb_sim() results are similar with different seeds", {
   )
 
   result_differences <- abs(colMeans(out1$df_result)[-1] - colMeans(out2$df_result)[-1])
-  result_tolerances <- abs(colMeans(out1$df_result)*0.1)[-1]
+  result_tolerances <- abs(colMeans(out1$df_result) * 0.1)[-1]
 
   expect_true(all(result_differences < result_tolerances))
 
   thresholds_differences <- abs(colMeans(out1$df_thresholds)[-c(1:3)] - colMeans(out2$df_thresholds)[-c(1:3)])
-  thresholds_tolerances <- abs(colMeans(out1$df_thresholds)[-c(1:3)]*0.1)
+  thresholds_tolerances <- abs(colMeans(out1$df_thresholds)[-c(1:3)] * 0.1)
 
   expect_true(all(thresholds_differences < thresholds_tolerances))
 })
