@@ -11,6 +11,37 @@ test_that("do_nmb_sim() works", {
   expect_equal(nrow(out$df_thresholds), nrow(stats::na.omit(out$df_thresholds)))
 })
 
+
+test_that("do_nmb_sim() results are similar with different seeds", {
+  get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
+
+  withr::with_seed(
+    1,
+    out1 <- do_nmb_sim(
+      sample_size = 500, n_sims = 500, n_valid = 1000, sim_auc = 0.7,
+      event_rate = 0.3, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
+    )
+  )
+
+  withr::with_seed(
+    2,
+    out2 <- do_nmb_sim(
+      sample_size = 500, n_sims = 500, n_valid = 1000, sim_auc = 0.7,
+      event_rate = 0.3, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
+    )
+  )
+
+  result_differences <- abs(colMeans(out1$df_result)[-1] - colMeans(out2$df_result)[-1])
+  result_tolerances <- abs(colMeans(out1$df_result)*0.1)[-1]
+
+  expect_true(all(result_differences < result_tolerances))
+
+  thresholds_differences <- abs(colMeans(out1$df_thresholds)[-c(1:3)] - colMeans(out2$df_thresholds)[-c(1:3)])
+  thresholds_tolerances <- abs(colMeans(out1$df_thresholds)[-c(1:3)]*0.1)
+
+  expect_true(all(thresholds_differences < thresholds_tolerances))
+})
+
 test_that("do_nmb_sim() throws error for bad inputs", {
   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 
@@ -139,6 +170,20 @@ test_that("do_nmb_sim() throws error for bad inputs", {
   }
 
   expect_error(f()) # fx_nmb_evaluation not a function
+
+  f <- function() {
+    do_nmb_sim(
+      sample_size = 100,
+      n_sims = c(),
+      n_valid = 1000,
+      sim_auc = 0.7,
+      event_rate = 0.1,
+      fx_nmb_training = get_nmb,
+      fx_nmb_evaluation = get_nmb
+    )
+  }
+
+  expect_error(f()) # zero length data throws error
 })
 
 test_that("do_nmb_sim() works in parallel", {
