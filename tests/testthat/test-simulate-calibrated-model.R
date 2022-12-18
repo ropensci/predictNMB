@@ -1,7 +1,11 @@
 test_that("Simulated model has approximately right AUC and is well calibrated", {
 
   input_auc <- 0.75
-  training_data <- get_sample(auc = input_auc, n_samples = 5000, prevalence = 0.1)
+
+  withr::with_seed(
+    42,
+    training_data <- get_sample(auc = input_auc, n_samples = 5000, prevalence = 0.1)
+  )
 
   model <- stats::glm(
     actual ~ x,
@@ -19,7 +23,7 @@ test_that("Simulated model has approximately right AUC and is well calibrated", 
   output_auc <- mean(x$pos > x$neg)
 
   # AUC is close to what was input to get_sample()
-  expect_true(output_auc > input_auc*0.9, output_auc < input_auc * 1.1)
+  expect_true(output_auc > input_auc*0.95, output_auc < input_auc * 1.05)
 
   calibration_model <- stats::lm(
     actual ~ preds,
