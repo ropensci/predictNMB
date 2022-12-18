@@ -1,3 +1,14 @@
+#' Whether or not to use linewidth vs size argument in ggplot2.
+#' @return Returns logical - whether or not to use linewidth based on ggplot2
+#' version.
+#' @noRd
+use_linewidth <- function() {
+  # if the available ggplot2 version is ahead of 3.4.0, then use `linewidth`
+  # argument, otherwise will use size
+  utils::compareVersion(as.character(utils::packageVersion("ggplot2")), "3.4.0") %in% c(0, 1)
+}
+
+
 #' Gather and wrangle appropriate data for plotting from simulation(s) object.
 #'
 #' @param x A \code{predictNMBsim} or \code{predictNMBscreen} object.
@@ -143,6 +154,7 @@ plot.predictNMBsim <- function(x,
                                  panel.grid.minor = ggplot2::element_blank()
                                ),
                                ...) {
+
   p_data <- get_plot_data(
     x = x,
     what = what[1],
@@ -197,15 +209,27 @@ plot.predictNMBsim <- function(x,
     "cutpoints" = "Selected Cutpoint"
   )
 
-  p <-
-    p +
-    ggplot2::geom_segment(
+  if(use_linewidth()) {
+    segment_layer <- ggplot2::geom_segment(
       data = heights,
       ggplot2::aes(x = m, xend = m, y = 0, yend = count),
       linewidth = median_line_size,
       alpha = median_line_alpha,
       col = median_line_col
-    ) +
+    )
+  } else {
+    segment_layer <- ggplot2::geom_segment(
+      data = heights,
+      ggplot2::aes(x = m, xend = m, y = 0, yend = count),
+      size = median_line_size,
+      alpha = median_line_alpha,
+      col = median_line_col
+    )
+  }
+
+  p <-
+    p +
+    segment_layer +
     ggplot2::labs(
       x = x_axis_title,
       y = ""
@@ -461,14 +485,22 @@ plot.predictNMBscreen <- function(x,
   }
 
   if (plot_ci) {
-    p <-
-      p +
-      ggplot2::geom_linerange(
+    if(use_linewidth()) {
+      ci_linerange_layer <- ggplot2::geom_linerange(
         data = p_data_interval,
         ggplot2::aes(x = x_axis_var, col = name, ymin = ymin, ymax = ymax),
         linewidth = 1.2, alpha = plot_alpha,
         position = position
       )
+    } else {
+      ci_linerange_layer <- ggplot2::geom_linerange(
+        data = p_data_interval,
+        ggplot2::aes(x = x_axis_var, col = name, ymin = ymin, ymax = ymax),
+        size = 1.2, alpha = plot_alpha,
+        position = position
+      )
+    }
+    p <- p + ci_linerange_layer
   }
 
   if (plot_range) {
