@@ -7,8 +7,139 @@ test_that("do_nmb_sim() works", {
   )
 
   expect_s3_class(out, "predictNMBsim")
+  expect_equal(nrow(out$df_result), nrow(stats::na.omit(out$df_result)))
+  expect_equal(nrow(out$df_thresholds), nrow(stats::na.omit(out$df_thresholds)))
 })
 
+test_that("do_nmb_sim() throws error for bad inputs", {
+  get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
+
+  f <- function() {
+    do_nmb_sim(
+      sample_size = 100,
+      n_sims = c(10, 20),
+      n_valid = c(1000, 5),
+      sim_auc = c(0.7, 0.9),
+      event_rate = 0.1,
+      fx_nmb_training = get_nmb,
+      fx_nmb_evaluation = get_nmb
+    )
+  }
+
+  expect_error(f()) # multiple inputs
+
+  f <- function() {
+    do_nmb_sim(
+      sample_size = 100.5,
+      n_sims = 100,
+      n_valid = 1000,
+      sim_auc = 0.7,
+      event_rate = 0.1,
+      fx_nmb_training = get_nmb,
+      fx_nmb_evaluation = get_nmb
+    )
+  }
+
+  expect_error(f()) # non-integer for sample_size
+
+  f <- function() {
+    do_nmb_sim(
+      sample_size = 100,
+      n_sims = 5.5,
+      n_valid = 1000,
+      sim_auc = 0.7,
+      event_rate = 0.1,
+      fx_nmb_training = get_nmb,
+      fx_nmb_evaluation = get_nmb
+    )
+  }
+
+  expect_error(f()) # non-integer for n_sims
+
+  f <- function() {
+    do_nmb_sim(
+      sample_size = 100,
+      n_sims = 100,
+      n_valid = 100.5,
+      sim_auc = 0.7,
+      event_rate = 0.1,
+      fx_nmb_training = get_nmb,
+      fx_nmb_evaluation = get_nmb
+    )
+  }
+
+  expect_error(f()) # non-integer for n_valid
+
+  f <- function() {
+    do_nmb_sim(
+      sample_size = 100,
+      n_sims = 100,
+      n_valid = 1000,
+      sim_auc = 1.1,
+      event_rate = 0.1,
+      fx_nmb_training = get_nmb,
+      fx_nmb_evaluation = get_nmb
+    )
+  }
+
+  expect_error(f()) # sim_auc out of range
+
+  f <- function() {
+    do_nmb_sim(
+      sample_size = 100,
+      n_sims = 100,
+      n_valid = 1000,
+      sim_auc = 0.7,
+      event_rate = 1.1,
+      fx_nmb_training = get_nmb,
+      fx_nmb_evaluation = get_nmb
+    )
+  }
+
+  expect_error(f()) # event_rate out of range
+
+  f <- function() {
+    do_nmb_sim(
+      sample_size = 100,
+      n_sims = 100,
+      n_valid = 1000,
+      sim_auc = 0.7,
+      event_rate = 1.1,
+      fx_nmb_training = get_nmb,
+      fx_nmb_evaluation = get_nmb
+    )
+  }
+
+  expect_error(f()) # event_rate out of range
+
+  f <- function() {
+    do_nmb_sim(
+      sample_size = 100,
+      n_sims = 100,
+      n_valid = 1000,
+      sim_auc = 0.7,
+      event_rate = 0.1,
+      fx_nmb_training = "get_nmb",
+      fx_nmb_evaluation = get_nmb
+    )
+  }
+
+  expect_error(f()) # fx_nmb_training not a function
+
+  f <- function() {
+    do_nmb_sim(
+      sample_size = 100,
+      n_sims = 100,
+      n_valid = 1000,
+      sim_auc = 0.7,
+      event_rate = 0.1,
+      fx_nmb_training = get_nmb,
+      fx_nmb_evaluation = "get_nmb"
+    )
+  }
+
+  expect_error(f()) # fx_nmb_evaluation not a function
+})
 
 test_that("do_nmb_sim() works in parallel", {
   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
