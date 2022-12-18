@@ -106,7 +106,7 @@ add_interval <- function(data, ci) {
 #' using \code{do_nmb_sim()}. Can be used to visualise distributions from
 #' simulations for different cutpoint methods.
 #'
-#' @srrstatsTODO {G2.4d} `as.factor()` used when necessary.
+#' @srrstats {G2.4d} `as.factor()` used when necessary.
 #'
 #' @return Returns a \code{ggplot} object
 #' @export

@@ -99,7 +99,6 @@ these trends:
 
 ``` r
 plot(sim_screen_obj)
-#> Warning: Ignoring unknown parameters: linewidth
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
@@ -126,7 +125,6 @@ distributions of the NMB across all simulations under each strategy.
 
 ``` r
 plot(single_sim_obj)
-#> Warning: Ignoring unknown parameters: linewidth
 ```
 
 <img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />

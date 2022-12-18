@@ -15,7 +15,7 @@ set.seed(42)
 ```
 
 ```{r srr, eval = FALSE, echo = FALSE}
-#' @srrstatsTODO {G1.2}
+#' @srrstats {G1.2}
 ```
 
 
