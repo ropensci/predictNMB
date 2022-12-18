@@ -35,6 +35,10 @@
 #' @param cl A cluster made using \code{parallel::makeCluster()}. If a cluster
 #' is provided, the simulation will be done in parallel.
 #'
+#' @srrstats {G2.1a} Data types for all inputs are documented.
+#' @srrstats {G2.8} Appropriate conversions applied before passing of inputs.
+#' @srrstats {G2.11} tibbles used for appropriate processing of columns of functions.
+#'
 #' @return Returns a \code{predictNMBscreen} object.
 #' @export
 #'

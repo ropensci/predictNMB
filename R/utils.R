@@ -65,6 +65,9 @@ do_sample_size_calc <- function(cstatistic, prevalence, sample_size, min_events,
 #' @param min_events Argument given to \code{do_nmb_sim()}.
 #' @param cl Argument given to \code{do_nmb_sim()}.
 #'
+#' @srrstats {G2.0, G2.1, G2.6, G2.13, G2.14a, G2.16} All input types are asserted and restricted to reasonable
+#' ranges where necessary.
+#'
 #' @return Returns nothing. Produces error if there's problems with inputs.
 #' @noRd
 validate_inputs <- function(sample_size,
@@ -98,7 +101,7 @@ validate_inputs <- function(sample_size,
 
   if(any(input_lengths > 1)) {
     stop(
-      "Input(s) for [",
+      "Input(s) for ",
       "[", paste0(names(which(input_lengths > 1)), collapse = ", "), "]",
       " have length greater than 1!\n\n",
       "Did you mean to use screen_simulation_inputs() instead of do_nmb_sim()?"
@@ -112,9 +115,9 @@ validate_inputs <- function(sample_size,
   stopifnot(assertthat::is.count(n_sims))
   stopifnot(assertthat::is.count(n_valid))
   stopifnot(assertthat::is.number(sim_auc))
-  stopifnot(sim_auc > 0 | sim_auc < 1)
+  stopifnot(sim_auc > 0 & sim_auc < 1)
   stopifnot(assertthat::is.number(event_rate))
-  stopifnot(event_rate > 0 | event_rate < 1)
+  stopifnot(event_rate > 0 & event_rate < 1)
   stopifnot(inherits(cutpoint_methods, "character"))
   stopifnot(is.logical(meet_min_events))
 
@@ -192,6 +195,8 @@ update_rename_vector <- function(rename_vector) {
 #' @param vec Vector of values.
 #' @param val Single value for which a (near) match in the `vec` is being
 #' searched.
+#'
+#' @srrstats {G3.0} Near equality function (below) is used for matching arguments (from `plot()`) to arguments (`constants`).
 #'
 #' @return Returns a logical vector the same length as the input vector.
 #' @noRd

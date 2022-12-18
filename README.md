@@ -10,6 +10,9 @@
 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Codecov test
 coverage](https://codecov.io/gh/RWParsons/predictNMB/branch/master/graph/badge.svg)](https://app.codecov.io/gh/RWParsons/predictNMB?branch=master)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 <!-- badges: end -->
 
 ## Overview
@@ -96,6 +99,7 @@ these trends:
 
 ``` r
 plot(sim_screen_obj)
+#> Warning: Ignoring unknown parameters: linewidth
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
@@ -122,6 +126,7 @@ distributions of the NMB across all simulations under each strategy.
 
 ``` r
 plot(single_sim_obj)
+#> Warning: Ignoring unknown parameters: linewidth
 ```
 
 <img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />

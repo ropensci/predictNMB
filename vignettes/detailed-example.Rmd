@@ -18,6 +18,10 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r srr, eval = FALSE, echo = FALSE}
+#' @srrstats {G5.4c} Values used from published paper as example.
+```
+
 ```{r setup}
 library(predictNMB)
 library(parallel)
