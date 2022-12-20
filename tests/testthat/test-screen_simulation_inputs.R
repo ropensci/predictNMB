@@ -62,35 +62,6 @@ test_that("print method - works", {
   expect_output(print.predictNMBscreen(obj))
 })
 
-test_that("plot method - defaults - works", {
-  obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
-  expect_s3_class(plot(obj), "gg")
-})
-
-test_that("plot method - selected x_axis_var - works", {
-  obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
-  p <- plot(obj, x_axis_var = "event_rate")
-  expect_s3_class(p, "gg")
-
-  p <- plot(obj, x_axis_var = "fx_nmb_training")
-  expect_s3_class(p, "gg")
-})
-
-test_that("plot method - selected constants - works", {
-  obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
-
-  # test on a numeric input being held constant
-  p <- plot(obj, x_axis_var = "fx_nmb_training", constants = list(sim_auc = 0.8))
-  expect_s3_class(p, "gg")
-
-  # test on a *BAD* numeric input being held constant
-  expect_error(plot(obj, x_axis_var = "fx_nmb_training", constants = list(sim_auc = 0.81)))
-
-  # test on a function input being held constant
-  p <- plot(obj, x_axis_var = "sim_auc", constants = list(fx_nmb_training = "f2"))
-  expect_s3_class(p, "gg")
-})
-
 test_that("summary table method works", {
   obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
 

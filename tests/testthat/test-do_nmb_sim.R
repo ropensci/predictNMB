@@ -214,11 +214,6 @@ test_that("print method - works", {
   expect_output(print.predictNMBsim(obj))
 })
 
-test_that("plot method works", {
-  obj <- readRDS(test_path("fixtures", "predictNMBsim_object.rds"))
-  expect_s3_class(plot(obj), "gg")
-})
-
 test_that("summary table method works", {
   obj <- readRDS(test_path("fixtures", "predictNMBsim_object.rds"))
   expect_s3_class(
