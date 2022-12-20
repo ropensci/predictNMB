@@ -1,3 +1,6 @@
+#' @srrstats {EA5.0, EA5.0a, EA5.0b, EA5.1} \code{plot.predictNMBsim()} applies two colours for the fill aesthetic by default (blue and grey) and these can be controlled by the user by the \code{fill_cols} argument. These colours were selected with appropriate interpretation of the interval and accessibility in mind. All fonts and other colour schemes (including for \code{plot.predictNMBscreen()}) use the defaults by \code{ggplot} by default.
+#' @srrstats {EA5.4, EA5.5} Units are included on all axes and usee \code{ggplot2} to produce sensibly rounded values.
+#'
 #' Whether or not to use linewidth vs size argument in ggplot2.
 #' @return Returns logical - whether or not to use linewidth based on ggplot2
 #' version.
@@ -448,9 +451,9 @@ plot.predictNMBscreen <- function(x,
   )
 
   x_axis_title <- switch(x_axis_var,
-    "sample_size" = "Training sample size",
-    "n_sims" = "Number of simulations",
-    "n_valid" = "Validation sample size",
+    "sample_size" = "Training sample size (n)",
+    "n_sims" = "Number of simulations (n)",
+    "n_valid" = "Validation sample size (n)",
     "sim_auc" = "Model AUC",
     "event_rate" = "Event rate",
     "fx_nmb_training" = "NMB Sampling Function (training)",
