@@ -14,6 +14,7 @@ NULL
 
 #' NA_standards
 #'
+#' @srrstatsNA {G1.6} No performance claims are made.
 #' @srrstatsNA {G2.2} No formula applied and all inputs either a single value or vector (and checked).
 #' @srrstatsNA {G2.3} No character inputs.
 #' @srrstatsNA {G2.3a} No applicable areas.

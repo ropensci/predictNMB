@@ -80,13 +80,6 @@ These inputs can be passed to `screen_simulation_inputs()` under the parameters 
 
 # `do_nmb_sim()`
 
-```{r srr, eval = FALSE, echo = FALSE}
-#' @srrstats {G1.1} Method to simulate clinical prediction model from AUC
-#' is described below with citation to method.
-#' @srrstats {G2.0a} Differences between do_nmb_sim() and screen_simulation_inputs()
-#' regarding input lengths is documented here and in introduction vignette.
-```
-
 `do_nmb_sim()` does a single simulation with a set of inputs for the hypothetical model and NMB related functions. For the model, we need to know the sample size for training and evaluation sets, the model's discrimination (Area Under the Receiver Operating Characteristic Curve, also known as the Area Under the Curve, or AUC) and the event rate of the outcome being predicted. To create this model, the specified AUC is transformed to a Cohen's D value [@SalgadoJesúsF.2018Ttau]. A single predictor variable for the negative events are sampled from a standard normal distribution (mean = 0; standard deviation = 1) and the positive events have theirs sampled from a normal distribution with a mean equal to the calculated Cohen's D value and standard deviation of 1. These data are then used to fit a logistic regression model with the single predictor and intercept term.
 
 Note that it may take some time to run the simulation. (The one below may take up to a minute, depending on your computer's performance.)
