@@ -335,7 +335,6 @@ plot.predictNMBscreen <- function(x,
   }
 
   grid_lookup <- x$summary_grid
-  grid_lookup$.sim_id <- seq_len(nrow(grid_lookup))
   sim.id_ignore <- c()
 
   if (length(names(x$screen_meta)) > 1) {
