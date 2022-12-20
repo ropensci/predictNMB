@@ -157,7 +157,6 @@ plot.predictNMBsim <- function(x,
                                  panel.grid.minor = ggplot2::element_blank()
                                ),
                                ...) {
-
   p_data <- get_plot_data(
     x = x,
     what = what[1],
@@ -212,7 +211,7 @@ plot.predictNMBsim <- function(x,
     "cutpoints" = "Selected Cutpoint"
   )
 
-  if(use_linewidth()) {
+  if (use_linewidth()) {
     segment_layer <- ggplot2::geom_segment(
       data = heights,
       ggplot2::aes(x = m, xend = m, y = 0, yend = count),
@@ -487,7 +486,7 @@ plot.predictNMBscreen <- function(x,
   }
 
   if (plot_ci) {
-    if(use_linewidth()) {
+    if (use_linewidth()) {
       ci_linerange_layer <- ggplot2::geom_linerange(
         data = p_data_interval,
         ggplot2::aes(x = x_axis_var, col = name, ymin = ymin, ymax = ymax),

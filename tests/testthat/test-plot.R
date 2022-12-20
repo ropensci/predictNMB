@@ -106,7 +106,7 @@ test_that("predictNMBscreen - plot method (constants selection) works", {
   predictNMBscreen_constants_1 <- plot(obj, x_axis_var = "fx_nmb_training", constants = list(sim_auc = 0.8))
   expect_s3_class(predictNMBscreen_constants_1, "gg")
   vdiffr::expect_doppelganger(
-    "plot.predictNMBscreen(obj, x_axis_var = 'fx_nmb_training', constants = list(sim_auc = 0.8))",
+    "plot.predictNMBscreen - constants-1",
     predictNMBscreen_constants_1
   )
 
@@ -117,7 +117,7 @@ test_that("predictNMBscreen - plot method (constants selection) works", {
   predictNMBscreen_constants_2 <- plot(obj, x_axis_var = "sim_auc", constants = list(fx_nmb_training = "f2"))
   expect_s3_class(predictNMBscreen_constants_2, "gg")
   vdiffr::expect_doppelganger(
-    "plot.predictNMBscreen(obj, x_axis_var = 'sim_auc', constants = list(fx_nmb_training = 'f2'))",
+    "plot.predictNMBscreen - constants-2",
     predictNMBscreen_constants_2
   )
 })
