@@ -184,6 +184,39 @@ test_that("do_nmb_sim() throws error for bad inputs", {
   }
 
   expect_error(f()) # zero length data throws error
+
+  f <- function() {
+    do_nmb_sim(
+      n_sims = 5,
+      n_valid = 1000,
+      sim_auc = 0.7,
+      event_rate = 0.1,
+      min_events = 5,
+      meet_min_events = TRUE,
+      fx_nmb_training = get_nmb,
+      fx_nmb_evaluation = get_nmb
+    )
+  }
+
+  # expect to get message for specifying min_events when sample size is being calculated by power analyses
+  expect_message(f(), regexp = "Power analyses")
+
+  f <- function() {
+    do_nmb_sim(
+      sample_size = 100,
+      n_sims = 5,
+      n_valid = 1000,
+      sim_auc = 0.7,
+      event_rate = 0.1,
+      min_events = 5,
+      meet_min_events = FALSE,
+      fx_nmb_training = get_nmb,
+      fx_nmb_evaluation = get_nmb
+    )
+  }
+
+  # expect to get message for specifying min_events but meet_min_events = FALSE
+  expect_message(f(), regexp = "'min_events' will be ignored")
 })
 
 test_that("do_nmb_sim() works in parallel", {

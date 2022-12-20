@@ -99,11 +99,11 @@
     6     0.9 f2               -1.20   -1.25   -1.14  -0.401  -0.508  -0.284  -0.382
     # ... with 17 more variables: `value optimising_min` <dbl>,
     #   `value optimising_max` <dbl>, youden_mean <dbl>, youden_min <dbl>,
-    #   youden_max <dbl>, `cost minimising_mean` <dbl>,
-    #   `cost minimising_min` <dbl>, `cost minimising_max` <dbl>,
-    #   `prod sens spec_mean` <dbl>, `prod sens spec_min` <dbl>,
-    #   `prod sens spec_max` <dbl>, roc01_mean <dbl>, roc01_min <dbl>,
-    #   roc01_max <dbl>, `index of union_mean` <dbl>, ...
+    #   youden_max <dbl>, `cost minimising threshold_mean` <dbl>,
+    #   `cost minimising threshold_min` <dbl>,
+    #   `cost minimising threshold_max` <dbl>, `prod sens spec_mean` <dbl>,
+    #   `prod sens spec_min` <dbl>, `prod sens spec_max` <dbl>, roc01_mean <dbl>,
+    #   roc01_min <dbl>, roc01_max <dbl>, `index of union_mean` <dbl>, ...
 
 ---
 
