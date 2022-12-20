@@ -229,14 +229,14 @@ in health economics as Probabilistic Sensitivity Analysis (PSA).</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -2.711770 -0.693086  0.000000 -4.101619</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -3.2679076 -0.7140181  0.0000000 -5.2434448</span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -8.353978 -4.701944  0.000000 -5.974768</span></span>
+<span><span class="co">#&gt; -4.120713 -1.492070  0.000000 -4.433131</span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.9456992 -0.2787644  0.0000000 -5.1769403</span></span></code></pre></div>
+<span><span class="co">#&gt; -2.7255823 -0.2364694  0.0000000 -4.7992725</span></span></code></pre></div>
 <p>Another benefit of allowing the user to define the function structure
 is that we can also allow the low risk group, or the population whose
 risk estimates fall below the probability threshold, to receive an
@@ -274,13 +274,13 @@ and a reduction in falls of 30%.</p>
 <span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -3.0544083 -0.2498605 -0.3602234 -9.8586042</span></span>
+<span><span class="co">#&gt; -4.0161569 -0.7954003 -0.4826056 -6.0576888</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -3.0422966 -0.7168051 -0.4981604 -3.6632063</span></span>
+<span><span class="co">#&gt; -1.4261093 -0.6220709 -0.3348864 -2.2533947</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          TP          FP          TN          FN </span></span>
-<span><span class="co">#&gt; -0.93746452 -0.00766853 -0.21452418 -1.66732831</span></span></code></pre></div>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -6.0961419 -0.5208833 -0.2979498 -7.1174069</span></span></code></pre></div>
 <p>Now that we are providing an intervention and associated cost to the
 low risk group, there is a negative NMB assigned to true negative (TN)
 groups. But in exchange, we have reduced the costs of false negatives
@@ -500,14 +500,14 @@ that gives fixed values for training:</p>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -3.009456 -1.001245  0.000000 -4.015960</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -3.0110730 -0.9955658  0.0000000 -4.0223461</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -3.009456 -1.001245  0.000000 -4.015960</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -3.0110730 -0.9955658  0.0000000 -4.0223461</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -3.009456 -1.001245  0.000000 -4.015960</span></span></code></pre></div>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -3.0110730 -0.9955658  0.0000000 -4.0223461</span></span></code></pre></div>
 <p>In many cases (including this one), this will give similar values to
 using the parameter estimates (i.e. <code>foo1()</code>), but not
 always. The values from this process should be more stable than using
