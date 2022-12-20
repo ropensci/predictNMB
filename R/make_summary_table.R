@@ -18,6 +18,11 @@
 #' "inb" returns the difference between simulated values for NMB and a set
 #' strategy defined by `inb_ref_col`; "cutpoints" returns the cutpoints
 #' selected (0, 1).
+#'
+#' @srrstats {EA2.6} General assessment by assertthat is performed (is.count, is.number) and does not assess or hold expectations on additional class attributes.
+#' @srrstats {EA5.2} There is no typical onscreen printing from \code{make_summary_table()}. It instead returns a \code{tbl_df/tbl/data.frame} with aggregate values. The default is to round the values but the user is able to overwrite this by using the \code{agg_functions} argument and pass the output to a more general table formatting package like \code{flextable}.
+#' @srrstats {EA5.3} Summary statsistics indicate \code{storage.mode} via tibble.
+#'
 #' @return Returns a \code{data.frame}.
 #' @export
 #' @examples
@@ -93,7 +98,7 @@ make_summary_table.predictNMBscreen <- function(x,
     inputs <- x$summary_grid[, names(x$screen_meta)]
   }
 
-  cbind(inputs, sim_aggregations)
+  dplyr::bind_cols(inputs, sim_aggregations)
 }
 
 
