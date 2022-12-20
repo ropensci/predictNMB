@@ -60,7 +60,6 @@ test_that("screen_simulation_inputs() works in parallel", {
 test_that("print method - works", {
   obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
   expect_output(print.predictNMBscreen(obj))
-  expect_snapshot_output(print.predictNMBscreen(obj))
 })
 
 
