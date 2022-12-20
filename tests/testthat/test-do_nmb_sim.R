@@ -212,18 +212,9 @@ test_that("do_nmb_sim() works in parallel", {
 test_that("print method - works", {
   obj <- readRDS(test_path("fixtures", "predictNMBsim_object.rds"))
   expect_output(print.predictNMBsim(obj))
+  expect_snapshot_output(print.predictNMBsim(obj))
 })
 
-test_that("summary table method works", {
-  obj <- readRDS(test_path("fixtures", "predictNMBsim_object.rds"))
-  expect_s3_class(
-    make_summary_table(
-      obj,
-      rename_vector = c("Treat All" = "all", "Treat None" = "none")
-    ),
-    "data.frame"
-  )
-})
 
 # predictNMBsim_obj <- do_nmb_sim(
 #   n_sims = 10, n_valid = 1000, sim_auc = 0.7, event_rate = 0.1,

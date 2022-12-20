@@ -60,34 +60,9 @@ test_that("screen_simulation_inputs() works in parallel", {
 test_that("print method - works", {
   obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
   expect_output(print.predictNMBscreen(obj))
+  expect_snapshot_output(print.predictNMBscreen(obj))
 })
 
-test_that("summary table method works", {
-  obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
-
-  expect_s3_class(make_summary_table(obj), "data.frame")
-
-  expect_s3_class(
-    make_summary_table(
-      obj,
-      rename_vector = c("Treat All" = "all", "Treat None" = "none")
-    ),
-    "data.frame"
-  )
-
-  expect_s3_class(
-    make_summary_table(
-      obj,
-      what = "inb",
-      inb_ref_col = "all",
-      rename_vector = c("Treat All" = "all", "Treat None" = "none")
-    ),
-    "data.frame"
-  )
-
-  tbl_with_full_inputs <- make_summary_table(obj, show_full_inputs = TRUE)
-  expect_true(ncol(tbl_with_full_inputs) > ncol(make_summary_table(obj)))
-})
 
 # cl <- parallel::makeCluster(parallel::detectCores())
 # get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)

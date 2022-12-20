@@ -9,14 +9,6 @@
 #'
 #' @srrstatsVerbose TRUE
 #'
-
-#' @srrstatsTODO {EA6.0} *Return values from all functions should be tested, including tests for the following characteristics:*
-#' @srrstatsTODO {EA6.0a} *Classes and types of objects*
-#' @srrstatsTODO {EA6.0b} *Dimensions of tabular objects*
-#' @srrstatsTODO {EA6.0c} *Column names (or equivalent) of tabular objects*
-#' @srrstatsTODO {EA6.0d} *Classes or types of all columns contained within `data.frame`-type tabular objects *
-#' @srrstatsTODO {EA6.0e} *Values of single-valued objects; for `numeric` values either using `testthat::expect_equal()` or equivalent with a defined value for the `tolerance` parameter, or using `round(..., digits = x)` with some defined value of `x` prior to testing equality.*
-#' @srrstatsTODO {EA6.1} *The properties of graphical output from EDA software should be explicitly tested, for example via the [`vdiffr` package](https://github.com/r-lib/vdiffr) or equivalent.*
 #' @noRd
 NULL
 
@@ -54,6 +46,7 @@ NULL
 #' @srrstatsNA {EA2.4} No tables are given by user.
 #' @srrstatsNA {EA2.5} No tables are given by user but generated tables (within package from vector inputs) are indexed as described by EA2.2.
 #' @srrstatsNA {EA5.6} There are currently no dynamic visualisations in this package.
+#' @srrstatsNA {EA6.0e} There are no single-valued objects returned.
 #'
 #' Any non-applicable standards can have their tags changed from `@srrstatsTODO`
 #' to `@srrstatsNA`, and placed together in this block, along with explanations
