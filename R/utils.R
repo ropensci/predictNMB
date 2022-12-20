@@ -67,6 +67,7 @@ do_sample_size_calc <- function(cstatistic, prevalence, sample_size, min_events,
 #'
 #' @srrstats {G2.0, G2.1, G2.6, G2.13, G2.14a, G2.16} All input types are asserted and restricted to reasonable
 #' ranges where necessary.
+#' @srrstats {EA2.6} General assessment by assertthat is performed (is.count, is.number) and does not assess or hold expectations on additional class attributes.
 #'
 #' @return Returns nothing. Produces error if there's problems with inputs.
 #' @noRd

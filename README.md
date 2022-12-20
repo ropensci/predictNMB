@@ -17,8 +17,12 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 
 ## Overview
 
-predictNMB is a tool to evaluate clinical prediction models based on
-their estimated Net Monetary Benefit (NMB).
+predictNMB is a tool to evaluate (hypothetical) clinical prediction
+models based on their estimated Net Monetary Benefit (NMB). It may be
+used by prediction model developers who intend to find out how
+performant their model needs to be to be clinically useful or by those
+in health services deciding whether or not to implement an existing
+model.
 
 `{predictNMB}` has two main functions:
 

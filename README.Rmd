@@ -16,6 +16,9 @@ set.seed(42)
 
 ```{r srr, eval = FALSE, echo = FALSE}
 #' @srrstats {G1.2}
+#' @srrstats {EA1.0} Model developers and decision support implementers
+#' @srrstats {EA1.1}
+#' @srrstats {EA1.2}
 ```
 
 
@@ -30,7 +33,7 @@ set.seed(42)
 
 ## Overview
 
-predictNMB is a tool to evaluate clinical prediction models based on their estimated Net Monetary Benefit (NMB).
+predictNMB is a tool to evaluate (hypothetical) clinical prediction models based on their estimated Net Monetary Benefit (NMB). It may be used by prediction model developers who intend to find out how performant their model needs to be to be clinically useful or by those in health services deciding whether or not to implement an existing model.
 
 `{predictNMB}` has two main functions: 
 
