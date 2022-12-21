@@ -260,6 +260,8 @@ add_sample_size_calcs <- function(x) {
 #' @param x A \code{predictNMBscreen} object.
 #' @param ... Optional, ignored arguments.
 #' @return `print` returns `x` invisibly.
+#'
+#' @examples
 #' if (FALSE) {
 #'   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 #'   sim_screen_obj <- screen_simulation_inputs(

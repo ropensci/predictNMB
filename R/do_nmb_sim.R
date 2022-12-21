@@ -306,6 +306,8 @@ do_nmb_iteration <- function(iter,
 #' @param x A \code{predictNMBsim} object.
 #' @param ... Optional, ignored arguments.
 #' @return `print` returns `x` invisibly.
+#'
+#' @examples
 #' if (FALSE) {
 #'   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 #'   sim_obj <- do_nmb_sim(
