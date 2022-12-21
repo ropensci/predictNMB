@@ -97,7 +97,7 @@ validate_inputs <- function(sample_size,
     input_list <- c(list(sample_size = sample_size), input_list)
   }
 
-  input_lengths <- sapply(input_list, length)
+  input_lengths <- vapply(input_list, length, 1)
 
   if (any(input_lengths > 1)) {
     stop(
