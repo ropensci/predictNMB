@@ -201,14 +201,14 @@ Monte Carlo methods to sample from input distributions.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 3</span></span></span>
 <span><span class="co">#&gt;   method           median `95% CI`        </span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> all               -<span style="color: #BB0000;">701.</span> -735.3 to -668.5</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> cost minimising   -<span style="color: #BB0000;">667.</span> -703.7 to -630.6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> index of union    -<span style="color: #BB0000;">695.</span> -743.5 to -647.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> none              -<span style="color: #BB0000;">931.</span> -990.2 to -875  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> prod sens spec    -<span style="color: #BB0000;">694.</span> -743.7 to -647.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> roc01             -<span style="color: #BB0000;">694.</span> -742.8 to -648.9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> value optimising  -<span style="color: #BB0000;">669.</span> -706.6 to -632.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> youden            -<span style="color: #BB0000;">694.</span> -750.4 to -645.4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> all               -<span style="color: #BB0000;">704.</span> -734.8 to -671.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> cost minimising   -<span style="color: #BB0000;">668.</span> -703.6 to -633.8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> index of union    -<span style="color: #BB0000;">697.</span> -744.6 to -652  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> none              -<span style="color: #BB0000;">936.</span> -989.3 to -880.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> prod sens spec    -<span style="color: #BB0000;">697.</span> -745.9 to -651.4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> roc01             -<span style="color: #BB0000;">697.</span> -738.7 to -653.4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> value optimising  -<span style="color: #BB0000;">670.</span> -705.9 to -633.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> youden            -<span style="color: #BB0000;">699.</span> -756.3 to -647.4</span></span>
 <span></span>
 <span><span class="co"># Demonstrates the range of selected cutpoints under each method</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"cutpoints"</span><span class="op">)</span> </span></code></pre></div>
@@ -257,14 +257,14 @@ run.</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">fx_nmb_sampler</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;           TP           FP           TN           FN </span></span>
-<span><span class="co">#&gt; -13063.38159    -99.49826      0.00000  -9074.72358</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -8685.8512  -160.5243     0.0000 -9184.0442</span></span>
 <span><span class="fu">fx_nmb_sampler</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -6593.0550  -115.2632     0.0000 -9979.7078</span></span>
+<span><span class="co">#&gt; -2891.3728  -122.5683     0.0000 -9941.8144</span></span>
 <span><span class="fu">fx_nmb_sampler</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -4483.8973  -162.3365     0.0000 -8251.9630</span></span></code></pre></div>
+<span><span class="co">#&gt; -3688.2140  -205.6094     0.0000 -8551.3764</span></span></code></pre></div>
 <p>The sampler function shows that we can expect some significant
 variation, especially due to the probability that our intervention is
 effective. It’s always possible that an intervention could lead to worse
@@ -301,21 +301,21 @@ alternative, model-guided strategies, using the “value_optimising” and
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 15 × 10</span></span></span>
 <span><span class="co">#&gt;    sim_auc event_rate all_median all_9…¹ none_…² none_…³ value…⁴ value…⁵ youde…⁶</span></span>
 <span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>    0.72       0.05      -<span style="color: #BB0000;">429.</span> -755.3…   -<span style="color: #BB0000;">466.</span> -561.7…   -<span style="color: #BB0000;">394.</span> -616.3…   -<span style="color: #BB0000;">396.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>    0.72       0.1       -<span style="color: #BB0000;">706.</span> -1494.…   -<span style="color: #BB0000;">922.</span> -1088 …   -<span style="color: #BB0000;">705.</span> -1388.…   -<span style="color: #BB0000;">755.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>    0.72       0.15      -<span style="color: #BB0000;">986.</span> -2037.…  -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">386.</span> -1623.…   -<span style="color: #BB0000;">986.</span> -1990.…  -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">104.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>    0.77       0.05      -<span style="color: #BB0000;">443.</span> -783.1…   -<span style="color: #BB0000;">463.</span> -552.8…   -<span style="color: #BB0000;">398.</span> -654.4…   -<span style="color: #BB0000;">398.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>    0.77       0.1       -<span style="color: #BB0000;">683.</span> -1429.…   -<span style="color: #BB0000;">925.</span> -1095.…   -<span style="color: #BB0000;">687.</span> -1325.…   -<span style="color: #BB0000;">728.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>    0.77       0.15      -<span style="color: #BB0000;">933.</span> -1960.…  -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">373.</span> -1642.…   -<span style="color: #BB0000;">937.</span> -1894.…  -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">051</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>    0.82       0.05      -<span style="color: #BB0000;">418.</span> -812.6…   -<span style="color: #BB0000;">465.</span> -548.2…   -<span style="color: #BB0000;">367.</span> -661.7…   -<span style="color: #BB0000;">367.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>    0.82       0.1       -<span style="color: #BB0000;">708.</span> -1401.…   -<span style="color: #BB0000;">927.</span> -1120.…   -<span style="color: #BB0000;">677.</span> -1305.…   -<span style="color: #BB0000;">706.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>    0.82       0.15      -<span style="color: #BB0000;">977.</span> -1995.…  -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">378.</span> -1673.…   -<span style="color: #BB0000;">963.</span> -1911.…  -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">029</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    0.87       0.05      -<span style="color: #BB0000;">448.</span> -816.6…   -<span style="color: #BB0000;">462.</span> -542.2…   -<span style="color: #BB0000;">378.</span> -648.8…   -<span style="color: #BB0000;">378.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>    0.87       0.1       -<span style="color: #BB0000;">720.</span> -1424.…   -<span style="color: #BB0000;">928.</span> -1090.…   -<span style="color: #BB0000;">676.</span> -1293.…   -<span style="color: #BB0000;">696.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>    0.87       0.15      -<span style="color: #BB0000;">971.</span> -2047 …  -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">383.</span> -1618.…   -<span style="color: #BB0000;">943.</span> -1925.…   -<span style="color: #BB0000;">989.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>    0.92       0.05      -<span style="color: #BB0000;">426.</span> -748.9…   -<span style="color: #BB0000;">459.</span> -546.6…   -<span style="color: #BB0000;">346.</span> -577.2…   -<span style="color: #BB0000;">349.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>    0.92       0.1       -<span style="color: #BB0000;">718.</span> -1407.…   -<span style="color: #BB0000;">927.</span> -1096.…   -<span style="color: #BB0000;">650.</span> -1238.…   -<span style="color: #BB0000;">666.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>    0.92       0.15      -<span style="color: #BB0000;">937.</span> -2220.…  -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">387.</span> -1649.…   -<span style="color: #BB0000;">883.</span> -2080.…   -<span style="color: #BB0000;">939.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>    0.72       0.05      -<span style="color: #BB0000;">432.</span> -748 t…   -<span style="color: #BB0000;">461.</span> -550.9…   -<span style="color: #BB0000;">396.</span> -628 t…   -<span style="color: #BB0000;">399.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>    0.72       0.1       -<span style="color: #BB0000;">698.</span> -1472.…   -<span style="color: #BB0000;">924.</span> -1086.…   -<span style="color: #BB0000;">704.</span> -1397.…   -<span style="color: #BB0000;">751.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>    0.72       0.15      -<span style="color: #BB0000;">991.</span> -2046.…  -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">390.</span> -1650.…   -<span style="color: #BB0000;">989.</span> -1985.…  -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">103.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>    0.77       0.05      -<span style="color: #BB0000;">440.</span> -796.6…   -<span style="color: #BB0000;">461.</span> -550.7…   -<span style="color: #BB0000;">392.</span> -673.8…   -<span style="color: #BB0000;">391.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>    0.77       0.1       -<span style="color: #BB0000;">685.</span> -1392.…   -<span style="color: #BB0000;">922.</span> -1090.…   -<span style="color: #BB0000;">678.</span> -1289.…   -<span style="color: #BB0000;">727.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>    0.77       0.15      -<span style="color: #BB0000;">938.</span> -1928.…  -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">378.</span> -1633.…   -<span style="color: #BB0000;">946.</span> -1874.…  -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">041.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>    0.82       0.05      -<span style="color: #BB0000;">419.</span> -796.1…   -<span style="color: #BB0000;">464.</span> -552 t…   -<span style="color: #BB0000;">370.</span> -614.5…   -<span style="color: #BB0000;">373.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>    0.82       0.1       -<span style="color: #BB0000;">706.</span> -1447 …   -<span style="color: #BB0000;">924.</span> -1096.…   -<span style="color: #BB0000;">676.</span> -1316 …   -<span style="color: #BB0000;">704.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>    0.82       0.15      -<span style="color: #BB0000;">966.</span> -2025 …  -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">380.</span> -1634.…   -<span style="color: #BB0000;">951.</span> -1951.…  -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">015.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    0.87       0.05      -<span style="color: #BB0000;">451.</span> -835.5…   -<span style="color: #BB0000;">463.</span> -545.2…   -<span style="color: #BB0000;">380.</span> -678.5…   -<span style="color: #BB0000;">377.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>    0.87       0.1       -<span style="color: #BB0000;">716.</span> -1435.…   -<span style="color: #BB0000;">924.</span> -1092.…   -<span style="color: #BB0000;">666.</span> -1307.…   -<span style="color: #BB0000;">701.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>    0.87       0.15      -<span style="color: #BB0000;">960.</span> -2001.…  -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">389.</span> -1649 …   -<span style="color: #BB0000;">933.</span> -1867.…   -<span style="color: #BB0000;">993.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>    0.92       0.05      -<span style="color: #BB0000;">429.</span> -751 t…   -<span style="color: #BB0000;">455.</span> -539.8…   -<span style="color: #BB0000;">345.</span> -614 t…   -<span style="color: #BB0000;">346.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>    0.92       0.1       -<span style="color: #BB0000;">713.</span> -1430.…   -<span style="color: #BB0000;">925.</span> -1095.…   -<span style="color: #BB0000;">649.</span> -1289.…   -<span style="color: #BB0000;">659.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>    0.92       0.15      -<span style="color: #BB0000;">938.</span> -2241.…  -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">389.</span> -1636.…   -<span style="color: #BB0000;">889.</span> -2161.…   -<span style="color: #BB0000;">930.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 1 more variable: `youden_95% CI` &lt;chr&gt;, and abbreviated variable names</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ¹​`all_95% CI`, ²​none_median, ³​`none_95% CI`, ⁴​`value optimising_median`,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ⁵​`value optimising_95% CI`, ⁶​youden_median</span></span></span></code></pre></div>
@@ -328,28 +328,50 @@ represent the estimated effectiveness of different strategies in each
 setting.</p>
 <p>We can also represent these results visually.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_pup_screen</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span>, dodge_width <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">sim_pup_screen</span>, </span>
+<span>  x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>,</span>
+<span>  constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span>, </span>
+<span>  dodge_width <span class="op">=</span> <span class="fl">0.01</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Varying simulation inputs, other than sim_auc, are being held constant:</span></span>
 <span><span class="co">#&gt; event_rate: 0.05</span></span></code></pre></div>
 <p><img src="detailed-example_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_pup_screen</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.10</span><span class="op">)</span>, dodge_width <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">sim_pup_screen</span>, </span>
+<span>  x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>,</span>
+<span>  constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.10</span><span class="op">)</span>,</span>
+<span>  dodge_width <span class="op">=</span> <span class="fl">0.01</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Varying simulation inputs, other than sim_auc, are being held constant:</span></span>
 <span><span class="co">#&gt; event_rate: 0.1</span></span></code></pre></div>
 <p><img src="detailed-example_files/figure-html/unnamed-chunk-7-2.png" width="672"></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_pup_screen</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.15</span><span class="op">)</span>, dodge_width <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">sim_pup_screen</span>, </span>
+<span>  x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>,</span>
+<span>  constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.15</span><span class="op">)</span>,</span>
+<span>  dodge_width <span class="op">=</span> <span class="fl">0.01</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Varying simulation inputs, other than sim_auc, are being held constant:</span></span>
 <span><span class="co">#&gt; event_rate: 0.15</span></span></code></pre></div>
 <p><img src="detailed-example_files/figure-html/unnamed-chunk-7-3.png" width="672"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_pup_screen</span>, x_axis_var <span class="op">=</span> <span class="st">"event_rate"</span>, dodge_width <span class="op">=</span> <span class="fl">0.0075</span><span class="op">)</span></span>
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">sim_pup_screen</span>, </span>
+<span>  x_axis_var <span class="op">=</span> <span class="st">"event_rate"</span>, </span>
+<span>  dodge_width <span class="op">=</span> <span class="fl">0.0075</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Varying simulation inputs, other than event_rate, are being held constant:</span></span>

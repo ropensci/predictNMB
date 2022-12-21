@@ -230,13 +230,13 @@ in health economics as Probabilistic Sensitivity Analysis (PSA).</p>
 <span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -3.2679076 -0.7140181  0.0000000 -5.2434448</span></span>
+<span><span class="co">#&gt; -1.3087591 -0.1851139  0.0000000 -2.9430021</span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -4.120713 -1.492070  0.000000 -4.433131</span></span>
+<span><span class="co">#&gt; -7.468960 -5.316987  0.000000 -4.566672</span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.7255823 -0.2364694  0.0000000 -4.7992725</span></span></code></pre></div>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -5.347723 -0.131202  0.000000 -7.911101</span></span></code></pre></div>
 <p>Another benefit of allowing the user to define the function structure
 is that we can also allow the low risk group, or the population whose
 risk estimates fall below the probability threshold, to receive an
@@ -274,13 +274,13 @@ and a reduction in falls of 30%.</p>
 <span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -4.0161569 -0.7954003 -0.4826056 -6.0576888</span></span>
+<span><span class="co">#&gt; -2.9663486 -1.4359407 -0.5330226 -2.9665027</span></span>
+<span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          TP          FP          TN          FN </span></span>
+<span><span class="co">#&gt; -1.58329164 -0.05600145 -0.47878347 -2.38315065</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -1.4261093 -0.6220709 -0.3348864 -2.2533947</span></span>
-<span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -6.0961419 -0.5208833 -0.2979498 -7.1174069</span></span></code></pre></div>
+<span><span class="co">#&gt; -1.5667825 -0.8505419 -0.3856560 -1.3116535</span></span></code></pre></div>
 <p>Now that we are providing an intervention and associated cost to the
 low risk group, there is a negative NMB assigned to true negative (TN)
 groups. But in exchange, we have reduced the costs of false negatives
@@ -500,14 +500,14 @@ that gives fixed values for training:</p>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -3.0110730 -0.9955658  0.0000000 -4.0223461</span></span>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -3.006733 -1.005121  0.000000 -3.991448</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -3.0110730 -0.9955658  0.0000000 -4.0223461</span></span>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -3.006733 -1.005121  0.000000 -3.991448</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -3.0110730 -0.9955658  0.0000000 -4.0223461</span></span></code></pre></div>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -3.006733 -1.005121  0.000000 -3.991448</span></span></code></pre></div>
 <p>In many cases (including this one), this will give similar values to
 using the parameter estimates (i.e. <code>foo1()</code>), but not
 always. The values from this process should be more stable than using
@@ -515,7 +515,8 @@ the estimates.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">simulation_res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_nmb_sim.html">do_nmb_sim</a></span><span class="op">(</span></span>
 <span>  sample_size <span class="op">=</span> <span class="fl">200</span>, n_sims <span class="op">=</span> <span class="fl">500</span>, n_valid <span class="op">=</span> <span class="fl">10000</span>, sim_auc <span class="op">=</span> <span class="fl">0.7</span>,</span>
-<span>  event_rate <span class="op">=</span> <span class="fl">0.1</span>, fx_nmb_training <span class="op">=</span> <span class="va">foo2_remake_training</span>, fx_nmb_evaluation <span class="op">=</span> <span class="va">foo2_remake</span>,</span>
+<span>  event_rate <span class="op">=</span> <span class="fl">0.1</span>, fx_nmb_training <span class="op">=</span> <span class="va">foo2_remake_training</span>, </span>
+<span>  fx_nmb_evaluation <span class="op">=</span> <span class="va">foo2_remake</span>,</span>
 <span>  cutpoint_methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"youden"</span>, <span class="st">"value_optimising"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
