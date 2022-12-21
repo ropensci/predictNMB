@@ -13,6 +13,7 @@ coverage](https://codecov.io/gh/RWParsons/predictNMB/branch/master/graph/badge.s
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![pkgcheck](https://github.com/RWParsons/predictNMB/workflows/pkgcheck/badge.svg)](https://github.com/RWParsons/predictNMB/actions?query=workflow%3Apkgcheck)
 <!-- badges: end -->
 
 ## Overview
