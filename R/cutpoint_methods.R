@@ -67,14 +67,19 @@ roc_iu <- function(tp, fp, tn, fn, .roc_curve, ...) {
 #' ## get the list of available methods:
 #' get_inbuilt_cutpoint(return_all_methods = TRUE)
 #'
-#' ## get the cutpoint that maximises the Youden index for a given set of probabilities and outcomes
+#' ## get the cutpoint that maximises the Youden index for a given set of
+#' ## probabilities and outcomes
 #' get_inbuilt_cutpoint(
 #'   predicted = runif(1000),
 #'   actual = sample(c(0, 1), size = 1000, replace = TRUE),
 #'   method = "youden"
 #' )
 #'
-get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_methods = FALSE) {
+get_inbuilt_cutpoint <- function(predicted,
+                                 actual,
+                                 nmb,
+                                 method,
+                                 return_all_methods = FALSE) {
   inbuilt_methods <- c(
     "all",
     "none",
@@ -242,12 +247,13 @@ get_inbuilt_cutpoint <- function(predicted, actual, nmb, method, return_all_meth
 #'   nmb = c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 #' )
 get_thresholds <- function(predicted, actual, nmb, cutpoint_methods = NULL) {
+  inbuilt_methods <- get_inbuilt_cutpoint(return_all_methods = TRUE)
   if (is.null(cutpoint_methods)) {
-    cutpoint_methods <- get_inbuilt_cutpoint(return_all_methods = TRUE)
+    cutpoint_methods <- inbuilt_methods
   }
 
   # get cutpoints using inbuilt methods
-  inbuilt_methods <- cutpoint_methods[cutpoint_methods %in% get_inbuilt_cutpoint(return_all_methods = TRUE)]
+  inbuilt_methods <- cutpoint_methods[cutpoint_methods %in% inbuilt_methods]
   inbuilt_cutpoints <- lapply(
     inbuilt_methods,
     function(x) {
@@ -261,7 +267,7 @@ get_thresholds <- function(predicted, actual, nmb, cutpoint_methods = NULL) {
   inbuilt_cutpoints <- unlist(inbuilt_cutpoints)
 
   # get cutpoints using user-provided functions
-  non_inbuilt_methods <- cutpoint_methods[!cutpoint_methods %in% get_inbuilt_cutpoint(return_all_methods = TRUE)]
+  non_inbuilt_methods <- cutpoint_methods[!cutpoint_methods %in% inbuilt_methods]
   if (length(non_inbuilt_methods) != 0) {
     non_inbuilt_cutpoints <- lapply(
       non_inbuilt_methods,

@@ -146,10 +146,32 @@ As our model accuracy increases and event rate decreases, treatment decisions ba
 We can also represent these results visually.
 
 ```{r}
-plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.05), dodge_width = 0.01)
-plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.10), dodge_width = 0.01)
-plot(sim_pup_screen, x_axis_var = "sim_auc", constants = c(event_rate = 0.15), dodge_width = 0.01)
-plot(sim_pup_screen, x_axis_var = "event_rate", dodge_width = 0.0075)
+plot(
+  sim_pup_screen, 
+  x_axis_var = "sim_auc",
+  constants = c(event_rate = 0.05), 
+  dodge_width = 0.01
+)
+
+plot(
+  sim_pup_screen, 
+  x_axis_var = "sim_auc",
+  constants = c(event_rate = 0.10),
+  dodge_width = 0.01
+)
+
+plot(
+  sim_pup_screen, 
+  x_axis_var = "sim_auc",
+  constants = c(event_rate = 0.15),
+  dodge_width = 0.01
+)
+
+plot(
+  sim_pup_screen, 
+  x_axis_var = "event_rate", 
+  dodge_width = 0.0075
+)
 ```
 
 

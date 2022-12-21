@@ -8,7 +8,10 @@
 use_linewidth <- function() {
   # if the available ggplot2 version is ahead of 3.4.0, then use `linewidth`
   # argument, otherwise will use size
-  utils::compareVersion(as.character(utils::packageVersion("ggplot2")), "3.4.0") %in% c(0, 1)
+  utils::compareVersion(
+    as.character(utils::packageVersion("ggplot2")),
+    "3.4.0"
+  ) %in% c(0, 1)
 }
 
 
@@ -130,12 +133,18 @@ add_interval <- function(data, ci) {
 #' if (FALSE) {
 #'   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 #'   sim_screen_obj <- screen_simulation_inputs(
-#'     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1), event_rate = c(0.1, 0.2, 0.3),
+#'     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1),
+#'     event_rate = c(0.1, 0.2, 0.3),
 #'     fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
 #'   )
 #'
 #'   plot(sim_screen_obj)
-#'   plot(sim_screen_obj, x_axis_var = "event_rate", constants = c(sim_auc = 0.8), dodge_width = 0.02)
+#'   plot(
+#'     sim_screen_obj,
+#'     x_axis_var = "event_rate",
+#'     constants = c(sim_auc = 0.8),
+#'     dodge_width = 0.02
+#'   )
 #' }
 plot.predictNMBsim <- function(x,
                                what = c("nmb", "inb", "cutpoints"),
@@ -294,12 +303,18 @@ plot.predictNMBsim <- function(x,
 #' if (FALSE) {
 #'   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 #'   sim_screen_obj <- screen_simulation_inputs(
-#'     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1), event_rate = c(0.1, 0.2, 0.3),
+#'     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1),
+#'     event_rate = c(0.1, 0.2, 0.3),
 #'     fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
 #'   )
 #'
 #'   plot(sim_screen_obj)
-#'   plot(sim_screen_obj, x_axis_var = "event_rate", constants = c(sim_auc = 0.8), dodge_width = 0.02)
+#'   plot(
+#'     sim_screen_obj,
+#'     x_axis_var = "event_rate",
+#'     constants = c(sim_auc = 0.8),
+#'     dodge_width = 0.02
+#'   )
 #' }
 plot.predictNMBscreen <- function(x,
                                   x_axis_var = NULL,
@@ -352,7 +367,9 @@ plot.predictNMBscreen <- function(x,
     for (i in length(non_x_axis_vars)) {
       if (names(non_x_axis_vars)[i] %in% names(constants)) {
         v <- constants[[names(non_x_axis_vars)[i]]]
-        possible_values <- sort(unique(grid_lookup[[names(non_x_axis_vars)[i]]]))
+        possible_values <- sort(
+          unique(grid_lookup[[names(non_x_axis_vars)[i]]])
+        )
 
         if (!any(approx_match(vec = possible_values, val = v))) {
           stop(
@@ -399,7 +416,8 @@ plot.predictNMBscreen <- function(x,
     }
     sim.id_ignore <- unique(sim.id_ignore)
 
-    # filter the grid of simulations to only those which will be in the plot (keeping the non-{x_axis_var}'s constant)
+    # filter the grid of simulations to only those which will be in the plot
+    # (keeping the non-{x_axis_var}'s constant)
     grid_lookup <- grid_lookup[!grid_lookup$.sim_id %in% sim.id_ignore, ]
   }
 

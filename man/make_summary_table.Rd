@@ -58,8 +58,8 @@ selected (0, 1).
 if (FALSE) {
   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
   sim_screen_obj <- screen_simulation_inputs(
-    n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1), event_rate = 0.1,
-    fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
+    n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1),
+    event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
   )
   make_summary_table(sim_screen_obj)
   make_summary_table(sim_screen_obj$simulations[[1]])

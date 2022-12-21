@@ -66,8 +66,9 @@ test_that("print method - works", {
 # cl <- parallel::makeCluster(parallel::detectCores())
 # get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 # sim_screen_obj_par <- screen_simulation_inputs(
-#   n_sims = 500, n_valid = 1000, sim_auc = seq(0.7, 0.9, 0.1), event_rate = 0.1,
-#   fx_nmb_training = list("f1"=get_nmb, "f2"=get_nmb), fx_nmb_evaluation = get_nmb, cl = cl
+#   n_sims = 500, n_valid = 1000, sim_auc = seq(0.7, 0.9, 0.1),
+#   event_rate = 0.1, fx_nmb_training = list("f1"=get_nmb, "f2"=get_nmb),
+#   fx_nmb_evaluation = get_nmb, cl = cl
 # )
 # saveRDS(sim_screen_obj_par, test_path("fixtures", "predictNMBscreen_object.rds"))
 # parallel::stopCluster(cl)

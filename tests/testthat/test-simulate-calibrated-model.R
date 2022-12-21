@@ -1,9 +1,13 @@
-test_that("Simulated model has approximately right AUC and is well calibrated", {
+test_that("Simulated model has appropriate AUC and is well calibrated", {
   input_auc <- 0.75
 
   withr::with_seed(
     42,
-    training_data <- get_sample(auc = input_auc, n_samples = 5000, prevalence = 0.1)
+    training_data <- get_sample(
+      auc = input_auc,
+      n_samples = 5000,
+      prevalence = 0.1
+    )
   )
 
   model <- stats::glm(

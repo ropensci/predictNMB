@@ -27,7 +27,7 @@ get_sample <- function(auc, n_samples, prevalence, min_events = 0) {
 
   n_pos <- sum(sampled_data)
 
-  # if n_pos < min_events, add a new random value to the sample until n_pos == min_events
+  # if n_pos < min_events, add a value to the sample until n_pos == min_events
   while (n_pos < min_events) {
     added_sample <- sample(
       c(0, 1),
@@ -44,7 +44,7 @@ get_sample <- function(auc, n_samples, prevalence, min_events = 0) {
 
   n_neg <- n_samples - n_pos
 
-  # if by chance all samples are either positive or negative, repeat the sampling
+  # if by chance all samples are either positive or negative, repeat process
   # almost all the cutpoint selection methods will fail if there's only 1 class.
   if (n_pos == 0 | n_neg == 0) {
     return(get_sample(auc, n_samples, prevalence, min_events))

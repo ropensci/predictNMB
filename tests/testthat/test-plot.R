@@ -91,7 +91,10 @@ test_that("predictNMBscreen - plot method (x_axis_var selection) works", {
   )
 
   # test function input (fx_nmb_training) being held constant
-  predictNMBscreen_fx_nmb_training_plot <- plot(obj, x_axis_var = "fx_nmb_training")
+  predictNMBscreen_fx_nmb_training_plot <- plot(
+    obj,
+    x_axis_var = "fx_nmb_training"
+  )
   expect_s3_class(predictNMBscreen_event_rate_plot, "gg")
   vdiffr::expect_doppelganger(
     "plot.predictNMBscreen(obj, x_axis_var = 'fx_nmb_training')",
@@ -103,7 +106,11 @@ test_that("predictNMBscreen - plot method (constants selection) works", {
   obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
 
   # test on a numeric input being held constant
-  predictNMBscreen_constants_1 <- plot(obj, x_axis_var = "fx_nmb_training", constants = list(sim_auc = 0.8))
+  predictNMBscreen_constants_1 <- plot(
+    obj,
+    x_axis_var = "fx_nmb_training",
+    constants = list(sim_auc = 0.8)
+  )
   expect_s3_class(predictNMBscreen_constants_1, "gg")
   vdiffr::expect_doppelganger(
     "plot.predictNMBscreen - constants-1",
@@ -111,10 +118,20 @@ test_that("predictNMBscreen - plot method (constants selection) works", {
   )
 
   # test on a *BAD* numeric input being held constant
-  expect_error(plot(obj, x_axis_var = "fx_nmb_training", constants = list(sim_auc = 0.81)))
+  expect_error(
+    plot(
+      obj,
+      x_axis_var = "fx_nmb_training",
+      constants = list(sim_auc = 0.81)
+    )
+  )
 
   # test on a function input being held constant
-  predictNMBscreen_constants_2 <- plot(obj, x_axis_var = "sim_auc", constants = list(fx_nmb_training = "f2"))
+  predictNMBscreen_constants_2 <- plot(
+    obj,
+    x_axis_var = "sim_auc",
+    constants = list(fx_nmb_training = "f2")
+  )
   expect_s3_class(predictNMBscreen_constants_2, "gg")
   vdiffr::expect_doppelganger(
     "plot.predictNMBscreen - constants-2",

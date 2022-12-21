@@ -50,14 +50,21 @@
 #' if (FALSE) {
 #'   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 #'   sim_screen_obj <- screen_simulation_inputs(
-#'     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1), event_rate = 0.1,
-#'     fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
+#'     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1),
+#'     event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
 #'   )
 #' }
-screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
+screen_simulation_inputs <- function(sample_size,
+                                     n_sims,
+                                     n_valid,
+                                     sim_auc,
+                                     event_rate,
                                      cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
-                                     fx_nmb_training, fx_nmb_evaluation, pair_nmb_train_and_evaluation_functions = FALSE,
-                                     meet_min_events = TRUE, min_events = NA, cl = NULL) {
+                                     fx_nmb_training, fx_nmb_evaluation,
+                                     pair_nmb_train_and_evaluation_functions = FALSE,
+                                     meet_min_events = TRUE,
+                                     min_events = NA,
+                                     cl = NULL) {
   if (missing(sample_size)) {
     sample_size <- NA
   }
@@ -93,7 +100,12 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
       small_grid_id = seq_len(nrow(small_grid)),
       n_sims = n_sims,
       n_valid = n_valid,
-      fx_nmb_both = mapply(c, fx_nmb_training, fx_nmb_evaluation, SIMPLIFY = FALSE)
+      fx_nmb_both = mapply(
+        c,
+        fx_nmb_training,
+        fx_nmb_evaluation,
+        SIMPLIFY = FALSE
+      )
     )
 
     train_fxs <-
@@ -140,8 +152,10 @@ screen_simulation_inputs <- function(sample_size, n_sims, n_valid, sim_auc, even
     )
 
   if (nrow(input_grid) == 1) {
-    stop("it looks like you've only entered one possible value for each argument
-          You'd be better off running the simulation directly through do_nmb_sim()")
+    stop(
+      "it looks like you've only entered one possible value for each argument
+      You'd be better off running the simulation directly through do_nmb_sim()"
+    )
   }
 
   simulations <- lapply(
@@ -265,7 +279,8 @@ add_sample_size_calcs <- function(x) {
 #' if (FALSE) {
 #'   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 #'   sim_screen_obj <- screen_simulation_inputs(
-#'     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1), event_rate = 0.1,
+#'     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1),
+#'     event_rate = 0.1,
 #'     fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
 #'   )
 #'   print(sim_screen_obj)

@@ -17,7 +17,11 @@ utils::globalVariables(
 #'
 #' @return Returns a named \code{list} with sample size and minumum events.
 #' @noRd
-do_sample_size_calc <- function(cstatistic, prevalence, sample_size, min_events, meet_min_events) {
+do_sample_size_calc <- function(cstatistic,
+                                prevalence,
+                                sample_size,
+                                min_events,
+                                meet_min_events) {
   if (is.na(sample_size)) {
     pmsamp <- pmsampsize::pmsampsize(
       type = "b",
@@ -134,7 +138,8 @@ validate_inputs <- function(sample_size,
   if (!is.na(min_events) & meet_min_events & missing(sample_size)) {
     message(
       "Power analyses is being performed to estimate sample size but",
-      "'min_events' is specified so the power analyses for minimum number of events will be ignored.\n",
+      "'min_events' is specified so the power analyses for minimum number of",
+      " events will be ignored.\n",
       "    The minimum number of events being used is ",
       min_events, "."
     )
@@ -169,7 +174,8 @@ update_rename_vector <- function(rename_vector) {
   } else {
     new_rename_vector <- default_rename_vector
 
-    # update the new rename vector for the user-defined rename vector, matching to method names with uncerscores
+    # update the new rename vector for the user-defined rename vector
+    # and match to method names with underscores
     if (any(rename_vector %in% new_rename_vector)) {
       matched_values <- rename_vector[rename_vector %in% new_rename_vector]
       for (i in seq_along(matched_values)) {
@@ -177,7 +183,8 @@ update_rename_vector <- function(rename_vector) {
       }
     }
 
-    # update the new rename vector for the user-defined rename vector, matching to method names with underscores replaced by spaces
+    # update the new rename vector for the user-defined rename vector
+    # and match to method names with underscores replaced by spaces
     matched_values <- rename_vector[rename_vector %in% names(new_rename_vector)]
     if (any(rename_vector %in% names(new_rename_vector))) {
       for (i in seq_along(matched_values)) {
@@ -205,6 +212,6 @@ approx_match <- function(vec, val) {
   # use this approach for matching constants to simulation inputs as simulations
   # input vectors can be passed from seq() and there are precision issues with
   # matching values to those vectors.
-  # all.equal() performs a test for 'near equality' and therefore doesn't have this issue.
+  # all.equal() performs a test for 'near equality' so doesn't have this issue.
   unlist(lapply(vec, function(x) isTRUE(all.equal(x, val))))
 }

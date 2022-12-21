@@ -101,7 +101,11 @@ nmb_simulation
 We can access simulation outputs like NMB and cutpoints directly from our simulation object, and choose strategies to examine further using this list. This is useful to examine histograms or get summary values. For example, our current default strategy might be to treat all, which is the same as setting our probability threshold for treatment to 0:
 
 ```{r}
-hist(nmb_simulation$df_result$all, main = "Simulation results - treat all", xlab = "Net monetary benefit (NMB)")
+hist(
+  nmb_simulation$df_result$all, 
+  main = "Simulation results - treat all", 
+  xlab = "Net monetary benefit (NMB)"
+)
 
 summary(nmb_simulation$df_result$all)
 ```

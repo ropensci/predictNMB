@@ -6,7 +6,12 @@ test_that("test inbuilt cutpoint methods", {
   a <- sample(c(0, 1), size = 1000, replace = TRUE)
 
   for (cutpoint_method in inbuilt_methods) {
-    cp <- get_inbuilt_cutpoint(predicted = p, actual = a, nmb = nmb, method = cutpoint_method)
+    cp <- get_inbuilt_cutpoint(
+      predicted = p,
+      actual = a,
+      nmb = nmb,
+      method = cutpoint_method
+    )
     expect_true(cp >= 0 & cp <= 1, label = cutpoint_method)
   }
 })

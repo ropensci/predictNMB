@@ -76,10 +76,17 @@
 #'   sample_size = 200, n_sims = 50, n_valid = 10000, sim_auc = 0.7,
 #'   event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
 #' )
-do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
+do_nmb_sim <- function(sample_size,
+                       n_sims,
+                       n_valid,
+                       sim_auc,
+                       event_rate,
                        cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
-                       fx_nmb_training, fx_nmb_evaluation, meet_min_events = TRUE,
-                       min_events = NA, cl = NULL) {
+                       fx_nmb_training,
+                       fx_nmb_evaluation,
+                       meet_min_events = TRUE,
+                       min_events = NA,
+                       cl = NULL) {
   validate_inputs(
     sample_size,
     n_sims,
@@ -154,9 +161,9 @@ do_nmb_sim <- function(sample_size, n_sims, n_valid, sim_auc, event_rate,
         "roc_iu"
       )
     })
-
-    if (any(!cutpoint_methods %in% get_inbuilt_cutpoint(return_all_methods = TRUE))) {
-      user_defined_methods <- cutpoint_methods[!cutpoint_methods %in% get_inbuilt_cutpoint(return_all_methods = TRUE)]
+    inbuilt_methods <- get_inbuilt_cutpoint(return_all_methods = TRUE)
+    if (any(!cutpoint_methods %in% inbuilt_methods)) {
+      user_defined_methods <- cutpoint_methods[!cutpoint_methods %in% inbuilt_methods]
       if (any(!user_defined_methods %in% ls(envir = globalenv()))) {
         undefined_methods <- user_defined_methods[!user_defined_methods %in% ls(envir = globalenv())]
         stop(
@@ -319,10 +326,10 @@ do_nmb_iteration <- function(iter,
 print.predictNMBsim <- function(x, ...) {
   cat("predictNMB object\n")
 
-  cat(paste0("\nTraining data sample size: "), x$meta_data$sample_size)
-  cat(paste0("\nMinimum number of events in training sample: "), x$meta_data$min_events)
-  cat(paste0("\nEvaluation data sample size: "), x$meta_data$n_valid)
-  cat(paste0("\nNumber of simulations: "), x$meta_data$n_sims)
-  cat(paste0("\nSimulated AUC: "), x$meta_data$sim_auc)
-  cat(paste0("\nSimulated event rate: "), x$meta_data$event_rate)
+  cat("\nTraining data sample size: ", x$meta_data$sample_size)
+  cat("\nMinimum number of events in training sample: ", x$meta_data$min_events)
+  cat("\nEvaluation data sample size: ", x$meta_data$n_valid)
+  cat("\nNumber of simulations: ", x$meta_data$n_sims)
+  cat("\nSimulated AUC: ", x$meta_data$sim_auc)
+  cat("\nSimulated event rate: ", x$meta_data$event_rate)
 }

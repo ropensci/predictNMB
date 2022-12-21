@@ -35,8 +35,8 @@
 #' if (FALSE) {
 #'   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 #'   sim_screen_obj <- screen_simulation_inputs(
-#'     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1), event_rate = 0.1,
-#'     fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
+#'     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1),
+#'     event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
 #'   )
 #'   make_summary_table(sim_screen_obj)
 #'   make_summary_table(sim_screen_obj$simulations[[1]])
@@ -45,8 +45,19 @@ make_summary_table <- function(x,
                                what = c("nmb", "inb", "cutpoints"),
                                inb_ref_col = NULL,
                                agg_functions = list(
-                                 "median" = function(x) round(stats::median(x), digits = 2),
-                                 "95% CI" = function(x) paste0(round(stats::quantile(x, probs = c(0.025, 0.975)), digits = 1), collapse = " to ")
+                                 "median" = function(x) round(
+                                   stats::median(x),
+                                   digits = 2
+                                 ),
+                                 "95% CI" = function(x) paste0(
+                                   round(
+                                     stats::quantile(
+                                       x,
+                                       probs = c(0.025, 0.975)),
+                                     digits = 1
+                                   ),
+                                   collapse = " to "
+                                 )
                                ),
                                rename_vector,
                                show_full_inputs = FALSE,
@@ -126,8 +137,19 @@ make_summary_table.predictNMBscreen <- function(x,
                                                 what = c("nmb", "inb", "cutpoints"),
                                                 inb_ref_col = NULL,
                                                 agg_functions = list(
-                                                  "median" = function(x) round(stats::median(x), digits = 2),
-                                                  "95% CI" = function(x) paste0(round(stats::quantile(x, probs = c(0.025, 0.975)), digits = 1), collapse = " to ")
+                                                  "median" = function(x) round(
+                                                    stats::median(x),
+                                                    digits = 2
+                                                  ),
+                                                  "95% CI" = function(x) paste0(
+                                                    round(
+                                                      stats::quantile(
+                                                        x,
+                                                        probs = c(0.025, 0.975)),
+                                                      digits = 1
+                                                    ),
+                                                    collapse = " to "
+                                                  )
                                                 ),
                                                 rename_vector,
                                                 show_full_inputs = FALSE,
@@ -194,8 +216,19 @@ make_summary_table.predictNMBsim <- function(x,
                                              what = c("nmb", "inb", "cutpoints"),
                                              inb_ref_col = NULL,
                                              agg_functions = list(
-                                               "median" = function(x) round(stats::median(x), digits = 2),
-                                               "95% CI" = function(x) paste0(round(stats::quantile(x, probs = c(0.025, 0.975)), digits = 1), collapse = " to ")
+                                               "median" = function(x) round(
+                                                 stats::median(x),
+                                                 digits = 2
+                                               ),
+                                               "95% CI" = function(x) paste0(
+                                                 round(
+                                                   stats::quantile(
+                                                     x,
+                                                     probs = c(0.025, 0.975)),
+                                                   digits = 1
+                                                 ),
+                                                 collapse = " to "
+                                               )
                                              ),
                                              rename_vector,
                                              ...) {

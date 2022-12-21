@@ -34,7 +34,8 @@ test_that("predictNMBsim - make_summary_table (what) works", {
   expect_s3_class(predictNMBsim_cutpoints_tbl, "tbl")
   expect_snapshot_output(predictNMBsim_cutpoints_tbl)
 
-  # test that incremental net monetary benefit works for make_summary_table.predictNMBsim()
+  # test that incremental net monetary benefit works for
+  # make_summary_table.predictNMBsim()
   predictNMBsim_inb_tbl <- make_summary_table(
     obj,
     what = "inb",
@@ -76,7 +77,9 @@ test_that("predictNMBscreen - make_summary_table works", {
   # test a more complex case
   predictNMBscreen_complex_1 <- make_summary_table(
     obj,
-    rename_vector = c("Treat All" = "all", "Treat None" = "none", "cost minimising threshold" = "cost minimising"),
+    rename_vector = c("Treat All" = "all",
+                      "Treat None" = "none",
+                      "cost minimising threshold" = "cost minimising"),
     agg_functions = list(mean = mean, min = min, max = max)
   )
   expect_s3_class(predictNMBscreen_complex_1, "tbl")

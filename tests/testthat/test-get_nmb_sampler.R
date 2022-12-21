@@ -29,8 +29,9 @@ test_that("get_nmb_sampler() works when used with do_nmb_sim() in parallel", {
   cl <- parallel::makeCluster(ncores)
 
   out_par <- do_nmb_sim(
-    n_sims = 50, sample_size = 100, min_events = 10, n_valid = 1000, sim_auc = 0.7, event_rate = 0.1,
-    fx_nmb_training = get_nmb_train, fx_nmb_evaluation = get_nmb_eval, cl = cl,
+    n_sims = 50, sample_size = 100, min_events = 10, n_valid = 1000,
+    sim_auc = 0.7, event_rate = 0.1, fx_nmb_training = get_nmb_train,
+    fx_nmb_evaluation = get_nmb_eval, cl = cl,
     cutpoint_methods = c("all", "none")
   )
   parallel::stopCluster(cl)
@@ -61,7 +62,11 @@ test_that("test other arguments to create NMB sampling function", {
   )
 
   expect_true(inherits(get_nmb_fx, "function"))
-  expect_equal(get_nmb_fx(), c("TP" = -300, "FP" = -50, "TN" = -3, "FN" = -336), tolerance = 2)
+  expect_equal(
+    get_nmb_fx(),
+    c("TP" = -300, "FP" = -50, "TN" = -3, "FN" = -336),
+    tolerance = 2
+  )
 
   # missing wtp when qalys_lost is present produces error
   expect_error(

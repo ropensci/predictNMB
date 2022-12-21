@@ -274,7 +274,8 @@ In many cases (including this one), this will give similar values to using the p
 ```{r}
 simulation_res2 <- do_nmb_sim(
   sample_size = 200, n_sims = 500, n_valid = 10000, sim_auc = 0.7,
-  event_rate = 0.1, fx_nmb_training = foo2_remake_training, fx_nmb_evaluation = foo2_remake,
+  event_rate = 0.1, fx_nmb_training = foo2_remake_training, 
+  fx_nmb_evaluation = foo2_remake,
   cutpoint_methods = c("all", "none", "youden", "value_optimising")
 )
 
