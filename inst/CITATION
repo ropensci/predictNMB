@@ -1,0 +1,17 @@
+citHeader("To cite predictNMB in publications use:")
+
+year <- "2022"
+note <- "0.0.1"
+
+bibentry(bibtype = "Manual",
+         title = "{predictNMB}: Evaluate Clinical Prediction Models by Net Monetary Benefit",
+         author = c(person("Rex", "Parsons"),
+                    person("Robin", "Blythe"),
+                    person("Adrian", "Barnett")),
+         year = year,
+         note = note,
+     url = "https://github.com/RWParsons/predictNMB")
+ textVersion = paste0("Rex Parsons, Robin Blythe Adrian Barnett, (", year, ").",
+  " predictNMB: Evaluate Clinical Prediction Models by Net Monetary Benefit.",
+  note, ".",
+  " https://github.com/RWParsons/predictNMB")

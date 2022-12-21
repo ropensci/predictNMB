@@ -7,7 +7,7 @@
   "codeRepository": "https://github.com/RWParsons/predictNMB",
   "issueTracker": "https://github.com/rwparsons/predictNMB/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.0.9000",
+  "version": "0.0.1",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -266,7 +266,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "1014.598KB",
+  "fileSize": "1017.776KB",
   "relatedLink": "https://rwparsons.github.io/predictNMB/",
   "readme": "https://github.com/RWParsons/predictNMB/blob/master/README.md",
   "contIntegration": ["https://github.com/RWParsons/predictNMB/actions", "https://app.codecov.io/gh/RWParsons/predictNMB?branch=master"],

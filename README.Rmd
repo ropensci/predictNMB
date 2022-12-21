@@ -46,8 +46,8 @@ predictNMB is a tool to evaluate (hypothetical) clinical prediction models based
 You can install the development version from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("RWParsons/predictNMB")
+# install.packages("remotes")
+remotes::install_github("RWParsons/predictNMB")
 ```
 
 ## Estimating model cutpoints
@@ -129,6 +129,11 @@ When plotting a single set of simulation inputs, we see the distributions of the
 plot(single_sim_obj)
 ```
 
+## Citation
+
+```{r}
+citation("predictNMB")
+```
 
 
 ## Further reading

@@ -39,8 +39,8 @@ You can install the development version from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("RWParsons/predictNMB")
+# install.packages("remotes")
+remotes::install_github("RWParsons/predictNMB")
 ```
 
 ## Estimating model cutpoints
@@ -133,6 +133,28 @@ plot(single_sim_obj)
 ```
 
 <img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+
+## Citation
+
+``` r
+citation("predictNMB")
+#> 
+#> To cite predictNMB in publications use:
+#> 
+#>   Parsons R, Blythe R, Barnett A (2022). _predictNMB: Evaluate Clinical
+#>   Prediction Models by Net Monetary Benefit_. 0.0.1,
+#>   <https://github.com/RWParsons/predictNMB>.
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @Manual{,
+#>     title = {{predictNMB}: Evaluate Clinical Prediction Models by Net Monetary Benefit},
+#>     author = {Rex Parsons and Robin Blythe and Adrian Barnett},
+#>     year = {2022},
+#>     note = {0.0.1},
+#>     url = {https://github.com/RWParsons/predictNMB},
+#>   }
+```
 
 ## Further reading
 
