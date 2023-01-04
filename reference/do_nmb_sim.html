@@ -74,6 +74,7 @@ simulated model.</p>
 <span>  <span class="va">fx_nmb_evaluation</span>,</span>
 <span>  meet_min_events <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  min_events <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  show_progress <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  cl <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -148,6 +149,10 @@ sample. If less than this number are included in sample of size
 <code>sample_size</code>, additional samples are added until the min_events is met.
 The default (<code>NA</code>) will use the expected value given the
 codeevent_rate and the <code>sample_size</code>.</p></dd>
+
+
+<dt>show_progress</dt>
+<dd><p>Logical. Whether to display a progress bar.</p></dd>
 
 
 <dt>cl</dt>

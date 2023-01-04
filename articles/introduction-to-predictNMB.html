@@ -224,6 +224,8 @@ then used to fit a logistic regression model with the single predictor
 and intercept term.</p>
 <p>Note that it may take some time to run the simulation. (The one below
 may take up to a minute, depending on your computer’s performance.)</p>
+<p>We have used <code>show_progress = TRUE</code> so that this progress
+is displayed but by default this progress bar is not shown.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nmb_simulation</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_nmb_sim.html">do_nmb_sim</a></span><span class="op">(</span></span>
 <span>  sample_size <span class="op">=</span> <span class="fl">1000</span>,</span>
@@ -232,7 +234,8 @@ may take up to a minute, depending on your computer’s performance.)</p>
 <span>  sim_auc <span class="op">=</span> <span class="fl">0.7</span>,</span>
 <span>  event_rate <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  fx_nmb_training <span class="op">=</span> <span class="va">get_nmb_sampler_training</span>,</span>
-<span>  fx_nmb_evaluation <span class="op">=</span> <span class="va">get_nmb_sampler</span></span>
+<span>  fx_nmb_evaluation <span class="op">=</span> <span class="va">get_nmb_sampler</span>,</span>
+<span>  show_progress <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">nmb_simulation</span></span>
