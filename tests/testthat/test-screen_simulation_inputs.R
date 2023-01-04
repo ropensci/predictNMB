@@ -61,16 +61,14 @@ test_that("screen_simulation_inputs() works in parallel", {
     skip()
   }
 
-  f <- function() {
-    screen_simulation_inputs(
-      sample_size = 250, n_sims = 10, n_valid = 1000,
-      sim_auc = seq(0.7, 0.9, 0.1), event_rate = 0.1,
-      fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb, cl = cl,
-      show_progress = TRUE
-    )
-  }
+  sim_screen_obj_par_progress <- screen_simulation_inputs(
+    sample_size = 250, n_sims = 10, n_valid = 1000,
+    sim_auc = seq(0.7, 0.9, 0.1), event_rate = 0.1,
+    fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb, cl = cl,
+    show_progress = TRUE
+  )
 
-  expect_output(f(), regexp = "100% elapsed", fixed = TRUE)
+  expect_s3_class(sim_screen_obj_par_progress, "predictNMBscreen")
 
   parallel::stopCluster(cl)
 })
