@@ -84,6 +84,8 @@ These inputs can be passed to `screen_simulation_inputs()` under the parameters 
 
 Note that it may take some time to run the simulation. (The one below may take up to a minute, depending on your computer's performance.)
 
+We have used `show_progress = TRUE` so that this progress is displayed but by default this progress bar is not shown.
+
 ```{r}
 nmb_simulation <- do_nmb_sim(
   sample_size = 1000,
@@ -92,7 +94,8 @@ nmb_simulation <- do_nmb_sim(
   sim_auc = 0.7,
   event_rate = 0.1,
   fx_nmb_training = get_nmb_sampler_training,
-  fx_nmb_evaluation = get_nmb_sampler
+  fx_nmb_evaluation = get_nmb_sampler,
+  show_progress = TRUE
 )
 
 nmb_simulation
