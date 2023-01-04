@@ -32,6 +32,7 @@
 #' \code{sample_size}, additional samples are added until the min_events is met.
 #' The default (\code{NA}) will use the expected value given the
 #' \code{event_rate} and the \code{sample_size}.
+#' @param show_progress Logical. Whether to display a progress bar.
 #' @param cl A cluster made using \code{parallel::makeCluster()}. If a cluster
 #' is provided, the simulation will be done in parallel.
 #'
@@ -64,7 +65,18 @@ screen_simulation_inputs <- function(sample_size,
                                      pair_nmb_train_and_evaluation_functions = FALSE,
                                      meet_min_events = TRUE,
                                      min_events = NA,
+                                     show_progress = FALSE,
                                      cl = NULL) {
+  if (show_progress){
+    if (!requireNamespace("pbapply", quietly = TRUE)) {
+      message(
+        "The 'pbapply' package is required for displaying a progress bar",
+        "'show_progress' will be changed to FALSE."
+      )
+      show_progress <- FALSE
+    }
+  }
+
   if (missing(sample_size)) {
     sample_size <- NA
   }
@@ -161,6 +173,11 @@ screen_simulation_inputs <- function(sample_size,
   simulations <- lapply(
     seq_len(nrow(input_grid)),
     function(i) {
+      if(show_progress) {
+        message(
+          "Running simulation: [", i, "/", nrow(input_grid), "]"
+        )
+      }
       do_nmb_sim(
         sample_size = input_grid$sample_size[i],
         n_sims = input_grid$n_sims[i],
@@ -172,6 +189,7 @@ screen_simulation_inputs <- function(sample_size,
         fx_nmb_evaluation = input_grid$fx_nmb_evaluation[[i]],
         meet_min_events = input_grid$meet_min_events[[i]],
         min_events = input_grid$min_events[i],
+        show_progress = show_progress,
         cl = cl
       )
     }

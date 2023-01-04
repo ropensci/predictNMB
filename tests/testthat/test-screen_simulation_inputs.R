@@ -48,13 +48,31 @@ test_that("screen_simulation_inputs() works in parallel", {
   cl <- parallel::makeCluster(ncores)
 
   sim_screen_obj_par <- screen_simulation_inputs(
-    n_sims = 10, n_valid = 1000, sim_auc = seq(0.7, 0.9, 0.1), event_rate = 0.1,
+    sample_size = 250, n_sims = 10, n_valid = 1000,
+    sim_auc = seq(0.7, 0.9, 0.1), event_rate = 0.1,
     fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb, cl = cl
   )
 
-  parallel::stopCluster(cl)
-
   expect_s3_class(sim_screen_obj_par, "predictNMBscreen")
+
+
+  if (!requireNamespace("pbapply", quietly = TRUE)) {
+    parallel::stopCluster(cl)
+    skip()
+  }
+
+  f <- function() {
+    screen_simulation_inputs(
+      sample_size = 250, n_sims = 10, n_valid = 1000,
+      sim_auc = seq(0.7, 0.9, 0.1), event_rate = 0.1,
+      fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb, cl = cl,
+      show_progress = TRUE
+    )
+  }
+
+  expect_output(f(), regexp = "100% elapsed", fixed = TRUE)
+
+  parallel::stopCluster(cl)
 })
 
 test_that("print method - works", {

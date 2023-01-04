@@ -16,6 +16,7 @@ do_nmb_sim(
   fx_nmb_evaluation,
   meet_min_events = TRUE,
   min_events = NA,
+  show_progress = FALSE,
   cl = NULL
 )
 }
@@ -75,6 +76,8 @@ sample. If less than this number are included in sample of size
 \code{sample_size}, additional samples are added until the min_events is met.
 The default (\code{NA}) will use the expected value given the
 code{event_rate} and the \code{sample_size}.}
+
+\item{show_progress}{Logical. Whether to display a progress bar.}
 
 \item{cl}{A cluster made using \code{parallel::makeCluster()}.
 If a cluster is provided, the simulation will be done in parallel.}

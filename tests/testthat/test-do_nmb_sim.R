@@ -9,6 +9,16 @@ test_that("do_nmb_sim() works", {
   expect_s3_class(out, "predictNMBsim")
   expect_equal(nrow(out$df_result), nrow(stats::na.omit(out$df_result)))
   expect_equal(nrow(out$df_thresholds), nrow(stats::na.omit(out$df_thresholds)))
+
+  f <- function() {
+    do_nmb_sim(
+      sample_size = 100, n_sims = 10, n_valid = 1000, sim_auc = 0.7,
+      event_rate = 0.1,  fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb,
+      show_progress = TRUE
+    )
+  }
+
+  expect_output(f(), regexp = "100% elapsed", fixed = TRUE)
 })
 
 
@@ -239,12 +249,29 @@ test_that("do_nmb_sim() works in parallel", {
   cl <- parallel::makeCluster(ncores)
 
   out_par <- do_nmb_sim(
-    n_sims = 100, n_valid = 1000, sim_auc = 0.7, event_rate = 0.1,
-    fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb, cl = cl,
-    cutpoint_methods = c("all", "none")
+    sample_size = 200, n_sims = 100, n_valid = 1000, sim_auc = 0.7,
+    event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb,
+    cl = cl, cutpoint_methods = c("all", "none")
   )
-  parallel::stopCluster(cl)
+
   expect_s3_class(out_par, "predictNMBsim")
+
+  if (!requireNamespace("pbapply", quietly = TRUE)) {
+    parallel::stopCluster(cl)
+    skip()
+  }
+
+  f <- function() {
+    do_nmb_sim(
+      sample_size = 200, n_sims = 100, n_valid = 1000, sim_auc = 0.7,
+      event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb,
+      cl = cl, cutpoint_methods = c("all", "none"), show_progress = TRUE
+    )
+  }
+
+  expect_output(f(), regexp = "100% elapsed", fixed = TRUE)
+
+  parallel::stopCluster(cl)
 })
 
 test_that("print method - works", {

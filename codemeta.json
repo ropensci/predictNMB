@@ -102,6 +102,18 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "pbapply",
+      "name": "pbapply",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=pbapply"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "rmarkdown",
       "name": "rmarkdown",
       "provider": {
@@ -266,9 +278,35 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "1017.776KB",
+  "fileSize": "1021.275KB",
+  "citation": [
+    {
+      "@type": "SoftwareSourceCode",
+      "datePublished": "2022",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Rex",
+          "familyName": "Parsons"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Robin",
+          "familyName": "Blythe"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Adrian",
+          "familyName": "Barnett"
+        }
+      ],
+      "name": "{predictNMB}: Evaluate Clinical Prediction Models by Net Monetary Benefit",
+      "url": "https://github.com/RWParsons/predictNMB",
+      "description": "0.0.1"
+    }
+  ],
   "relatedLink": "https://rwparsons.github.io/predictNMB/",
   "readme": "https://github.com/RWParsons/predictNMB/blob/master/README.md",
-  "contIntegration": ["https://github.com/RWParsons/predictNMB/actions", "https://app.codecov.io/gh/RWParsons/predictNMB?branch=master"],
+  "contIntegration": ["https://github.com/RWParsons/predictNMB/actions", "https://app.codecov.io/gh/RWParsons/predictNMB?branch=master", "https://github.com/RWParsons/predictNMB/actions?query=workflow%3Apkgcheck"],
   "developmentStatus": "https://www.repostatus.org/#active"
 }

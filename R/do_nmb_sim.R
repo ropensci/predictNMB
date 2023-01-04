@@ -47,6 +47,7 @@
 #' \code{sample_size}, additional samples are added until the min_events is met.
 #' The default (\code{NA}) will use the expected value given the
 #' code{event_rate} and the \code{sample_size}.
+#' @param show_progress Logical. Whether to display a progress bar.
 #' @param cl A cluster made using \code{parallel::makeCluster()}.
 #' If a cluster is provided, the simulation will be done in parallel.
 #'
@@ -86,6 +87,7 @@ do_nmb_sim <- function(sample_size,
                        fx_nmb_evaluation,
                        meet_min_events = TRUE,
                        min_events = NA,
+                       show_progress = FALSE,
                        cl = NULL) {
   validate_inputs(
     sample_size,
@@ -100,6 +102,16 @@ do_nmb_sim <- function(sample_size,
     min_events,
     cl
   )
+
+  if (show_progress){
+    if (!requireNamespace("pbapply", quietly = TRUE)) {
+      message(
+        "The 'pbapply' package is required for displaying a progress bar",
+        "'show_progress' will be changed to FALSE."
+      )
+      show_progress <- FALSE
+    }
+  }
 
   if (missing(sample_size)) {
     sample_size <- NA
@@ -145,7 +157,11 @@ do_nmb_sim <- function(sample_size,
   }
 
   if (is.null(cl)) {
-    iterations <- lapply(seq_len(n_sims), f_iteration_wrapper)
+    if (show_progress) {
+      iterations <- pbapply::pblapply(seq_len(n_sims), f_iteration_wrapper)
+    } else {
+      iterations <- lapply(seq_len(n_sims), f_iteration_wrapper)
+    }
   } else {
     parallel::clusterExport(cl, envir = environment(), {
       c(
@@ -178,11 +194,19 @@ do_nmb_sim <- function(sample_size,
       })
     }
 
-    iterations <- parallel::parLapply(
-      cl = cl,
-      seq_len(n_sims),
-      f_iteration_wrapper
-    )
+    if(show_progress) {
+      iterations <- pbapply::pblapply(
+        cl = cl,
+        X = seq_len(n_sims),
+        FUN = f_iteration_wrapper
+      )
+    } else {
+      iterations <- parallel::parLapply(
+        cl = cl,
+        X = seq_len(n_sims),
+        fun = f_iteration_wrapper
+      )
+    }
   }
 
   df_result <- do.call("rbind", lapply(iterations, "[[", "results"))

@@ -38,6 +38,7 @@ Suggests:
     flextable,
     knitr,
     parallel,
+    pbapply,
     rmarkdown,
     testthat (>= 3.0.0),
     vdiffr,
