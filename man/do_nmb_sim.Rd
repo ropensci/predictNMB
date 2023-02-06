@@ -60,12 +60,10 @@ See \code{?get_thresholds} for an example of a user-defined cutpoint
 function.}
 
 \item{fx_nmb_training}{Function that returns a named vector of NMB assigned
-to classifications used for obtaining cutpoint on training set. See \code{details}
-for more information.}
+to classifications used for obtaining cutpoint on training set.}
 
 \item{fx_nmb_evaluation}{Function that returns a named vector of NMB
-assigned to classifications used for obtaining cutpoint on evaluation set.
-See \code{details} for more information.}
+assigned to classifications used for obtaining cutpoint on evaluation set.}
 
 \item{meet_min_events}{Whether or not to incrementally add samples until the
 expected number of events (\code{sample_size * event_rate}) is met.

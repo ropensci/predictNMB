@@ -34,11 +34,9 @@
 #' See \code{?get_thresholds} for an example of a user-defined cutpoint
 #' function.
 #' @param fx_nmb_training Function that returns a named vector of NMB assigned
-#' to classifications used for obtaining cutpoint on training set. See `details`
-#' for more information.
+#' to classifications used for obtaining cutpoint on training set.
 #' @param fx_nmb_evaluation Function that returns a named vector of NMB
 #' assigned to classifications used for obtaining cutpoint on evaluation set.
-#' See `details` for more information.
 #' @param meet_min_events Whether or not to incrementally add samples until the
 #' expected number of events (\code{sample_size * event_rate}) is met.
 #' (Applies to sampling of training data only.)

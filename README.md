@@ -48,7 +48,10 @@ remotes::install_github("RWParsons/predictNMB")
 ## Estimating model cutpoints
 
 We must first define a hypothetical NMB associated with each square of a
-confusion matrix (2x2 table).
+confusion matrix (2x2 table). To do this, we create an R function which,
+when run, returns a named vector representing the four NMB values that
+we need. `get_nmb_sampler()` is a `predictNMB` function that makes
+creating the function easier!
 
 ``` r
 library(predictNMB)
@@ -67,17 +70,17 @@ fx_nmb()
 We can then pass this to the simulation function. Required arguments:
 
 - `n_sims`: number of simulations to run. More simulations take longer,
-  but are more stable
+  but are more stable.
 - `event_rate`: event incidence rate, or the proportion of patients
-  experiencing the event
+  experiencing the event.
 - `sim_auc`: vector of hypothetical AUCs; e.g. `seq(0.7, 0.95, 0.05)` or
-  `c(0.75, 0.80, 0.85)`
+  `c(0.75, 0.80, 0.85)`.
 - `n_valid`: number of samples the validation set draws within each
-  simulation (evaluating the NMB under each cutpoint)
-- `fx_nmb_training`: function-defined vector used to get cutpoints on
-  the training set. Recommended to use constant values
-- `fx_nmb_evaluation`: function-defined vector used to get cutpoints on
-  the evaluation set. Recommended to use sampled values
+  simulation (evaluating the NMB under each cutpoint).
+- `fx_nmb_training`: function that returns a named vector used to get
+  cutpoints on the training set. Recommended to use constant values.
+- `fx_nmb_evaluation`: function that returns a named vector used to get
+  cutpoints on the evaluation set. Recommended to use sampled values.
 - `cl`: (Optional) users can pass a cluster made using
   `parallel::makeCluster()`. If it is given, the simulations are run in
   parallel (faster).

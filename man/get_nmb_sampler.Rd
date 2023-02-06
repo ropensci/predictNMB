@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_nmb_sampler.R
 \name{get_nmb_sampler}
 \alias{get_nmb_sampler}
-\title{Make a NMB sampler for use in \code{do_nmb_sim()} or
+\title{Make a NMB sampler (an R function) for use in \code{do_nmb_sim()} or
 \code{screen_simulation_inputs()}}
 \usage{
 get_nmb_sampler(
@@ -53,10 +53,10 @@ See \code{fx_nmb_training}. Defaults to \code{FALSE.}}
 returns the expected values. Defaults to 10000.}
 }
 \value{
-function
+Returns a \code{function}.
 }
 \description{
-Make a NMB sampler for use in \code{do_nmb_sim()} or
+Make a NMB sampler (an R function) for use in \code{do_nmb_sim()} or
 \code{screen_simulation_inputs()}
 }
 \examples{

@@ -1,4 +1,4 @@
-#' Make a NMB sampler for use in \code{do_nmb_sim()} or
+#' Make a NMB sampler (an R function) for use in \code{do_nmb_sim()} or
 #' \code{screen_simulation_inputs()}
 #'
 #' @param outcome_cost The cost of the outcome. Must be provided if \code{wtp}
@@ -27,7 +27,7 @@
 #' @param nboot The number of samples to use when creating a function that
 #' returns the expected values. Defaults to 10000.
 #'
-#' @return function
+#' @return Returns a \code{function}.
 #' @export
 #'
 #' @examples
