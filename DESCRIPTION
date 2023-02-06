@@ -32,7 +32,8 @@ Imports:
     stats,
     tibble,
     tidyr
-Suggests: 
+Suggests:
+    spelling, 
     covr,
     flextable,
     knitr,
@@ -48,3 +49,4 @@ URL: https://rwparsons.github.io/predictNMB/
 BugReports: https://github.com/rwparsons/predictNMB/issues
 Depends: 
     R (>= 3.5.0)
+Language: en-US

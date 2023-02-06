@@ -61,6 +61,18 @@
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
+      "identifier": "spelling",
+      "name": "spelling",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=spelling"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "covr",
       "name": "covr",
       "provider": {
@@ -276,9 +288,15 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tidyr"
     },
+    "11": {
+      "@type": "SoftwareApplication",
+      "identifier": "R",
+      "name": "R",
+      "version": ">= 3.5.0"
+    },
     "SystemRequirements": null
   },
-  "fileSize": "1021.275KB",
+  "fileSize": "1030.528KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",

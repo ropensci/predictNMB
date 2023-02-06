@@ -114,7 +114,7 @@ summary(nmb_simulation$df_result$all)
 ```
 
 
-The simulation under the various cutpoints can be visualised using `plot()`. The default is to visualise the distributions of NMB across all (500) simulations. In the plot below, the spread (light blue) shows the variability in results due to repeated simulation. The median is represented with the dark blue line in the centre of each distribution.
+The simulation under the various cutpoints can be visualised using `plot()`. The default is to visualise the distributions of NMB across all (500) simulations. In the plot below, the spread (light blue) shows the variability in results due to repeated simulation. The median is represented with the dark blue line in the center of each distribution.
 
 ```{r}
 plot(nmb_simulation)
