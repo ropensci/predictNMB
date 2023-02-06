@@ -19,7 +19,6 @@ Description: Estimates when and where a model-guided treatment strategy may outp
     a treat-all or treat-none approach by Monte Carlo simulation and evaluation of the Net Monetary Benefit (NMB).
 License: GPL (>= 3)
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.2.1
 Roxygen: list (markdown = TRUE, roclets = c ("namespace", "rd", "srr::srr_stats_roclet"))
 Imports: 
@@ -47,3 +46,5 @@ Config/testthat/edition: 3
 VignetteBuilder: knitr
 URL: https://rwparsons.github.io/predictNMB/
 BugReports: https://github.com/rwparsons/predictNMB/issues
+Depends: 
+    R (>= 3.5.0)
