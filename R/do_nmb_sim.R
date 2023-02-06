@@ -106,7 +106,7 @@ do_nmb_sim <- function(sample_size,
   if (show_progress){
     if (!requireNamespace("pbapply", quietly = TRUE)) {
       message(
-        "The 'pbapply' package is required for displaying a progress bar",
+        "The 'pbapply' package is required for displaying a progress bar ",
         "'show_progress' will be changed to FALSE."
       )
       show_progress <- FALSE

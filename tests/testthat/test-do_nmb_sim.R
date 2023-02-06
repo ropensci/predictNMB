@@ -12,8 +12,7 @@ test_that("do_nmb_sim() works", {
 
   out <- do_nmb_sim(
     sample_size = 100, n_sims = 10, n_valid = 1000, sim_auc = 0.7,
-    event_rate = 0.1,  fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb,
-    show_progress = TRUE
+    event_rate = 0.1,  fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
   )
 
   expect_s3_class(out, "predictNMBsim")
@@ -235,7 +234,7 @@ test_that("do_nmb_sim() throws error for bad inputs", {
 test_that("do_nmb_sim() works in parallel", {
   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
   if (!requireNamespace("parallel", quietly = TRUE)) {
-    skip()
+    skip("parallel tests skipped as parallel is not installed")
   }
 
   chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
@@ -256,7 +255,7 @@ test_that("do_nmb_sim() works in parallel", {
 
   if (!requireNamespace("pbapply", quietly = TRUE)) {
     parallel::stopCluster(cl)
-    skip()
+    skip("progress bar tests skipped as pbapply is not installed")
   }
 
   out_par_progress <- do_nmb_sim(

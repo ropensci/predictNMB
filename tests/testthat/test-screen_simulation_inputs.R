@@ -36,7 +36,7 @@ test_that("screen_simulation_inputs() with paired functions works", {
 test_that("screen_simulation_inputs() works in parallel", {
   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
   if (!requireNamespace("parallel", quietly = TRUE)) {
-    skip()
+    skip("parallel tests skipped as parallel is not installed")
   }
 
   chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
@@ -58,7 +58,7 @@ test_that("screen_simulation_inputs() works in parallel", {
 
   if (!requireNamespace("pbapply", quietly = TRUE)) {
     parallel::stopCluster(cl)
-    skip()
+    skip("progress bar tests skipped as pbapply is not installed")
   }
 
   sim_screen_obj_par_progress <- screen_simulation_inputs(

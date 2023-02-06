@@ -17,7 +17,7 @@ test_that("get_nmb_sampler() works when used with do_nmb_sim() in parallel", {
   )
 
   if (!requireNamespace("parallel", quietly = TRUE)) {
-    skip()
+    skip("parallel tests skipped as parallel is not installed")
   }
 
   chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
