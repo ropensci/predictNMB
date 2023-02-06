@@ -129,14 +129,12 @@ function.</p></dd>
 
 <dt>fx_nmb_training</dt>
 <dd><p>Function that returns a named vector of NMB assigned
-to classifications used for obtaining cutpoint on training set. See <code>details</code>
-for more information.</p></dd>
+to classifications used for obtaining cutpoint on training set.</p></dd>
 
 
 <dt>fx_nmb_evaluation</dt>
 <dd><p>Function that returns a named vector of NMB
-assigned to classifications used for obtaining cutpoint on evaluation set.
-See <code>details</code> for more information.</p></dd>
+assigned to classifications used for obtaining cutpoint on evaluation set.</p></dd>
 
 
 <dt>meet_min_events</dt>
@@ -179,7 +177,8 @@ Both of these are functions that return a named vector of NMB values when
 called and are used for obtaining and evaluating cutpoints, respectively.
 For example, the following function returns the appropriately named vector.
 <br><br><code>get_nmb &lt;- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)</code></p>
-<p>There is a helper function, <code><a href="get_nmb_sampler.html">get_nmb_sampler()</a></code>, to help you create these.</p>
+<p>There is a helper function, <code><a href="get_nmb_sampler.html">get_nmb_sampler()</a></code>, to help you
+create these.</p>
     </div>
 
     <div class="section level2">

@@ -232,13 +232,13 @@ in health economics as Probabilistic Sensitivity Analysis (PSA).</p>
 <span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -0.5714851 -0.3183975  0.0000000 -0.5205777</span></span>
+<span><span class="co">#&gt; -2.6461542 -0.4043489  0.0000000 -5.5280279</span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -4.427321 -3.261615  0.000000 -2.021554</span></span>
+<span><span class="co">#&gt; -3.565472 -1.082071  0.000000 -6.344059</span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.1805077 -0.2909613  0.0000000 -4.5576695</span></span></code></pre></div>
+<span><span class="co">#&gt; -2.1025112 -0.5254661  0.0000000 -2.9112409</span></span></code></pre></div>
 <p>Another benefit of allowing the user to define the function structure
 is that we can also allow the low risk group, or the population whose
 risk estimates fall below the probability threshold, to receive an
@@ -267,22 +267,24 @@ and a reduction in falls of 30%.</p>
 <span>  <span class="va">fall_cost</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"TP"</span> <span class="op">=</span> <span class="op">-</span><span class="va">hr_intervention_cost</span> <span class="op">-</span> <span class="va">fall_cost</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">hr_intervention_effectiveness</span><span class="op">)</span>,</span>
+<span>    <span class="st">"TP"</span> <span class="op">=</span> <span class="op">-</span><span class="va">hr_intervention_cost</span> <span class="op">-</span> <span class="va">fall_cost</span> <span class="op">*</span> </span>
+<span>      <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">hr_intervention_effectiveness</span><span class="op">)</span>,</span>
 <span>    <span class="st">"FP"</span> <span class="op">=</span> <span class="op">-</span><span class="va">hr_intervention_cost</span>,</span>
 <span>    <span class="st">"TN"</span> <span class="op">=</span> <span class="op">-</span><span class="va">lr_intervention_cost</span>,</span>
-<span>    <span class="st">"FN"</span> <span class="op">=</span> <span class="op">-</span><span class="va">lr_intervention_cost</span> <span class="op">-</span> <span class="va">fall_cost</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">lr_intervention_effectiveness</span><span class="op">)</span></span>
+<span>    <span class="st">"FN"</span> <span class="op">=</span> <span class="op">-</span><span class="va">lr_intervention_cost</span> <span class="op">-</span> <span class="va">fall_cost</span> <span class="op">*</span> </span>
+<span>      <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">lr_intervention_effectiveness</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          TP          FP          TN          FN </span></span>
-<span><span class="co">#&gt; -1.25731256 -0.07932641 -0.42689070 -2.49935562</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -1.9603798 -0.4275215 -1.2838070 -4.3559392</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -1.8430644 -0.4766407 -0.1482971 -2.6090287</span></span>
+<span><span class="co">#&gt; -2.4297254 -1.0327322 -0.5261155 -2.7978978</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.4413620 -0.3331065 -0.2956027 -3.3447464</span></span></code></pre></div>
+<span><span class="co">#&gt; -1.9548135 -0.1516945 -0.5384739 -4.1902492</span></span></code></pre></div>
 <p>Now that we are providing an intervention and associated cost to the
 low risk group, there is a negative NMB assigned to true negative (TN)
 groups. But in exchange, we have reduced the costs of false negatives
@@ -292,7 +294,7 @@ intervention, albeit a less effective one.</p>
 doesn’t imply that we are worse off by implementing prediction models or
 treatments. We are simply trying to pick the least bad option. This
 becomes more apparent when we set a reference strategy, which is
-discussed in more detail in the <a href="https://rwparsons.github.io/predictNMB/articles/introduction-to-predictNMB.html">introductory</a>
+discussed in more detail in the <a href="https://rwparsons.github.io/predictNMB/articles/predictNMB.html">introductory</a>
 and <a href="https://rwparsons.github.io/predictNMB/articles/detailed-example.html">detailed
 example</a> vignettes.</p>
 </div>
@@ -364,9 +366,12 @@ classification graphically.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foo2_remake</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/get_nmb_sampler.html">get_nmb_sampler</a></span><span class="op">(</span></span>
-<span>    outcome_cost <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>, <span class="co"># our blank function, followed by a sampler</span></span>
+<span>    <span class="co"># our blank function, followed by a sampler</span></span>
+<span>    outcome_cost <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>, </span>
 <span>    high_risk_group_treatment_cost <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
-<span>    high_risk_group_treatment_effect <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape1 <span class="op">=</span> <span class="fl">10</span>, shape2 <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span>    high_risk_group_treatment_effect <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>                                                        shape1 <span class="op">=</span> <span class="fl">10</span>, </span>
+<span>                                                        shape2 <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu">plot_nmb_dist</span><span class="op">(</span><span class="va">foo2_remake</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"foo2_remake()"</span><span class="op">)</span></span>
@@ -382,9 +387,15 @@ intervention.</p>
 <span>  <span class="fu"><a href="../reference/get_nmb_sampler.html">get_nmb_sampler</a></span><span class="op">(</span></span>
 <span>    outcome_cost <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,</span>
 <span>    high_risk_group_treatment_cost <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
-<span>    high_risk_group_treatment_effect <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape1 <span class="op">=</span> <span class="fl">10</span>, shape2 <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
-<span>    low_risk_group_treatment_cost <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="fl">10</span>, rate <span class="op">=</span> <span class="fl">1</span> <span class="op">*</span> <span class="fl">10</span><span class="op">)</span>,</span>
-<span>    low_risk_group_treatment_effect <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape1 <span class="op">=</span> <span class="fl">10</span>, shape2 <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
+<span>    high_risk_group_treatment_effect <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>                                                        shape1 <span class="op">=</span> <span class="fl">10</span>, </span>
+<span>                                                        shape2 <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>    low_risk_group_treatment_cost <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>                                                      shape <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="fl">10</span>, </span>
+<span>                                                      rate <span class="op">=</span> <span class="fl">1</span> <span class="op">*</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>    low_risk_group_treatment_effect <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>                                                       shape1 <span class="op">=</span> <span class="fl">10</span>, </span>
+<span>                                                       shape2 <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu">plot_nmb_dist</span><span class="op">(</span><span class="va">foo3_remake</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"foo3_remake()"</span><span class="op">)</span></span>
@@ -490,26 +501,30 @@ that gives fixed values for training:</p>
 <span>  <span class="fu"><a href="../reference/get_nmb_sampler.html">get_nmb_sampler</a></span><span class="op">(</span></span>
 <span>    outcome_cost <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,</span>
 <span>    high_risk_group_treatment_cost <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
-<span>    high_risk_group_treatment_effect <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape1 <span class="op">=</span> <span class="fl">10</span>, shape2 <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span>    high_risk_group_treatment_effect <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>                                                        shape1 <span class="op">=</span> <span class="fl">10</span>, </span>
+<span>                                                        shape2 <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">foo2_remake_training</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/get_nmb_sampler.html">get_nmb_sampler</a></span><span class="op">(</span></span>
 <span>    outcome_cost <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,</span>
 <span>    high_risk_group_treatment_cost <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
-<span>    high_risk_group_treatment_effect <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, shape1 <span class="op">=</span> <span class="fl">10</span>, shape2 <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>    high_risk_group_treatment_effect <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>                                                        shape1 <span class="op">=</span> <span class="fl">10</span>, </span>
+<span>                                                        shape2 <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
 <span>    use_expected_values <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -2.998648 -1.010723  0.000000 -3.989369</span></span>
+<span><span class="co">#&gt; -2.990981 -1.006721  0.000000 -3.970129</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -2.998648 -1.010723  0.000000 -3.989369</span></span>
+<span><span class="co">#&gt; -2.990981 -1.006721  0.000000 -3.970129</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -2.998648 -1.010723  0.000000 -3.989369</span></span></code></pre></div>
+<span><span class="co">#&gt; -2.990981 -1.006721  0.000000 -3.970129</span></span></code></pre></div>
 <p>In many cases (including this one), this will give similar values to
 using the parameter estimates (i.e. <code>foo1()</code>), but not
 always. The values from this process should be more stable than using

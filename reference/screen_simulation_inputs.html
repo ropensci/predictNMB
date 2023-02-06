@@ -161,7 +161,8 @@ is provided, the simulation will be done in parallel.</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Screen for optimal cutpoints given increasing values of model discrimination (sim_auc)</span></span></span>
+<span class="r-in"><span><span class="co"># Screen for optimal cutpoints given increasing values of</span></span></span>
+<span class="r-in"><span><span class="co"># model discrimination (sim_auc)</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="va">get_nmb</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TP"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">3</span>, <span class="st">"TN"</span> <span class="op">=</span> <span class="fl">0</span>, <span class="st">"FP"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, <span class="st">"FN"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="va">sim_screen_obj</span> <span class="op">&lt;-</span> <span class="fu">screen_simulation_inputs</span><span class="op">(</span></span></span>
