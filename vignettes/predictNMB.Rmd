@@ -4,7 +4,7 @@ link-citations: yes
 output: rmarkdown::html_vignette
 bibliography: predictNMB-vignettes.bib
 vignette: >
-  %\VignetteIndexEntry{introduction-to-predictNMB}
+  %\VignetteIndexEntry{predictNMB}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
