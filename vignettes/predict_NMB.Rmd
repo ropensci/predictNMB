@@ -1,5 +1,5 @@
 ---
-title: "Introduction to predictNMB"
+title: "predictNMB"
 link-citations: yes
 output: rmarkdown::html_vignette
 bibliography: predictNMB-vignettes.bib
