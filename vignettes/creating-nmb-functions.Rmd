@@ -106,10 +106,12 @@ foo3 <- function() {
   fall_cost <- rgamma(n = 1, shape = 4)
 
   c(
-    "TP" = -hr_intervention_cost - fall_cost * (1 - hr_intervention_effectiveness),
+    "TP" = -hr_intervention_cost - fall_cost * 
+      (1 - hr_intervention_effectiveness),
     "FP" = -hr_intervention_cost,
     "TN" = -lr_intervention_cost,
-    "FN" = -lr_intervention_cost - fall_cost * (1 - lr_intervention_effectiveness)
+    "FN" = -lr_intervention_cost - fall_cost * 
+      (1 - lr_intervention_effectiveness)
   )
 }
 
@@ -175,9 +177,12 @@ Now we can incorporate uncertainty by passing argument-less, or blank functions 
 ```{r, fig.show='hold'}
 foo2_remake <-
   get_nmb_sampler(
-    outcome_cost = function() rgamma(n = 1, shape = 4), # our blank function, followed by a sampler
+    # our blank function, followed by a sampler
+    outcome_cost = function() rgamma(n = 1, shape = 4), 
     high_risk_group_treatment_cost = function() rgamma(n = 1, shape = 1),
-    high_risk_group_treatment_effect = function() rbeta(n = 1, shape1 = 10, shape2 = 10)
+    high_risk_group_treatment_effect = function() rbeta(n = 1, 
+                                                        shape1 = 10, 
+                                                        shape2 = 10)
   )
 
 plot_nmb_dist(foo2_remake) + ggtitle("foo2_remake()")
@@ -191,9 +196,15 @@ foo3_remake <-
   get_nmb_sampler(
     outcome_cost = function() rgamma(n = 1, shape = 4),
     high_risk_group_treatment_cost = function() rgamma(n = 1, shape = 1),
-    high_risk_group_treatment_effect = function() rbeta(n = 1, shape1 = 10, shape2 = 10),
-    low_risk_group_treatment_cost = function() rgamma(n = 1, shape = 0.5 * 10, rate = 1 * 10),
-    low_risk_group_treatment_effect = function() rbeta(n = 1, shape1 = 10, shape2 = 30)
+    high_risk_group_treatment_effect = function() rbeta(n = 1, 
+                                                        shape1 = 10, 
+                                                        shape2 = 10),
+    low_risk_group_treatment_cost = function() rgamma(n = 1, 
+                                                      shape = 0.5 * 10, 
+                                                      rate = 1 * 10),
+    low_risk_group_treatment_effect = function() rbeta(n = 1, 
+                                                       shape1 = 10, 
+                                                       shape2 = 30)
   )
 
 plot_nmb_dist(foo3_remake) + ggtitle("foo3_remake()")
@@ -253,14 +264,18 @@ foo2_remake <-
   get_nmb_sampler(
     outcome_cost = function() rgamma(n = 1, shape = 4),
     high_risk_group_treatment_cost = function() rgamma(n = 1, shape = 1),
-    high_risk_group_treatment_effect = function() rbeta(n = 1, shape1 = 10, shape2 = 10)
+    high_risk_group_treatment_effect = function() rbeta(n = 1, 
+                                                        shape1 = 10, 
+                                                        shape2 = 10)
   )
 
 foo2_remake_training <-
   get_nmb_sampler(
     outcome_cost = function() rgamma(n = 1, shape = 4),
     high_risk_group_treatment_cost = function() rgamma(n = 1, shape = 1),
-    high_risk_group_treatment_effect = function() rbeta(n = 1, shape1 = 10, shape2 = 10),
+    high_risk_group_treatment_effect = function() rbeta(n = 1,
+                                                        shape1 = 10, 
+                                                        shape2 = 10),
     use_expected_values = TRUE
   )
 

@@ -86,5 +86,8 @@ test_that("print method - works", {
 #   event_rate = 0.1, fx_nmb_training = list("f1"=get_nmb, "f2"=get_nmb),
 #   fx_nmb_evaluation = get_nmb, cl = cl
 # )
-# saveRDS(sim_screen_obj_par, test_path("fixtures", "predictNMBscreen_object.rds"))
+# saveRDS(
+#   sim_screen_obj_par,
+#   test_path("fixtures", "predictNMBscreen_object.rds")
+# )
 # parallel::stopCluster(cl)

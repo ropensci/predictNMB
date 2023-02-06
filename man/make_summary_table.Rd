@@ -39,7 +39,8 @@ desired names in the output.}
 
 \item{show_full_inputs}{A logical. Whether or not to include the inputs used
 for simulation alongside aggregations. (Only applicable for
-\code{predictNMBscreen} objects created using \code{screen_simulation_inputs()})}
+\code{predictNMBscreen} objects created using
+\code{screen_simulation_inputs()})}
 
 \item{...}{Additional, ignored arguments.}
 }

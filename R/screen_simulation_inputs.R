@@ -38,16 +38,26 @@
 #'
 #' @srrstats {G2.1a} Data types for all inputs are documented.
 #' @srrstats {G2.8} Appropriate conversions applied before passing of inputs.
-#' @srrstats {G2.11} tibbles used for appropriate processing of columns of functions.
-#' @srrstats {EA2.0, EA2.1, EA2.2, EA2.2a, EA2.2b} Plotting of 'predictNMBscreen' objects uses the index column from \code{input_grid} to perform joins. All values within the input_grid are unique to the combination of possible input values (created in \code{screen_simulation_inputs()} using \code{.sim_id = dplyr::row_number()}). Attribute is set for index column name.
-#' @srrstats {EA4.0} Types for inputs are not modified. They are checked by \code{validate_inputs()} but not modified before being used to create \code{input_grid} and passed to be used as simulation inputs.
+#' @srrstats {G2.11} tibbles used for appropriate processing of columns of
+#' functions.
+#' @srrstats {EA2.0, EA2.1, EA2.2, EA2.2a, EA2.2b} Plotting of
+#' 'predictNMBscreen' objects uses the index column from \code{input_grid} to
+#' perform joins. All values within the input_grid are unique to the
+#' combination of possible input values (created in
+#' \code{screen_simulation_inputs()} using
+#' \code{.sim_id = dplyr::row_number()}).
+#' Attribute is set for index column name.
+#' @srrstats {EA4.0} Types for inputs are not modified.
+#' They are checked by \code{validate_inputs()} but not modified before being
+#' used to create \code{input_grid} and passed to be used as simulation inputs.
 #'
 #' @return Returns a \code{predictNMBscreen} object.
 #' @export
 #'
 #' @examples
 #'
-#' # Screen for optimal cutpoints given increasing values of model discrimination (sim_auc)
+#' # Screen for optimal cutpoints given increasing values of
+#' # model discrimination (sim_auc)
 #' if (FALSE) {
 #'   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 #'   sim_screen_obj <- screen_simulation_inputs(

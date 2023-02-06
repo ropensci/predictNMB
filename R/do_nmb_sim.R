@@ -61,7 +61,8 @@
 #' \cr\cr
 #' \code{get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)}
 #'
-#' There is a helper function, \code{get_nmb_sampler()}, to help you create these.
+#' There is a helper function, \code{get_nmb_sampler()}, to help you
+#' create these.
 #'
 #' @srrstats {G2.1a} Data types for all inputs are documented.
 #'
@@ -101,7 +102,7 @@ do_nmb_sim <- function(sample_size,
     cl
   )
 
-  if (show_progress){
+  if (show_progress) {
     if (!requireNamespace("pbapply", quietly = TRUE)) {
       message(
         "The 'pbapply' package is required for displaying a progress bar ",
@@ -177,9 +178,13 @@ do_nmb_sim <- function(sample_size,
     })
     inbuilt_methods <- get_inbuilt_cutpoint(return_all_methods = TRUE)
     if (any(!cutpoint_methods %in% inbuilt_methods)) {
-      user_defined_methods <- cutpoint_methods[!cutpoint_methods %in% inbuilt_methods]
+      user_defined_methods <- cutpoint_methods[
+        !cutpoint_methods %in% inbuilt_methods
+      ]
       if (any(!user_defined_methods %in% ls(envir = globalenv()))) {
-        undefined_methods <- user_defined_methods[!user_defined_methods %in% ls(envir = globalenv())]
+        undefined_methods <- user_defined_methods[
+          !user_defined_methods %in% ls(envir = globalenv())
+          ]
         stop(
           "You've included functions in in 'cutpoint_methods' which are ",
           "neither inbuilt cutpoint methods or defined in your global ",
@@ -192,7 +197,7 @@ do_nmb_sim <- function(sample_size,
       })
     }
 
-    if(show_progress) {
+    if (show_progress) {
       iterations <- pbapply::pblapply(
         cl = cl,
         X = seq_len(n_sims),

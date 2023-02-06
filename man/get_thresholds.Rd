@@ -34,8 +34,9 @@ get_thresholds(
 
 
 # get cutpoints using user-defined functions
-# These functions must take the \code{predicted} and \code{actual} as arguments
-# They can also take \code{nmb} (named vector containing NMB with values for TP, FP, TN, FN)
+# These functions must take the \code{predicted} and \code{actual}
+# as arguments. They can also take \code{nmb} (named vector containing NMB
+# with values for TP, FP, TN, FN).
 fx_roc01 <- function(predicted, actual, ...) {
   cutpointr::cutpointr(
     x = predicted, class = actual, method = cutpointr::minimize_metric,
@@ -59,11 +60,18 @@ get_thresholds(
   nmb = c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 )
 
-# get a combination of cutpoints from both user-defined functions and inbuilt methods
+# get a combination of cutpoints from both user-defined functions and
+# inbuilt methods
 get_thresholds(
   predicted = runif(1000),
   actual = sample(c(0, 1), size = 1000, replace = TRUE),
-  cutpoint_methods = c("fx_roc01", "fx_sum_sens_spec", "youden", "all", "none"),
+  cutpoint_methods = c(
+    "fx_roc01",
+    "fx_sum_sens_spec",
+    "youden",
+    "all",
+    "none"
+  ),
   nmb = c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 )
 }

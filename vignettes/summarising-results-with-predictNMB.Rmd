@@ -158,8 +158,11 @@ plot(sim_screen_obj)
 plot(sim_screen_obj, methods_order = c("all", "none"))
 plot(
   sim_screen_obj,
-  rename_vector = c("Treat All" = "all", "Treat None" = "none"), # Assign new names to the two methods of interest
-  methods_order = c("Treat All", "Treat None") # Call the methods by their new names
+  # Assign new names to the two methods of interest
+  rename_vector = c("Treat All" = "all", "Treat None" = "none"), 
+  
+  # Call the methods by their new names
+  methods_order = c("Treat All", "Treat None") 
 )
 ```
 

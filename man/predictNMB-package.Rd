@@ -7,7 +7,8 @@
 \title{predictNMB: Evaluate Clinical Prediction Models by Net Monetary Benefit}
 \description{
 To learn more about how to use predictNMB, see the vignettes at the
-\href{https://rwparsons.github.io/predictNMB/index.html}{website} or using the following code:
+\href{https://rwparsons.github.io/predictNMB/index.html}{website} or using
+the following code:
 
 \code{browseVignettes(package = "predictNMB")}
 }

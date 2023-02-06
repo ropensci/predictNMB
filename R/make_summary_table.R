@@ -13,7 +13,8 @@
 #' desired names in the output.
 #' @param show_full_inputs A logical. Whether or not to include the inputs used
 #' for simulation alongside aggregations. (Only applicable for
-#' \code{predictNMBscreen} objects created using \code{screen_simulation_inputs()})
+#' \code{predictNMBscreen} objects created using
+#' \code{screen_simulation_inputs()})
 #' @param ... Additional, ignored arguments.
 #'
 #' @details Table summaries will be based on the `what` argument.
@@ -22,10 +23,19 @@
 #' strategy defined by `inb_ref_col`; "cutpoints" returns the cutpoints
 #' selected (0, 1).
 #'
-#' @srrstats {EA2.6} General assessment by assertthat is performed (is.count, is.number) and does not assess or hold expectations on additional class attributes.
-#' @srrstats {EA4.1} Numeric prescision is controlled by the user by modifying the \code{agg_functions} argument and by tibble.
-#' @srrstats {EA5.2} There is no typical onscreen printing from \code{make_summary_table()}. It instead returns a \code{tbl_df/tbl/data.frame} with aggregate values. The default is to round the values but the user is able to overwrite this by using the \code{agg_functions} argument and pass the output to a more general table formatting package like \code{flextable}.
-#' @srrstats {EA5.3} Summary statsistics indicate \code{storage.mode} via tibble.
+#' @srrstats {EA2.6} General assessment by assertthat is performed
+#' (is.count, is.number) and does not assess or hold expectations on additional
+#'  class attributes.
+#' @srrstats {EA4.1} Numeric prescision is controlled by the user by modifying
+#'  the \code{agg_functions} argument and by tibble.
+#' @srrstats {EA5.2} There is no typical onscreen printing from
+#'  \code{make_summary_table()}. It instead returns a
+#'  \code{tbl_df/tbl/data.frame} with aggregate values. The default is to round
+#'  the values but the user is able to overwrite this by using the
+#'  \code{agg_functions} argument and pass the output to a more general table
+#'   formatting package like \code{flextable}.
+#' @srrstats {EA5.3} Summary statsistics indicate \code{storage.mode} via
+#'  tibble.
 #'
 #' @return Returns a \code{tibble}.
 #' @export
@@ -73,7 +83,8 @@ make_summary_table <- function(x,
 
 
 
-#' Gets the relevant simulation data for summarising in \code{make_summary_table()}
+#' Gets the relevant simulation data for summarising in
+#' \code{make_summary_table()}
 #'
 #' @param x A \code{predictNMBsim} object.
 #' @param what What to summarise: one of "nmb", "inb" or "cutpoints".
@@ -133,8 +144,8 @@ get_sim_data <- function(x, what, inb_ref_col = NULL) {
 #' if (FALSE) {
 #'   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 #'   sim_screen_obj <- screen_simulation_inputs(
-#'     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1), event_rate = 0.1,
-#'     fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
+#'     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1),
+#'     event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
 #'   )
 #'   make_summary_table(sim_screen_obj)
 #' }

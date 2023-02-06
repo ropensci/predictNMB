@@ -99,7 +99,8 @@ For example, the following function returns the appropriately named vector.
 \cr\cr
 \code{get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)}
 
-There is a helper function, \code{get_nmb_sampler()}, to help you create these.
+There is a helper function, \code{get_nmb_sampler()}, to help you
+create these.
 }
 \examples{
 
