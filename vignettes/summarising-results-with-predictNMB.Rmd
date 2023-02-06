@@ -23,7 +23,7 @@ library(flextable)
 set.seed(42)
 ```
 
-This vignette is purely about how to use the `plot()` method and `make_summary_table()` to visualise and summarise the simulations made using `{predictNMB}`. For an introduction to `{predictNMB}`, please see the [introductory vignette](https://rwparsons.github.io/predictNMB/articles/introduction-to-predictNMB.html).
+This vignette is purely about how to use the `plot()` method and `make_summary_table()` to visualise and summarise the simulations made using `{predictNMB}`. For an introduction to `{predictNMB}`, please see the [introductory vignette](https://rwparsons.github.io/predictNMB/articles/predictNMB.html).
 
 Firstly, as an example case, we will run `screen_simulation_inputs()`.
 

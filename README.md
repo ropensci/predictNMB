@@ -14,6 +14,8 @@ coverage](https://codecov.io/gh/RWParsons/predictNMB/branch/master/graph/badge.s
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![pkgcheck](https://github.com/RWParsons/predictNMB/workflows/pkgcheck/badge.svg)](https://github.com/RWParsons/predictNMB/actions?query=workflow%3Apkgcheck)
+[![Status at rOpenSci Software Peer
+Review](https://badges.ropensci.org/566_status.svg)](https://github.com/ropensci/software-review/issues/566)
 <!-- badges: end -->
 
 ## Overview
@@ -76,8 +78,9 @@ We can then pass this to the simulation function. Required arguments:
   the training set. Recommended to use constant values
 - `fx_nmb_evaluation`: function-defined vector used to get cutpoints on
   the evaluation set. Recommended to use sampled values
-- `cl`: (Optional) users can pass a cluster as the. If it is passed, the
-  simulations are run in parallel (faster).
+- `cl`: (Optional) users can pass a cluster made using
+  `parallel::makeCluster()`. If it is given, the simulations are run in
+  parallel (faster).
 
 ``` r
 library(parallel)
@@ -161,8 +164,8 @@ citation("predictNMB")
 The [`predictNMB` website](https://rwparsons.github.io/predictNMB/) and
 its vignettes:
 
-- [Introduction to
-  `predictNMB`](https://rwparsons.github.io/predictNMB/articles/introduction-to-predictNMB.html)
+- [Getting started with
+  `predictNMB`](https://rwparsons.github.io/predictNMB/articles/predictNMB.html)
 - [Summarising results from
   `predictNMB`](https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html)
 - [Detailed example: pressure injury
