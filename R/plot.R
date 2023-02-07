@@ -213,7 +213,11 @@ plot.predictNMBsim <- function(x,
   heights <-
     df_agg %>%
     tibble::rownames_to_column(var = "method_n") %>%
-    dplyr::left_join(extracted_points, by = c("method_n" = "method")) %>%
+    dplyr::left_join(
+      extracted_points,
+      by = c("method_n" = "method"),
+      multiple = "all"
+    ) %>%
     dplyr::mutate(diff = abs(m - outcome)) %>%
     dplyr::group_by(name) %>%
     dplyr::arrange(diff) %>%
