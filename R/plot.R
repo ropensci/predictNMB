@@ -173,9 +173,11 @@ plot.predictNMBsim <- function(x,
                                  panel.grid.minor = ggplot2::element_blank()
                                ),
                                ...) {
+  what <- match.arg(what)
+
   p_data <- get_plot_data(
     x = x,
-    what = what[1],
+    what = what,
     methods_order = methods_order,
     rename_vector = rename_vector,
     inb_ref_col = inb_ref_col,
@@ -225,7 +227,8 @@ plot.predictNMBsim <- function(x,
     dplyr::ungroup()
 
 
-  x_axis_title <- switch(what[1],
+  x_axis_title <- switch(
+    what,
     "nmb" = "Net Monetary Benefit ($)",
     "inb" = "Incremental Net Monetary Benefit ($)",
     "cutpoints" = "Selected Cutpoint"
@@ -344,6 +347,8 @@ plot.predictNMBscreen <- function(x,
                                     panel.grid.minor = ggplot2::element_blank()
                                   ),
                                   ...) {
+  what <- match.arg(what)
+
   if (is.null(x_axis_var)) {
     message("No value for 'x_axis_var' given.")
     if (length(x$screen_meta) == 1) {
@@ -436,7 +441,7 @@ plot.predictNMBscreen <- function(x,
   for (s in grid_lookup$.sim_id) {
     p_data <- get_plot_data(
       x = x$simulations[[s]],
-      what = what[1],
+      what = what,
       methods_order = methods_order,
       rename_vector = rename_vector,
       inb_ref_col = inb_ref_col,
@@ -472,13 +477,15 @@ plot.predictNMBscreen <- function(x,
     ) %>%
     dplyr::ungroup()
 
-  y_axis_title <- switch(what[1],
+  y_axis_title <- switch(
+    what,
     "nmb" = "Net Monetary Benefit ($)",
     "inb" = "Incremental Net Monetary Benefit ($)",
     "cutpoints" = "Selected Cutpoint"
   )
 
-  x_axis_title <- switch(x_axis_var,
+  x_axis_title <- switch(
+    x_axis_var,
     "sample_size" = "Training sample size (n)",
     "n_sims" = "Number of simulations (n)",
     "n_valid" = "Validation sample size (n)",

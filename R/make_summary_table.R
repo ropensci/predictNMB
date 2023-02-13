@@ -175,11 +175,14 @@ make_summary_table.predictNMBscreen <- function(x,
                                                 rename_vector,
                                                 show_full_inputs = FALSE,
                                                 ...) {
+  what <- match.arg(what)
+
   rename_vector <- update_rename_vector(rename_vector)
+
   get_row_from_sim <- function(sim_idx) {
     get_sim_data(
       x$simulations[[sim_idx]],
-      what = what[1],
+      what = what,
       inb_ref_col = inb_ref_col
     ) %>%
       dplyr::rename(dplyr::any_of(rename_vector)) %>%
@@ -258,8 +261,11 @@ make_summary_table.predictNMBsim <- function(x,
                                              ),
                                              rename_vector,
                                              ...) {
+  what <- match.arg(what)
+
   rename_vector <- update_rename_vector(rename_vector)
-  get_sim_data(x, what = what[1], inb_ref_col = inb_ref_col) %>%
+
+  get_sim_data(x, what = what, inb_ref_col = inb_ref_col) %>%
     dplyr::rename(dplyr::any_of(rename_vector)) %>%
     tidyr::pivot_longer(!n_sim, names_to = "method") %>%
     dplyr::group_by(method) %>%
