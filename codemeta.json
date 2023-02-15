@@ -7,7 +7,7 @@
   "codeRepository": "https://github.com/RWParsons/predictNMB",
   "issueTracker": "https://github.com/rwparsons/predictNMB/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.1",
+  "version": "0.0.1.9000",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -44,7 +44,7 @@
     },
     {
       "@type": "Person",
-      "givenName": "Steve",
+      "givenName": "Steven",
       "familyName": "McPhail",
       "@id": "https://orcid.org/0000-0002-1463-662X"
     }
@@ -296,7 +296,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "1030.528KB",
+  "fileSize": "1025.821KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
@@ -324,7 +324,13 @@
     }
   ],
   "relatedLink": "https://rwparsons.github.io/predictNMB/",
+  "releaseNotes": "https://github.com/RWParsons/predictNMB/blob/master/NEWS.md",
   "readme": "https://github.com/RWParsons/predictNMB/blob/master/README.md",
   "contIntegration": ["https://github.com/RWParsons/predictNMB/actions", "https://app.codecov.io/gh/RWParsons/predictNMB?branch=master", "https://github.com/RWParsons/predictNMB/actions?query=workflow%3Apkgcheck"],
-  "developmentStatus": "https://www.repostatus.org/#active"
+  "developmentStatus": "https://www.repostatus.org/#active",
+  "review": {
+    "@type": "Review",
+    "url": "https://github.com/ropensci/software-review/issues/566",
+    "provider": "https://ropensci.org"
+  }
 }
