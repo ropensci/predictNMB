@@ -119,7 +119,7 @@ Our first pass shows treating none is likely to be an undesirable option, outper
 
 Results from the ROC-based methods like the Youden index and index of union are also quite uncertain, so we may not want to use them for these input parameters. However, the utility of these models and the threshold selection methods based on the ROC might improve as they get more accurate, or as the event rate increases; what we really want to know is how robust our results are to changes in the input parameters. This is the purpose of `screen_simulation_inputs()`. We can not only simulate from a distribution for our cost inputs, we can pass a vector to the AUC and incidence arguments to understand how these impact our findings.
 
-First, let's specify our sampler function for the confusion matrix. We can replace our inputs with single samples from distributions. Make sure use code within the function to generate the samples so that they are resampled every simulation. This propagates the uncertainty of these distributions into the NMB values in the many simulations that we run.
+First, let's specify our sampler function for the confusion matrix. We can replace our inputs with single samples from distributions. Make sure you use the code within the function to generate the samples so that they are resampled every simulation. This propagates the uncertainty of these distributions into the NMB values in the many simulations that we run.
 
 ```{r}
 fx_nmb_sampler <- function() {
