@@ -250,7 +250,7 @@ simulation_res1 <- do_nmb_sim(
   cutpoint_methods = c("all", "none", "youden", "value_optimising")
 )
 
-autoplot(simulation_res1)
+autoplot(simulation_res1) + theme_sim()
 ```
 
 As mentioned previously, the problem with using `foo1` for `fx_nmb_evaluation` is that we don't really know for sure how effective our intervention is, what the burden of the event is, and how much things cost. This is why we incorporate uncertainty into the evaluation function, but ONLY the evaluation function and not the training function. If we use an NMB function that incorporates uncertainty for selecting the cutpoint in `fx_nmb_training`, this would mean we picked costs randomly and used those on our data to select a cutpoint. This would be unlikely in practice, as we would use our expected value (best estimates) to determine cutpoints in reality.
@@ -294,7 +294,7 @@ simulation_res2 <- do_nmb_sim(
   cutpoint_methods = c("all", "none", "youden", "value_optimising")
 )
 
-autoplot(simulation_res2)
+autoplot(simulation_res2) + theme_sim()
 ```
 
 This changes our results to incorporate more uncertainty. This is important in simulation modelling as it accounts for the possible differences between our simulation and reality. Using values from the literature would likely reduce the uncertainty somewhat, but that might only be desirable if we are confident that our simulated model closely resembles the scenario in the literature.

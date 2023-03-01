@@ -126,8 +126,6 @@ add_interval <- function(data, ci) {
 #' @param rename_vector A named vector for renaming the methods in the summary.
 #' The values of the vector are the default names and the names given are the
 #' desired names in the output.
-#' @param extra_theme Additional theme applied to plot. Defaults to some
-#' tasteful changes to reduce clutter in the plot.
 #' @param ... Additional (unused) arguments.
 #'
 #' @details
@@ -144,19 +142,12 @@ add_interval <- function(data, ci) {
 #'
 #' if (FALSE) {
 #'   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
-#'   sim_screen_obj <- screen_simulation_inputs(
-#'     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1),
-#'     event_rate = c(0.1, 0.2, 0.3),
-#'     fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
+#'   sim_obj <- do_nmb_sim(
+#'     sample_size = 200, n_sims = 50, n_valid = 10000, sim_auc = 0.7,
+#'     event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
 #'   )
 #'
-#'   autoplot(sim_screen_obj)
-#'   autoplot(
-#'     sim_screen_obj,
-#'     x_axis_var = "event_rate",
-#'     constants = c(sim_auc = 0.8),
-#'     dodge_width = 0.02
-#'   )
+#'   autoplot(sim_obj)
 #' }
 autoplot.predictNMBsim <- function(object,
                                what = c("nmb", "inb", "cutpoints"),
@@ -170,13 +161,6 @@ autoplot.predictNMBsim <- function(object,
                                median_line_alpha = 0.5,
                                median_line_col = "black",
                                rename_vector,
-                               extra_theme = ggplot2::theme(
-                                 panel.spacing = ggplot2::unit(0, "lines"),
-                                 axis.ticks.x = ggplot2::element_blank(),
-                                 axis.text.x = ggplot2::element_blank(),
-                                 strip.background = ggplot2::element_rect(fill = "#f1f1f1"),
-                                 panel.grid.minor = ggplot2::element_blank()
-                               ),
                                ...) {
   what <- match.arg(what)
 
@@ -265,11 +249,33 @@ autoplot.predictNMBsim <- function(object,
       y = ""
     )
 
-  if (!is.null(extra_theme)) {
-    p <- p + extra_theme
-  }
-
   p
+}
+
+#' Returns a \code{ggplot2} theme that reduces clutter in an \code{autoplot()}
+#' of a \code{predictNMBsim} object.
+#'
+#' @return \code{ggplot2} theme
+#' @export
+#'
+#' @examples
+#' if (FALSE) {
+#'   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
+#'   sim_obj <- do_nmb_sim(
+#'     sample_size = 200, n_sims = 50, n_valid = 10000, sim_auc = 0.7,
+#'     event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
+#'   )
+#'
+#'   autoplot(sim_obj) + theme_sim()
+#' }
+#'
+theme_sim <- function() {
+  ggplot2::theme(
+    panel.spacing = ggplot2::unit(0, "lines"),
+    axis.ticks.x = ggplot2::element_blank(),
+    axis.text.x = ggplot2::element_blank(),
+    strip.background = ggplot2::element_rect(fill = "#f1f1f1")
+  )
 }
 
 #' Create plots of from screened predictNMB simulations.
@@ -304,8 +310,6 @@ autoplot.predictNMBsim <- function(object,
 #' @param rename_vector A named vector for renaming the methods in the summary.
 #' The values of the vector are the default names and the names given are the
 #' desired names in the output.
-#' @param extra_theme Additional theme applied to plot. Defaults to remove
-#' minor panel grid.
 #' @param ... Additional (unused) arguments.
 #'
 #' @details
@@ -348,9 +352,6 @@ autoplot.predictNMBscreen <- function(object,
                                   ci = 0.95,
                                   methods_order = NULL,
                                   rename_vector,
-                                  extra_theme = ggplot2::theme(
-                                    panel.grid.minor = ggplot2::element_blank()
-                                  ),
                                   ...) {
   what <- match.arg(what)
 
@@ -571,10 +572,6 @@ autoplot.predictNMBscreen <- function(object,
       ggplot2::scale_x_continuous(
         breaks = unique(p_data_range$x_axis_var)
       )
-  }
-
-  if (!is.null(extra_theme)) {
-    p <- p + extra_theme
   }
   p
 }

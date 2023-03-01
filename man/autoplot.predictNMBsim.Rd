@@ -17,9 +17,6 @@
   median_line_alpha = 0.5,
   median_line_col = "black",
   rename_vector,
-  extra_theme = ggplot2::theme(panel.spacing = ggplot2::unit(0, "lines"), axis.ticks.x =
-    ggplot2::element_blank(), axis.text.x = ggplot2::element_blank(), strip.background =
-    ggplot2::element_rect(fill = "#f1f1f1"), panel.grid.minor = ggplot2::element_blank()),
   ...
 )
 }
@@ -63,9 +60,6 @@ distribution. Defaults to \code{"black"}.}
 The values of the vector are the default names and the names given are the
 desired names in the output.}
 
-\item{extra_theme}{Additional theme applied to plot. Defaults to some
-tasteful changes to reduce clutter in the plot.}
-
 \item{...}{Additional (unused) arguments.}
 }
 \value{
@@ -83,18 +77,11 @@ simulations for different cutpoint methods.
 
 if (FALSE) {
   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
-  sim_screen_obj <- screen_simulation_inputs(
-    n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1),
-    event_rate = c(0.1, 0.2, 0.3),
-    fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
+  sim_obj <- do_nmb_sim(
+    sample_size = 200, n_sims = 50, n_valid = 10000, sim_auc = 0.7,
+    event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
   )
 
-  autoplot(sim_screen_obj)
-  autoplot(
-    sim_screen_obj,
-    x_axis_var = "event_rate",
-    constants = c(sim_auc = 0.8),
-    dodge_width = 0.02
-  )
+  autoplot(sim_obj)
 }
 }

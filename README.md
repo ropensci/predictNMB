@@ -133,9 +133,11 @@ single_sim_obj <- sim_screen_obj$simulations[[6]]
 
 When plotting a single set of simulation inputs, we see the
 distributions of the NMB across all simulations under each strategy.
+Note that we have added some tasteful themes using `theme_sim()` that
+help reduce clutter on these types of plots.
 
 ``` r
-autoplot(single_sim_obj)
+autoplot(single_sim_obj) + theme_sim()
 ```
 
 <img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />

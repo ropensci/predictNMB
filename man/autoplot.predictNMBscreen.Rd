@@ -18,7 +18,6 @@
   ci = 0.95,
   methods_order = NULL,
   rename_vector,
-  extra_theme = ggplot2::theme(panel.grid.minor = ggplot2::element_blank()),
   ...
 )
 }
@@ -65,9 +64,6 @@ methods.}
 \item{rename_vector}{A named vector for renaming the methods in the summary.
 The values of the vector are the default names and the names given are the
 desired names in the output.}
-
-\item{extra_theme}{Additional theme applied to plot. Defaults to remove
-minor panel grid.}
 
 \item{...}{Additional (unused) arguments.}
 }

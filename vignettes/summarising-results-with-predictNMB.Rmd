@@ -197,13 +197,13 @@ do_nmb_sim_obj <- do_nmb_sim(
 The plots here show the results of a single simulation and compare the available cutpoints.
 
 ```{r}
-autoplot(do_nmb_sim_obj)
+autoplot(do_nmb_sim_obj) + theme_sim()
 ```
 
 The y-axis variable and names and orders of methods can be controlled in the same way as previously:
 
 ```{r}
-autoplot(do_nmb_sim_obj, what = "nmb")
+autoplot(do_nmb_sim_obj, what = "nmb") + theme_sim()
 autoplot(
   do_nmb_sim_obj,
   what = "inb",
@@ -213,12 +213,12 @@ autoplot(
     "Treat-None" = "none",
     "Youden Index" = "youden"
   )
-)
+) + theme_sim()
 autoplot(
   do_nmb_sim_obj,
   what = "cutpoints",
   methods_order = c("all", "none", "youden", "value optimising")
-)
+) + theme_sim()
 ```
 
 These plots display the median as the solid bar, the grey part of the distributions are the outer 5% of the simulated values and the light blue region is the 95% CI. For the methods that select thresholds based on the values in the 2x2 table, including the value-optimising thresholds, this may look a little strange as the cutpoints are highly variable. This can be stabilised with more simulations. The fill colours of the histogram are controlled with `fill_cols` and the line for the median is controlled with `median_line_col`. The thickness of the median line is controlled with `median_line_size` and its transparency with `median_line_alpha`. 
@@ -230,7 +230,7 @@ autoplot(
   median_line_col = "yellow",
   median_line_alpha = 1,
   median_line_size = 0.9
-)
+) + theme_sim()
 ```
 
 The `n_bins` argument controls the number of bins used for the histograms and the `label_wrap_width` is the number of characters above which to start a new line for the facet labels. This can be handy when using detailed names for the methods when the font of the label is relatively large compared to the plot, though a space is needed to determine where to split the label. The width of the confidence intervals can also be controlled by the `ci` argument in this `autoplot()` call.
@@ -247,22 +247,9 @@ autoplot(
   ),
   label_wrap_width = 5,
   ci = 0.8
-)
+) + theme_sim()
 ```
 
-By default there is an additional theme applied to the facets to bring them closer to each other. Replace the `extra_theme` with `NULL` to revert to the default behaviour, or use your own theme here.
-
-```{r}
-autoplot(do_nmb_sim_obj, extra_theme = NULL)
-autoplot(
-  do_nmb_sim_obj,
-  extra_theme = theme(
-    panel.spacing = unit(0, "lines"),
-    axis.text.x = element_blank(),
-    strip.background = element_rect(fill = "red")
-  )
-)
-```
 
 # Making tables with predictNMB
 
