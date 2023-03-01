@@ -339,7 +339,7 @@ do_nmb_iteration <- function(iter,
 #' @export
 #' @param x A \code{predictNMBsim} object.
 #' @param ... Optional, ignored arguments.
-#' @return `print` returns `x` invisibly.
+#' @return `print(x)` returns `x` invisibly.
 #'
 #' @examples
 #' if (FALSE) {
@@ -359,4 +359,5 @@ print.predictNMBsim <- function(x, ...) {
   cat("\nNumber of simulations: ", x$meta_data$n_sims)
   cat("\nSimulated AUC: ", x$meta_data$sim_auc)
   cat("\nSimulated event rate: ", x$meta_data$event_rate)
+  invisible(x)
 }

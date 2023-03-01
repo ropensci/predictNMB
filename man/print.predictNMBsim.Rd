@@ -12,7 +12,7 @@
 \item{...}{Optional, ignored arguments.}
 }
 \value{
-\code{print} returns \code{x} invisibly.
+\code{print(x)} returns \code{x} invisibly.
 }
 \description{
 Print a summary of a predictNMBsim object

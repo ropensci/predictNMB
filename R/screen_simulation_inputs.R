@@ -301,7 +301,7 @@ add_sample_size_calcs <- function(x) {
 #' @export
 #' @param x A \code{predictNMBscreen} object.
 #' @param ... Optional, ignored arguments.
-#' @return `print` returns `x` invisibly.
+#' @return `print(x)` returns `x` invisibly.
 #'
 #' @examples
 #' if (FALSE) {
@@ -332,5 +332,5 @@ print.predictNMBscreen <- function(x, ...) {
     )
     print(x$screen_meta)
   }
-  invisible(x$screen_meta)
+  invisible(x)
 }

@@ -85,6 +85,15 @@ get_plot_data <- function(x,
 }
 
 
+#' Add column to plot data that indicates whether it is contained within the
+#' confidence interval (indicated by conf.level).
+#'
+#' @param data \code{data.frame} with a grouping column, \code{name}, and
+#' numeric outcome column, \code{value}.
+#' @param conf.level The confidence level of the interval.
+#'
+#' @return Returns a \code{data.frame}.
+#' @noRd
 add_interval <- function(data, conf.level) {
   probs <- c((1 - conf.level) / 2, 1 - (1 - conf.level) / 2)
 
