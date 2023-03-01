@@ -103,7 +103,7 @@ nmb_simulation <- do_nmb_sim(
 nmb_simulation
 
 # Get the median incremental NMB for each threshold selection method
-make_summary_table(nmb_simulation) 
+summary(nmb_simulation) 
 
 # Demonstrates the range of selected cutpoints under each method
 autoplot(nmb_simulation, what = "cutpoints") + theme_sim()
@@ -161,7 +161,7 @@ sim_pup_screen <- screen_simulation_inputs(
 )
 stopCluster(cl)
 
-make_summary_table(sim_pup_screen)
+summary(sim_pup_screen)
 ```
 
 As our model accuracy increases and event rate decreases, treatment decisions based on the model, like the Youden index, begin to look better. There are reasonable gains from using the prediction model, even though there is some uncertainty. If the event rates 0.05, 0.10 and 0.15 corresponded to different wards of the hospital, our simulation could represent the estimated effectiveness of different strategies in each setting.

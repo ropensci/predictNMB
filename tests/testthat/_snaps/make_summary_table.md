@@ -1,4 +1,4 @@
-# predictNMBsim - make_summary_table (default) works
+# predictNMBsim - summary (default) works
 
     # A tibble: 8 x 3
       method           median `95% CI`    
@@ -12,7 +12,7 @@
     7 value optimising  -0.39 -0.4 to -0.4
     8 youden            -0.59 -0.7 to -0.5
 
-# predictNMBsim - make_summary_table (rename_vector) works
+# predictNMBsim - summary (rename_vector) works
 
     # A tibble: 8 x 3
       method           median `95% CI`    
@@ -26,7 +26,7 @@
     7 value optimising  -0.39 -0.4 to -0.4
     8 youden            -0.59 -0.7 to -0.5
 
-# predictNMBsim - make_summary_table (what) works
+# predictNMBsim - summary (what) works
 
     # A tibble: 8 x 3
       method           median `95% CI`  
@@ -53,7 +53,7 @@
     6 value optimising   0.8  0.8 to 0.8
     7 youden             0.6  0.5 to 0.7
 
-# predictNMBsim - make_summary_table (agg_functions) works
+# predictNMBsim - summary (agg_functions) works
 
     # A tibble: 8 x 4
       method             mean    min    max
@@ -67,7 +67,7 @@
     7 value optimising -0.394 -0.445 -0.356
     8 youden           -0.593 -0.71  -0.475
 
-# predictNMBscreen - make_summary_table works
+# predictNMBscreen - summary works
 
     # A tibble: 6 x 18
       sim_auc fx_nmb_train~1 all_m~2 all_9~3 none_~4 none_~5 value~6 value~7 youde~8
