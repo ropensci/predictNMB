@@ -5,7 +5,7 @@
 #' All return values are tested. Classes and expectations for graphics are
 #' tested in in test-plot.R.
 #' Summary tables are assessed in terms of class, dimensions and and expected
-#' outputs (indirectly assessing column names) in test-make_summary_table.R
+#' outputs (indirectly assessing column names) in test-summary.R
 #' predictNMB specific S3 objects are assessed within test-nmb_sim.R and
 #' test-screen_simulation_inputs.R
 #' @srrstats {EA6.1} Plots are assessed using vdiffr. See 'test-plot.R'.
