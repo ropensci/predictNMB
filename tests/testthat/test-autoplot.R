@@ -97,7 +97,7 @@ test_that("predictNMBscreen - autoplot method (x_axis_var selection) works", {
   )
   expect_s3_class(predictNMBscreen_event_rate_plot, "gg")
   vdiffr::expect_doppelganger(
-    "autoplot.predictNMBscreen(obj, x_axis_var = 'fx_nmb_training')",
+    "autoplot.predictNMBscreen(obj, x_axis_var = 'fx_nmb_train')",
     predictNMBscreen_fx_nmb_training_plot
   )
 })
