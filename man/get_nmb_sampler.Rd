@@ -47,7 +47,7 @@ Provide a function to incorporate uncertainty. Defaults to 0 (no treatment).}
 \item{use_expected_values}{Logical. If \code{TRUE}, gets the mean of many
 samples from the produced function and returns these every time. This is a
 sensible choice when using the resulting function for selecting the cutpoint.
-See \code{fx_nmb_training}. Defaults to \code{FALSE.}}
+See \code{fx_nmb_training}. Defaults to \code{FALSE}.}
 
 \item{nboot}{The number of samples to use when creating a function that
 returns the expected values. Defaults to 10000.}
