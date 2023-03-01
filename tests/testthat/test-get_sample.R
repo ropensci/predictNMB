@@ -33,7 +33,7 @@ test_that("Simulated model has appropriate AUC and is well calibrated", {
     data = training_data
   )
 
-  conf.ints <- confint(calibration_model, level = 0.99)
+  conf.ints <- stats::confint(calibration_model, level = 0.99)
 
   # model is well calibrated
   expect_true(
