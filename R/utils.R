@@ -15,7 +15,7 @@ utils::globalVariables(
 #' @param min_events Minimum number of events specified by user.
 #' @param meet_min_events Whether or not to meet the minimum number of events.
 #'
-#' @return Returns a named \code{list} with sample size and minumum events.
+#' @return Returns a named \code{list} with sample size and minimum events.
 #' @noRd
 do_sample_size_calc <- function(cstatistic,
                                 prevalence,

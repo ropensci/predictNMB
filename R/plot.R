@@ -5,7 +5,7 @@
 #' and accessibility in mind. All fonts and other colour schemes
 #' (including for \code{plot.predictNMBscreen()}) use the defaults by
 #' \code{ggplot} by default.
-#' @srrstats {EA5.4, EA5.5} Units are included on all axes and usee
+#' @srrstats {EA5.4, EA5.5} Units are included on all axes and use
 #' \code{ggplot2} to produce sensibly rounded values.
 #'
 #' Whether or not to use linewidth vs size argument in ggplot2.

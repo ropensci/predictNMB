@@ -42,9 +42,9 @@
 #' (Applies to sampling of training data only.)
 #' @param min_events The minimum number of events to include in the training
 #' sample. If less than this number are included in sample of size
-#' \code{sample_size}, additional samples are added until the min_events is met.
+#' \code{sample_size}, additional samples are added until the \code{min_events} is met.
 #' The default (\code{NA}) will use the expected value given the
-#' code{event_rate} and the \code{sample_size}.
+#' \code{event_rate} and the \code{sample_size}.
 #' @param show_progress Logical. Whether to display a progress bar.
 #' @param cl A cluster made using \code{parallel::makeCluster()}.
 #' If a cluster is provided, the simulation will be done in parallel.
