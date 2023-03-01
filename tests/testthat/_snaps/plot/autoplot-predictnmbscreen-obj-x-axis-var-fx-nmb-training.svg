@@ -159,6 +159,6 @@
 <text x='645.57' y='320.56' style='font-size: 8.80px; font-family: sans;' textLength='59.70px' lengthAdjust='spacingAndGlyphs'>prod sens spec</text>
 <text x='645.57' y='337.84' style='font-size: 8.80px; font-family: sans;' textLength='22.02px' lengthAdjust='spacingAndGlyphs'>roc01</text>
 <text x='645.57' y='355.12' style='font-size: 8.80px; font-family: sans;' textLength='54.80px' lengthAdjust='spacingAndGlyphs'>index of union</text>
-<text x='43.06' y='14.56' style='font-size: 13.20px; font-family: sans;' textLength='344.42px' lengthAdjust='spacingAndGlyphs'>plot.predictNMBscreen(obj, x_axis_var = 'fx_nmb_training')</text>
+<text x='43.06' y='14.56' style='font-size: 13.20px; font-family: sans;' textLength='370.11px' lengthAdjust='spacingAndGlyphs'>autoplot.predictNMBscreen(obj, x_axis_var = 'fx_nmb_training')</text>
 </g>
 </svg>

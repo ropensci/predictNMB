@@ -105,11 +105,11 @@ preferences between the model-guided strategy versus a treat-all or
 treat-none strategy — in other words, using the model to determine who
 should get treatment, rather than everyone or no-one.
 
-`plot()` on the object returned from this function to quickly inspect
-these trends:
+`autoplot()` can be used on the object returned from this function to
+quickly inspect these trends:
 
 ``` r
-plot(sim_screen_obj)
+autoplot(sim_screen_obj)
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
@@ -135,7 +135,7 @@ When plotting a single set of simulation inputs, we see the
 distributions of the NMB across all simulations under each strategy.
 
 ``` r
-plot(single_sim_obj)
+autoplot(single_sim_obj)
 ```
 
 <img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />

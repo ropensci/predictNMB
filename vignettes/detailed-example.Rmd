@@ -106,13 +106,13 @@ nmb_simulation
 make_summary_table(nmb_simulation) 
 
 # Demonstrates the range of selected cutpoints under each method
-plot(nmb_simulation, what = "cutpoints") 
+autoplot(nmb_simulation, what = "cutpoints") 
 ```
 
 ```{r}
 # Compares the incremental benefit of each alternate strategy to our 
 # current practice (treat all)
-plot(nmb_simulation, what = "inb", inb_ref_col = "all") 
+autoplot(nmb_simulation, what = "inb", inb_ref_col = "all") 
 ```
 
 Our first pass shows treating none is likely to be an undesirable option, outperformed by every other method. If we set treat none as the reference strategy, it would have an NMB of \$0. Treat all looks like a pretty good choice, so we could consider making the intervention standard practice. The best option from a NMB perspective looks to be our value optimising or the cost minimising method. The first plot shows that this is actually a lower threshold than the Youden index and other equivalents, which means that we can be a bit less strict in deciding who gets the intervention. So our intervention might be worth using even for some low risk patients.
@@ -169,28 +169,28 @@ As our model accuracy increases and event rate decreases, treatment decisions ba
 We can also represent these results visually.
 
 ```{r}
-plot(
+autoplot(
   sim_pup_screen, 
   x_axis_var = "sim_auc",
   constants = c(event_rate = 0.05), 
   dodge_width = 0.01
 )
 
-plot(
+autoplot(
   sim_pup_screen, 
   x_axis_var = "sim_auc",
   constants = c(event_rate = 0.10),
   dodge_width = 0.01
 )
 
-plot(
+autoplot(
   sim_pup_screen, 
   x_axis_var = "sim_auc",
   constants = c(event_rate = 0.15),
   dodge_width = 0.01
 )
 
-plot(
+autoplot(
   sim_pup_screen, 
   x_axis_var = "event_rate", 
   dodge_width = 0.0075

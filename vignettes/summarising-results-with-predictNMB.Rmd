@@ -23,7 +23,7 @@ library(flextable)
 set.seed(42)
 ```
 
-This vignette is purely about how to use the `plot()` method and `make_summary_table()` to visualise and summarise the simulations made using `{predictNMB}`. For an introduction to `{predictNMB}`, please see the [introductory vignette](https://rwparsons.github.io/predictNMB/articles/predictNMB.html).
+This vignette is purely about how to use the `autoplot()` method and `make_summary_table()` to visualise and summarise the simulations made using `{predictNMB}`. For an introduction to `{predictNMB}`, please see the [introductory vignette](https://rwparsons.github.io/predictNMB/articles/predictNMB.html).
 
 Firstly, as an example case, we will run `screen_simulation_inputs()`.
 
@@ -83,24 +83,24 @@ stopCluster(cl)
 ### Choosing the x-axis variable and other constants
 
 In this simulation screen, we vary both the event rate and the model discrimination (sim_AUC).
-There are many ways that we could visualise the data. The `plot()` function allows us to make some basic plots to compare the impact of different cutpoint methods on Net Monetary Benefit (NMB) and another variable of our choice. 
+There are many ways that we could visualise the data. The `autoplot()` function allows us to make some basic plots to compare the impact of different cutpoint methods on Net Monetary Benefit (NMB) and another variable of our choice. 
 
 In this case, we can visualise the impact on NMB for different methods across varying levels of `sim_auc` or `event_rate`. We control this with the `x_axis_var` argument.
 
 ```{r}
-plot(sim_screen_obj, x_axis_var = "sim_auc")
+autoplot(sim_screen_obj, x_axis_var = "sim_auc")
 ```
 
 (To avoid the overlap of points in this second plot, we can specify the `dodge_width` to be non-zero.)
 ```{r}
-plot(sim_screen_obj, x_axis_var = "event_rate", dodge_width = 0.002)
+autoplot(sim_screen_obj, x_axis_var = "event_rate", dodge_width = 0.002)
 ```
 
 For these plots, one of the screened inputs will be the x-axis variable, but the other will only be displayed at a single level. The default setting will assume the first level, so when we visualise the change in NMB specifying `sim_auc` as the x-axis variable, we only observe this for the case where `event_rate = 0.1`. We can choose to select another level with the `constants` argument. This argument expects a named list containing the values to keep for the screened inputs which are not shown on the x-axis.
 
 ```{r}
-plot(sim_screen_obj, x_axis_var = "sim_auc", constants = list(event_rate = 0.1))
-plot(sim_screen_obj, x_axis_var = "sim_auc", constants = list(event_rate = 0.2))
+autoplot(sim_screen_obj, x_axis_var = "sim_auc", constants = list(event_rate = 0.1))
+autoplot(sim_screen_obj, x_axis_var = "sim_auc", constants = list(event_rate = 0.2))
 ```
 
 We see both a change to the plot as well as the message produced when the plot is made.
@@ -110,9 +110,9 @@ We see both a change to the plot as well as the message produced when the plot i
 There are three options for the y-axis. The default is the NMB, but you can also visualise the Incremental Net Monetary Benefit (INB) and the selected cutpoints. These are controlled by the `what` argument, which can be any of `c("nmb", "inb", "cutpoints")`. If a vector is used, only the first value will be selected. If you choose to visualise the INB, you must list your chosen reference strategy for the calculation in the `inb_ref_col`. In this case, we use treat all (`"all"`).
 
 ```{r, message=FALSE}
-plot(sim_screen_obj, what = "nmb")
-plot(sim_screen_obj, what = "inb", inb_ref_col = "all")
-plot(sim_screen_obj, what = "cutpoints")
+autoplot(sim_screen_obj, what = "nmb")
+autoplot(sim_screen_obj, what = "inb", inb_ref_col = "all")
+autoplot(sim_screen_obj, what = "cutpoints")
 ```
 
 
@@ -121,11 +121,11 @@ plot(sim_screen_obj, what = "cutpoints")
 The plots show the median (the dot), the 95% confidence interval (thick vertical lines), the range (thin vertical lines), and the lines between the points by default. These can each be shown or hidden independently, and the width of the confidence interval can be controlled using the `ci` argument.
 
 ```{r, message=FALSE}
-plot(sim_screen_obj)
-plot(sim_screen_obj, plot_range = FALSE)
-plot(sim_screen_obj, plot_ci = FALSE)
-plot(sim_screen_obj, plot_ci = FALSE, plot_range = FALSE)
-plot(sim_screen_obj, plot_ci = FALSE, plot_range = FALSE, plot_line = FALSE)
+autoplot(sim_screen_obj)
+autoplot(sim_screen_obj, plot_range = FALSE)
+autoplot(sim_screen_obj, plot_ci = FALSE)
+autoplot(sim_screen_obj, plot_ci = FALSE, plot_range = FALSE)
+autoplot(sim_screen_obj, plot_ci = FALSE, plot_range = FALSE, plot_line = FALSE)
 ```
 
 
@@ -134,15 +134,15 @@ plot(sim_screen_obj, plot_ci = FALSE, plot_range = FALSE, plot_line = FALSE)
 Currently, the lines and dots overlap. We can use `dodge_width` to apply a horizontal dodge for all layers.
 
 ```{r, message=FALSE}
-plot(sim_screen_obj)
-plot(sim_screen_obj, dodge_width = 0.01)
+autoplot(sim_screen_obj)
+autoplot(sim_screen_obj, dodge_width = 0.01)
 ```
 
 The cutpoint methods can be renamed or removed. To rename them, pass a named vector to the `rename_vector` argument. The names of the vector are the new names and the values are the names you wish to replace.
 
 ```{r, message=FALSE}
-plot(sim_screen_obj)
-plot(
+autoplot(sim_screen_obj)
+autoplot(
   sim_screen_obj,
   rename_vector = c("Treat All" = "all", 
                     "Treat None" = "none",
@@ -154,9 +154,9 @@ plot(
 You can reorder the methods by passing the order as the `methods_order` argument. Also note that this will remove all methods which aren't included, and it will factor the names AFTER it has renamed them. So, if you are both renaming and re-ordering, you must provide the updated names when you order them:
 
 ```{r, message=FALSE}
-plot(sim_screen_obj)
-plot(sim_screen_obj, methods_order = c("all", "none"))
-plot(
+autoplot(sim_screen_obj)
+autoplot(sim_screen_obj, methods_order = c("all", "none"))
+autoplot(
   sim_screen_obj,
   # Assign new names to the two methods of interest
   rename_vector = c("Treat All" = "all", "Treat None" = "none"), 
@@ -169,9 +169,9 @@ plot(
 The transparency of all layers can be controlled with `plot_alpha`.
 
 ```{r, message=FALSE}
-plot(sim_screen_obj)
-plot(sim_screen_obj, plot_alpha = 0.2)
-plot(sim_screen_obj, plot_alpha = 1)
+autoplot(sim_screen_obj)
+autoplot(sim_screen_obj, plot_alpha = 0.2)
+autoplot(sim_screen_obj, plot_alpha = 1)
 ```
 
 ## Plotting the results from `do_nmb_sim()`
@@ -197,14 +197,14 @@ do_nmb_sim_obj <- do_nmb_sim(
 The plots here show the results of a single simulation and compare the available cutpoints.
 
 ```{r}
-plot(do_nmb_sim_obj)
+autoplot(do_nmb_sim_obj)
 ```
 
 The y-axis variable and names and orders of methods can be controlled in the same way as previously:
 
 ```{r}
-plot(do_nmb_sim_obj, what = "nmb")
-plot(
+autoplot(do_nmb_sim_obj, what = "nmb")
+autoplot(
   do_nmb_sim_obj,
   what = "inb",
   inb_ref_col = "all",
@@ -214,7 +214,7 @@ plot(
     "Youden Index" = "youden"
   )
 )
-plot(
+autoplot(
   do_nmb_sim_obj,
   what = "cutpoints",
   methods_order = c("all", "none", "youden", "value optimising")
@@ -224,7 +224,7 @@ plot(
 These plots display the median as the solid bar, the grey part of the distributions are the outer 5% of the simulated values and the light blue region is the 95% CI. For the methods that select thresholds based on the values in the 2x2 table, including the value-optimising thresholds, this may look a little strange as the cutpoints are highly variable. This can be stabilised with more simulations. The fill colours of the histogram are controlled with `fill_cols` and the line for the median is controlled with `median_line_col`. The thickness of the median line is controlled with `median_line_size` and its transparency with `median_line_alpha`. 
 
 ```{r}
-plot(
+autoplot(
   do_nmb_sim_obj,
   fill_cols = c("red", "blue"),
   median_line_col = "yellow",
@@ -233,10 +233,10 @@ plot(
 )
 ```
 
-The `n_bins` argument controls the number of bins used for the histograms and the `label_wrap_width` is the number of characters above which to start a new line for the facet labels. This can be handy when using detailed names for the methods when the font of the label is relatively large compared to the plot, though a space is needed to determine where to split the label. The width of the confidence intervals can also be controlled by the `ci` argument in this `plot()` call.
+The `n_bins` argument controls the number of bins used for the histograms and the `label_wrap_width` is the number of characters above which to start a new line for the facet labels. This can be handy when using detailed names for the methods when the font of the label is relatively large compared to the plot, though a space is needed to determine where to split the label. The width of the confidence intervals can also be controlled by the `ci` argument in this `autoplot()` call.
 
 ```{r, fig.height=3, fig.width=6}
-plot(
+autoplot(
   do_nmb_sim_obj,
   n_bins = 15,
   rename_vector = c(
@@ -253,8 +253,8 @@ plot(
 By default there is an additional theme applied to the facets to bring them closer to each other. Replace the `extra_theme` with `NULL` to revert to the default behaviour, or use your own theme here.
 
 ```{r}
-plot(do_nmb_sim_obj, extra_theme = NULL)
-plot(
+autoplot(do_nmb_sim_obj, extra_theme = NULL)
+autoplot(
   do_nmb_sim_obj,
   extra_theme = theme(
     panel.spacing = unit(0, "lines"),
@@ -309,7 +309,7 @@ make_summary_table(
   flextable()
 ```
 
-The `what` and `rename_vector` arguments work in the same way as they did when using `plot()`.
+The `what` and `rename_vector` arguments work in the same way as they did when using `autoplot()`.
 
 ```{r, eval=FALSE}
 make_summary_table(

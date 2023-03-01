@@ -211,7 +211,7 @@ update_rename_vector <- function(rename_vector) {
 #' searched.
 #'
 #' @srrstats {G3.0} Near equality function (below) is used for matching
-#' arguments (from `plot()`) to arguments (`constants`).
+#' arguments (from `autoplot()`) to arguments (`constants`).
 #'
 #' @return Returns a logical vector the same length as the input vector.
 #' @noRd

@@ -1,9 +1,14 @@
-#' @srrstats {EA5.0, EA5.0a, EA5.0b, EA5.1} \code{plot.predictNMBsim()} applies
-#' two colours for the fill aesthetic by default (blue and grey) and these can
-#' be controlled by the user by the \code{fill_cols} argument.
+#' @importFrom ggplot2 autoplot
+#' @export
+ggplot2::autoplot
+
+
+#' @srrstats {EA5.0, EA5.0a, EA5.0b, EA5.1} \code{autoplot.predictNMBsim()}
+#' applies two colours for the fill aesthetic by default (blue and grey) and
+#' these can be controlled by the user by the \code{fill_cols} argument.
 #' These colours were selected with appropriate interpretation of the interval
 #' and accessibility in mind. All fonts and other colour schemes
-#' (including for \code{plot.predictNMBscreen()}) use the defaults by
+#' (including for \code{autoplot.predictNMBscreen()}) use the defaults by
 #' \code{ggplot} by default.
 #' @srrstats {EA5.4, EA5.5} Units are included on all axes and use
 #' \code{ggplot2} to produce sensibly rounded values.
@@ -94,7 +99,7 @@ add_interval <- function(data, ci) {
 
 #' Create plots of from predictNMB simulations.
 #'
-#' @param x A \code{predictNMBsim} object.
+#' @param object A \code{predictNMBsim} object.
 #' @param what What to summarise: one of "nmb", "inb" or "cutpoints".
 #' Defaults to "nmb".
 #' @param inb_ref_col Which cutpoint method to use as the reference strategy
@@ -145,15 +150,15 @@ add_interval <- function(data, ci) {
 #'     fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
 #'   )
 #'
-#'   plot(sim_screen_obj)
-#'   plot(
+#'   autoplot(sim_screen_obj)
+#'   autoplot(
 #'     sim_screen_obj,
 #'     x_axis_var = "event_rate",
 #'     constants = c(sim_auc = 0.8),
 #'     dodge_width = 0.02
 #'   )
 #' }
-plot.predictNMBsim <- function(x,
+autoplot.predictNMBsim <- function(object,
                                what = c("nmb", "inb", "cutpoints"),
                                inb_ref_col = NA,
                                ci = 0.95,
@@ -176,7 +181,7 @@ plot.predictNMBsim <- function(x,
   what <- match.arg(what)
 
   p_data <- get_plot_data(
-    x = x,
+    x = object,
     what = what,
     methods_order = methods_order,
     rename_vector = rename_vector,
@@ -269,7 +274,7 @@ plot.predictNMBsim <- function(x,
 
 #' Create plots of from screened predictNMB simulations.
 #'
-#' @param x A \code{predictNMBscreen} object.
+#' @param object A \code{predictNMBscreen} object.
 #' @param x_axis_var The desired screened factor to be displayed along the
 #' x axis. For example, if the simulation screen was used with many values for
 #' event rate, this could be "event_rate". Defaults to the first detected,
@@ -322,15 +327,15 @@ plot.predictNMBsim <- function(x,
 #'     fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
 #'   )
 #'
-#'   plot(sim_screen_obj)
-#'   plot(
+#'   autoplot(sim_screen_obj)
+#'   autoplot(
 #'     sim_screen_obj,
 #'     x_axis_var = "event_rate",
 #'     constants = c(sim_auc = 0.8),
 #'     dodge_width = 0.02
 #'   )
 #' }
-plot.predictNMBscreen <- function(x,
+autoplot.predictNMBscreen <- function(object,
                                   x_axis_var = NULL,
                                   constants = list(),
                                   what = c("nmb", "inb", "cutpoints"),
@@ -351,26 +356,26 @@ plot.predictNMBscreen <- function(x,
 
   if (is.null(x_axis_var)) {
     message("No value for 'x_axis_var' given.")
-    if (length(x$screen_meta) == 1) {
-      message(paste0("Screening over ", names(x$screen_meta), " by default"))
+    if (length(object$screen_meta) == 1) {
+      message(paste0("Screening over ", names(object$screen_meta), " by default"))
     } else {
       message(
         paste0(
           "Screening over ",
-          names(x$screen_meta)[1],
+          names(object$screen_meta)[1],
           " by default. Specify the variable in the 'x_axis_var' argument",
           " if you want to plot changes over:\n",
-          paste0(names(x$screen_meta)[-1], collapse = ", ")
+          paste0(names(object$screen_meta)[-1], collapse = ", ")
         )
       )
     }
-    x_axis_var <- names(x$screen_meta)[1]
+    x_axis_var <- names(object$screen_meta)[1]
   }
 
-  grid_lookup <- x$summary_grid
+  grid_lookup <- object$summary_grid
   sim.id_ignore <- c()
 
-  if (length(names(x$screen_meta)) > 1) {
+  if (length(names(object$screen_meta)) > 1) {
     message(
       paste0(
         "\n\nVarying simulation inputs, other than ",
@@ -378,7 +383,7 @@ plot.predictNMBscreen <- function(x,
         ", are being held constant:\n"
       )
     )
-    non_x_axis_vars <- x$screen_meta
+    non_x_axis_vars <- object$screen_meta
     non_x_axis_vars[[x_axis_var]] <- NULL
     for (i in length(non_x_axis_vars)) {
       if (names(non_x_axis_vars)[i] %in% names(constants)) {
@@ -407,7 +412,7 @@ plot.predictNMBscreen <- function(x,
         v <- non_x_axis_vars[[i]][[1]]
         if (inherits(v, "function")) {
           v <- names(non_x_axis_vars[[i]])[1]
-          if (x$pair_nmb_train_and_evaluation_functions &
+          if (object$pair_nmb_train_and_evaluation_functions &
             x_axis_var %in% c("fx_nmb_training", "fx_nmb_evaluation")) {
             next
           }
@@ -440,7 +445,7 @@ plot.predictNMBscreen <- function(x,
   p_data_full <- NULL
   for (s in grid_lookup$.sim_id) {
     p_data <- get_plot_data(
-      x = x$simulations[[s]],
+      x = object$simulations[[s]],
       what = what,
       methods_order = methods_order,
       rename_vector = rename_vector,

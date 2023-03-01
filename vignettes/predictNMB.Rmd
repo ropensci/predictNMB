@@ -114,10 +114,10 @@ summary(nmb_simulation$df_result$all)
 ```
 
 
-The simulation under the various cutpoints can be visualised using `plot()`. The default is to visualise the distributions of NMB across all (500) simulations. In the plot below, the spread (light blue) shows the variability in results due to repeated simulation. The median is represented with the dark blue line in the center of each distribution.
+The simulation under the various cutpoints can be visualised using `autoplot()`. The default is to visualise the distributions of NMB across all (500) simulations. In the plot below, the spread (light blue) shows the variability in results due to repeated simulation. The median is represented with the dark blue line in the center of each distribution.
 
 ```{r}
-plot(nmb_simulation)
+autoplot(nmb_simulation)
 ```
 
 Treating all looks like a bad option here. The rest are relatively similar at this AUC and event rate, with an edge to treat none or the models using either the value optimisation or cost minimisation cutpoint method.
@@ -127,17 +127,17 @@ We have options to include multiple cutpoint methods, and the default is to use 
 ```{r}
 get_inbuilt_cutpoint(return_all_methods = TRUE)
 
-plot(nmb_simulation, methods = c("all", "none", "youden"))
+autoplot(nmb_simulation, methods = c("all", "none", "youden"))
 ```
 
 We can also use this same plotting function to visualise cutpoints or the incremental net monetary benefit (INB) if we have a known reference strategy, in this case treat-all:
 
 ```{r}
-plot(nmb_simulation, what = "cutpoints")
+autoplot(nmb_simulation, what = "cutpoints")
 ```
 
 ```{r}
-plot(nmb_simulation, what = "inb", inb_ref_col = "all")
+autoplot(nmb_simulation, what = "inb", inb_ref_col = "all")
 ```
 
 Compared with treat-all, every alternative looks better, but treating none or using value-optimising/cost-minimising look the best.
@@ -194,8 +194,8 @@ stopCluster(cl)
 For our hypothetical costed outcome, the classification model when the cutpoint is selected by maximising the Youden index, only out-performs the treat-none strategy when the model has a AUC of about 0.9. This is quite high, and may be impossible when the outcome is highly unpredictable. Also, when the event rate is 0.1, rather than 0.2, we are only able the match the treat-none strategy when our model has an AUC of 0.95.
 
 ```{r}
-plot(sim_screen_obj, x_axis_var = "sim_auc", constants = c(event_rate = 0.2))
-plot(sim_screen_obj, x_axis_var = "sim_auc", constants = c(event_rate = 0.1))
+autoplot(sim_screen_obj, x_axis_var = "sim_auc", constants = c(event_rate = 0.2))
+autoplot(sim_screen_obj, x_axis_var = "sim_auc", constants = c(event_rate = 0.1))
 ```
 
 # References
