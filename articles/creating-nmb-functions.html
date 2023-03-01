@@ -234,14 +234,14 @@ in health economics as Probabilistic Sensitivity Analysis (PSA).</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -1.7870590 -0.1777673  0.0000000 -4.2717686</span></span>
+<span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
+<span><span class="co">#&gt; -4.7474222 -0.4933937  0.0000000 -7.3458248</span></span>
+<span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
-<span><span class="co">#&gt; -3.356229 -1.923333  0.000000 -3.966338</span></span>
-<span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.8492094 -0.4818763  0.0000000 -5.6838632</span></span>
-<span><span class="fu">foo2</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.0515973 -0.7848514  0.0000000 -2.6986858</span></span></code></pre></div>
+<span><span class="co">#&gt; -3.123859 -1.883474  0.000000 -2.673176</span></span></code></pre></div>
 <p>Another benefit of allowing the user to define the function structure
 is that we can also allow the low risk group, or the population whose
 risk estimates fall below the probability threshold, to receive an
@@ -281,13 +281,13 @@ and a reduction in falls of 30%.</p>
 <span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.4455895 -1.5153583 -0.7898148 -2.0387057</span></span>
+<span><span class="co">#&gt; -6.0472757 -3.0807740 -0.3186031 -4.6476471</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -1.1983084 -0.1091983 -0.2999200 -1.7772684</span></span>
+<span><span class="co">#&gt; -3.0565103 -1.7874988 -0.4493126 -2.3742051</span></span>
 <span><span class="fu">foo3</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.6340657 -1.0680984 -0.5130413 -2.0727725</span></span></code></pre></div>
+<span><span class="co">#&gt; -0.8232367 -0.2741028 -0.7148013 -1.4733856</span></span></code></pre></div>
 <p>Now that we are providing an intervention and associated cost to the
 low risk group, there is a negative NMB assigned to true negative (TN)
 groups. But in exchange, we have reduced the costs of false negatives
@@ -479,7 +479,7 @@ inputs for the <code><a href="../reference/do_nmb_sim.html">do_nmb_sim()</a></co
 <span>  cutpoint_methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"youden"</span>, <span class="st">"value_optimising"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">simulation_res1</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">simulation_res1</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_sim.html">theme_sim</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="creating-nmb-functions_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 <p>As mentioned previously, the problem with using <code>foo1</code> for
 <code>fx_nmb_evaluation</code> is that we don’t really know for sure how
@@ -520,14 +520,14 @@ that gives fixed values for training:</p>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.9871878 -0.9924626  0.0000000 -3.9960155</span></span>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -3.016489 -1.002870  0.000000 -4.030930</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.9871878 -0.9924626  0.0000000 -3.9960155</span></span>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -3.016489 -1.002870  0.000000 -4.030930</span></span>
 <span><span class="fu">foo2_remake_training</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         TP         FP         TN         FN </span></span>
-<span><span class="co">#&gt; -2.9871878 -0.9924626  0.0000000 -3.9960155</span></span></code></pre></div>
+<span><span class="co">#&gt;        TP        FP        TN        FN </span></span>
+<span><span class="co">#&gt; -3.016489 -1.002870  0.000000 -4.030930</span></span></code></pre></div>
 <p>In many cases (including this one), this will give similar values to
 using the parameter estimates (i.e. <code>foo1()</code>), but not
 always. The values from this process should be more stable than using
@@ -540,7 +540,7 @@ the estimates.</p>
 <span>  cutpoint_methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"youden"</span>, <span class="st">"value_optimising"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">simulation_res2</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">simulation_res2</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_sim.html">theme_sim</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="creating-nmb-functions_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 <p>This changes our results to incorporate more uncertainty. This is
 important in simulation modelling as it accounts for the possible

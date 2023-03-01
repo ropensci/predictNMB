@@ -74,7 +74,7 @@ simulated model.</p>
 <span>  <span class="va">n_valid</span>,</span>
 <span>  <span class="va">sim_auc</span>,</span>
 <span>  <span class="va">event_rate</span>,</span>
-<span>  cutpoint_methods <span class="op">=</span> <span class="fu"><a href="get_inbuilt_cutpoint.html">get_inbuilt_cutpoint</a></span><span class="op">(</span>return_all_methods <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  cutpoint_methods <span class="op">=</span> <span class="fu"><a href="get_inbuilt_cutpoint_methods.html">get_inbuilt_cutpoint_methods</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">fx_nmb_training</span>,</span>
 <span>  <span class="va">fx_nmb_evaluation</span>,</span>
 <span>  meet_min_events <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -149,9 +149,9 @@ expected number of events (<code>sample_size * event_rate</code>) is met.
 <dt>min_events</dt>
 <dd><p>The minimum number of events to include in the training
 sample. If less than this number are included in sample of size
-<code>sample_size</code>, additional samples are added until the min_events is met.
+<code>sample_size</code>, additional samples are added until the <code>min_events</code> is met.
 The default (<code>NA</code>) will use the expected value given the
-codeevent_rate and the <code>sample_size</code>.</p></dd>
+<code>event_rate</code> and the <code>sample_size</code>.</p></dd>
 
 
 <dt>show_progress</dt>

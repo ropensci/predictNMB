@@ -269,13 +269,14 @@ is the same as setting our probability threshold for treatment to 0:</p>
 <span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
 <span><span class="co">#&gt;  -27.87  -26.39  -25.99  -26.02  -25.66  -24.41</span></span></code></pre></div>
 <p>The simulation under the various cutpoints can be visualised using
-<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>. The default is to visualise the distributions of
-NMB across all (500) simulations. In the plot below, the spread (light
-blue) shows the variability in results due to repeated simulation. The
-median is represented with the dark blue line in the center of each
-distribution.</p>
+<code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot()</a></code>. The default is to visualise the distributions
+of NMB across all (500) simulations. In the plot below, the spread
+(light blue) shows the variability in results due to repeated
+simulation. The median is represented with the dark blue line in the
+center of each distribution. Here, we use <code><a href="../reference/theme_sim.html">theme_sim()</a></code> to
+reduce clutter on these plots.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">nmb_simulation</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_sim.html">theme_sim</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="predictNMB_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 <p>Treating all looks like a bad option here. The rest are relatively
 similar at this AUC and event rate, with an edge to treat none or the
@@ -287,20 +288,20 @@ and treat-none strategies. We can specify which methods are shown in the
 plots when creating the plot. (For more details on plotting, see the <a href="https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html">summarising
 results vignettes</a>.)</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_inbuilt_cutpoint.html">get_inbuilt_cutpoint</a></span><span class="op">(</span>return_all_methods <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_inbuilt_cutpoint_methods.html">get_inbuilt_cutpoint_methods</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "all"              "none"             "value_optimising" "youden"          </span></span>
 <span><span class="co">#&gt; [5] "cost_minimising"  "prod_sens_spec"   "roc01"            "index_of_union"</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"youden"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"youden"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_sim.html">theme_sim</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="predictNMB_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 <p>We can also use this same plotting function to visualise cutpoints or
 the incremental net monetary benefit (INB) if we have a known reference
 strategy, in this case treat-all:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"cutpoints"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"cutpoints"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_sim.html">theme_sim</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="predictNMB_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"inb"</span>, inb_ref_col <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">nmb_simulation</span>, what <span class="op">=</span> <span class="st">"inb"</span>, inb_ref_col <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_sim.html">theme_sim</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="predictNMB_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
 <p>Compared with treat-all, every alternative looks better, but treating
 none or using value-optimising/cost-minimising look the best.</p>
@@ -383,14 +384,14 @@ highly unpredictable. Also, when the event rate is 0.1, rather than 0.2,
 we are only able the match the treat-none strategy when our model has an
 AUC of 0.95.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Varying simulation inputs, other than sim_auc, are being held constant:</span></span>
 <span><span class="co">#&gt; event_rate: 0.2</span></span></code></pre></div>
 <p><img src="predictNMB_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span>, x_axis_var <span class="op">=</span> <span class="st">"sim_auc"</span>, constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>event_rate <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Varying simulation inputs, other than sim_auc, are being held constant:</span></span>

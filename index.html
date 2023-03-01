@@ -151,9 +151,9 @@
 <span>  cutpoint_methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"youden"</span><span class="op">)</span>, cl <span class="op">=</span> <span class="va">cl</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>These simulations can be interpreted as a range of hypothetical situations under different levels of model performance within our specific healthcare setting. We can visualise how this change may affect preferences between the model-guided strategy versus a treat-all or treat-none strategy — in other words, using the model to determine who should get treatment, rather than everyone or no-one.</p>
-<p><code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> on the object returned from this function to quickly inspect these trends:</p>
+<p><code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot()</a></code> can be used on the object returned from this function to quickly inspect these trends:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">sim_screen_obj</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
 <p>Here, we are visualising many simulations under different inputs. If we just want to inspect a single set of inputs, say when the model AUC is 0.9, we can run that simulation alone using <code><a href="reference/do_nmb_sim.html">do_nmb_sim()</a></code>, or access it from our existing screen.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -164,9 +164,9 @@
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">single_sim_obj</span> <span class="op">&lt;-</span> <span class="va">sim_screen_obj</span><span class="op">$</span><span class="va">simulations</span><span class="op">[[</span><span class="fl">6</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
-<p>When plotting a single set of simulation inputs, we see the distributions of the NMB across all simulations under each strategy.</p>
+<p>When plotting a single set of simulation inputs, we see the distributions of the NMB across all simulations under each strategy. Note that we have added some tasteful themes using <code><a href="reference/theme_sim.html">theme_sim()</a></code> that help reduce clutter on these types of plots.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">single_sim_obj</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">single_sim_obj</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="reference/theme_sim.html">theme_sim</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-9-1.png" width="100%"></p>
 </div>
 <div class="section level2">

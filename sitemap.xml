@@ -34,6 +34,12 @@
     <loc>https://rwparsons.github.io/predictNMB/news/index.html</loc>
   </url>
   <url>
+    <loc>https://rwparsons.github.io/predictNMB/reference/autoplot.predictNMBscreen.html</loc>
+  </url>
+  <url>
+    <loc>https://rwparsons.github.io/predictNMB/reference/autoplot.predictNMBsim.html</loc>
+  </url>
+  <url>
     <loc>https://rwparsons.github.io/predictNMB/reference/do_nmb_sim.html</loc>
   </url>
   <url>
@@ -41,6 +47,9 @@
   </url>
   <url>
     <loc>https://rwparsons.github.io/predictNMB/reference/get_inbuilt_cutpoint.html</loc>
+  </url>
+  <url>
+    <loc>https://rwparsons.github.io/predictNMB/reference/get_inbuilt_cutpoint_methods.html</loc>
   </url>
   <url>
     <loc>https://rwparsons.github.io/predictNMB/reference/get_nmb_sampler.html</loc>
@@ -55,22 +64,7 @@
     <loc>https://rwparsons.github.io/predictNMB/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://rwparsons.github.io/predictNMB/reference/make_summary_table.html</loc>
-  </url>
-  <url>
-    <loc>https://rwparsons.github.io/predictNMB/reference/make_summary_table.predictNMBscreen.html</loc>
-  </url>
-  <url>
-    <loc>https://rwparsons.github.io/predictNMB/reference/make_summary_table.predictNMBsim.html</loc>
-  </url>
-  <url>
     <loc>https://rwparsons.github.io/predictNMB/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>https://rwparsons.github.io/predictNMB/reference/plot.predictNMBscreen.html</loc>
-  </url>
-  <url>
-    <loc>https://rwparsons.github.io/predictNMB/reference/plot.predictNMBsim.html</loc>
   </url>
   <url>
     <loc>https://rwparsons.github.io/predictNMB/reference/predictNMB-package.html</loc>
@@ -82,6 +76,18 @@
     <loc>https://rwparsons.github.io/predictNMB/reference/print.predictNMBsim.html</loc>
   </url>
   <url>
+    <loc>https://rwparsons.github.io/predictNMB/reference/reexports.html</loc>
+  </url>
+  <url>
     <loc>https://rwparsons.github.io/predictNMB/reference/screen_simulation_inputs.html</loc>
+  </url>
+  <url>
+    <loc>https://rwparsons.github.io/predictNMB/reference/summary.predictNMBscreen.html</loc>
+  </url>
+  <url>
+    <loc>https://rwparsons.github.io/predictNMB/reference/summary.predictNMBsim.html</loc>
+  </url>
+  <url>
+    <loc>https://rwparsons.github.io/predictNMB/reference/theme_sim.html</loc>
   </url>
 </urlset>
