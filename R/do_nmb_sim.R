@@ -81,7 +81,7 @@ do_nmb_sim <- function(sample_size,
                        n_valid,
                        sim_auc,
                        event_rate,
-                       cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
+                       cutpoint_methods = get_inbuilt_cutpoint_methods(),
                        fx_nmb_training,
                        fx_nmb_evaluation,
                        meet_min_events = TRUE,
@@ -176,7 +176,7 @@ do_nmb_sim <- function(sample_size,
         "roc_iu"
       )
     })
-    inbuilt_methods <- get_inbuilt_cutpoint(return_all_methods = TRUE)
+    inbuilt_methods <- get_inbuilt_cutpoint_methods()
     if (any(!cutpoint_methods %in% inbuilt_methods)) {
       user_defined_methods <- cutpoint_methods[
         !cutpoint_methods %in% inbuilt_methods

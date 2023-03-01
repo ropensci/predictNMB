@@ -14,7 +14,7 @@ ggplot2::autoplot
 #' \code{ggplot2} to produce sensibly rounded values.
 #'
 #' Whether or not to use linewidth vs size argument in ggplot2.
-#' @return Returns logical - whether or not to use linewidth based on ggplot2
+#' @return Returns logical - whether or not to use linewidth based on ggplot2.
 #' version.
 #' @noRd
 use_linewidth <- function() {
@@ -135,7 +135,7 @@ add_interval <- function(data, ci) {
 #'
 #' @srrstats {G2.4d} `as.factor()` used when necessary.
 #'
-#' @return Returns a \code{ggplot} object
+#' @return Returns a \code{ggplot} object.
 #' @export
 #'
 #' @examples
@@ -255,7 +255,7 @@ autoplot.predictNMBsim <- function(object,
 #' Returns a \code{ggplot2} theme that reduces clutter in an \code{autoplot()}
 #' of a \code{predictNMBsim} object.
 #'
-#' @return \code{ggplot2} theme
+#' @return Returns a \code{ggplot2} theme.
 #' @export
 #'
 #' @examples
@@ -318,7 +318,7 @@ theme_sim <- function() {
 #' distributions from many different simulations and assign a varying input
 #' to the x-axis of the plot.
 #'
-#' @return Returns a \code{ggplot} object
+#' @return Returns a \code{ggplot} object.
 #' @export
 #'
 #' @examples

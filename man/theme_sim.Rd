@@ -8,7 +8,7 @@ of a \code{predictNMBsim} object.}
 theme_sim()
 }
 \value{
-\code{ggplot2} theme
+Returns a \code{ggplot2} theme.
 }
 \description{
 Returns a \code{ggplot2} theme that reduces clutter in an \code{autoplot()}

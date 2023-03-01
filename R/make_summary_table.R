@@ -93,7 +93,7 @@ make_summary_table <- function(x,
 #' when calculating the incremental net monetary benefit. See \code{do_nmb_sim}
 #' for more information.
 #'
-#' @return A \code{data.frame}
+#' @return Returns a \code{data.frame}.
 #' @noRd
 get_sim_data <- function(x, what, inb_ref_col = NULL) {
   if (what %in% c("nmb", "inb")) {

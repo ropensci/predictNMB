@@ -11,7 +11,7 @@ do_nmb_sim(
   n_valid,
   sim_auc,
   event_rate,
-  cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
+  cutpoint_methods = get_inbuilt_cutpoint_methods(),
   fx_nmb_training,
   fx_nmb_evaluation,
   meet_min_events = TRUE,

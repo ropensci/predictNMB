@@ -68,7 +68,7 @@ desired names in the output.}
 \item{...}{Additional (unused) arguments.}
 }
 \value{
-Returns a \code{ggplot} object
+Returns a \code{ggplot} object.
 }
 \description{
 Create plots of from screened predictNMB simulations.

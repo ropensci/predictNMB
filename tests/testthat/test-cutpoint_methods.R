@@ -1,5 +1,5 @@
 test_that("test inbuilt cutpoint methods", {
-  inbuilt_methods <- get_inbuilt_cutpoint(return_all_methods = T)
+  inbuilt_methods <- get_inbuilt_cutpoint_methods()
 
   nmb <- c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
   p <- runif(1000)

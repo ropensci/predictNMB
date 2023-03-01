@@ -10,7 +10,7 @@ screen_simulation_inputs(
   n_valid,
   sim_auc,
   event_rate,
-  cutpoint_methods = get_inbuilt_cutpoint(return_all_methods = TRUE),
+  cutpoint_methods = get_inbuilt_cutpoint_methods(),
   fx_nmb_training,
   fx_nmb_evaluation,
   pair_nmb_train_and_evaluation_functions = FALSE,

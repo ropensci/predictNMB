@@ -4,13 +4,7 @@
 \alias{get_inbuilt_cutpoint}
 \title{Get a cutpoint using the methods inbuilt to predictNMB}
 \usage{
-get_inbuilt_cutpoint(
-  predicted,
-  actual,
-  nmb,
-  method,
-  return_all_methods = FALSE
-)
+get_inbuilt_cutpoint(predicted, actual, nmb, method)
 }
 \arguments{
 \item{predicted}{A vector of predicted probabilities}
@@ -19,20 +13,18 @@ get_inbuilt_cutpoint(
 
 \item{nmb}{A named vector containing NMB assigned to each classification}
 
-\item{method}{A cutpoint selection method to be used}
-
-\item{return_all_methods}{\code{logical}. Whether to return all available
+\item{method}{A cutpoint selection method to be used
 methods that can be used as the method argument}
 }
 \value{
-Returns a selected cutpoint (numeric)
+Returns a selected cutpoint (numeric).
 }
 \description{
 Get a cutpoint using the methods inbuilt to predictNMB
 }
 \examples{
 ## get the list of available methods:
-get_inbuilt_cutpoint(return_all_methods = TRUE)
+get_inbuilt_cutpoint_methods()
 
 ## get the cutpoint that maximises the Youden index for a given set of
 ## probabilities and outcomes

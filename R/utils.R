@@ -171,7 +171,7 @@ validate_inputs <- function(sample_size,
 #' @return Returns (updated) named vector.
 #' @noRd
 update_rename_vector <- function(rename_vector) {
-  default_rename_vector <- get_inbuilt_cutpoint(return_all_methods = TRUE)
+  default_rename_vector <- get_inbuilt_cutpoint_methods()
   names(default_rename_vector) <- gsub("_", " ", default_rename_vector)
   if (missing(rename_vector)) {
     rename_vector <- default_rename_vector

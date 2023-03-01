@@ -50,6 +50,26 @@ roc_iu <- function(tp, fp, tn, fn, .roc_curve, ...) {
   return(iu)
 }
 
+#' Get a vector of all the inbuilt cutpoint methods
+#'
+#' @return Returns a vector cutpoint methods that can be used in
+#' \code{do_nmb_sim()}.
+#' @export
+#'
+#' @examples
+#' get_inbuilt_cutpoint_methods()
+get_inbuilt_cutpoint_methods <- function() {
+  c(
+    "all",
+    "none",
+    "value_optimising",
+    "youden",
+    "cost_minimising",
+    "prod_sens_spec",
+    "roc01",
+    "index_of_union"
+  )
+}
 
 #' Get a cutpoint using the methods inbuilt to predictNMB
 #'
@@ -57,15 +77,14 @@ roc_iu <- function(tp, fp, tn, fn, .roc_curve, ...) {
 #' @param actual A vector of actual outcomes
 #' @param nmb A named vector containing NMB assigned to each classification
 #' @param method A cutpoint selection method to be used
-#' @param return_all_methods \code{logical}. Whether to return all available
 #' methods that can be used as the method argument
 #'
-#' @return Returns a selected cutpoint (numeric)
+#' @return Returns a selected cutpoint (numeric).
 #' @export
 #'
 #' @examples
 #' ## get the list of available methods:
-#' get_inbuilt_cutpoint(return_all_methods = TRUE)
+#' get_inbuilt_cutpoint_methods()
 #'
 #' ## get the cutpoint that maximises the Youden index for a given set of
 #' ## probabilities and outcomes
@@ -78,22 +97,8 @@ roc_iu <- function(tp, fp, tn, fn, .roc_curve, ...) {
 get_inbuilt_cutpoint <- function(predicted,
                                  actual,
                                  nmb,
-                                 method,
-                                 return_all_methods = FALSE) {
-  inbuilt_methods <- c(
-    "all",
-    "none",
-    "value_optimising",
-    "youden",
-    "cost_minimising",
-    "prod_sens_spec",
-    "roc01",
-    "index_of_union"
-  )
-
-  if (return_all_methods) {
-    return(inbuilt_methods)
-  }
+                                 method) {
+  inbuilt_methods <- get_inbuilt_cutpoint_methods()
 
   if (length(unique(actual)) != 2) {
     stop(paste0("data were all ", unique(actual), "'s"))
@@ -255,7 +260,7 @@ get_inbuilt_cutpoint <- function(predicted,
 #'   nmb = c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 #' )
 get_thresholds <- function(predicted, actual, nmb, cutpoint_methods = NULL) {
-  inbuilt_methods <- get_inbuilt_cutpoint(return_all_methods = TRUE)
+  inbuilt_methods <- get_inbuilt_cutpoint_methods()
   if (is.null(cutpoint_methods)) {
     cutpoint_methods <- inbuilt_methods
   }

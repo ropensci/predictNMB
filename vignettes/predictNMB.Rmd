@@ -125,7 +125,7 @@ Treating all looks like a bad option here. The rest are relatively similar at th
 We have options to include multiple cutpoint methods, and the default is to use all of the available inbuilt methods as well as the treat-all and treat-none strategies. We can specify which methods are shown in the plots when creating the plot. (For more details on plotting, see the [summarising results vignettes](https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html).)
 
 ```{r}
-get_inbuilt_cutpoint(return_all_methods = TRUE)
+get_inbuilt_cutpoint_methods()
 
 autoplot(nmb_simulation, methods = c("all", "none", "youden")) + theme_sim()
 ```
