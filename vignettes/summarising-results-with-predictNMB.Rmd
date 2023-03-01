@@ -118,14 +118,14 @@ autoplot(sim_screen_obj, what = "cutpoints")
 
 ### Selecting what to show on the plot
 
-The plots show the median (the dot), the 95% confidence interval (thick vertical lines), the range (thin vertical lines), and the lines between the points by default. These can each be shown or hidden independently, and the width of the confidence interval can be controlled using the `ci` argument.
+The plots show the median (the dot), the 95% confidence interval (thick vertical lines), the range (thin vertical lines), and the lines between the points by default. These can each be shown or hidden independently, and the width of the confidence interval can be controlled using the `plot_conf_level` argument.
 
 ```{r, message=FALSE}
 autoplot(sim_screen_obj)
 autoplot(sim_screen_obj, plot_range = FALSE)
-autoplot(sim_screen_obj, plot_ci = FALSE)
-autoplot(sim_screen_obj, plot_ci = FALSE, plot_range = FALSE)
-autoplot(sim_screen_obj, plot_ci = FALSE, plot_range = FALSE, plot_line = FALSE)
+autoplot(sim_screen_obj, plot_conf_level = FALSE)
+autoplot(sim_screen_obj, plot_conf_level = FALSE, plot_range = FALSE)
+autoplot(sim_screen_obj, plot_conf_level = FALSE, plot_range = FALSE, plot_line = FALSE)
 ```
 
 
@@ -233,7 +233,7 @@ autoplot(
 ) + theme_sim()
 ```
 
-The `n_bins` argument controls the number of bins used for the histograms and the `label_wrap_width` is the number of characters above which to start a new line for the facet labels. This can be handy when using detailed names for the methods when the font of the label is relatively large compared to the plot, though a space is needed to determine where to split the label. The width of the confidence intervals can also be controlled by the `ci` argument in this `autoplot()` call.
+The `n_bins` argument controls the number of bins used for the histograms and the `label_wrap_width` is the number of characters above which to start a new line for the facet labels. This can be handy when using detailed names for the methods when the font of the label is relatively large compared to the plot, though a space is needed to determine where to split the label. The width of the confidence intervals can also be controlled by the `conf.level` argument in this `autoplot()` call.
 
 ```{r, fig.height=3, fig.width=6}
 autoplot(
@@ -246,7 +246,7 @@ autoplot(
     "Youden Index" = "youden"
   ),
   label_wrap_width = 5,
-  ci = 0.8
+  conf.level = 0.8
 ) + theme_sim()
 ```
 

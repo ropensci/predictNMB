@@ -8,7 +8,7 @@
   object,
   what = c("nmb", "inb", "cutpoints"),
   inb_ref_col = NA,
-  ci = 0.95,
+  conf.level = 0.95,
   methods_order = NULL,
   n_bins = 40,
   label_wrap_width = 12,
@@ -30,7 +30,7 @@ Defaults to "nmb".}
 when calculating the incremental net monetary benefit.
 See \code{do_nmb_sim} for more information.}
 
-\item{ci}{The confidence level.
+\item{conf.level}{The confidence level of the interval.
 Defaults to 0.95(coloured area of distribution represents 95\% CIs).}
 
 \item{methods_order}{The order (left to right) to display the

@@ -11,11 +11,11 @@
   what = c("nmb", "inb", "cutpoints"),
   inb_ref_col = NA,
   plot_range = TRUE,
-  plot_ci = TRUE,
+  plot_conf_level = TRUE,
   plot_line = TRUE,
   plot_alpha = 0.5,
   dodge_width = 0,
-  ci = 0.95,
+  conf.level = 0.95,
   methods_order = NULL,
   rename_vector,
   ...
@@ -44,7 +44,7 @@ See \code{do_nmb_sim} for more information.}
 \item{plot_range}{\code{logical}. Whether or not to plot the range of the
 distribution as a thin line. Defaults to TRUE.}
 
-\item{plot_ci}{\code{logical}. Whether or not to plot the confidence region
+\item{plot_conf_level}{\code{logical}. Whether or not to plot the confidence region
 of the distribution as a thicker line. Defaults to TRUE.}
 
 \item{plot_line}{\code{logical}. Whether or not to connect the medians of
@@ -55,7 +55,7 @@ the distributions for each method along the x-axis. Defaults to TRUE.}
 \item{dodge_width}{The dodge width of plot elements. Can be used to avoid
 excessive overlap between methods. Defaults to 0.}
 
-\item{ci}{The confidence level.
+\item{conf.level}{The confidence level of the interval.
 Defaults to 0.95 (coloured area of distribution represents 95\% CIs).}
 
 \item{methods_order}{The order (left to right) to display the cutpoint

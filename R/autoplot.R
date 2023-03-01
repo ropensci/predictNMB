@@ -39,7 +39,7 @@ use_linewidth <- function() {
 #' @param inb_ref_col Which cutpoint method to use as the reference strategy
 #' when calculating the incremental net monetary benefit. See \code{do_nmb_sim}
 #' for more information.
-#' @param ci The confidence level.
+#' @param conf.level The confidence level of the interval.
 #'
 #' @return Returns a \code{data.frame}.
 #' @noRd
@@ -48,7 +48,7 @@ get_plot_data <- function(x,
                           methods_order,
                           rename_vector,
                           inb_ref_col,
-                          ci) {
+                          conf.level) {
   # select relevant data from predictNMBsim object
   if (what == "cutpoints") {
     data <- x$df_thresholds
@@ -81,12 +81,12 @@ get_plot_data <- function(x,
   pivoted_data <- dplyr::filter(pivoted_data, !is.na(name))
 
   # add label (in_interval) for whether the observation is within the interval
-  add_interval(pivoted_data, ci = ci)
+  add_interval(pivoted_data, conf.level = conf.level)
 }
 
 
-add_interval <- function(data, ci) {
-  probs <- c((1 - ci) / 2, 1 - (1 - ci) / 2)
+add_interval <- function(data, conf.level) {
+  probs <- c((1 - conf.level) / 2, 1 - (1 - conf.level) / 2)
 
   data %>%
     dplyr::group_by(name) %>%
@@ -105,7 +105,7 @@ add_interval <- function(data, ci) {
 #' @param inb_ref_col Which cutpoint method to use as the reference strategy
 #' when calculating the incremental net monetary benefit.
 #' See \code{do_nmb_sim} for more information.
-#' @param ci The confidence level.
+#' @param conf.level The confidence level of the interval.
 #' Defaults to 0.95(coloured area of distribution represents 95% CIs).
 #' @param methods_order The order (left to right) to display the
 #' cutpoint methods.
@@ -152,7 +152,7 @@ add_interval <- function(data, ci) {
 autoplot.predictNMBsim <- function(object,
                                what = c("nmb", "inb", "cutpoints"),
                                inb_ref_col = NA,
-                               ci = 0.95,
+                               conf.level = 0.95,
                                methods_order = NULL,
                                n_bins = 40,
                                label_wrap_width = 12,
@@ -170,7 +170,7 @@ autoplot.predictNMBsim <- function(object,
     methods_order = methods_order,
     rename_vector = rename_vector,
     inb_ref_col = inb_ref_col,
-    ci = ci
+    conf.level = conf.level
   )
 
   df_agg <-
@@ -296,14 +296,14 @@ theme_sim <- function() {
 #' See \code{do_nmb_sim} for more information.
 #' @param plot_range \code{logical}. Whether or not to plot the range of the
 #' distribution as a thin line. Defaults to TRUE.
-#' @param plot_ci \code{logical}. Whether or not to plot the confidence region
+#' @param plot_conf_level \code{logical}. Whether or not to plot the confidence region
 #' of the distribution as a thicker line. Defaults to TRUE.
 #' @param plot_line \code{logical}. Whether or not to connect the medians of
 #' the distributions for each method along the x-axis. Defaults to TRUE.
 #' @param plot_alpha Alpha value for all plot elements. Defaults to 0.5.
 #' @param dodge_width The dodge width of plot elements. Can be used to avoid
 #' excessive overlap between methods. Defaults to 0.
-#' @param ci The confidence level.
+#' @param conf.level The confidence level of the interval.
 #' Defaults to 0.95 (coloured area of distribution represents 95% CIs).
 #' @param methods_order The order (left to right) to display the cutpoint
 #' methods.
@@ -345,11 +345,11 @@ autoplot.predictNMBscreen <- function(object,
                                   what = c("nmb", "inb", "cutpoints"),
                                   inb_ref_col = NA,
                                   plot_range = TRUE,
-                                  plot_ci = TRUE,
+                                  plot_conf_level = TRUE,
                                   plot_line = TRUE,
                                   plot_alpha = 0.5,
                                   dodge_width = 0,
-                                  ci = 0.95,
+                                  conf.level = 0.95,
                                   methods_order = NULL,
                                   rename_vector,
                                   ...) {
@@ -451,7 +451,7 @@ autoplot.predictNMBscreen <- function(object,
       methods_order = methods_order,
       rename_vector = rename_vector,
       inb_ref_col = inb_ref_col,
-      ci = ci
+      conf.level = conf.level
     )
     p_data$.sim_id <- s
     p_data_full <- rbind(p_data_full, stats::na.omit(p_data))
@@ -527,7 +527,7 @@ autoplot.predictNMBscreen <- function(object,
       )
   }
 
-  if (plot_ci) {
+  if (plot_conf_level) {
     if (use_linewidth()) {
       ci_linerange_layer <- ggplot2::geom_linerange(
         data = p_data_interval,
