@@ -172,6 +172,7 @@ do_nmb_sim <- function(sample_size,
         "get_thresholds",
         "evaluate_cutpoint",
         "get_inbuilt_cutpoint",
+        "get_inbuilt_cutpoint_methods",
         "total_nmb",
         "roc_iu"
       )
