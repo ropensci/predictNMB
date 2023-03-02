@@ -79,31 +79,31 @@ get_sim_data <- function(x, what, inb_ref_col = NULL) {
 #'   summary(sim_screen_obj)
 #' }
 summary.predictNMBscreen <- function(object,
-                                                what = c("nmb", "inb", "cutpoints"),
-                                                inb_ref_col = NULL,
-                                                agg_functions = list(
-                                                  "median" = function(x) {
-                                                    round(
-                                                      stats::median(x),
-                                                      digits = 2
-                                                    )
-                                                  },
-                                                  "95% CI" = function(x) {
-                                                    paste0(
-                                                      round(
-                                                        stats::quantile(
-                                                          x,
-                                                          probs = c(0.025, 0.975)
-                                                        ),
-                                                        digits = 1
-                                                      ),
-                                                      collapse = " to "
-                                                    )
-                                                  }
-                                                ),
-                                                rename_vector,
-                                                show_full_inputs = FALSE,
-                                                ...) {
+                                     what = c("nmb", "inb", "cutpoints"),
+                                     inb_ref_col = NULL,
+                                     agg_functions = list(
+                                       "median" = function(x) {
+                                         round(
+                                           stats::median(x),
+                                           digits = 2
+                                         )
+                                       },
+                                       "95% CI" = function(x) {
+                                         paste0(
+                                           round(
+                                             stats::quantile(
+                                               x,
+                                               probs = c(0.025, 0.975)
+                                             ),
+                                             digits = 1
+                                           ),
+                                           collapse = " to "
+                                         )
+                                       }
+                                     ),
+                                     rename_vector,
+                                     show_full_inputs = FALSE,
+                                     ...) {
   what <- match.arg(what)
 
   rename_vector <- update_rename_vector(rename_vector)
@@ -166,30 +166,30 @@ summary.predictNMBscreen <- function(object,
 #'   summary(sim_obj)
 #' }
 summary.predictNMBsim <- function(object,
-                                             what = c("nmb", "inb", "cutpoints"),
-                                             inb_ref_col = NULL,
-                                             agg_functions = list(
-                                               "median" = function(x) {
-                                                 round(
-                                                   stats::median(x),
-                                                   digits = 2
-                                                 )
-                                               },
-                                               "95% CI" = function(x) {
-                                                 paste0(
-                                                   round(
-                                                     stats::quantile(
-                                                       x,
-                                                       probs = c(0.025, 0.975)
-                                                     ),
-                                                     digits = 1
-                                                   ),
-                                                   collapse = " to "
-                                                 )
-                                               }
-                                             ),
-                                             rename_vector,
-                                             ...) {
+                                  what = c("nmb", "inb", "cutpoints"),
+                                  inb_ref_col = NULL,
+                                  agg_functions = list(
+                                    "median" = function(x) {
+                                      round(
+                                        stats::median(x),
+                                        digits = 2
+                                      )
+                                    },
+                                    "95% CI" = function(x) {
+                                      paste0(
+                                        round(
+                                          stats::quantile(
+                                            x,
+                                            probs = c(0.025, 0.975)
+                                          ),
+                                          digits = 1
+                                        ),
+                                        collapse = " to "
+                                      )
+                                    }
+                                  ),
+                                  rename_vector,
+                                  ...) {
   what <- match.arg(what)
 
   rename_vector <- update_rename_vector(rename_vector)

@@ -184,7 +184,7 @@ do_nmb_sim <- function(sample_size,
       if (any(!user_defined_methods %in% ls(envir = globalenv()))) {
         undefined_methods <- user_defined_methods[
           !user_defined_methods %in% ls(envir = globalenv())
-          ]
+        ]
         stop(
           "You've included functions in in 'cutpoint_methods' which are ",
           "neither inbuilt cutpoint methods or defined in your global ",

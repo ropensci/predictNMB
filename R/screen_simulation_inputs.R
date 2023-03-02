@@ -77,7 +77,7 @@ screen_simulation_inputs <- function(sample_size,
                                      min_events = NA,
                                      show_progress = FALSE,
                                      cl = NULL) {
-  if (show_progress){
+  if (show_progress) {
     if (!requireNamespace("pbapply", quietly = TRUE)) {
       message(
         "The 'pbapply' package is required for displaying a progress bar ",
@@ -183,7 +183,7 @@ screen_simulation_inputs <- function(sample_size,
   simulations <- lapply(
     seq_len(nrow(input_grid)),
     function(i) {
-      if(show_progress) {
+      if (show_progress) {
         message(
           "Running simulation: [", i, "/", nrow(input_grid), "]"
         )

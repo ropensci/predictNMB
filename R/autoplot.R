@@ -159,18 +159,18 @@ add_interval <- function(data, conf.level) {
 #'   autoplot(sim_obj)
 #' }
 autoplot.predictNMBsim <- function(object,
-                               what = c("nmb", "inb", "cutpoints"),
-                               inb_ref_col = NA,
-                               conf.level = 0.95,
-                               methods_order = NULL,
-                               n_bins = 40,
-                               label_wrap_width = 12,
-                               fill_cols = c("grey50", "#ADD8E6"),
-                               median_line_size = 2,
-                               median_line_alpha = 0.5,
-                               median_line_col = "black",
-                               rename_vector,
-                               ...) {
+                                   what = c("nmb", "inb", "cutpoints"),
+                                   inb_ref_col = NA,
+                                   conf.level = 0.95,
+                                   methods_order = NULL,
+                                   n_bins = 40,
+                                   label_wrap_width = 12,
+                                   fill_cols = c("grey50", "#ADD8E6"),
+                                   median_line_size = 2,
+                                   median_line_alpha = 0.5,
+                                   median_line_col = "black",
+                                   rename_vector,
+                                   ...) {
   what <- match.arg(what)
 
   p_data <- get_plot_data(
@@ -225,8 +225,7 @@ autoplot.predictNMBsim <- function(object,
     dplyr::ungroup()
 
 
-  x_axis_title <- switch(
-    what,
+  x_axis_title <- switch(what,
     "nmb" = "Net Monetary Benefit ($)",
     "inb" = "Incremental Net Monetary Benefit ($)",
     "cutpoints" = "Selected Cutpoint"
@@ -349,19 +348,19 @@ theme_sim <- function() {
 #'   )
 #' }
 autoplot.predictNMBscreen <- function(object,
-                                  x_axis_var = NULL,
-                                  constants = list(),
-                                  what = c("nmb", "inb", "cutpoints"),
-                                  inb_ref_col = NA,
-                                  plot_range = TRUE,
-                                  plot_conf_level = TRUE,
-                                  plot_line = TRUE,
-                                  plot_alpha = 0.5,
-                                  dodge_width = 0,
-                                  conf.level = 0.95,
-                                  methods_order = NULL,
-                                  rename_vector,
-                                  ...) {
+                                      x_axis_var = NULL,
+                                      constants = list(),
+                                      what = c("nmb", "inb", "cutpoints"),
+                                      inb_ref_col = NA,
+                                      plot_range = TRUE,
+                                      plot_conf_level = TRUE,
+                                      plot_line = TRUE,
+                                      plot_alpha = 0.5,
+                                      dodge_width = 0,
+                                      conf.level = 0.95,
+                                      methods_order = NULL,
+                                      rename_vector,
+                                      ...) {
   what <- match.arg(what)
 
   if (is.null(x_axis_var)) {
@@ -492,15 +491,13 @@ autoplot.predictNMBscreen <- function(object,
     ) %>%
     dplyr::ungroup()
 
-  y_axis_title <- switch(
-    what,
+  y_axis_title <- switch(what,
     "nmb" = "Net Monetary Benefit ($)",
     "inb" = "Incremental Net Monetary Benefit ($)",
     "cutpoints" = "Selected Cutpoint"
   )
 
-  x_axis_title <- switch(
-    x_axis_var,
+  x_axis_title <- switch(x_axis_var,
     "sample_size" = "Training sample size (n)",
     "n_sims" = "Number of simulations (n)",
     "n_valid" = "Validation sample size (n)",
