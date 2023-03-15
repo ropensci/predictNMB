@@ -91,13 +91,13 @@ screen_simulation_inputs <- function(sample_size,
     sample_size <- NA
   }
 
-  if (inherits(fx_nmb_training, "function")) {
+  if (is.function(fx_nmb_training)) {
     fx_nmb_training <- list("unnamed-nmb-function-1" = fx_nmb_training)
   } else {
     names(fx_nmb_training) <- fill_fx_names(fx_nmb_training)
   }
 
-  if (inherits(fx_nmb_evaluation, "function")) {
+  if (is.function(fx_nmb_evaluation)) {
     fx_nmb_evaluation <- list("unnamed-nmb-function-1" = fx_nmb_evaluation)
   } else {
     names(fx_nmb_evaluation) <- fill_fx_names(fx_nmb_evaluation)

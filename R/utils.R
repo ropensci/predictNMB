@@ -129,10 +129,10 @@ validate_inputs <- function(sample_size,
   stopifnot(is.logical(meet_min_events))
 
   if (!missing(fx_nmb_training)) {
-    stopifnot(inherits(fx_nmb_training, "function"))
+    stopifnot(is.function(fx_nmb_training))
   }
 
-  stopifnot(inherits(fx_nmb_evaluation, "function"))
+  stopifnot(is.function(fx_nmb_evaluation))
 
   if (!is.na(min_events)) {
     stopifnot(assertthat::is.count(min_events))

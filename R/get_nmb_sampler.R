@@ -83,25 +83,25 @@ get_nmb_sampler <- function(outcome_cost,
     qalys_lost <- 0
   }
   .f <- function() {
-    if (inherits(outcome_cost, "function")) {
+    if (is.function(outcome_cost)) {
       outcome_cost <- outcome_cost()
     }
-    if (inherits(wtp, "function")) {
+    if (is.function(wtp)) {
       wtp <- wtp()
     }
-    if (inherits(qalys_lost, "function")) {
+    if (is.function(qalys_lost)) {
       qalys_lost <- qalys_lost()
     }
-    if (inherits(high_risk_group_treatment_effect, "function")) {
+    if (is.function(high_risk_group_treatment_effect)) {
       high_risk_group_treatment_effect <- high_risk_group_treatment_effect()
     }
-    if (inherits(high_risk_group_treatment_cost, "function")) {
+    if (is.function(high_risk_group_treatment_cost)) {
       high_risk_group_treatment_cost <- high_risk_group_treatment_cost()
     }
-    if (inherits(low_risk_group_treatment_effect, "function")) {
+    if (is.function(low_risk_group_treatment_effect)) {
       low_risk_group_treatment_effect <- low_risk_group_treatment_effect()
     }
-    if (inherits(low_risk_group_treatment_cost, "function")) {
+    if (is.function(low_risk_group_treatment_cost)) {
       low_risk_group_treatment_cost <- low_risk_group_treatment_cost()
     }
 
