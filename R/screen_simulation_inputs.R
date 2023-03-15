@@ -206,35 +206,19 @@ screen_simulation_inputs <- function(sample_size,
   )
 
   # record which inputs are varying across screen
-  screen_meta <- list()
-  if (length(sample_size) != 1) {
-    screen_meta <- c(screen_meta, list(sample_size = sample_size))
-  }
+  screen_meta_vars <- c(
+    "sample_size",
+    "n_sims",
+    "n_valid",
+    "sim_auc",
+    "event_rate",
+    "fx_nmb_training",
+    "fx_nmb_evaluation"
+  )
 
-  if (length(n_sims) != 1) {
-    screen_meta <- c(screen_meta, list(n_sims = n_sims))
-  }
-
-  if (length(n_valid) != 1) {
-    screen_meta <- c(screen_meta, list(n_valid = n_valid))
-  }
-
-  if (length(sim_auc) != 1) {
-    screen_meta <- c(screen_meta, list(sim_auc = sim_auc))
-  }
-
-  if (length(event_rate) != 1) {
-    screen_meta <- c(screen_meta, list(event_rate = event_rate))
-  }
-
-  if (length(fx_nmb_training) != 1) {
-    screen_meta <- c(screen_meta, list(fx_nmb_training = fx_nmb_training))
-  }
-
-  if (length(fx_nmb_evaluation) != 1) {
-    screen_meta <- c(screen_meta, list(fx_nmb_evaluation = fx_nmb_evaluation))
-  }
-
+  screen_meta_lengths <- lapply(screen_meta_vars, function(x) length(get(x)))
+  screen_meta <- lapply(screen_meta_vars[screen_meta_lengths > 1], function(x) get(x))
+  names(screen_meta) <- screen_meta_vars[screen_meta_lengths > 1]
 
   res <- list(
     input_grid = input_grid,
