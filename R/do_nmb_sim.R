@@ -166,6 +166,7 @@ do_nmb_sim <- function(sample_size,
       c(
         "f_iteration_wrapper",
         "do_nmb_iteration",
+        "logit2prob",
         "df_nmb_training",
         "df_nmb_evaluation",
         "get_sample",
@@ -295,16 +296,16 @@ do_nmb_iteration <- function(iter,
     min_events = 0
   )
 
-  model <- suppressWarnings(
-    stats::glm(actual ~ x, data = train_sample, family = stats::binomial())
+  model_coefs <- suppressWarnings(
+    stats::glm.fit(
+      x = cbind(1, train_sample$x),
+      y = train_sample$actual,
+      family = stats::binomial()
+    )$coefficients
   )
 
-  train_sample$predicted <- stats::predict(model, type = "response")
-  valid_sample$predicted <- stats::predict(
-    model,
-    type = "response",
-    newdata = valid_sample
-  )
+  train_sample$predicted <- logit2prob(cbind(1, train_sample$x) %*% model_coefs)
+  valid_sample$predicted <- logit2prob(cbind(1, valid_sample$x) %*% model_coefs)
 
   training_value_vector <- unlist(df_nmb_training[iter, ])
 
@@ -332,6 +333,26 @@ do_nmb_iteration <- function(iter,
       thresholds = unlist(thresholds)
     )
   )
+}
+
+
+#' Transforms predicted logit into probability
+#'
+#' @param logit Input vector of predicted logits.
+#'
+#' @return A vector of predicted probabilities.
+#'
+#' @examples
+#' data <- get_sample(auc=0.7, n_samples=100, prevalence=0.5)
+#' model <- glm(actual ~ x, data = data, family = binomial())
+#' logits <- predict(model)
+#' probs <- logit2prob(logits)
+#' head(probs)
+#'
+#' @noRd
+logit2prob <- function(logit){
+  odds <- exp(logit)
+  odds / (1 + odds)
 }
 
 
