@@ -31,6 +31,8 @@ Authors:
 
 Other contributors:
 \itemize{
+  \item Emi Tanaka (Emi Tanaka reviewed predictNMB for rOpenSci, see <https://github.com/ropensci/software-review/issues/566>.) [reviewer]
+  \item Tinula Kariyawasam (Tinula Kariyawasam reviewed predictNMB for rOpenSci, see <https://github.com/ropensci/software-review/issues/566>.) [reviewer]
   \item Susanna Cramb (\href{https://orcid.org/0000-0001-9041-9531}{ORCID}) [contributor]
   \item Steven McPhail (\href{https://orcid.org/0000-0002-1463-662X}{ORCID}) [contributor]
 }

@@ -3,23 +3,43 @@ Type: Package
 Title: Evaluate Clinical Prediction Models by Net Monetary Benefit
 Version: 0.0.1.9000
 Authors@R: c(
-    person("Rex", "Parsons", role = c("aut", "cre"),
+    person(given = "Rex", 
+           family = "Parsons", 
+           role = c("aut", "cre"),
            email = "rex.parsons94@gmail.com",
            comment = c(ORCID = "0000-0002-6053-8174")),
-    person("Robin", "Blythe", role = "aut",
+    person(given = "Robin",
+           family = "Blythe",
+           role = "aut",
            comment = c(ORCID = "0000-0002-3643-4332")),
-    person("Adrian", "Barnett", role = "aut",
+    person(given = "Adrian",
+           family = "Barnett",
+           role = "aut",
            comment = c(ORCID = "0000-0001-6339-0374")),
-    person("Susanna", "Cramb", role = "ctb",
+    person(given = "Emi",
+           family = "Tanaka",
+           role = "rev",
+           comment = "Emi Tanaka reviewed predictNMB for rOpenSci, see
+            <https://github.com/ropensci/software-review/issues/566>."),
+    person(given = "Tinula",
+           family = "Kariyawasam",
+           role = "rev",
+           comment = "Tinula Kariyawasam reviewed predictNMB for rOpenSci, see
+            <https://github.com/ropensci/software-review/issues/566>."),
+    person(given = "Susanna",
+           family = "Cramb",
+           role = "ctb",
            comment = c(ORCID = "0000-0001-9041-9531")),
-    person("Steven", "McPhail", role = "ctb",
+    person(given = "Steven",
+           family = "McPhail",
+           role = "ctb",
            comment = c(ORCID = "0000-0002-1463-662X"))
   )
 Description: Estimates when and where a model-guided treatment strategy may outperform 
     a treat-all or treat-none approach by Monte Carlo simulation and evaluation of the Net Monetary Benefit (NMB).
 License: GPL (>= 3)
 Encoding: UTF-8
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Roxygen: list (markdown = TRUE, roclets = c ("namespace", "rd", "srr::srr_stats_roclet"))
 Imports: 
     assertthat,
