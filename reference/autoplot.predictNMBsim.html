@@ -169,10 +169,19 @@ simulations for different cutpoint methods.</p>
 <span class="r-in"><span>  <span class="va">get_nmb</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TP"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">3</span>, <span class="st">"TN"</span> <span class="op">=</span> <span class="fl">0</span>, <span class="st">"FP"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, <span class="st">"FN"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="va">sim_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="do_nmb_sim.html">do_nmb_sim</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    sample_size <span class="op">=</span> <span class="fl">200</span>, n_sims <span class="op">=</span> <span class="fl">50</span>, n_valid <span class="op">=</span> <span class="fl">10000</span>, sim_auc <span class="op">=</span> <span class="fl">0.7</span>,</span></span>
-<span class="r-in"><span>    event_rate <span class="op">=</span> <span class="fl">0.1</span>, fx_nmb_training <span class="op">=</span> <span class="va">get_nmb</span>, fx_nmb_evaluation <span class="op">=</span> <span class="va">get_nmb</span></span></span>
+<span class="r-in"><span>    event_rate <span class="op">=</span> <span class="fl">0.1</span>, fx_nmb_training <span class="op">=</span> <span class="va">get_nmb</span>, fx_nmb_evaluation <span class="op">=</span> <span class="va">get_nmb</span>,</span></span>
+<span class="r-in"><span>    cutpoint_methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"none"</span>, <span class="st">"youden"</span>, <span class="st">"value_optimising"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">sim_obj</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">sim_obj</span>,</span></span>
+<span class="r-in"><span>    rename_vector <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="st">"Value- Optimising"</span> <span class="op">=</span> <span class="st">"value_optimising"</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"Treat- None"</span> <span class="op">=</span> <span class="st">"none"</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"Treat- All"</span> <span class="op">=</span> <span class="st">"all"</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"Youden Index"</span> <span class="op">=</span> <span class="st">"youden"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="theme_sim.html">theme_sim</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
