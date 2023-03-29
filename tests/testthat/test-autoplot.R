@@ -12,6 +12,18 @@ test_that("predictNMBsim - autoplot method (default) works", {
   )
 })
 
+test_that("predictNMBsim - autoplot method with theme_sim() works", {
+  obj <- readRDS(test_path("fixtures", "predictNMBsim_object.rds"))
+
+  # test default plotting of predictNMBsim object
+  predictNMBsim_plot <- autoplot(obj) + theme_sim()
+  expect_s3_class(predictNMBsim_plot, "gg")
+  vdiffr::expect_doppelganger(
+    "autoplot.predictNMBsim(obj) + theme_sim()",
+    predictNMBsim_plot
+  )
+})
+
 test_that("predictNMBsim - autoplot method (what) works", {
   obj <- readRDS(test_path("fixtures", "predictNMBsim_object.rds"))
 
