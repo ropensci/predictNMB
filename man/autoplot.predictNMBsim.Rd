@@ -91,6 +91,6 @@ if (FALSE) {
       "Treat- All" = "all",
       "Youden Index" = "youden"
     )
-  )
+  ) + theme_sim()
 }
 }

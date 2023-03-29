@@ -165,7 +165,7 @@ add_interval <- function(data, conf.level) {
 #'       "Treat- All" = "all",
 #'       "Youden Index" = "youden"
 #'     )
-#'   )
+#'   ) + theme_sim()
 #' }
 autoplot.predictNMBsim <- function(object,
                                    what = c("nmb", "inb", "cutpoints"),
@@ -206,17 +206,16 @@ autoplot.predictNMBsim <- function(object,
       labeller = ggplot2::label_wrap_gen(width = label_wrap_width),
       nrow = 1
     ) +
-    ggplot2::theme_bw() +
     ggplot2::guides(fill = "none") +
     ggplot2::scale_fill_manual(values = c(NA, fill_cols))
 
   my_plot_innards <- ggplot2::ggplot_build(p)
 
-  extracted_points <- tibble::tibble(
+  extracted_points <- data.frame(
     outcome = my_plot_innards[["data"]][[1]][["x"]],
     count = my_plot_innards[["data"]][[1]][["y"]],
-    in_interval = my_plot_innards[["data"]][[1]][["group"]] %>% as.factor(),
-    method = my_plot_innards[["data"]][[1]][["PANEL"]] %>% as.character()
+    in_interval = as.factor(my_plot_innards[["data"]][[1]][["group"]]),
+    method = my_plot_innards[["data"]][[1]][["PANEL"]]
   )
 
   heights <-
@@ -291,7 +290,8 @@ theme_sim <- function() {
     panel.spacing = ggplot2::unit(0, "lines"),
     axis.ticks.x = ggplot2::element_blank(),
     axis.text.x = ggplot2::element_blank(),
-    strip.background = ggplot2::element_rect(fill = "#f1f1f1")
+    strip.background = ggplot2::element_rect(colour = "grey20"),
+    panel.border = ggplot2::element_rect(fill = NA, colour = "grey20"),
   )
 }
 
@@ -536,6 +536,11 @@ autoplot.predictNMBscreen <- function(object,
       ggplot2::aes(x = x_axis_var, y = m, col = name, group = name),
       size = 3, alpha = plot_alpha,
       position = position
+    ) +
+    ggplot2::labs(
+      x = x_axis_title,
+      y = y_axis_title,
+      col = "Cutpoint Methods"
     )
 
   if (plot_line) {
@@ -578,15 +583,6 @@ autoplot.predictNMBscreen <- function(object,
         position = position
       )
   }
-
-  p <- p +
-    ggplot2::labs(
-      x = x_axis_title,
-      y = y_axis_title,
-      col = "Cutpoint Methods"
-    ) +
-    ggplot2::theme_bw()
-
 
   if (!inherits(p_data_range$x_axis_var, "character")) {
     p <-
