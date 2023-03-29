@@ -86,7 +86,8 @@ if (FALSE) {
   sim_screen_obj <- screen_simulation_inputs(
     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1),
     event_rate = c(0.1, 0.2, 0.3),
-    fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
+    fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb,
+    cutpoint_methods = c("all", "none", "youden", "value_optimising")
   )
 
   autoplot(sim_screen_obj)
@@ -94,7 +95,13 @@ if (FALSE) {
     sim_screen_obj,
     x_axis_var = "event_rate",
     constants = c(sim_auc = 0.8),
-    dodge_width = 0.02
+    dodge_width = 0.02,
+    rename_vector = c(
+      "Value-Optimising" = "value_optimising",
+      "Treat-None" = "none",
+      "Treat-All" = "all",
+      "Youden Index" = "youden"
+    )
   )
 }
 }

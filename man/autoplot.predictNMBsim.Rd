@@ -79,9 +79,18 @@ if (FALSE) {
   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
   sim_obj <- do_nmb_sim(
     sample_size = 200, n_sims = 50, n_valid = 10000, sim_auc = 0.7,
-    event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
+    event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb,
+    cutpoint_methods = c("all", "none", "youden", "value_optimising")
   )
 
-  autoplot(sim_obj)
+  autoplot(
+    sim_obj,
+    rename_vector = c(
+      "Value- Optimising" = "value_optimising",
+      "Treat- None" = "none",
+      "Treat- All" = "all",
+      "Youden Index" = "youden"
+    )
+  )
 }
 }
