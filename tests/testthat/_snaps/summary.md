@@ -69,58 +69,136 @@
 
 # predictNMBscreen - summary works
 
-    # A tibble: 6 x 18
-      sim_auc fx_nmb_train~1 all_m~2 all_9~3 none_~4 none_~5 value~6 value~7 youde~8
-        <dbl> <chr>            <dbl> <chr>     <dbl> <chr>     <dbl> <chr>     <dbl>
-    1     0.7 f1                -1.2 -1.2 t~    -0.4 -0.5 t~   -0.4  -0.5 t~   -0.64
-    2     0.7 f2                -1.2 -1.2 t~    -0.4 -0.5 t~   -0.4  -0.5 t~   -0.64
-    3     0.8 f1                -1.2 -1.2 t~    -0.4 -0.5 t~   -0.4  -0.5 t~   -0.56
-    4     0.8 f2                -1.2 -1.2 t~    -0.4 -0.5 t~   -0.4  -0.5 t~   -0.56
-    5     0.9 f1                -1.2 -1.2 t~    -0.4 -0.5 t~   -0.38 -0.5 t~   -0.47
-    6     0.9 f2                -1.2 -1.2 t~    -0.4 -0.5 t~   -0.38 -0.4 t~   -0.47
-    # ... with 9 more variables: `youden_95% CI` <chr>,
-    #   `cost minimising_median` <dbl>, `cost minimising_95% CI` <chr>,
-    #   `prod sens spec_median` <dbl>, `prod sens spec_95% CI` <chr>,
-    #   roc01_median <dbl>, `roc01_95% CI` <chr>, `index of union_median` <dbl>,
-    #   `index of union_95% CI` <chr>, and abbreviated variable names
-    #   1: fx_nmb_training, 2: all_median, 3: `all_95% CI`, 4: none_median,
-    #   5: `none_95% CI`, 6: `value optimising_median`, ...
+      sim_auc fx_nmb_training all_median   all_95% CI none_median  none_95% CI
+    1     0.7              f1       -1.2 -1.2 to -1.2        -0.4 -0.5 to -0.3
+    2     0.7              f2       -1.2 -1.2 to -1.2        -0.4 -0.5 to -0.3
+    3     0.8              f1       -1.2 -1.2 to -1.2        -0.4 -0.5 to -0.3
+    4     0.8              f2       -1.2 -1.2 to -1.2        -0.4 -0.5 to -0.3
+    5     0.9              f1       -1.2 -1.2 to -1.2        -0.4 -0.5 to -0.3
+    6     0.9              f2       -1.2 -1.2 to -1.2        -0.4 -0.5 to -0.3
+      value optimising_median value optimising_95% CI youden_median youden_95% CI
+    1                   -0.40            -0.5 to -0.3         -0.64  -0.9 to -0.4
+    2                   -0.40            -0.5 to -0.3         -0.64  -0.9 to -0.4
+    3                   -0.40            -0.5 to -0.3         -0.56  -0.8 to -0.4
+    4                   -0.40            -0.5 to -0.3         -0.56  -0.8 to -0.4
+    5                   -0.38            -0.5 to -0.3         -0.47  -0.7 to -0.4
+    6                   -0.38            -0.4 to -0.3         -0.47  -0.6 to -0.4
+      cost minimising_median cost minimising_95% CI prod sens spec_median
+    1                  -0.40           -0.5 to -0.3                 -0.64
+    2                  -0.40           -0.5 to -0.3                 -0.63
+    3                  -0.40           -0.5 to -0.3                 -0.55
+    4                  -0.40           -0.5 to -0.3                 -0.56
+    5                  -0.38           -0.5 to -0.3                 -0.47
+    6                  -0.38           -0.4 to -0.3                 -0.47
+      prod sens spec_95% CI roc01_median roc01_95% CI index of union_median
+    1          -0.8 to -0.5        -0.64 -0.8 to -0.5                 -0.64
+    2          -0.8 to -0.5        -0.63 -0.8 to -0.5                 -0.64
+    3          -0.7 to -0.4        -0.55 -0.7 to -0.4                 -0.55
+    4          -0.7 to -0.4        -0.56 -0.7 to -0.4                 -0.56
+    5          -0.6 to -0.4        -0.47 -0.6 to -0.4                 -0.47
+    6          -0.6 to -0.4        -0.46 -0.6 to -0.4                 -0.46
+      index of union_95% CI
+    1          -0.8 to -0.5
+    2          -0.8 to -0.5
+    3          -0.7 to -0.4
+    4          -0.7 to -0.5
+    5          -0.6 to -0.4
+    6          -0.6 to -0.4
 
 ---
 
-    # A tibble: 6 x 26
-      sim_auc fx_nmb_train~1 Treat~2 Treat~3 Treat~4 Treat~5 Treat~6 Treat~7 value~8
-        <dbl> <chr>            <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
-    1     0.7 f1               -1.20   -1.27   -1.13  -0.399  -0.536  -0.26   -0.408
-    2     0.7 f2               -1.20   -1.26   -1.14  -0.398  -0.512  -0.288  -0.409
-    3     0.8 f1               -1.20   -1.26   -1.15  -0.401  -0.528  -0.3    -0.401
-    4     0.8 f2               -1.20   -1.26   -1.14  -0.400  -0.512  -0.284  -0.400
-    5     0.9 f1               -1.20   -1.26   -1.16  -0.400  -0.52   -0.312  -0.382
-    6     0.9 f2               -1.20   -1.25   -1.14  -0.401  -0.508  -0.284  -0.382
-    # ... with 17 more variables: `value optimising_min` <dbl>,
-    #   `value optimising_max` <dbl>, youden_mean <dbl>, youden_min <dbl>,
-    #   youden_max <dbl>, `cost minimising threshold_mean` <dbl>,
-    #   `cost minimising threshold_min` <dbl>,
-    #   `cost minimising threshold_max` <dbl>, `prod sens spec_mean` <dbl>,
-    #   `prod sens spec_min` <dbl>, `prod sens spec_max` <dbl>, roc01_mean <dbl>,
-    #   roc01_min <dbl>, roc01_max <dbl>, `index of union_mean` <dbl>, ...
+      sim_auc fx_nmb_training Treat All_mean Treat All_min Treat All_max
+    1     0.7              f1      -1.199592        -1.268        -1.130
+    2     0.7              f2      -1.198992        -1.256        -1.144
+    3     0.8              f1      -1.200352        -1.264        -1.150
+    4     0.8              f2      -1.199896        -1.256        -1.142
+    5     0.9              f1      -1.199988        -1.260        -1.156
+    6     0.9              f2      -1.200256        -1.254        -1.142
+      Treat None_mean Treat None_min Treat None_max value optimising_mean
+    1       -0.399184         -0.536         -0.260             -0.408276
+    2       -0.397984         -0.512         -0.288             -0.408688
+    3       -0.400704         -0.528         -0.300             -0.400800
+    4       -0.399792         -0.512         -0.284             -0.400154
+    5       -0.399976         -0.520         -0.312             -0.382228
+    6       -0.400512         -0.508         -0.284             -0.382186
+      value optimising_min value optimising_max youden_mean youden_min youden_max
+    1               -1.245               -0.264   -0.650752     -0.975     -0.371
+    2               -1.225               -0.296   -0.645796     -1.003     -0.373
+    3               -0.518               -0.298   -0.567532     -0.887     -0.347
+    4               -0.507               -0.301   -0.572142     -0.933     -0.351
+    5               -0.502               -0.298   -0.480682     -0.807     -0.328
+    6               -0.475               -0.278   -0.474018     -0.811     -0.308
+      cost minimising threshold_mean cost minimising threshold_min
+    1                      -0.400036                        -0.539
+    2                      -0.398764                        -0.512
+    3                      -0.398862                        -0.518
+    4                      -0.398204                        -0.500
+    5                      -0.380126                        -0.492
+    6                      -0.379994                        -0.482
+      cost minimising threshold_max prod sens spec_mean prod sens spec_min
+    1                        -0.264           -0.641890             -0.904
+    2                        -0.289           -0.630782             -0.874
+    3                        -0.299           -0.558626             -0.807
+    4                        -0.300           -0.566424             -0.815
+    5                        -0.294           -0.474916             -0.763
+    6                        -0.281           -0.470020             -0.701
+      prod sens spec_max roc01_mean roc01_min roc01_max index of union_mean
+    1             -0.390  -0.638180    -0.903    -0.439           -0.640204
+    2             -0.373  -0.632544    -0.874    -0.433           -0.638788
+    3             -0.347  -0.554978    -0.776    -0.385           -0.558036
+    4             -0.351  -0.562972    -0.808    -0.351           -0.565276
+    5             -0.333  -0.470748    -0.697    -0.330           -0.470538
+    6             -0.308  -0.463606    -0.655    -0.327           -0.465722
+      index of union_min index of union_max
+    1             -0.836             -0.479
+    2             -0.838             -0.462
+    3             -0.727             -0.386
+    4             -0.805             -0.406
+    5             -0.663             -0.330
+    6             -0.691             -0.312
 
 ---
 
-    # A tibble: 6 x 26
-      n_sims n_valid fx_nm~1 fx_nm~2 sampl~3 sim_auc event~4 min_e~5 meet_~6 .sim_id
-       <dbl>   <dbl> <chr>   <chr>     <dbl>   <dbl>   <dbl>   <dbl> <lgl>     <int>
-    1    500    1000 f1      unname~     189     0.7     0.1      19 TRUE          1
-    2    500    1000 f2      unname~     189     0.7     0.1      19 TRUE          2
-    3    500    1000 f1      unname~     139     0.8     0.1      14 TRUE          3
-    4    500    1000 f2      unname~     139     0.8     0.1      14 TRUE          4
-    5    500    1000 f1      unname~     139     0.9     0.1      14 TRUE          5
-    6    500    1000 f2      unname~     139     0.9     0.1      14 TRUE          6
-    # ... with 16 more variables: all_median <dbl>, `all_95% CI` <chr>,
-    #   none_median <dbl>, `none_95% CI` <chr>, `value optimising_median` <dbl>,
-    #   `value optimising_95% CI` <chr>, youden_median <dbl>,
-    #   `youden_95% CI` <chr>, `cost minimising_median` <dbl>,
-    #   `cost minimising_95% CI` <chr>, `prod sens spec_median` <dbl>,
-    #   `prod sens spec_95% CI` <chr>, roc01_median <dbl>, `roc01_95% CI` <chr>,
-    #   `index of union_median` <dbl>, `index of union_95% CI` <chr>, and ...
+      n_sims n_valid fx_nmb_training      fx_nmb_evaluation sample_size sim_auc
+    1    500    1000              f1 unnamed-nmb-function-1         189     0.7
+    2    500    1000              f2 unnamed-nmb-function-1         189     0.7
+    3    500    1000              f1 unnamed-nmb-function-1         139     0.8
+    4    500    1000              f2 unnamed-nmb-function-1         139     0.8
+    5    500    1000              f1 unnamed-nmb-function-1         139     0.9
+    6    500    1000              f2 unnamed-nmb-function-1         139     0.9
+      event_rate min_events meet_min_events .sim_id all_median   all_95% CI
+    1        0.1         19            TRUE       1       -1.2 -1.2 to -1.2
+    2        0.1         19            TRUE       2       -1.2 -1.2 to -1.2
+    3        0.1         14            TRUE       3       -1.2 -1.2 to -1.2
+    4        0.1         14            TRUE       4       -1.2 -1.2 to -1.2
+    5        0.1         14            TRUE       5       -1.2 -1.2 to -1.2
+    6        0.1         14            TRUE       6       -1.2 -1.2 to -1.2
+      none_median  none_95% CI value optimising_median value optimising_95% CI
+    1        -0.4 -0.5 to -0.3                   -0.40            -0.5 to -0.3
+    2        -0.4 -0.5 to -0.3                   -0.40            -0.5 to -0.3
+    3        -0.4 -0.5 to -0.3                   -0.40            -0.5 to -0.3
+    4        -0.4 -0.5 to -0.3                   -0.40            -0.5 to -0.3
+    5        -0.4 -0.5 to -0.3                   -0.38            -0.5 to -0.3
+    6        -0.4 -0.5 to -0.3                   -0.38            -0.4 to -0.3
+      youden_median youden_95% CI cost minimising_median cost minimising_95% CI
+    1         -0.64  -0.9 to -0.4                  -0.40           -0.5 to -0.3
+    2         -0.64  -0.9 to -0.4                  -0.40           -0.5 to -0.3
+    3         -0.56  -0.8 to -0.4                  -0.40           -0.5 to -0.3
+    4         -0.56  -0.8 to -0.4                  -0.40           -0.5 to -0.3
+    5         -0.47  -0.7 to -0.4                  -0.38           -0.5 to -0.3
+    6         -0.47  -0.6 to -0.4                  -0.38           -0.4 to -0.3
+      prod sens spec_median prod sens spec_95% CI roc01_median roc01_95% CI
+    1                 -0.64          -0.8 to -0.5        -0.64 -0.8 to -0.5
+    2                 -0.63          -0.8 to -0.5        -0.63 -0.8 to -0.5
+    3                 -0.55          -0.7 to -0.4        -0.55 -0.7 to -0.4
+    4                 -0.56          -0.7 to -0.4        -0.56 -0.7 to -0.4
+    5                 -0.47          -0.6 to -0.4        -0.47 -0.6 to -0.4
+    6                 -0.47          -0.6 to -0.4        -0.46 -0.6 to -0.4
+      index of union_median index of union_95% CI
+    1                 -0.64          -0.8 to -0.5
+    2                 -0.64          -0.8 to -0.5
+    3                 -0.55          -0.7 to -0.4
+    4                 -0.56          -0.7 to -0.5
+    5                 -0.47          -0.6 to -0.4
+    6                 -0.46          -0.6 to -0.4
 

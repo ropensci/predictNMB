@@ -71,7 +71,7 @@ test_that("predictNMBscreen - summary works", {
   # test default summary for predictNMBscreen object
   predictNMBscreen_default_tbl <- summary(obj)
   expect_s3_class(predictNMBscreen_default_tbl, "tbl")
-  expect_snapshot_output(predictNMBscreen_default_tbl)
+  expect_snapshot_output(as.data.frame(predictNMBscreen_default_tbl))
   expect_true(all(dim(predictNMBscreen_default_tbl) == c(6, 18)))
 
   # test a more complex case
@@ -85,11 +85,11 @@ test_that("predictNMBscreen - summary works", {
     agg_functions = list(mean = mean, min = min, max = max)
   )
   expect_s3_class(predictNMBscreen_complex_1, "tbl")
-  expect_snapshot_output(predictNMBscreen_complex_1)
+  expect_snapshot_output(as.data.frame(predictNMBscreen_complex_1))
 
   # test that show_full_inputs returns the wider dataset with simulation inputs
   tbl_with_full_inputs <- summary(obj, show_full_inputs = TRUE)
   expect_s3_class(tbl_with_full_inputs, "tbl")
-  expect_snapshot_output(tbl_with_full_inputs)
+  expect_snapshot_output(as.data.frame(tbl_with_full_inputs))
   expect_gt(ncol(tbl_with_full_inputs), ncol(predictNMBscreen_default_tbl))
 })
