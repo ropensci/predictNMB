@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/ropensci/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/predictNMB/actions)
+[![R-CMD-check](https://github.com/ropensci/predictNMB/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/predictNMB/actions)
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Codecov test
@@ -152,7 +152,7 @@ citation("predictNMB")
 #> To cite predictNMB in publications use:
 #> 
 #>   Parsons R, Blythe R, Barnett A (2023). _predictNMB: Evaluate Clinical
-#>   Prediction Models by Net Monetary Benefit_. 0.0.1,
+#>   Prediction Models by Net Monetary Benefit_. 0.1.0,
 #>   <https://github.com/ropensci/predictNMB>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -161,7 +161,7 @@ citation("predictNMB")
 #>     title = {{predictNMB}: Evaluate Clinical Prediction Models by Net Monetary Benefit},
 #>     author = {Rex Parsons and Robin Blythe and Adrian Barnett},
 #>     year = {2023},
-#>     note = {0.0.1},
+#>     note = {0.1.0},
 #>     url = {https://github.com/ropensci/predictNMB},
 #>   }
 ```
