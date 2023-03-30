@@ -4,8 +4,8 @@
   "identifier": "predictNMB",
   "description": "Estimates when and where a model-guided treatment strategy may outperform a treat-all or treat-none approach by Monte Carlo simulation and evaluation of the Net Monetary Benefit (NMB).",
   "name": "predictNMB: Evaluate Clinical Prediction Models by Net Monetary Benefit",
-  "codeRepository": "https://github.com/RWParsons/predictNMB",
-  "issueTracker": "https://github.com/rwparsons/predictNMB/issues",
+  "codeRepository": "https://github.com/ropensci/predictNMB",
+  "issueTracker": "https://github.com/ropensci/predictNMB/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
   "version": "0.0.1.9000",
   "programmingLanguage": {
@@ -13,7 +13,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.2.0 (2022-04-22 ucrt)",
+  "runtimePlatform": "R version 4.2.2 (2022-10-31 ucrt)",
   "author": [
     {
       "@type": "Person",
@@ -296,11 +296,11 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "1025.821KB",
+  "fileSize": "1163.126KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
-      "datePublished": "2022",
+      "datePublished": "2023",
       "author": [
         {
           "@type": "Person",
@@ -319,14 +319,14 @@
         }
       ],
       "name": "{predictNMB}: Evaluate Clinical Prediction Models by Net Monetary Benefit",
-      "url": "https://github.com/RWParsons/predictNMB",
+      "url": "https://github.com/ropensci/predictNMB",
       "description": "0.0.1"
     }
   ],
-  "relatedLink": "https://rwparsons.github.io/predictNMB/",
-  "releaseNotes": "https://github.com/RWParsons/predictNMB/blob/master/NEWS.md",
-  "readme": "https://github.com/RWParsons/predictNMB/blob/master/README.md",
-  "contIntegration": ["https://github.com/RWParsons/predictNMB/actions", "https://app.codecov.io/gh/RWParsons/predictNMB?branch=master", "https://github.com/RWParsons/predictNMB/actions?query=workflow%3Apkgcheck"],
+  "relatedLink": "https://docs.ropensci.org/predictNMB/",
+  "releaseNotes": "https://github.com/ropensci/predictNMB/blob/master/NEWS.md",
+  "readme": "https://github.com/ropensci/predictNMB/blob/master/README.md",
+  "contIntegration": ["https://github.com/ropensci/predictNMB/actions", "https://app.codecov.io/gh/ropensci/predictNMB?branch=master", "https://github.com/ropensci/predictNMB/actions?query=workflow%3Apkgcheck"],
   "developmentStatus": "https://www.repostatus.org/#active",
   "review": {
     "@type": "Review",

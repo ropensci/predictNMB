@@ -65,8 +65,8 @@ Suggests:
     withr
 Config/testthat/edition: 3
 VignetteBuilder: knitr
-URL: https://rwparsons.github.io/predictNMB/
-BugReports: https://github.com/rwparsons/predictNMB/issues
+URL: https://docs.ropensci.org/predictNMB/
+BugReports: https://github.com/ropensci/predictNMB/issues
 Depends: 
     R (>= 3.5.0)
 Language: en-US

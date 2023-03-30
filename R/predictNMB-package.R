@@ -1,6 +1,6 @@
 #' @description
 #' To learn more about how to use predictNMB, see the vignettes at the
-#' \href{https://rwparsons.github.io/predictNMB/index.html}{website} or using
+#' \href{https://docs.ropensci.org/predictNMB/index.html}{website} or using
 #' the following code:
 #'
 #' `browseVignettes(package = "predictNMB")`

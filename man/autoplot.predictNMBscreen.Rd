@@ -32,7 +32,7 @@ varied input.}
 \item{constants}{Named vector If multiple inputs were screened in this
 object, this argument can be used to modify the selected values for all
 those except the input that's varying along the x-axis. See the
-\href{https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html}{summarising methods vignette}.}
+\href{https://docs.ropensci.org/predictNMB/articles/summarising-results-with-predictNMB.html}{summarising methods vignette}.}
 
 \item{what}{What to summarise: one of "nmb", "inb" or "cutpoints".
 Defaults to "nmb".}

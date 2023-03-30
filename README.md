@@ -1,19 +1,19 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# predictNMB <a href='https://rwparsons.github.io/predictNMB/'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# predictNMB <a href='https://docs.ropensci.org/predictNMB/'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/RWParsons/predictNMB/workflows/R-CMD-check/badge.svg)](https://github.com/RWParsons/predictNMB/actions)
+[![R-CMD-check](https://github.com/RWParsons/ropensci/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/predictNMB/actions)
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Codecov test
-coverage](https://codecov.io/gh/RWParsons/predictNMB/branch/master/graph/badge.svg)](https://app.codecov.io/gh/RWParsons/predictNMB?branch=master)
+coverage](https://codecov.io/gh/ropensci/predictNMB/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ropensci/predictNMB?branch=master)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![pkgcheck](https://github.com/RWParsons/predictNMB/workflows/pkgcheck/badge.svg)](https://github.com/RWParsons/predictNMB/actions?query=workflow%3Apkgcheck)
+[![pkgcheck](https://github.com/ropensci/predictNMB/workflows/pkgcheck/badge.svg)](https://github.com/ropensci/predictNMB/actions?query=workflow%3Apkgcheck)
 [![Status at rOpenSci Software Peer
 Review](https://badges.ropensci.org/566_status.svg)](https://github.com/ropensci/software-review/issues/566)
 <!-- badges: end -->
@@ -42,7 +42,7 @@ You can install the development version from
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("RWParsons/predictNMB")
+remotes::install_github("ropensci/predictNMB")
 ```
 
 ## Estimating model cutpoints
@@ -149,31 +149,31 @@ citation("predictNMB")
 #> 
 #> To cite predictNMB in publications use:
 #> 
-#>   Parsons R, Blythe R, Barnett A (2022). _predictNMB: Evaluate Clinical
+#>   Parsons R, Blythe R, Barnett A (2023). _predictNMB: Evaluate Clinical
 #>   Prediction Models by Net Monetary Benefit_. 0.0.1,
-#>   <https://github.com/RWParsons/predictNMB>.
+#>   <https://github.com/ropensci/predictNMB>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
 #>     title = {{predictNMB}: Evaluate Clinical Prediction Models by Net Monetary Benefit},
 #>     author = {Rex Parsons and Robin Blythe and Adrian Barnett},
-#>     year = {2022},
+#>     year = {2023},
 #>     note = {0.0.1},
-#>     url = {https://github.com/RWParsons/predictNMB},
+#>     url = {https://github.com/ropensci/predictNMB},
 #>   }
 ```
 
 ## Further reading
 
-The [`predictNMB` website](https://rwparsons.github.io/predictNMB/) and
+The [`predictNMB` website](https://docs.ropensci.org/predictNMB/) and
 its vignettes:
 
 - [Getting started with
-  `predictNMB`](https://rwparsons.github.io/predictNMB/articles/predictNMB.html)
+  `predictNMB`](https://docs.ropensci.org/predictNMB/articles/predictNMB.html)
 - [Summarising results from
-  `predictNMB`](https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html)
+  `predictNMB`](https://docs.ropensci.org/predictNMB/articles/summarising-results-with-predictNMB.html)
 - [Detailed example: pressure injury
-  model](https://rwparsons.github.io/predictNMB/articles/detailed-example.html)
+  model](https://docs.ropensci.org/predictNMB/articles/detailed-example.html)
 - [Creating NMB
-  functions](https://rwparsons.github.io/predictNMB/articles/creating-nmb-functions.html)
+  functions](https://docs.ropensci.org/predictNMB/articles/creating-nmb-functions.html)

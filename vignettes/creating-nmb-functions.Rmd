@@ -122,7 +122,7 @@ foo3()
 
 Now that we are providing an intervention and associated cost to the low risk group, there is a negative NMB assigned to true negative (TN) groups. But in exchange, we have reduced the costs of false negatives (FNs), because at least these patients are now receiving an intervention, albeit a less effective one.
 
-It's important to note that while these NMB values are negative, this doesn't imply that we are worse off by implementing prediction models or treatments. We are simply trying to pick the least bad option. This becomes more apparent when we set a reference strategy, which is discussed in more detail in the [introductory](https://rwparsons.github.io/predictNMB/articles/predictNMB.html) and [detailed example](https://rwparsons.github.io/predictNMB/articles/detailed-example.html) vignettes.
+It's important to note that while these NMB values are negative, this doesn't imply that we are worse off by implementing prediction models or treatments. We are simply trying to pick the least bad option. This becomes more apparent when we set a reference strategy, which is discussed in more detail in the [introductory](https://docs.ropensci.org/predictNMB/articles/predictNMB.html) and [detailed example](https://docs.ropensci.org/predictNMB/articles/detailed-example.html) vignettes.
 
 ## Making functions using `get_nmb_sampler()`
 

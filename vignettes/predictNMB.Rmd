@@ -58,7 +58,7 @@ get_nmb_sampler()
 get_nmb_sampler()
 ```
 
-Every time we run this function, we get a new named vector for the NMB associated with each prediction. We can inform the distributions that we sample from based on the literature for the specific clinical prediction model at hand. See the [detailed example vignette](https://rwparsons.github.io/predictNMB/articles/detailed-example.html) for a more in-depth description of using estimates from the literature. 
+Every time we run this function, we get a new named vector for the NMB associated with each prediction. We can inform the distributions that we sample from based on the literature for the specific clinical prediction model at hand. See the [detailed example vignette](https://docs.ropensci.org/predictNMB/articles/detailed-example.html) for a more in-depth description of using estimates from the literature. 
 
 In this example function, the value returned for the True Negative (TN) is zero. This may reflect a scenario where patients categorised as low risk are not given any treatment and do not experience the event being predicted (e.g. a fall) so do not have those associated costs either. The False Negative (FN) is the most negative value; this is because this reflects the worst possible outcome: the patient experiences the event and no intervention was provided to reduce its rate or the effect of its associated costs. The True Positive value is similar to the FN, but is not as negative, because the patient received the intervention and this reduced the associated costs, possibly by reducing the rate of the event. These two classifications have uncertainty associated with them since the costs associated with the outcome are uncertain. This is unlike the False Positive (FP), which has a fixed cost of \$20. This may be realistic when there are set costs for providing the intervention. For example, if the intervention is to conduct a falls education session with the patient, this may have an exact, known cost. See the detailed example vignette for further description and an example of how to decide on which values to use.
 
@@ -122,7 +122,7 @@ autoplot(nmb_simulation) + theme_sim()
 
 Treating all looks like a bad option here. The rest are relatively similar at this AUC and event rate, with an edge to treat none or the models using either the value optimisation or cost minimisation cutpoint method.
 
-We have options to include multiple cutpoint methods, and the default is to use all of the available inbuilt methods as well as the treat-all and treat-none strategies. We can specify which methods are shown in the plots when creating the plot. (For more details on plotting, see the [summarising results vignettes](https://rwparsons.github.io/predictNMB/articles/summarising-results-with-predictNMB.html).)
+We have options to include multiple cutpoint methods, and the default is to use all of the available inbuilt methods as well as the treat-all and treat-none strategies. We can specify which methods are shown in the plots when creating the plot. (For more details on plotting, see the [summarising results vignettes](https://docs.ropensci.org/predictNMB/articles/summarising-results-with-predictNMB.html).)
 
 ```{r}
 get_inbuilt_cutpoint_methods()

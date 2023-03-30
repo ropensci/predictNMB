@@ -7,7 +7,7 @@
 \title{predictNMB: Evaluate Clinical Prediction Models by Net Monetary Benefit}
 \description{
 To learn more about how to use predictNMB, see the vignettes at the
-\href{https://rwparsons.github.io/predictNMB/index.html}{website} or using
+\href{https://docs.ropensci.org/predictNMB/index.html}{website} or using
 the following code:
 
 \code{browseVignettes(package = "predictNMB")}
@@ -15,8 +15,8 @@ the following code:
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://rwparsons.github.io/predictNMB/}
-  \item Report bugs at \url{https://github.com/rwparsons/predictNMB/issues}
+  \item \url{https://docs.ropensci.org/predictNMB/}
+  \item Report bugs at \url{https://github.com/ropensci/predictNMB/issues}
 }
 
 }
