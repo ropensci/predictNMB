@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/RWParsons/ropensci/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/predictNMB/actions)
+[![R-CMD-check](https://github.com/ropensci/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/predictNMB/actions)
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Codecov test
@@ -13,7 +13,6 @@ coverage](https://codecov.io/gh/ropensci/predictNMB/branch/master/graph/badge.sv
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![pkgcheck](https://github.com/ropensci/predictNMB/workflows/pkgcheck/badge.svg)](https://github.com/ropensci/predictNMB/actions?query=workflow%3Apkgcheck)
 [![Status at rOpenSci Software Peer
 Review](https://badges.ropensci.org/566_status.svg)](https://github.com/ropensci/software-review/issues/566)
 <!-- badges: end -->
@@ -43,6 +42,9 @@ You can install the development version from
 ``` r
 # install.packages("remotes")
 remotes::install_github("ropensci/predictNMB")
+
+# or, equivalently:
+install.packages("predictNMB", repos = "https://ropensci.r-universe.dev")
 ```
 
 ## Estimating model cutpoints
@@ -177,3 +179,17 @@ its vignettes:
   model](https://docs.ropensci.org/predictNMB/articles/detailed-example.html)
 - [Creating NMB
   functions](https://docs.ropensci.org/predictNMB/articles/creating-nmb-functions.html)
+
+## Contributing
+
+Please note that this package is released with a [Contributor Code of
+Conduct](https://ropensci.org/code-of-conduct/). By contributing to this
+project, you agree to abide by its terms.
+
+- If you think you have encountered a bug, please [submit an
+  issue](https://github.com/ropensci/predictNMB).
+
+- Please include a
+  [reprex](https://reprex.tidyverse.org/articles/articles/learn-reprex.html)
+  (a minimal, reproducible example) to clearly communicate about your
+  code.
