@@ -1,4 +1,4 @@
-# predictNMB (development version)
+# predictNMB 0.1.0
 
 * Updates to README, vignettes and documentation for clarity
 

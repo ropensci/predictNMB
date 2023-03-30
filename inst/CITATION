@@ -1,7 +1,7 @@
 citHeader("To cite predictNMB in publications use:")
 
 year <- "2023"
-note <- "0.0.1"
+note <- "0.1.0"
 
 bibentry(bibtype = "Manual",
          title = "{predictNMB}: Evaluate Clinical Prediction Models by Net Monetary Benefit",
