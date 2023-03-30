@@ -1,4 +1,5 @@
-url: https://rwparsons.github.io/predictNMB/
+url: https://docs.ropensci.org/predictNMB/
 template:
   bootstrap: 5
-
+  params:
+    mathjax: true
