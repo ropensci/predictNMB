@@ -1,17 +1,21 @@
 citHeader("To cite predictNMB in publications use:")
 
-year <- "2023"
-note <- "0.1.0"
 
-bibentry(bibtype = "Manual",
-         title = "{predictNMB}: Evaluate Clinical Prediction Models by Net Monetary Benefit",
-         author = c(person("Rex", "Parsons"),
-                    person("Robin", "Blythe"),
-                    person("Adrian", "Barnett")),
-         year = year,
-         note = note,
-     url = "https://github.com/ropensci/predictNMB")
- textVersion = paste0("Rex Parsons, Robin Blythe Adrian Barnett, (", year, ").",
-  " predictNMB: Evaluate Clinical Prediction Models by Net Monetary Benefit.",
-  note, ".",
-  " https://github.com/ropensci/predictNMB")
+bibentry(
+  bibtype = "Article",
+  title = "predictNMB: An R package to estimate if or when a clinical prediction model is worthwhile",
+  author = "Rex Parsons and Robin D Blythe and Adrian G Barnett and Susanna M Cramb and Steven M McPhail",
+  journal = "Journal of Open Source Software",
+  publisher = "The Open Journal",
+  year = 2023,
+  volume = 8,
+  number = 84,
+  pages = 5328,
+  url = "https://doi.org/10.21105/joss.05328",
+  doi = "10.21105/joss.05328",
+  textVersion = paste(
+    "Parsons et al., (2023). predictNMB: An R package to estimate if or when a",
+    "clinical prediction model is worthwhile. Journal of Open Source Software,",
+    "8(84), 5328, https://doi.org/10.21105/joss.05328"
+  )
+)

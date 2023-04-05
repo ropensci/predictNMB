@@ -2,6 +2,7 @@ AUD
 CMD
 Codecov
 Colour
+DOI
 FN
 FNs
 FP
@@ -38,11 +39,11 @@ nmb
 optimisation
 optimising
 performant
-pkgcheck
 predictNMBscreen
 predictNMBsim
 rOpenSci
 randomised
+reprex
 roc
 ropensci
 stabilised

@@ -8,3 +8,5 @@
 ^pkgdown$
 ^codecov\.yml$
 ^codemeta\.json$
+^CITATION\.cff$
+^inst/paper$

@@ -15,6 +15,7 @@ state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Status at rOpenSci Software Peer
 Review](https://badges.ropensci.org/566_status.svg)](https://github.com/ropensci/software-review/issues/566)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.05328/status.svg)](https://doi.org/10.21105/joss.05328)
 <!-- badges: end -->
 
 ## Overview
@@ -151,18 +152,23 @@ citation("predictNMB")
 #> 
 #> To cite predictNMB in publications use:
 #> 
-#>   Parsons R, Blythe R, Barnett A (2023). _predictNMB: Evaluate Clinical
-#>   Prediction Models by Net Monetary Benefit_. 0.1.0,
-#>   <https://github.com/ropensci/predictNMB>.
+#>   Parsons et al., (2023). predictNMB: An R package to estimate if or
+#>   when a clinical prediction model is worthwhile. Journal of Open
+#>   Source Software, 8(84), 5328, https://doi.org/10.21105/joss.05328
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
-#>   @Manual{,
-#>     title = {{predictNMB}: Evaluate Clinical Prediction Models by Net Monetary Benefit},
-#>     author = {Rex Parsons and Robin Blythe and Adrian Barnett},
+#>   @Article{,
+#>     title = {predictNMB: An R package to estimate if or when a clinical prediction model is worthwhile},
+#>     author = {Rex Parsons and Robin D Blythe and Adrian G Barnett and Susanna M Cramb and Steven M McPhail},
+#>     journal = {Journal of Open Source Software},
+#>     publisher = {The Open Journal},
 #>     year = {2023},
-#>     note = {0.1.0},
-#>     url = {https://github.com/ropensci/predictNMB},
+#>     volume = {8},
+#>     number = {84},
+#>     pages = {5328},
+#>     url = {https://doi.org/10.21105/joss.05328},
+#>     doi = {10.21105/joss.05328},
 #>   }
 ```
 

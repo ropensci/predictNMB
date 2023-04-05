@@ -1,0 +1,52 @@
+cff-version: "1.2.0"
+authors:
+- family-names: Parsons
+  given-names: Rex
+  orcid: "https://orcid.org/0000-0002-6053-8174"
+- family-names: Blythe
+  given-names: Robin D.
+  orcid: "https://orcid.org/0000-0002-3643-4332"
+- family-names: Barnett
+  given-names: Adrian G.
+  orcid: "https://orcid.org/0000-0001-6339-0374"
+- family-names: Cramb
+  given-names: Susanna M.
+  orcid: "https://orcid.org/0000-0001-9041-9531"
+- family-names: McPhail
+  given-names: Steven M.
+  orcid: "https://orcid.org/0000-0002-1463-662X"
+doi: 10.5281/zenodo.7793463
+message: If you use this software, please cite our article in the
+  Journal of Open Source Software.
+preferred-citation:
+  authors:
+  - family-names: Parsons
+    given-names: Rex
+    orcid: "https://orcid.org/0000-0002-6053-8174"
+  - family-names: Blythe
+    given-names: Robin D.
+    orcid: "https://orcid.org/0000-0002-3643-4332"
+  - family-names: Barnett
+    given-names: Adrian G.
+    orcid: "https://orcid.org/0000-0001-6339-0374"
+  - family-names: Cramb
+    given-names: Susanna M.
+    orcid: "https://orcid.org/0000-0001-9041-9531"
+  - family-names: McPhail
+    given-names: Steven M.
+    orcid: "https://orcid.org/0000-0002-1463-662X"
+  date-published: 2023-04-05
+  doi: 10.21105/joss.05328
+  issn: 2475-9066
+  issue: 84
+  journal: Journal of Open Source Software
+  publisher:
+    name: Open Journals
+  start: 5328
+  title: "predictNMB: An R package to estimate if or when a clinical
+    prediction model is worthwhile"
+  type: article
+  url: "https://joss.theoj.org/papers/10.21105/joss.05328"
+  volume: 8
+title: "predictNMB: An R package to estimate if or when a clinical
+  prediction model is worthwhile"
