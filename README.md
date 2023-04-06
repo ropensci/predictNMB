@@ -37,6 +37,12 @@ model.
 
 ## Installation
 
+You can install the stable version from CRAN with:
+
+``` r
+install.packages("predictNMB")
+```
+
 You can install the development version from
 [GitHub](https://github.com/) with:
 
