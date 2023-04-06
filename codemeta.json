@@ -7,7 +7,7 @@
   "codeRepository": "https://github.com/ropensci/predictNMB",
   "issueTracker": "https://github.com/ropensci/predictNMB/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.1.9000",
+  "version": "0.1.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -296,10 +296,10 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "1163.126KB",
+  "fileSize": "1164.817KB",
   "citation": [
     {
-      "@type": "SoftwareSourceCode",
+      "@type": "ScholarlyArticle",
       "datePublished": "2023",
       "author": [
         {
@@ -309,24 +309,47 @@
         },
         {
           "@type": "Person",
-          "givenName": "Robin",
+          "givenName": ["Robin", "D"],
           "familyName": "Blythe"
         },
         {
           "@type": "Person",
-          "givenName": "Adrian",
+          "givenName": ["Adrian", "G"],
           "familyName": "Barnett"
+        },
+        {
+          "@type": "Person",
+          "givenName": ["Susanna", "M"],
+          "familyName": "Cramb"
+        },
+        {
+          "@type": "Person",
+          "givenName": ["Steven", "M"],
+          "familyName": "McPhail"
         }
       ],
-      "name": "{predictNMB}: Evaluate Clinical Prediction Models by Net Monetary Benefit",
-      "url": "https://github.com/ropensci/predictNMB",
-      "description": "0.0.1"
+      "name": "predictNMB: An R package to estimate if or when a clinical prediction model is worthwhile",
+      "identifier": "10.21105/joss.05328",
+      "url": "https://doi.org/10.21105/joss.05328",
+      "pagination": "5328",
+      "@id": "https://doi.org/10.21105/joss.05328",
+      "sameAs": "https://doi.org/10.21105/joss.05328",
+      "isPartOf": {
+        "@type": "PublicationIssue",
+        "issueNumber": "84",
+        "datePublished": "2023",
+        "isPartOf": {
+          "@type": ["PublicationVolume", "Periodical"],
+          "volumeNumber": "8",
+          "name": "Journal of Open Source Software"
+        }
+      }
     }
   ],
   "relatedLink": "https://docs.ropensci.org/predictNMB/",
   "releaseNotes": "https://github.com/ropensci/predictNMB/blob/master/NEWS.md",
   "readme": "https://github.com/ropensci/predictNMB/blob/master/README.md",
-  "contIntegration": ["https://github.com/ropensci/predictNMB/actions", "https://app.codecov.io/gh/ropensci/predictNMB?branch=master", "https://github.com/ropensci/predictNMB/actions?query=workflow%3Apkgcheck"],
+  "contIntegration": ["https://github.com/ropensci/predictNMB/actions", "https://app.codecov.io/gh/ropensci/predictNMB?branch=master"],
   "developmentStatus": "https://www.repostatus.org/#active",
   "review": {
     "@type": "Review",
