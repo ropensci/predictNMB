@@ -10,3 +10,4 @@
 ^codemeta\.json$
 ^CITATION\.cff$
 ^inst/paper$
+^cran-comments\.md$
