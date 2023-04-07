@@ -168,13 +168,7 @@ cl <- makeCluster(detectCores())
 ```
 
 ```{r, include=FALSE}
-chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
-if (nzchar(chk) && chk == TRUE) {
-  ncores <- 2
-} else {
-  ncores <- detectCores()
-}
-cl <- makeCluster(ncores)
+cl <- makeCluster(2)
 ```
 
 ```{r}

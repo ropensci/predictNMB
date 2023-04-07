@@ -34,6 +34,7 @@ test_that("screen_simulation_inputs() with paired functions works", {
 
 
 test_that("screen_simulation_inputs() works in parallel", {
+  skip_on_cran()
   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
   if (!requireNamespace("parallel", quietly = TRUE)) {
     skip("parallel tests skipped as parallel is not installed")
