@@ -36,7 +36,7 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-1463-662X"))
   )
 Description: Estimates when and where a model-guided treatment strategy may outperform 
-    a treat-all or treat-none approach by Monte Carlo simulation and evaluation of the Net Monetary Benefit (NMB).
+    a treat-all or treat-none approach by Monte Carlo simulation and evaluation of the Net Monetary Benefit.
 License: GPL (>= 3)
 Encoding: UTF-8
 RoxygenNote: 7.2.3

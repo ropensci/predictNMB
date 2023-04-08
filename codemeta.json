@@ -2,7 +2,7 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "predictNMB",
-  "description": "Estimates when and where a model-guided treatment strategy may outperform a treat-all or treat-none approach by Monte Carlo simulation and evaluation of the Net Monetary Benefit (NMB).",
+  "description": "Estimates when and where a model-guided treatment strategy may outperform a treat-all or treat-none approach by Monte Carlo simulation and evaluation of the Net Monetary Benefit.",
   "name": "predictNMB: Evaluate Clinical Prediction Models by Net Monetary Benefit",
   "codeRepository": "https://github.com/ropensci/predictNMB",
   "issueTracker": "https://github.com/ropensci/predictNMB/issues",
@@ -296,7 +296,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "1164.817KB",
+  "fileSize": "1164.651KB",
   "citation": [
     {
       "@type": "ScholarlyArticle",
