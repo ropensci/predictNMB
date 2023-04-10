@@ -10,7 +10,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
 )
 ```
 
@@ -243,13 +245,20 @@ The NMB functions are passed to the `do_nmb_sim()` function via the `fx_nmb_trai
 
 In this first example, we pass `foo1` to the `do_nmb_sim()` function, which is our function that always provides the same values for every simulation, as if we **know** the exact outcome of each possible prediction. As mentioned before, see the other vignettes for more information on the inputs for the `do_nmb_sim()` function.
 
-```{r}
+```{r, echo=FALSE}
+simulation_res1 <- readRDS("fixtures/nmb-functions-simulation_res1.rds")
+```
+
+
+```{r, eval=FALSE}
 simulation_res1 <- do_nmb_sim(
   sample_size = 200, n_sims = 500, n_valid = 10000, sim_auc = 0.7,
   event_rate = 0.1, fx_nmb_training = foo1, fx_nmb_evaluation = foo1,
   cutpoint_methods = c("all", "none", "youden", "value_optimising")
 )
+```
 
+```{r}
 autoplot(simulation_res1) + theme_sim()
 ```
 
@@ -286,14 +295,21 @@ foo2_remake_training()
 
 In many cases (including this one), this will give similar values to using the parameter estimates (i.e. `foo1()`), but not always. The values from this process should be more stable than using the estimates.
 
-```{r}
+```{r, echo=FALSE}
+simulation_res2 <- readRDS("fixtures/nmb-functions-simulation_res2.rds")
+```
+
+
+```{r, eval=FALSE}
 simulation_res2 <- do_nmb_sim(
   sample_size = 200, n_sims = 500, n_valid = 10000, sim_auc = 0.7,
   event_rate = 0.1, fx_nmb_training = foo2_remake_training, 
   fx_nmb_evaluation = foo2_remake,
   cutpoint_methods = c("all", "none", "youden", "value_optimising")
 )
+```
 
+```{r}
 autoplot(simulation_res2) + theme_sim()
 ```
 

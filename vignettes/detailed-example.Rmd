@@ -76,7 +76,11 @@ fx_nmb()
 
 For a first pass, we want to see how our current values affect the estimated NMB from model implementation. We will just use our best guesses for now, but for a rigorous simulation, we will want to use Monte Carlo methods to sample from input distributions.
 
-```{r}
+```{r, echo=FALSE}
+nmb_simulation <- readRDS("fixtures/detailed_example-nmb_simulation.rds")
+```
+
+```{r, eval=FALSE}
 nmb_simulation <- do_nmb_sim(
   # Evaluating a theoretical cohort of 1,000 patients
   sample_size = 1000, 
@@ -99,7 +103,9 @@ nmb_simulation <- do_nmb_sim(
   fx_nmb_training = fx_nmb, 
   fx_nmb_evaluation = fx_nmb
 )
+```
 
+```{r}
 nmb_simulation
 
 # Get the median incremental NMB for each threshold selection method
@@ -147,8 +153,13 @@ In the snippet below, we will compare the treat all strategy to total disinvestm
 
 We can also do this in parallel to speed things up.
 
-```{r}
-cl <- makeCluster(2)
+```{r, echo=FALSE}
+sim_pup_screen <- readRDS("fixtures/detailed_example-sim_pup_screen.rds")
+```
+
+
+```{r, eval=FALSE}
+cl <- makeCluster(detectCores())
 sim_pup_screen <- screen_simulation_inputs(
   n_sims = 500,
   n_valid = 10000,
@@ -160,7 +171,9 @@ sim_pup_screen <- screen_simulation_inputs(
   cl = cl
 )
 stopCluster(cl)
+```
 
+```{r}
 summary(sim_pup_screen)
 ```
 

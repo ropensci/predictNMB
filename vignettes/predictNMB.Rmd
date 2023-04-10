@@ -86,7 +86,11 @@ Note that it may take some time to run the simulation. (The one below may take u
 
 We have used `show_progress = TRUE` so that this progress is displayed but by default this progress bar is not shown.
 
-```{r}
+```{r, echo=FALSE}
+nmb_simulation <- readRDS("fixtures/predictNMB-nmb_simulation.rds")
+```
+
+```{r, eval=FALSE}
 nmb_simulation <- do_nmb_sim(
   sample_size = 1000,
   n_sims = 500,
@@ -97,7 +101,9 @@ nmb_simulation <- do_nmb_sim(
   fx_nmb_evaluation = get_nmb_sampler,
   show_progress = TRUE
 )
+```
 
+```{r}
 nmb_simulation
 ```
 
@@ -167,11 +173,11 @@ We run the simulations in parallel by creating a cluster and passing this as an 
 cl <- makeCluster(detectCores())
 ```
 
-```{r, include=FALSE}
-cl <- makeCluster(2)
+```{r, echo=FALSE}
+sim_screen_obj <- readRDS("fixtures/predictNMB-sim_screen_obj.rds")
 ```
 
-```{r}
+```{r, eval=FALSE}
 sim_screen_obj <- screen_simulation_inputs(
   n_sims = 500,
   n_valid = 10000,
