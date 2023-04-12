@@ -35,8 +35,10 @@ Authors@R: c(
            role = "ctb",
            comment = c(ORCID = "0000-0002-1463-662X"))
   )
-Description: Estimates when and where a model-guided treatment strategy may outperform 
-    a treat-all or treat-none approach by Monte Carlo simulation and evaluation of the Net Monetary Benefit.
+Description: Estimates when and where a model-guided treatment strategy may 
+    outperform a treat-all or treat-none approach by Monte Carlo simulation and 
+    evaluation of the Net Monetary Benefit. Details can be viewed in 
+    Parsons et al. (2023) <doi:10.21105/joss.05328>.
 License: GPL (>= 3)
 Encoding: UTF-8
 RoxygenNote: 7.2.3
