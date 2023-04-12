@@ -1,5 +1,4 @@
 test_that("get_nmb_sampler() works when used with do_nmb_sim() in parallel", {
-  skip_on_cran()
   get_nmb_train <- get_nmb_sampler(
     outcome_cost = function() rgamma(1, 1000, 10),
     wtp = 28000,
@@ -21,12 +20,7 @@ test_that("get_nmb_sampler() works when used with do_nmb_sim() in parallel", {
     skip("parallel tests skipped as parallel is not installed")
   }
 
-  chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
-  if (nzchar(chk) && chk == TRUE) {
-    ncores <- 2
-  } else {
-    ncores <- parallel::detectCores()
-  }
+  ncores <- 2
   cl <- parallel::makeCluster(ncores)
 
   out_par <- do_nmb_sim(

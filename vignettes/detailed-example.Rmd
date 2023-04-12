@@ -159,7 +159,7 @@ sim_pup_screen <- readRDS("fixtures/detailed_example-sim_pup_screen.rds")
 
 
 ```{r, eval=FALSE}
-cl <- makeCluster(detectCores())
+cl <- makeCluster(2)
 sim_pup_screen <- screen_simulation_inputs(
   n_sims = 500,
   n_valid = 10000,

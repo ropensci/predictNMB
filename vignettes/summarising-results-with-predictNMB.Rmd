@@ -50,7 +50,7 @@ get_nmb_sampler_evaluation <- function() {
 ```
 
 ```{r, eval=FALSE}
-cl <- makeCluster(detectCores())
+cl <- makeCluster(2)
 ```
 
 ```{r, echo=FALSE}

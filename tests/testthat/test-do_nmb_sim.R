@@ -233,18 +233,12 @@ test_that("do_nmb_sim() throws error for bad inputs", {
 })
 
 test_that("do_nmb_sim() works in parallel", {
-  skip_on_cran()
   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
   if (!requireNamespace("parallel", quietly = TRUE)) {
     skip("parallel tests skipped as parallel is not installed")
   }
 
-  chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
-  if (nzchar(chk) && chk == TRUE) {
-    ncores <- 2
-  } else {
-    ncores <- parallel::detectCores()
-  }
+  ncores <- 2
   cl <- parallel::makeCluster(ncores)
 
   out_par <- do_nmb_sim(

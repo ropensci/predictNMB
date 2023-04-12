@@ -170,7 +170,7 @@ To do this, we compare multiple simulations with different inputs using `screen_
 We run the simulations in parallel by creating a cluster and passing this as an argument. This can also be done to `do_nmb_sim()` in the same way. This can take some time — the fewer cores used, the longer it takes. For more details on running in parallel, see the `parallel` package.
 
 ```{r, eval=FALSE}
-cl <- makeCluster(detectCores())
+cl <- makeCluster(2)
 ```
 
 ```{r, echo=FALSE}
