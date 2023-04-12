@@ -148,24 +148,23 @@ add_interval <- function(data, conf.level) {
 #' @export
 #'
 #' @examples
+#' \donttest{
+#' get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
+#' sim_obj <- do_nmb_sim(
+#'   sample_size = 200, n_sims = 50, n_valid = 10000, sim_auc = 0.7,
+#'   event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb,
+#'   cutpoint_methods = c("all", "none", "youden", "value_optimising")
+#' )
 #'
-#' if (FALSE) {
-#'   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
-#'   sim_obj <- do_nmb_sim(
-#'     sample_size = 200, n_sims = 50, n_valid = 10000, sim_auc = 0.7,
-#'     event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb,
-#'     cutpoint_methods = c("all", "none", "youden", "value_optimising")
+#' autoplot(
+#'   sim_obj,
+#'   rename_vector = c(
+#'     "Value- Optimising" = "value_optimising",
+#'     "Treat- None" = "none",
+#'     "Treat- All" = "all",
+#'     "Youden Index" = "youden"
 #'   )
-#'
-#'   autoplot(
-#'     sim_obj,
-#'     rename_vector = c(
-#'       "Value- Optimising" = "value_optimising",
-#'       "Treat- None" = "none",
-#'       "Treat- All" = "all",
-#'       "Youden Index" = "youden"
-#'     )
-#'   ) + theme_sim()
+#' ) + theme_sim()
 #' }
 autoplot.predictNMBsim <- function(object,
                                    what = c("nmb", "inb", "cutpoints"),
@@ -275,14 +274,14 @@ autoplot.predictNMBsim <- function(object,
 #' @export
 #'
 #' @examples
-#' if (FALSE) {
-#'   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
-#'   sim_obj <- do_nmb_sim(
-#'     sample_size = 200, n_sims = 50, n_valid = 10000, sim_auc = 0.7,
-#'     event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
-#'   )
+#' \donttest{
+#' get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
+#' sim_obj <- do_nmb_sim(
+#'   sample_size = 200, n_sims = 50, n_valid = 10000, sim_auc = 0.7,
+#'   event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
+#' )
 #'
-#'   autoplot(sim_obj) + theme_sim()
+#' autoplot(sim_obj) + theme_sim()
 #' }
 #'
 theme_sim <- function() {
@@ -313,8 +312,8 @@ theme_sim <- function() {
 #' See \code{do_nmb_sim} for more information.
 #' @param plot_range \code{logical}. Whether or not to plot the range of the
 #' distribution as a thin line. Defaults to TRUE.
-#' @param plot_conf_level \code{logical}. Whether or not to plot the confidence region
-#' of the distribution as a thicker line. Defaults to TRUE.
+#' @param plot_conf_level \code{logical}. Whether or not to plot the confidence
+#' region of the distribution as a thicker line. Defaults to TRUE.
 #' @param plot_line \code{logical}. Whether or not to connect the medians of
 #' the distributions for each method along the x-axis. Defaults to TRUE.
 #' @param plot_alpha Alpha value for all plot elements. Defaults to 0.5.
@@ -339,29 +338,29 @@ theme_sim <- function() {
 #' @export
 #'
 #' @examples
+#' \donttest{
+#' get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
+#' sim_screen_obj <- screen_simulation_inputs(
+#'   n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1),
+#'   event_rate = c(0.1, 0.2, 0.3),
+#'   fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb,
+#'   cutpoint_methods = c("all", "none", "youden", "value_optimising")
+#' )
 #'
-#' if (FALSE) {
-#'   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
-#'   sim_screen_obj <- screen_simulation_inputs(
-#'     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1),
-#'     event_rate = c(0.1, 0.2, 0.3),
-#'     fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb,
-#'     cutpoint_methods = c("all", "none", "youden", "value_optimising")
-#'   )
+#' autoplot(sim_screen_obj)
 #'
-#'   autoplot(sim_screen_obj)
-#'   autoplot(
-#'     sim_screen_obj,
-#'     x_axis_var = "event_rate",
-#'     constants = c(sim_auc = 0.8),
-#'     dodge_width = 0.02,
-#'     rename_vector = c(
-#'       "Value-Optimising" = "value_optimising",
-#'       "Treat-None" = "none",
-#'       "Treat-All" = "all",
-#'       "Youden Index" = "youden"
-#'     )
+#' autoplot(
+#'   sim_screen_obj,
+#'   x_axis_var = "event_rate",
+#'   constants = c(sim_auc = 0.8),
+#'   dodge_width = 0.02,
+#'   rename_vector = c(
+#'     "Value-Optimising" = "value_optimising",
+#'     "Treat-None" = "none",
+#'     "Treat-All" = "all",
+#'     "Youden Index" = "youden"
 #'   )
+#' )
 #' }
 autoplot.predictNMBscreen <- function(object,
                                       x_axis_var = NULL,

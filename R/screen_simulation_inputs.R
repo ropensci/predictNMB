@@ -58,12 +58,12 @@
 #'
 #' # Screen for optimal cutpoints given increasing values of
 #' # model discrimination (sim_auc)
-#' if (FALSE) {
-#'   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
-#'   sim_screen_obj <- screen_simulation_inputs(
-#'     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1),
-#'     event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
-#'   )
+#' \donttest{
+#' get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
+#' sim_screen_obj <- screen_simulation_inputs(
+#'   n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1),
+#'   event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
+#' )
 #' }
 screen_simulation_inputs <- function(sample_size,
                                      n_sims,
@@ -288,14 +288,14 @@ add_sample_size_calcs <- function(x) {
 #' @return `print(x)` returns `x` invisibly.
 #'
 #' @examples
-#' if (FALSE) {
-#'   get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
-#'   sim_screen_obj <- screen_simulation_inputs(
-#'     n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1),
-#'     event_rate = 0.1,
-#'     fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
-#'   )
-#'   print(sim_screen_obj)
+#' \donttest{
+#' get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
+#' sim_screen_obj <- screen_simulation_inputs(
+#'   n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1),
+#'   event_rate = 0.1,
+#'   fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb
+#' )
+#' print(sim_screen_obj)
 #' }
 print.predictNMBscreen <- function(x, ...) {
   cat("predictNMBscreen object\n\n")
