@@ -43,8 +43,17 @@ test_that("do_nmb_sim() results are similar with different seeds", {
     )
   )
 
-  expect_equal(colSums(out1$df_result)/500, colSums(out2$df_result)/500, tolerance = 1)
-  expect_equal(colSums(out1$df_qalys)/500, colSums(out2$df_qalys)/500, tolerance = 1)
+  expect_equal(
+    colSums(out1$df_result) / 500,
+    colSums(out2$df_result) / 500,
+    tolerance = 1
+  )
+
+  expect_equal(
+    colSums(out1$df_qalys) / 500,
+    colSums(out2$df_qalys) / 500,
+    tolerance = 1
+  )
 })
 
 test_that("do_nmb_sim() throws error for bad inputs", {

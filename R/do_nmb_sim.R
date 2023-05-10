@@ -250,7 +250,7 @@ do_nmb_sim <- function(sample_size,
     )
   )
 
-  if(track_qalys) {
+  if (track_qalys) {
     df_qalys <- do.call("rbind", lapply(iterations, "[[", "qalys"))
     df_qalys <- as.data.frame.matrix(df_qalys)
     df_qalys <- cbind(n_sim = seq_len(nrow(df_qalys)), df_qalys)
@@ -357,7 +357,7 @@ do_nmb_iteration <- function(iter,
     thresholds = unlist(thresholds)
   )
 
-  if(track_qalys) {
+  if (track_qalys) {
     res <- c(
       res,
       list(qalys = t(unlist(lapply(thresholds, qalys_threshold))))

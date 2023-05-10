@@ -46,7 +46,11 @@ evaluate_cutpoint_nmb <- function(predicted, actual, pt, nmb) {
 #'   predicted = runif(1000),
 #'   actual = sample(c(0, 1), size = 1000, replace = TRUE),
 #'   pt = 0.1,
-#'   nmb = c("qalys_lost" = 5, "low_risk_group_treatment_effect" = 0, "high_risk_group_treatment_effect" = 0.5)
+#'   nmb = c(
+#'     "qalys_lost" = 5,
+#'     "low_risk_group_treatment_effect" = 0,
+#'     "high_risk_group_treatment_effect" = 0.5
+#'   )
 #' )
 evaluate_cutpoint_qalys <- function(predicted, actual, pt, nmb) {
   d <- cbind(predicted, actual, NA)
