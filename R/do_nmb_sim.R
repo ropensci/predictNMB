@@ -140,6 +140,12 @@ do_nmb_sim <- function(sample_size,
     replicate(n_sims, fx_nmb_evaluation(), simplify = FALSE)
   )
 
+  track_qalys <- ifelse(
+    is.null(attr(fx_nmb_evaluation, "track_qalys")),
+    FALSE,
+    attr(fx_nmb_evaluation, "track_qalys")
+  )
+
   # do iterations
   f_iteration_wrapper <- function(iter) {
     do_nmb_iteration(
@@ -152,7 +158,8 @@ do_nmb_sim <- function(sample_size,
       min_events = min_events,
       cutpoint_methods = cutpoint_methods,
       df_nmb_training = df_nmb_training,
-      df_nmb_evaluation = df_nmb_evaluation
+      df_nmb_evaluation = df_nmb_evaluation,
+      track_qalys = track_qalys
     )
   }
 
@@ -171,11 +178,13 @@ do_nmb_sim <- function(sample_size,
         "df_nmb_evaluation",
         "get_sample",
         "get_thresholds",
-        "evaluate_cutpoint",
+        "evaluate_cutpoint_nmb",
+        "evaluate_cutpoint_qalys",
         "get_inbuilt_cutpoint",
         "get_inbuilt_cutpoint_methods",
         "total_nmb",
-        "roc_iu"
+        "roc_iu",
+        "track_qalys"
       )
     })
     inbuilt_methods <- get_inbuilt_cutpoint_methods()
@@ -236,9 +245,22 @@ do_nmb_sim <- function(sample_size,
       sim_auc = sim_auc,
       event_rate = event_rate,
       fx_nmb_training = fx_nmb_training,
-      fx_nmb_evaluation = fx_nmb_evaluation
+      fx_nmb_evaluation = fx_nmb_evaluation,
+      track_qalys = track_qalys
     )
   )
+
+  if(track_qalys) {
+    df_qalys <- do.call("rbind", lapply(iterations, "[[", "qalys"))
+    df_qalys <- as.data.frame.matrix(df_qalys)
+    df_qalys <- cbind(n_sim = seq_len(nrow(df_qalys)), df_qalys)
+
+    res <- c(
+      res,
+      list(df_qalys = df_qalys)
+    )
+  }
+
   class(res) <- "predictNMBsim"
   res
 }
@@ -281,7 +303,8 @@ do_nmb_iteration <- function(iter,
                              min_events,
                              cutpoint_methods,
                              df_nmb_training,
-                             df_nmb_evaluation) {
+                             df_nmb_evaluation,
+                             track_qalys) {
   train_sample <- get_sample(
     auc = sim_auc,
     n_samples = sample_size,
@@ -312,7 +335,7 @@ do_nmb_iteration <- function(iter,
   evaluation_value_vector <- unlist(df_nmb_evaluation[iter, ])
 
   cost_threshold <- function(pt) {
-    evaluate_cutpoint(
+    evaluate_cutpoint_nmb(
       predicted = valid_sample$predicted,
       actual = valid_sample$actual,
       pt = pt,
@@ -320,12 +343,28 @@ do_nmb_iteration <- function(iter,
     )
   }
 
-  return(
-    list(
-      results = t(unlist(lapply(thresholds, cost_threshold))),
-      thresholds = unlist(thresholds)
+  qalys_threshold <- function(pt) {
+    evaluate_cutpoint_qalys(
+      predicted = valid_sample$predicted,
+      actual = valid_sample$actual,
+      pt = pt,
+      nmb = evaluation_value_vector
     )
+  }
+
+  res <- list(
+    results = t(unlist(lapply(thresholds, cost_threshold))),
+    thresholds = unlist(thresholds)
   )
+
+  if(track_qalys) {
+    res <- c(
+      res,
+      list(qalys = t(unlist(lapply(thresholds, qalys_threshold))))
+    )
+  }
+
+  res
 }
 
 
