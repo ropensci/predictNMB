@@ -44,6 +44,7 @@ test_that("test other arguments to create NMB sampling function", {
     use_expected_values = TRUE
   )
 
+  expect_true(attr(get_nmb_fx, "track_qalys"))
   expect_true(is.function(get_nmb_fx) | inherits(get_nmb_fx, "NMBsampler"))
 
 
@@ -56,6 +57,7 @@ test_that("test other arguments to create NMB sampling function", {
     use_expected_values = TRUE
   )
 
+  expect_false(attr(get_nmb_fx, "track_qalys"))
   expect_true(is.function(get_nmb_fx) | inherits(get_nmb_fx, "NMBsampler"))
   expect_equal(
     get_nmb_fx()[1:4],
