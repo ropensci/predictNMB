@@ -44,7 +44,7 @@ test_that("test other arguments to create NMB sampling function", {
     use_expected_values = TRUE
   )
 
-  expect_true(inherits(get_nmb_fx, "function"))
+  expect_true(is.function(get_nmb_fx) | inherits(get_nmb_fx, "NMBsampler"))
 
 
   get_nmb_fx <- get_nmb_sampler(
@@ -56,9 +56,9 @@ test_that("test other arguments to create NMB sampling function", {
     use_expected_values = TRUE
   )
 
-  expect_true(inherits(get_nmb_fx, "function"))
+  expect_true(is.function(get_nmb_fx) | inherits(get_nmb_fx, "NMBsampler"))
   expect_equal(
-    get_nmb_fx(),
+    get_nmb_fx()[1:4],
     c("TP" = -300, "FP" = -50, "TN" = -3, "FN" = -336),
     tolerance = 2
   )

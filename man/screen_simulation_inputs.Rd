@@ -38,11 +38,11 @@ binary outcome being predicted.}
 \item{cutpoint_methods}{cutpoint methods to include. Defaults to use the
 inbuilt methods. This doesn't change across calls to \code{do_nmb_sim()}.}
 
-\item{fx_nmb_training}{A function (or list of functions) that returns named
+\item{fx_nmb_training}{A function or \code{NMBsampler} (or list of) that returns named
 vector of NMB assigned to classifications use for obtaining cutpoint on
 training set.}
 
-\item{fx_nmb_evaluation}{A function (or list of functions) that returns
+\item{fx_nmb_evaluation}{A function or \code{NMBsampler} (or list of) that returns
 named vector of NMB assigned to classifications use for obtaining cutpoint
 on evaluation set.}
 
