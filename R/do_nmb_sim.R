@@ -255,9 +255,16 @@ do_nmb_sim <- function(sample_size,
     df_qalys <- as.data.frame.matrix(df_qalys)
     df_qalys <- cbind(n_sim = seq_len(nrow(df_qalys)), df_qalys)
 
+    df_costs <- do.call("rbind", lapply(iterations, "[[", "costs"))
+    df_costs <- as.data.frame.matrix(df_costs)
+    df_costs <- cbind(n_sim = seq_len(nrow(df_costs)), df_costs)
+
     res <- c(
       res,
-      list(df_qalys = df_qalys)
+      list(
+        df_qalys = df_qalys,
+        df_costs = df_costs
+      )
     )
   }
 
@@ -334,7 +341,7 @@ do_nmb_iteration <- function(iter,
 
   evaluation_value_vector <- unlist(df_nmb_evaluation[iter, ])
 
-  cost_threshold <- function(pt) {
+  nmb_threshold <- function(pt) {
     evaluate_cutpoint_nmb(
       predicted = valid_sample$predicted,
       actual = valid_sample$actual,
@@ -352,15 +359,27 @@ do_nmb_iteration <- function(iter,
     )
   }
 
+  costs_threshold <- function(pt) {
+    evaluate_cutpoint_cost(
+      predicted = valid_sample$predicted,
+      actual = valid_sample$actual,
+      pt = pt,
+      nmb = evaluation_value_vector
+    )
+  }
+
   res <- list(
-    results = t(unlist(lapply(thresholds, cost_threshold))),
+    results = t(unlist(lapply(thresholds, nmb_threshold))),
     thresholds = unlist(thresholds)
   )
 
   if (track_qalys) {
     res <- c(
       res,
-      list(qalys = t(unlist(lapply(thresholds, qalys_threshold))))
+      list(
+        qalys = t(unlist(lapply(thresholds, qalys_threshold))),
+        costs = t(unlist(lapply(thresholds, costs_threshold)))
+      )
     )
   }
 

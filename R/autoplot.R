@@ -52,6 +52,12 @@ get_plot_data <- function(x,
   # select relevant data from predictNMBsim object
   if (what == "cutpoints") {
     data <- x$df_thresholds
+  } else if (what == "qalys") {
+    stopifnot(x$meta_data$track_qalys)
+    data <- x$df_qalys
+  } else if (what == "costs") {
+    stopifnot(x$meta_data$track_qalys)
+    data <- x$df_costs
   } else {
     data <- x$df_result
   }
@@ -59,7 +65,7 @@ get_plot_data <- function(x,
   rename_vector <- update_rename_vector(rename_vector)
   data <- dplyr::rename(data, dplyr::any_of(rename_vector))
 
-  if (what == "inb") {
+  if (what == "inb" | !is.na(inb_ref_col)) {
     data <-
       data %>%
       dplyr::mutate(dplyr::across(
@@ -81,7 +87,7 @@ get_plot_data <- function(x,
   pivoted_data <- dplyr::filter(pivoted_data, !is.na(name))
 
   # add label (in_interval) for whether the observation is within the interval
-  add_interval(pivoted_data, conf.level = conf.level)
+  add_interval(pivoted_data, conf.level = ifelse(missing(conf.level), NA, conf.level))
 }
 
 
@@ -95,6 +101,10 @@ get_plot_data <- function(x,
 #' @return Returns a \code{data.frame}.
 #' @noRd
 add_interval <- function(data, conf.level) {
+  if (missing(conf.level) | is.na(conf.level)) {
+    return(dplyr::mutate(data, percentile = NA, in_interval = NA))
+  }
+
   probs <- c((1 - conf.level) / 2, 1 - (1 - conf.level) / 2)
 
   data %>%
@@ -109,13 +119,13 @@ add_interval <- function(data, conf.level) {
 #' Create plots of from predictNMB simulations.
 #'
 #' @param object A \code{predictNMBsim} object.
-#' @param what What to summarise: one of "nmb", "inb" or "cutpoints".
-#' Defaults to "nmb".
+#' @param what What to summarise: one of "nmb", "inb", "cutpoints", "qalys" or
+#' "costs". Defaults to "nmb".
 #' @param inb_ref_col Which cutpoint method to use as the reference strategy
 #' when calculating the incremental net monetary benefit.
 #' See \code{do_nmb_sim} for more information.
 #' @param conf.level The confidence level of the interval.
-#' Defaults to 0.95(coloured area of distribution represents 95% CIs).
+#' Defaults to 0.95 (coloured area of distribution represents 95% CIs).
 #' @param methods_order The order (left to right) to display the
 #' cutpoint methods.
 #' @param n_bins The number of bins used when constructing histograms.
@@ -167,7 +177,7 @@ add_interval <- function(data, conf.level) {
 #' ) + theme_sim()
 #' }
 autoplot.predictNMBsim <- function(object,
-                                   what = c("nmb", "inb", "cutpoints"),
+                                   what = c("nmb", "inb", "cutpoints", "qalys", "costs"),
                                    inb_ref_col = NA,
                                    conf.level = 0.95,
                                    methods_order = NULL,
@@ -305,8 +315,8 @@ theme_sim <- function() {
 #' object, this argument can be used to modify the selected values for all
 #' those except the input that's varying along the x-axis. See the
 #' \href{https://docs.ropensci.org/predictNMB/articles/summarising-results-with-predictNMB.html}{summarising methods vignette}.
-#' @param what What to summarise: one of "nmb", "inb" or "cutpoints".
-#' Defaults to "nmb".
+#' @param what What to summarise: one of "nmb", "inb", "cutpoints", "qalys" or
+#' "costs". Defaults to "nmb".
 #' @param inb_ref_col Which cutpoint method to use as the reference strategy
 #' when calculating the incremental net monetary benefit.
 #' See \code{do_nmb_sim} for more information.
@@ -365,7 +375,7 @@ theme_sim <- function() {
 autoplot.predictNMBscreen <- function(object,
                                       x_axis_var = NULL,
                                       constants = list(),
-                                      what = c("nmb", "inb", "cutpoints"),
+                                      what = c("nmb", "inb", "cutpoints", "qalys", "costs"),
                                       inb_ref_col = NA,
                                       plot_range = TRUE,
                                       plot_conf_level = TRUE,

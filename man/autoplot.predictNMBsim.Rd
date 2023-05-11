@@ -6,7 +6,7 @@
 \usage{
 \method{autoplot}{predictNMBsim}(
   object,
-  what = c("nmb", "inb", "cutpoints"),
+  what = c("nmb", "inb", "cutpoints", "qalys", "costs"),
   inb_ref_col = NA,
   conf.level = 0.95,
   methods_order = NULL,
@@ -23,15 +23,15 @@
 \arguments{
 \item{object}{A \code{predictNMBsim} object.}
 
-\item{what}{What to summarise: one of "nmb", "inb" or "cutpoints".
-Defaults to "nmb".}
+\item{what}{What to summarise: one of "nmb", "inb", "cutpoints", "qalys" or
+"costs". Defaults to "nmb".}
 
 \item{inb_ref_col}{Which cutpoint method to use as the reference strategy
 when calculating the incremental net monetary benefit.
 See \code{do_nmb_sim} for more information.}
 
 \item{conf.level}{The confidence level of the interval.
-Defaults to 0.95(coloured area of distribution represents 95\% CIs).}
+Defaults to 0.95 (coloured area of distribution represents 95\% CIs).}
 
 \item{methods_order}{The order (left to right) to display the
 cutpoint methods.}

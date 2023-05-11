@@ -134,6 +134,7 @@ get_nmb_sampler <- function(outcome_cost,
 
   class(.f) <- "NMBsampler"
   attr(.f, "track_qalys") <- track_qalys
+  attr(.f, "wtp") <- wtp
 
   .f
 }

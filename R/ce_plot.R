@@ -1,0 +1,184 @@
+#' Create a cost-effectiveness plot.
+#'
+#' @param object A \code{predictNMBsim} object.
+#' @param ref_col Which cutpoint method to use as the reference strategy
+#' when calculating the incremental net monetary benefit. Often sensible to use
+#' a "all" or "none" approach for this.
+#' @param wtp A \code{numeric}. The willingness to pay value used to create a
+#' cost-effectiveness plane on the plot (if \code{show_wtp = TRUE}).
+#' @param show_wtp A \code{logical}. Whether or not to show the willingness to
+#' pay plane.
+#' @param methods_order The order (within the legend) to display the
+#' cutpoint methods.
+#' @param rename_vector A named vector for renaming the methods in the summary.
+#' The values of the vector are the default names and the names given are the
+#' desired names in the output.
+#' @param ... Additional (unused) arguments.
+#'
+#' @details
+#' This plot method works with \code{predictNMBsim} objects that are created
+#' using \code{do_nmb_sim()}. Can be used to visualise the simulations on a
+#' cost-effectiveness plot (costs vs effectiveness)
+#'
+#' @return Returns a \code{ggplot} object.
+#' @export
+#'
+#' @examples
+#' \donttest{
+#' get_nmb_evaluation <- get_nmb_sampler(
+#'   qalys_lost = function() rnorm(1, 0.33, 0.03),
+#'   wtp=28000,
+#'   high_risk_group_treatment_effect = function() exp(rnorm(n = 1, mean = log(0.58), sd = 0.43)),
+#'   high_risk_group_treatment_cost = function() rnorm(n = 1, mean = 161, sd = 49)
+#' )
+#'
+#' sim_obj <- do_nmb_sim(
+#'   sample_size = 200, n_sims = 50, n_valid = 10000, sim_auc = 0.7,
+#'   event_rate = 0.1, fx_nmb_training = get_nmb_evaluation, fx_nmb_evaluation = get_nmb_evaluation
+#' )
+#'
+#' ce_plot(sim_obj, ref_col = "all")
+#' }
+ce_plot <- function(object,
+                    ref_col,
+                    wtp,
+                    show_wtp = TRUE,
+                    methods_order = NULL,
+                    rename_vector,
+                    ...) {
+  UseMethod("ce_plot")
+}
+
+
+#' Create a cost-effectiveness plot.
+#'
+#' @param object A \code{predictNMBsim} object.
+#' @param ref_col Which cutpoint method to use as the reference strategy
+#' when calculating the incremental net monetary benefit. Often sensible to use
+#' a "all" or "none" approach for this.
+#' @param wtp A \code{numeric}. The willingness to pay value used to create a
+#' cost-effectiveness plane on the plot (if \code{show_wtp = TRUE}).
+#' @param show_wtp A \code{logical}. Whether or not to show the willingness to
+#' pay plane.
+#' @param methods_order The order (within the legend) to display the
+#' cutpoint methods.
+#' @param rename_vector A named vector for renaming the methods in the summary.
+#' The values of the vector are the default names and the names given are the
+#' desired names in the output.
+#' @param ... Additional (unused) arguments.
+#'
+#' @details
+#' This plot method works with \code{predictNMBsim} objects that are created
+#' using \code{do_nmb_sim()}. Can be used to visualise the simulations on a
+#' cost-effectiveness plot (costs vs effectiveness)
+#'
+#' @return Returns a \code{ggplot} object.
+#' @export
+#'
+#' @examples
+#' \donttest{
+#' get_nmb_evaluation <- get_nmb_sampler(
+#'   qalys_lost = function() rnorm(1, 0.33, 0.03),
+#'   wtp=28000,
+#'   high_risk_group_treatment_effect = function() exp(rnorm(n = 1, mean = log(0.58), sd = 0.43)),
+#'   high_risk_group_treatment_cost = function() rnorm(n = 1, mean = 161, sd = 49)
+#' )
+#'
+#' sim_obj <- do_nmb_sim(
+#'   sample_size = 200, n_sims = 50, n_valid = 10000, sim_auc = 0.7,
+#'   event_rate = 0.1, fx_nmb_training = get_nmb_evaluation, fx_nmb_evaluation = get_nmb_evaluation
+#' )
+#'
+#' ce_plot(sim_obj, ref_col = "all")
+#' }
+ce_plot.predictNMBsim <- function(object,
+                                  ref_col,
+                                  wtp,
+                                  show_wtp = TRUE,
+                                  methods_order = NULL,
+                                  rename_vector,
+                                  ...) {
+  if (missing(ref_col)) {
+    stop("'ref_col' must be specified for creating a cost-effectiveness plot.")
+  }
+
+  p_data_costs <- get_plot_data(
+    x = object,
+    what = "costs",
+    methods_order = methods_order,
+    rename_vector = rename_vector,
+    inb_ref_col = ref_col
+  )
+
+  p_data_qalys <- get_plot_data(
+    x = object,
+    what = "qalys",
+    methods_order = methods_order,
+    rename_vector = rename_vector,
+    inb_ref_col = ref_col
+  )
+
+  p_data <- rbind(
+    tibble::add_column(p_data_costs, type = "costs"),
+    tibble::add_column(p_data_qalys, type = "qalys")
+  ) %>%
+    dplyr::select(-c(percentile, in_interval)) %>%
+    tidyr::pivot_wider(names_from = "type", values_from = "value")
+
+  p <- p_data %>%
+    ggplot2::ggplot(ggplot2::aes(qalys, costs, col = name)) +
+    ggplot2::geom_point(shape = 21) +
+    ggplot2::geom_hline(yintercept = 0) +
+    ggplot2::geom_vline(xintercept = 0)
+
+  if (show_wtp) {
+    if (!is.function(attr(object$meta_data$fx_nmb_evaluation, "wtp"))) {
+      if (missing(wtp)) {
+        wtp <- attr(object$meta_data$fx_nmb_evaluation, "wtp")
+      } else {
+        assertthat::is.number(wtp)
+        if (!approx_match(wtp, attr(object$meta_data$fx_nmb_evaluation, "wtp")))
+        message(paste0(
+          "wtp is stored in predictNMBsim object (wtp = ",
+          attr(object$meta_data$fx_nmb_evaluation, "wtp"), ")\n\n",
+
+          "but has also been specified (wtp = ", wtp, ")\n\n",
+
+          "Using a different WTP for evaluating the simulations (NMB) and ",
+          "within the cost-effectiveness plot may lead to misinterpretation!"
+        ))
+      }
+    } else {
+      message(
+        "The wtp is stored in the predictNMBsim object as a function,",
+        " not a fixed value.\n\n"
+      )
+      if (!missing(wtp)) {
+        message(
+          "Using the specified wtp value to draw the cost-effectiveness plane",
+          " and ignoring the stored wtp.\n\n"
+        )
+        assertthat::is.number(wtp)
+      } else {
+        wtp <- mean(unlist(replicate(
+          10000,
+          attr(object$meta_data$fx_nmb_evaluation, "wtp")(),
+          simplify = F
+        )))
+        message(paste0(
+          "No wtp was specified. Using the mean of 10000 samples of the wtp",
+          " function within the predictNMBsim object (wtp = ",
+          round(wtp, getOption("digits")), ")"
+        ))
+      }
+    }
+
+    p <- p +
+      ggplot2::geom_abline(
+        intercept = 0,
+        slope = wtp
+      )
+  }
+
+  p
+}
