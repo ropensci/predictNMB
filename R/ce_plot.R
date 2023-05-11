@@ -102,6 +102,15 @@ ce_plot.predictNMBsim <- function(object,
     stop("'ref_col' must be specified for creating a cost-effectiveness plot.")
   }
 
+  if (!object$meta_data$track_qalys) {
+    stop("This predictNMBsim object did not track the QALYs and costs at each",
+         " simulation so a cost-effectiveness plot cannot be made.",
+         " This is likley because the functions used for ",
+         "'fx_nmb_training' and 'fx_nmb_evaluation' were either not made using",
+         " 'get_nmb_sampler()' or, if they were, they didn't use 'qalys_lost'",
+         " and 'wtp'.")
+  }
+
   p_data_costs <- get_plot_data(
     x = object,
     what = "costs",

@@ -273,7 +273,7 @@ test_that("print method - works", {
   expect_snapshot_output(print.predictNMBsim(obj))
 })
 
-
+# get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 # predictNMBsim_obj <- do_nmb_sim(
 #   n_sims = 10, n_valid = 1000, sim_auc = 0.7, event_rate = 0.1,
 #   fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb

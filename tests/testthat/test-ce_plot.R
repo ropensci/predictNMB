@@ -66,6 +66,12 @@ test_that("ce_plot works", {
     ce_plot(sim_obj, ref_col = "none"),
     "10000 samples"
   )
+
+  sim_obj <- readRDS(test_path("fixtures", "predictNMBsim_object.rds"))
+  expect_error(
+    ce_plot(sim_obj, ref_col = "none"),
+    "cost-effectiveness plot cannot be made"
+  )
 })
 
 # get_nmb_training <- get_nmb_sampler(
