@@ -60,20 +60,32 @@ remotes::install_github("ropensci/predictNMB")
 install.packages("predictNMB", repos = "https://ropensci.r-universe.dev")
 ```
 
-## Estimating model cutpoints
+## Estimating model performance
 
-We must first define a hypothetical NMB associated with each square of a confusion matrix (2x2 table). To do this, we create an R function which, when run, returns a named vector representing the four NMB values that we need. `get_nmb_sampler()` is a `predictNMB` function that makes creating the function easier!
+We must first define a hypothetical NMB associated with each square of a confusion matrix (2$\times$2 table). To do this, we create an R function which, when run, returns a named vector representing the four NMB values that we need. Since we are using Quality-adjusted life years lost (`qalys_lost`) due to the event and a willingness to pay (`wtp`) value of \$28,000, this will function will also store some other details so that we can create a cost-effectiveness plot later.
+
+`get_nmb_sampler()` is a `predictNMB` function that makes creating the function easier! If you create these functions without `get_nmb_sampler()`, you can't make the cost-effectiveness plot but can still evaluate in terms of NMB.
+
+Here, we make `NMBsampler` functions for cutpoint selection and evaluation separately. These incorporate uncertainty by passing in functions that sample values from their underlying distributions. The healthcare event leads to about 1 QALY lost, the cost of the treatment is about \$800 and the treatment reduces the rate of the event by about 18%
 
 ```{r}
 library(predictNMB)
 
-fx_nmb <- get_nmb_sampler(
-  outcome_cost = 100,
-  high_risk_group_treatment_effect = 0.35,
-  high_risk_group_treatment_cost = 10
+fx_nmb_training <- get_nmb_sampler(
+  wtp = 28033,
+  qalys_lost = function() rnorm(n = 1, 1, 0.05), # about 1
+  high_risk_group_treatment_effect = function() rbeta(n = 1, 200, 900), # about 0.11
+  high_risk_group_treatment_cost = function() rgamma(n = 1, 2400, 3),   # about $800
+  use_expected_values = TRUE
 )
 
-fx_nmb()
+
+fx_nmb_evaluation <- get_nmb_sampler(
+  wtp = 28033,
+  qalys_lost = function() rnorm(n = 1, 1, 0.05),
+  high_risk_group_treatment_effect = function() rbeta(n = 1, 200, 900),
+  high_risk_group_treatment_cost = function() rgamma(n = 1, 2400, 3)
+)
 ```
 
 We can then pass this to the simulation function.
@@ -105,8 +117,8 @@ cl <- makeCluster(ncores)
 
 ```{r warning=FALSE}
 sim_screen_obj <- screen_simulation_inputs(
-  n_sims = 1000, n_valid = 10000, sim_auc = seq(0.7, 0.95, 0.05), event_rate = 0.1,
-  fx_nmb_training = fx_nmb, fx_nmb_evaluation = fx_nmb,
+  n_sims = 500, n_valid = 10000, sim_auc = seq(0.7, 0.95, 0.05), event_rate = 0.05,
+  fx_nmb_training = fx_nmb_training, fx_nmb_evaluation = fx_nmb_evaluation,
   cutpoint_methods = c("all", "none", "youden"), cl = cl
 )
 ```
@@ -130,7 +142,7 @@ single_sim_obj <- do_nmb_sim(
 ```
 
 ```{r}
-single_sim_obj <- sim_screen_obj$simulations[[6]]
+single_sim_obj <- sim_screen_obj$simulations[[5]]
 ```
 
 When plotting a single set of simulation inputs, we see the distributions of the NMB across all simulations under each strategy. Note that we have added some tasteful themes using `theme_sim()` that help reduce clutter on these types of plots.
@@ -138,6 +150,14 @@ When plotting a single set of simulation inputs, we see the distributions of the
 ```{r}
 autoplot(single_sim_obj) + theme_sim()
 ```
+
+For this scenario, when the model has an AUC of 0.9, we can see that the NMB is best when using the model-guided decisions. However, decision makers may want to visualise these on a cost-effectiveness plot which shows the health benefit versus the costs. We can do this using the `ce_plot()` function, specifying the treat-none option as the reference strategy.
+
+```{r}
+ce_plot(single_sim_obj, ref_col = "none")
+```
+
+From this plot, we can see that both the treat-all and model-guided decision lead to more QALYs than treating nobody (because more patients are receiving an effective treatment) but that the treat-all strategy is not cost effective according to our cost-effectiveness plane (based on a willingness to pay of \$28,033). Based on this, we would conclude that the hypothetical model-guided decision support system would be likely to be cost-effective should we be able to develop a model with this level of discrimination for this specific healthcare problem/context.
 
 ## Citation
 
