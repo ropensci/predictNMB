@@ -189,5 +189,10 @@ ce_plot.predictNMBsim <- function(object,
       )
   }
 
-  p
+  p +
+    ggplot2::labs(
+      x = "Incremental Effectiveness (Quality-Adjusted Life Years)",
+      y = "Incremental Costs ($)",
+      col = "Cutpoint Methods"
+    )
 }
