@@ -18,11 +18,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(predictNMB)
-library(parallel)
-```
-
 # Detailed example
 
 Economic analyses often combine information from a variety of sources, including randomised controlled trials, costing studies, and local data. An advantage of simulation is that it can estimate the utility of a proposed intervention prior to implementation. 
@@ -45,12 +40,17 @@ With these inputs, we can populate our confusion matrix (2 $\times$ 2 table), wh
 
 ## Model inputs
 
-First, we need to define our get_nmb_sampler function, which provides data for our simulation. In this case, the intervention is associated with a hazard ratio of 0.58 for pressure ulcer under intervention conditions compared to standard care. We can use a probability-weighted cost saving for successful prevention, at \$9324*(0.58) = an improvement of around \$5048. After including \$161 in intervention costs, the net benefit is around \$4888 for a successfully prevented pressure ulcer. We also want to know how this impacts the patient, so we include a utility loss of 0.23 as a result of getting a pressure ulcer.
+```{r setup}
+library(predictNMB)
+library(parallel)
+```
 
-The AUC is 0.82, which represents the proportion of random positive patients that received a higher probability of an injury than random negative patients (and vice versa). A useful property of the AUC is that it is the same no matter what probability threshold we use. In our case, an AUC of 0.82 means that the model will assign higher probabilities of a pressure ulcer to around 82% of patients who go on to develop an ulcer compared to patients that don't.
+First, we need to create our NMB sampler function using `get_nmb_sampler()`, which provides data for our simulation. In this case, the intervention is associated with a hazard ratio of 0.58 for pressure ulcer under intervention conditions compared to standard care. We can use a probability-weighted cost saving for successful prevention, at \$9324*(0.58) = an improvement of around \$5048. After including \$161 in intervention costs, the net benefit is around \$4888 for a successfully prevented pressure ulcer. We also want to know how this impacts the patient, so we include a utility loss (lost QALYs) of 0.23 as a result of getting a pressure ulcer.
+
+The AUC for our hypothetical model is 0.82, which represents the proportion of random positive patients that received a higher probability of an injury than random negative patients (and vice versa). A useful property of the AUC is that it is the same no matter what probability threshold we use. In our case, an AUC of 0.82 means that the model will assign higher probabilities of a pressure ulcer to around 82% of patients who go on to develop an ulcer compared to patients that don't.
+
 
 ```{r}
-
 fx_nmb <- get_nmb_sampler(
   outcome_cost = 9324,
   wtp = 28033,
@@ -97,7 +97,6 @@ nmb_simulation <- do_nmb_sim(
 ```{r, echo=FALSE, eval=FALSE}
 saveRDS(nmb_simulation, "fixtures/detailed_example-nmb_simulation.rds")
 ```
-
 
 ```{r}
 nmb_simulation
