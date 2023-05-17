@@ -72,7 +72,7 @@ nmb_sampler_training <- get_nmb_sampler(
   high_risk_group_treatment_effect = function() rbeta(n = 1, shape1 = 40, shape2 = 60),
   use_expected_values = TRUE
 )
-rbind(get_nmb_sampler_training(), get_nmb_sampler_training(), get_nmb_sampler_training())
+rbind(nmb_sampler_training(), nmb_sampler_training(), nmb_sampler_training())
 
 ```
 
