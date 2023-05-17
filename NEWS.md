@@ -1,5 +1,15 @@
 # predictNMB (development version)
 
+* Track QALYs and intervention costs
+  
+  * Track QALYs and intervention costs separately from NMB within simulations
+  
+  * `get_nmb_sampler()` now returns a `NMBsampler` object with attributes to 
+    indicate whether QALYs should be tracked during simulations and the WTP used
+  
+  * If QALYs are tracked, `ce_plot()` can be used to create a cost-effectiveness
+    plot
+
 # predictNMB 0.1.0
 
 * Updates to README, vignettes and documentation for clarity
