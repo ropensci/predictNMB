@@ -8,7 +8,7 @@
   object,
   x_axis_var = NULL,
   constants = list(),
-  what = c("nmb", "inb", "cutpoints"),
+  what = c("nmb", "inb", "cutpoints", "qalys", "costs"),
   inb_ref_col = NA,
   plot_range = TRUE,
   plot_conf_level = TRUE,
@@ -34,8 +34,8 @@ object, this argument can be used to modify the selected values for all
 those except the input that's varying along the x-axis. See the
 \href{https://docs.ropensci.org/predictNMB/articles/summarising-results-with-predictNMB.html}{summarising methods vignette}.}
 
-\item{what}{What to summarise: one of "nmb", "inb" or "cutpoints".
-Defaults to "nmb".}
+\item{what}{What to summarise: one of "nmb", "inb", "cutpoints", "qalys" or
+"costs". Defaults to "nmb".}
 
 \item{inb_ref_col}{Which cutpoint method to use as the reference strategy
 when calculating the incremental net monetary benefit.

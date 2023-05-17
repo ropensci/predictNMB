@@ -24,7 +24,7 @@ Returns a \code{list}.
 Gets probability thresholds given predicted probabilities, outcomes and NMB.
 }
 \examples{
-
+\donttest{
 # get thresholds using default (all inbuilt) cutpoint methods
 get_thresholds(
   predicted = runif(1000),
@@ -74,4 +74,5 @@ get_thresholds(
   ),
   nmb = c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
 )
+}
 }

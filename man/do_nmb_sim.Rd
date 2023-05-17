@@ -59,10 +59,10 @@ predicted class (i.e. c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)))}
 See \code{?get_thresholds} for an example of a user-defined cutpoint
 function.}
 
-\item{fx_nmb_training}{Function that returns a named vector of NMB assigned
+\item{fx_nmb_training}{Function or \code{NMBsampler} that returns a named vector of NMB assigned
 to classifications used for obtaining cutpoint on training set.}
 
-\item{fx_nmb_evaluation}{Function that returns a named vector of NMB
+\item{fx_nmb_evaluation}{Function or \code{NMBsampler} that returns a named vector of NMB
 assigned to classifications used for obtaining cutpoint on evaluation set.}
 
 \item{meet_min_events}{Whether or not to incrementally add samples until the

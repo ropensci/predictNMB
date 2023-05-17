@@ -1,4 +1,4 @@
-#' Make a NMB sampler (an R function) for use in \code{do_nmb_sim()} or
+#' Make a NMB sampler for use in \code{do_nmb_sim()} or
 #' \code{screen_simulation_inputs()}
 #'
 #' @param outcome_cost The cost of the outcome. Must be provided if \code{wtp}
@@ -27,7 +27,7 @@
 #' @param nboot The number of samples to use when creating a function that
 #' returns the expected values. Defaults to 10000.
 #'
-#' @return Returns a \code{function}.
+#' @return Returns a \code{NMBsampler} object.
 #' @export
 #'
 #' @examples
@@ -65,6 +65,9 @@ get_nmb_sampler <- function(outcome_cost,
       "are provided but not both. Please provide both or neither."
     )
   }
+
+  track_qalys <- !missing(qalys_lost) & !missing(wtp)
+
   if (missing(outcome_cost) & missing(wtp)) {
     stop(
       "no costs provided for making nmb function. Please provide either a",
@@ -105,14 +108,31 @@ get_nmb_sampler <- function(outcome_cost,
       low_risk_group_treatment_cost <- low_risk_group_treatment_cost()
     }
 
-    c(
-      "TP" = -(outcome_cost + wtp * qalys_lost) *
-        (1 - high_risk_group_treatment_effect) - high_risk_group_treatment_cost,
-      "FP" = -high_risk_group_treatment_cost,
-      "TN" = -low_risk_group_treatment_cost,
-      "FN" = -(outcome_cost + wtp * qalys_lost) *
-        (1 - low_risk_group_treatment_effect) - low_risk_group_treatment_cost
-    )
+    if (track_qalys) {
+      c(
+        "TP" = -(outcome_cost + wtp * qalys_lost) *
+          (1 - high_risk_group_treatment_effect) - high_risk_group_treatment_cost,
+        "FP" = -high_risk_group_treatment_cost,
+        "TN" = -low_risk_group_treatment_cost,
+        "FN" = -(outcome_cost + wtp * qalys_lost) *
+          (1 - low_risk_group_treatment_effect) - low_risk_group_treatment_cost,
+        "qalys_lost" = qalys_lost,
+        "wtp" = wtp,
+        "high_risk_group_treatment_effect" = high_risk_group_treatment_effect,
+        "high_risk_group_treatment_cost" = high_risk_group_treatment_cost,
+        "low_risk_group_treatment_effect" = low_risk_group_treatment_effect,
+        "low_risk_group_treatment_cost" = low_risk_group_treatment_cost
+      )
+    } else {
+      c(
+        "TP" = -(outcome_cost + wtp * qalys_lost) *
+          (1 - high_risk_group_treatment_effect) - high_risk_group_treatment_cost,
+        "FP" = -high_risk_group_treatment_cost,
+        "TN" = -low_risk_group_treatment_cost,
+        "FN" = -(outcome_cost + wtp * qalys_lost) *
+          (1 - low_risk_group_treatment_effect) - low_risk_group_treatment_cost
+      )
+    }
   }
 
   if (use_expected_values) {
@@ -122,6 +142,10 @@ get_nmb_sampler <- function(outcome_cost,
       expected_values
     }
   }
+
+  class(.f) <- "NMBsampler"
+  attr(.f, "track_qalys") <- track_qalys
+  attr(.f, "wtp") <- wtp
 
   .f
 }

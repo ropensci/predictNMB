@@ -1,6 +1,7 @@
 ---
 title: "Summarising results from predictNMB"
 output: rmarkdown::html_vignette
+bibliography: predictNMB-vignettes.bib
 vignette: >
   %\VignetteIndexEntry{summarising-results-with-predictNMB}
   %\VignetteEngine{knitr::rmarkdown}
@@ -30,27 +31,20 @@ This vignette is purely about how to use the `autoplot()` method and `summary()`
 Firstly, as an example case, we will run `screen_simulation_inputs()`.
 
 ```{r}
-get_nmb_sampler_training <- function() {
-  c(
-    "TP" = rnorm(n = 1, mean = -80, sd = 5),
-    "TN" = 0,
-    "FP" = -20,
-    "FN" = rnorm(n = 1, mean = -100, sd = 10)
-  )
-}
+get_nmb_sampler_training <- get_nmb_sampler(
+  wtp = 28033,
+  qalys_lost = function() rnorm(n = 1, mean = 0.0036, sd = 0.0005),
+  high_risk_group_treatment_cost = function() rnorm(n = 1, mean = 20, sd = 3),
+  high_risk_group_treatment_effect = function() rbeta(n = 1, shape1 = 40, shape2 = 60),
+  use_expected_values = TRUE
+)
 
-get_nmb_sampler_evaluation <- function() {
-  c(
-    "TP" = -80,
-    "TN" = 0,
-    "FP" = -20,
-    "FN" = -100
-  )
-}
-```
-
-```{r, eval=FALSE}
-cl <- makeCluster(2)
+get_nmb_sampler_evaluation <- get_nmb_sampler(
+  wtp = 28033,
+  qalys_lost = function() rnorm(n = 1, mean = 0.0036, sd = 0.0005),
+  high_risk_group_treatment_cost = function() rnorm(n = 1, mean = 20, sd = 3),
+  high_risk_group_treatment_effect = function() rbeta(n = 1, shape1 = 40, shape2 = 60)
+)
 ```
 
 ```{r, echo=FALSE}
@@ -58,6 +52,7 @@ sim_screen_obj <- readRDS("fixtures/predictNMB-sim_screen_obj.rds")
 ```
 
 ```{r, eval=FALSE}
+cl <- makeCluster(2)
 sim_screen_obj <- screen_simulation_inputs(
   n_sims = 500,
   n_valid = 10000,
@@ -190,6 +185,8 @@ do_nmb_sim_obj <- do_nmb_sim(
 )
 ```
 
+### `autoplot()`
+
 The plots here show the results of a single simulation and compare the available cutpoints.
 
 ```{r}
@@ -246,6 +243,33 @@ autoplot(
 ) + theme_sim()
 ```
 
+
+### `ce_plot()`
+
+A cost-effectiveness plot may be useful to decision makers deciding between competing alternatives as it shows both the incremental healthcare costs associated with the change as well as the incremental improvement in patient benefit (QALYs). For a detailed explanation on how to interpret cost-effectiveness plots, see [@fenwick2006].
+
+For these plots, a reference group must be specified with `ref_col`.
+
+```{r}
+ce_plot(do_nmb_sim_obj, ref_col = "none")
+```
+
+Similarly to `autoplot()`, the methods can be selected and renamed using `methods_order` and `rename_vector`. The diagonal line is the cost-effectiveness plane and this is based on the willingness to pay. In this example, it was \$28033 and is stored within the `predictNMBsim` object via the `fx_nmb_evaluation` function that was originally used.
+
+```{r}
+attr(do_nmb_sim_obj$meta_data$fx_nmb_evaluation, "wtp")
+```
+The WTP can be adjusted using the WTP argument but it is not advisable to use a different value to what was used in the initial simulations. 
+
+```{r}
+ce_plot(do_nmb_sim_obj, ref_col = "none", wtp = 100000)
+```
+
+The line can be removed by using `show_wtp = FALSE`.
+
+```{r}
+ce_plot(do_nmb_sim_obj, ref_col = "none", show_wtp = FALSE)
+```
 
 # Making tables with predictNMB
 
@@ -343,3 +367,6 @@ summary(sim_screen_obj, show_full_inputs = TRUE) %>%
   merge_v(j = 1:9) %>% 
   theme_box()
 ```
+
+
+# References
