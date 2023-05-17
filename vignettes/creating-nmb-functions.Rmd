@@ -27,6 +27,8 @@ The key aspect of `predictNMB` is its ability to evaluate simulated prediction m
 
 This vignette will guide you through creating these functions by hand, as well as using the helper function, `get_nmb_sampler()`. We start with key considerations for the user when creating these functions to best reflect their clinical context, and finish by using the created functions with `do_nmb_sim()`.
 
+If you, the user, wish to incorporate Quality-Adjusted Life Years (QALYs) lost due to the event being predicted and a willingness to pay (WTP) and be able to create a cost-effectiveness plot, you must use `get_nmb_sampler()` rather than constructing this function by hand. If only the vector of values above are recorded, `do_nmb_sim()` cannot determine how the NMB is broken down into QALYs and healthcare/intervention costs. ([More on this later](https://docs.ropensci.org/predictNMB/articles/creating-nmb-functions.html#tracking-qalys).)
+
 ## Key considerations
 
 The functions created here are used for two purposes, depending on which argument they are passed to, within `do_nmb_sim()` or `screen_simulation_inputs()`. The arguments that require these functions are:
@@ -235,6 +237,63 @@ foo4 <-
 
 foo4()
 foo1()
+```
+
+## Tracking QALYs
+
+When the NMB sampling function is made using `get_nmb_sampler()` and incorporates `qalys_lost` and `wtp`, the resulting object is a bit different to the basic function returning the four values for TP, FP, TN, FN. `foo4` below is a function which returns the same values for these four classifications as the previous examples but, since it includes a `wtp` and `qalys_lost`, it knows that it's possible to create a cost-effectiveness plot if the extra details are recorded during the simulations. As a result, the vector returned when evaluating `foo4` includes the treatment costs and effectiveness values, the QALYs lost and the WTP. Functions made using `get_nmb_sampler()` are `NMBsampler` objects and they also contain whether to do these extra evaluations at each simulation by the value of the `track_qalys` attribute. The WTP is stored in the `wtp` attribute and this is used to create the cost-effectiveness plan in the cost-effectiveness plot.
+
+```{r}
+foo4 <-
+  get_nmb_sampler(
+    wtp = 8,
+    qalys_lost = 0.5,
+    high_risk_group_treatment_cost = 1,
+    high_risk_group_treatment_effect = 0.5
+  )
+
+foo4()
+class(foo4)
+class(foo1)
+attributes(foo4)
+```
+
+Note that if we run our simulation when we use `foo4` as our evaluation function, we are able to create a `ce_plot()` and the resulting object from `do_nmb_sim()` has some extra content due to storing these extra data at each iteration of the simulation. Below, we pass these functions to `do_nmb_sim()` (more details on this later). For the `simulation_foo4`, we used `foo4` which has the ability to track QALYs and for `simulation_foo1`, we used `foo1`, which doesn't have that ability.
+
+```{r, eval=FALSE}
+simulation_foo4 <- do_nmb_sim(
+  sample_size = 200, n_sims = 500, n_valid = 10000, sim_auc = 0.7,
+  event_rate = 0.1, fx_nmb_training = foo1, fx_nmb_evaluation = foo4,
+  cutpoint_methods = c("all", "none", "youden", "value_optimising")
+)
+
+simulation_foo1 <- do_nmb_sim(
+  sample_size = 200, n_sims = 500, n_valid = 10000, sim_auc = 0.7,
+  event_rate = 0.1, fx_nmb_training = foo1, fx_nmb_evaluation = foo1,
+  cutpoint_methods = c("all", "none", "youden", "value_optimising")
+)
+```
+
+```{r, echo=FALSE}
+simulation_foo4 <- readRDS("fixtures/nmb-functions-simulation_foo4.rds")
+simulation_foo1 <- readRDS("fixtures/nmb-functions-simulation_res1.rds")
+```
+
+```{r, eval=FALSE, echo=FALSE}
+saveRDS(simulation_foo4, "fixtures/nmb-functions-simulation_foo4.rds")
+saveRDS(simulation_foo1, "fixtures/nmb-functions-simulation_res1.rds")
+```
+
+There's a difference in the data collected during the simulations between the two.
+```{r}
+names(simulation_foo4)
+names(simulation_foo1)
+```
+
+And when that data are available, we can create a cost-effectiveness plot with `ce_plot()`, but not without.
+```{r, error=TRUE}
+ce_plot(simulation_foo4, ref_col = "all")
+ce_plot(simulation_foo1, ref_col = "all")
 ```
 
 
