@@ -44,18 +44,16 @@ These are presented as a function so that we can repeatedly sample from it to ge
 ### Example function
 
 ```{r}
-get_nmb_sampler <- function() {
-  c(
-    "TP" = rnorm(n = 1, mean = -80, sd = 5),
-    "TN" = 0,
-    "FP" = -20,
-    "FN" = rnorm(n = 1, mean = -100, sd = 10)
-  )
-}
+nmb_sampler <- get_nmb_sampler(
+  wtp = 28033,
+  qalys_lost = function() rnorm(n = 1, mean = 0.0036, sd = 0.0005),
+  high_risk_group_treatment_cost = function() rnorm(n = 1, mean = 20, sd = 3),
+  high_risk_group_treatment_effect = function() rbeta(n = 1, shape1 = 40, shape2 = 60)
+)
 
-get_nmb_sampler()
-get_nmb_sampler()
-get_nmb_sampler()
+rbind(nmb_sampler(), nmb_sampler(), nmb_sampler())
+
+
 ```
 
 Every time we run this function, we get a new named vector for the NMB associated with each prediction. We can inform the distributions that we sample from based on the literature for the specific clinical prediction model at hand. See the [detailed example vignette](https://docs.ropensci.org/predictNMB/articles/detailed-example.html) for a more in-depth description of using estimates from the literature. 
@@ -64,16 +62,18 @@ In this example function, the value returned for the True Negative (TN) is zero.
 
 Since we would expect to use our best estimates, in this case the expected value of the NMB associated with each prediction for an actual model (and not take a random sample from its underlying distributions), we will make a separate function for the purpose of obtaining the cutpoint, separately from the one we used (above) to evaluate it.
 
+We can use the same code to create the function with `get_nmb_sampler()` but use `use_expected_values = TRUE` so that it gives us the expected values for each rather than resampling from the underlying distribution each time it's evaluated.
+
 ```{r}
-get_nmb_sampler_training <- function() {
-  c(
-    "TP" = -80,
-    "TN" = 0,
-    "FP" = -20,
-    "FN" = -100
-  )
-}
-get_nmb_sampler_training()
+nmb_sampler_training <- get_nmb_sampler(
+  wtp = 28033,
+  qalys_lost = function() rnorm(n = 1, mean = 0.0036, sd = 0.0007),
+  high_risk_group_treatment_cost = rnorm(n = 1, mean = 20, sd = 5),
+  high_risk_group_treatment_effect = function() rbeta(n = 1, shape1 = 40, shape2 = 60),
+  use_expected_values = TRUE
+)
+rbind(get_nmb_sampler_training(), get_nmb_sampler_training(), get_nmb_sampler_training())
+
 ```
 
 These inputs can be passed to `screen_simulation_inputs()` under the parameters `fx_nmb_training` and `fx_nmb_evaluation`, to be evaluated in each simulation. 
@@ -97,8 +97,8 @@ nmb_simulation <- do_nmb_sim(
   n_valid = 10000,
   sim_auc = 0.7,
   event_rate = 0.1,
-  fx_nmb_training = get_nmb_sampler_training,
-  fx_nmb_evaluation = get_nmb_sampler,
+  fx_nmb_training = nmb_sampler_training,
+  fx_nmb_evaluation = nmb_sampler,
   show_progress = TRUE
 )
 ```
@@ -133,7 +133,7 @@ We have options to include multiple cutpoint methods, and the default is to use 
 ```{r}
 get_inbuilt_cutpoint_methods()
 
-autoplot(nmb_simulation, methods = c("all", "none", "youden")) + theme_sim()
+autoplot(nmb_simulation, methods_order = c("all", "none", "youden")) + theme_sim()
 ```
 
 We can also use this same plotting function to visualise cutpoints or the incremental net monetary benefit (INB) if we have a known reference strategy, in this case treat-all:
@@ -160,6 +160,13 @@ head(nmb_simulation$df_result)
 head(nmb_simulation$df_thresholds)
 ```
 
+Since we incorporated QALYs and a WTP into out NMB sampling functions, we can also create a cost-effectiveness plot with `ce_plot()`. For more details on `ce_plot()`, see the - [Summarising results from `predictNMB vignette`](https://docs.ropensci.org/predictNMB/articles/summarising-results-with-predictNMB.html).
+
+```{r}
+ce_plot(nmb_simulation, ref_col = "all", methods_order = c("all", "none", "youden"))
+```
+
+
 
 # `screen_simulation_inputs()`
 
@@ -169,22 +176,19 @@ To do this, we compare multiple simulations with different inputs using `screen_
 
 We run the simulations in parallel by creating a cluster and passing this as an argument. This can also be done to `do_nmb_sim()` in the same way. This can take some time — the fewer cores used, the longer it takes. For more details on running in parallel, see the `parallel` package.
 
-```{r, eval=FALSE}
-cl <- makeCluster(2)
-```
-
 ```{r, echo=FALSE}
 sim_screen_obj <- readRDS("fixtures/predictNMB-sim_screen_obj.rds")
 ```
 
 ```{r, eval=FALSE}
+cl <- makeCluster(2)
 sim_screen_obj <- screen_simulation_inputs(
   n_sims = 500,
   n_valid = 10000,
   sim_auc = seq(0.7, 0.95, 0.05),
   event_rate = c(0.1, 0.2),
-  fx_nmb_training = get_nmb_sampler_training,
-  fx_nmb_evaluation = get_nmb_sampler,
+  fx_nmb_training = nmb_sampler_training,
+  fx_nmb_evaluation = nmb_sampler,
   cutpoint_methods = c("all", "none", "youden", "value_optimising"),
   cl = cl
 )
