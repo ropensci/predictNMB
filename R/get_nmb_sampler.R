@@ -108,20 +108,31 @@ get_nmb_sampler <- function(outcome_cost,
       low_risk_group_treatment_cost <- low_risk_group_treatment_cost()
     }
 
-    c(
-      "TP" = -(outcome_cost + wtp * qalys_lost) *
-        (1 - high_risk_group_treatment_effect) - high_risk_group_treatment_cost,
-      "FP" = -high_risk_group_treatment_cost,
-      "TN" = -low_risk_group_treatment_cost,
-      "FN" = -(outcome_cost + wtp * qalys_lost) *
-        (1 - low_risk_group_treatment_effect) - low_risk_group_treatment_cost,
-      "qalys_lost" = qalys_lost,
-      "wtp" = wtp,
-      "high_risk_group_treatment_effect" = high_risk_group_treatment_effect,
-      "high_risk_group_treatment_cost" = high_risk_group_treatment_cost,
-      "low_risk_group_treatment_effect" = low_risk_group_treatment_effect,
-      "low_risk_group_treatment_cost" = low_risk_group_treatment_cost
-    )
+    if (track_qalys) {
+      c(
+        "TP" = -(outcome_cost + wtp * qalys_lost) *
+          (1 - high_risk_group_treatment_effect) - high_risk_group_treatment_cost,
+        "FP" = -high_risk_group_treatment_cost,
+        "TN" = -low_risk_group_treatment_cost,
+        "FN" = -(outcome_cost + wtp * qalys_lost) *
+          (1 - low_risk_group_treatment_effect) - low_risk_group_treatment_cost,
+        "qalys_lost" = qalys_lost,
+        "wtp" = wtp,
+        "high_risk_group_treatment_effect" = high_risk_group_treatment_effect,
+        "high_risk_group_treatment_cost" = high_risk_group_treatment_cost,
+        "low_risk_group_treatment_effect" = low_risk_group_treatment_effect,
+        "low_risk_group_treatment_cost" = low_risk_group_treatment_cost
+      )
+    } else {
+      c(
+        "TP" = -(outcome_cost + wtp * qalys_lost) *
+          (1 - high_risk_group_treatment_effect) - high_risk_group_treatment_cost,
+        "FP" = -high_risk_group_treatment_cost,
+        "TN" = -low_risk_group_treatment_cost,
+        "FN" = -(outcome_cost + wtp * qalys_lost) *
+          (1 - low_risk_group_treatment_effect) - low_risk_group_treatment_cost
+      )
+    }
   }
 
   if (use_expected_values) {

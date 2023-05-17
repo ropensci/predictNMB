@@ -92,7 +92,6 @@ test_that("ce_plot works", {
 #   fx_nmb_training = get_nmb_training, fx_nmb_evaluation = get_nmb_evaluation
 # )
 # saveRDS(predictNMBsim_obj, test_path("fixtures", "predictNMBsim_ce_object.rds"))
-
 # get_nmb_evaluation <- get_nmb_sampler(
 #   qalys_lost = function() rnorm(1, 0.33, 0.03),
 #   wtp = function() rnorm(1, 28000, 1000),
