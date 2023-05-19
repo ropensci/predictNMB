@@ -16,8 +16,15 @@ test_that("do_nmb_sim() works", {
   )
 
   expect_s3_class(out, "predictNMBsim")
-})
 
+  out <- do_nmb_sim(
+    sample_size = 100, n_sims = 10, n_valid = 1000, sim_auc = 0.7,
+    event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb,
+    show_progress = TRUE
+  )
+
+  expect_s3_class(out, "predictNMBsim")
+})
 
 test_that("do_nmb_sim() results are similar with different seeds", {
   get_nmb <- get_nmb_sampler(
@@ -264,8 +271,31 @@ test_that("do_nmb_sim() works in parallel", {
 
   expect_s3_class(out_par_progress, "predictNMBsim")
 
+  expect_error(
+    do_nmb_sim(
+      sample_size = 200, n_sims = 100, n_valid = 1000, sim_auc = 0.7,
+      event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb,
+      cl = cl, cutpoint_methods = c("f_cutpoint", "none")
+    ),
+    "You've included functions in in 'cutpoint_methods' which are neither"
+  )
   parallel::stopCluster(cl)
 })
+
+
+test_that("missing method", {
+  get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
+
+  expect_error(
+    do_nmb_sim(
+      n_sims = 10, n_valid = 1000, sim_auc = 0.7, event_rate = 0.1, sample_size = 5,
+      fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb,
+      cutpoint_methods = "f_cutpoint"
+    ),
+    'could not find function "f_cutpoint"'
+  )
+})
+
 
 test_that("print method - works", {
   obj <- readRDS(test_path("fixtures", "predictNMBsim_object.rds"))

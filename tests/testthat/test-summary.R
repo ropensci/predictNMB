@@ -33,7 +33,6 @@ test_that("predictNMBsim - summary (what) works", {
 
   expect_s3_class(predictNMBsim_cutpoints_tbl, "tbl")
   expect_snapshot_output(predictNMBsim_cutpoints_tbl)
-
 })
 
 test_that("predictNMBsim - summary (what) works", {

@@ -1,14 +1,14 @@
 test_that("ce_plot works", {
   get_nmb_training <- get_nmb_sampler(
     qalys_lost = function() rnorm(1, 0.33, 0.03),
-    wtp=28000,
+    wtp = 28000,
     high_risk_group_treatment_effect = function() exp(rnorm(n = 1, mean = log(0.58), sd = 0.43)),
     high_risk_group_treatment_cost = function() rnorm(n = 1, mean = 161, sd = 49),
     use_expected_values = TRUE
   )
   get_nmb_evaluation <- get_nmb_sampler(
     qalys_lost = function() rnorm(1, 0.33, 0.03),
-    wtp=28000,
+    wtp = 28000,
     high_risk_group_treatment_effect = function() exp(rnorm(n = 1, mean = log(0.58), sd = 0.43)),
     high_risk_group_treatment_cost = function() rnorm(n = 1, mean = 161, sd = 49)
   )

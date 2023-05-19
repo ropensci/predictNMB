@@ -27,7 +27,7 @@
 #' \donttest{
 #' get_nmb_evaluation <- get_nmb_sampler(
 #'   qalys_lost = function() rnorm(1, 0.33, 0.03),
-#'   wtp=28000,
+#'   wtp = 28000,
 #'   high_risk_group_treatment_effect = function() exp(rnorm(n = 1, mean = log(0.58), sd = 0.43)),
 #'   high_risk_group_treatment_cost = function() rnorm(n = 1, mean = 161, sd = 49)
 #' )
@@ -81,7 +81,7 @@ ce_plot <- function(object,
 #' \donttest{
 #' get_nmb_evaluation <- get_nmb_sampler(
 #'   qalys_lost = function() rnorm(1, 0.33, 0.03),
-#'   wtp=28000,
+#'   wtp = 28000,
 #'   high_risk_group_treatment_effect = function() exp(rnorm(n = 1, mean = log(0.58), sd = 0.43)),
 #'   high_risk_group_treatment_cost = function() rnorm(n = 1, mean = 161, sd = 49)
 #' )
@@ -106,12 +106,14 @@ ce_plot.predictNMBsim <- function(object,
   }
 
   if (!object$meta_data$track_qalys) {
-    stop("This predictNMBsim object did not track the QALYs and costs at each",
-         " simulation so a cost-effectiveness plot cannot be made.",
-         " This is likley because the functions used for ",
-         "'fx_nmb_training' and 'fx_nmb_evaluation' were either not made using",
-         " 'get_nmb_sampler()' or, if they were, they didn't use 'qalys_lost'",
-         " and 'wtp'.")
+    stop(
+      "This predictNMBsim object did not track the QALYs and costs at each",
+      " simulation so a cost-effectiveness plot cannot be made.",
+      " This is likley because the functions used for ",
+      "'fx_nmb_training' and 'fx_nmb_evaluation' were either not made using",
+      " 'get_nmb_sampler()' or, if they were, they didn't use 'qalys_lost'",
+      " and 'wtp'."
+    )
   }
 
   p_data_costs <- get_plot_data(
@@ -149,16 +151,15 @@ ce_plot.predictNMBsim <- function(object,
         wtp <- attr(object$meta_data$fx_nmb_evaluation, "wtp")
       } else {
         assertthat::is.number(wtp)
-        if (!approx_match(wtp, attr(object$meta_data$fx_nmb_evaluation, "wtp")))
-        message(paste0(
-          "wtp is stored in predictNMBsim object (wtp = ",
-          attr(object$meta_data$fx_nmb_evaluation, "wtp"), ")\n\n",
-
-          "but has also been specified (wtp = ", wtp, ")\n\n",
-
-          "Using a different WTP for evaluating the simulations (NMB) and ",
-          "within the cost-effectiveness plot may lead to misinterpretation!"
-        ))
+        if (!approx_match(wtp, attr(object$meta_data$fx_nmb_evaluation, "wtp"))) {
+          message(paste0(
+            "wtp is stored in predictNMBsim object (wtp = ",
+            attr(object$meta_data$fx_nmb_evaluation, "wtp"), ")\n\n",
+            "but has also been specified (wtp = ", wtp, ")\n\n",
+            "Using a different WTP for evaluating the simulations (NMB) and ",
+            "within the cost-effectiveness plot may lead to misinterpretation!"
+          ))
+        }
       }
     } else {
       message(
