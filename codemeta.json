@@ -2,18 +2,24 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "predictNMB",
-  "description": "Estimates when and where a model-guided treatment strategy may outperform a treat-all or treat-none approach by Monte Carlo simulation and evaluation of the Net Monetary Benefit.",
+  "description": "Estimates when and where a model-guided treatment strategy may outperform a treat-all or treat-none approach by Monte Carlo simulation and evaluation of the Net Monetary Benefit. Details can be viewed in Parsons et al. (2023) <doi:10.21105/joss.05328>.",
   "name": "predictNMB: Evaluate Clinical Prediction Models by Net Monetary Benefit",
   "codeRepository": "https://github.com/ropensci/predictNMB",
   "issueTracker": "https://github.com/ropensci/predictNMB/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
   "runtimePlatform": "R version 4.2.2 (2022-10-31 ucrt)",
+  "provider": {
+    "@id": "https://cran.r-project.org",
+    "@type": "Organization",
+    "name": "Comprehensive R Archive Network (CRAN)",
+    "url": "https://cran.r-project.org"
+  },
   "author": [
     {
       "@type": "Person",
@@ -296,7 +302,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "1164.651KB",
+  "fileSize": "4753.141KB",
   "citation": [
     {
       "@type": "ScholarlyArticle",
