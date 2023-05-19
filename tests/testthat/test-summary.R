@@ -34,6 +34,11 @@ test_that("predictNMBsim - summary (what) works", {
   expect_s3_class(predictNMBsim_cutpoints_tbl, "tbl")
   expect_snapshot_output(predictNMBsim_cutpoints_tbl)
 
+})
+
+test_that("predictNMBsim - summary (what) works", {
+  obj <- readRDS(test_path("fixtures", "predictNMBsim_object.rds"))
+
   # test that incremental net monetary benefit works for
   # summary.predictNMBsim()
   predictNMBsim_inb_tbl <- summary(
@@ -86,10 +91,14 @@ test_that("predictNMBscreen - summary works", {
   )
   expect_s3_class(predictNMBscreen_complex_1, "tbl")
   expect_snapshot_output(as.data.frame(predictNMBscreen_complex_1))
+  expect_equal(ncol(predictNMBscreen_default_tbl), 18)
+})
 
+test_that("predictNMBscreen - summary works", {
+  obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
   # test that show_full_inputs returns the wider dataset with simulation inputs
   tbl_with_full_inputs <- summary(obj, show_full_inputs = TRUE)
   expect_s3_class(tbl_with_full_inputs, "tbl")
   expect_snapshot_output(as.data.frame(tbl_with_full_inputs))
-  expect_gt(ncol(tbl_with_full_inputs), ncol(predictNMBscreen_default_tbl))
+  expect_equal(ncol(tbl_with_full_inputs), 26)
 })
