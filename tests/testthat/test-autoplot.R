@@ -71,6 +71,18 @@ test_that("predictNMBscreen - autoplot method (defaults) works", {
   )
 })
 
+test_that("predictNMBscreen - autoplot method (defaults) works", {
+  obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
+
+  # test default plotting of predictNMBscreen object
+  predictNMBscreen_plot <- autoplot(obj, dodge_width = 0.1)
+  expect_s3_class(predictNMBscreen_plot, "gg")
+  vdiffr::expect_doppelganger(
+    "autoplot.predictNMBscreen(obj) - dodged",
+    predictNMBscreen_plot
+  )
+})
+
 test_that("predictNMBscreen - autoplot method (what) works", {
   obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
 
@@ -94,6 +106,12 @@ test_that("predictNMBscreen - autoplot method (what) works", {
 test_that("predictNMBscreen - autoplot method (x_axis_var selection) works", {
   obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
 
+  # test x_axis default selection messaging
+  expect_message(
+    autoplot(obj),
+    "Screening over"
+  )
+
   # test numeric input (event_rate) being held constant
   predictNMBscreen_event_rate_plot <- autoplot(obj, x_axis_var = "event_rate")
   expect_s3_class(predictNMBscreen_event_rate_plot, "gg")
@@ -114,7 +132,20 @@ test_that("predictNMBscreen - autoplot method (x_axis_var selection) works", {
   )
 })
 
-test_that("predictNMBscreen - autoplot method (constants selection) works", {
+test_that("predictNMBscreen - autoplot method (constants selection) works-1", {
+  obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
+  # test on a *BAD* numeric input being held constant
+  expect_error(
+    autoplot(
+      obj,
+      x_axis_var = "fx_nmb_training",
+      constants = list(sim_auc = 0.81)
+    ),
+    "not included in the screened inputs and cannot be used"
+  )
+})
+
+test_that("predictNMBscreen - autoplot method (constants selection) works-2", {
   obj <- readRDS(test_path("fixtures", "predictNMBscreen_object.rds"))
 
   # test on a numeric input being held constant
@@ -129,14 +160,7 @@ test_that("predictNMBscreen - autoplot method (constants selection) works", {
     predictNMBscreen_constants_1
   )
 
-  # test on a *BAD* numeric input being held constant
-  expect_error(
-    autoplot(
-      obj,
-      x_axis_var = "fx_nmb_training",
-      constants = list(sim_auc = 0.81)
-    )
-  )
+
 
   # test on a function input being held constant
   predictNMBscreen_constants_2 <- autoplot(
