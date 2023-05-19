@@ -1,4 +1,4 @@
-# predictNMB (development version)
+# predictNMB 0.2.0
 
 * Track QALYs and intervention costs
   
