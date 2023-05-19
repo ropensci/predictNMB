@@ -11,6 +11,7 @@
   show_wtp = TRUE,
   methods_order = NULL,
   rename_vector,
+  shape = 21,
   ...
 )
 }
@@ -33,6 +34,9 @@ cutpoint methods.}
 \item{rename_vector}{A named vector for renaming the methods in the summary.
 The values of the vector are the default names and the names given are the
 desired names in the output.}
+
+\item{shape}{The \code{shape} used for \code{ggplot2::geom_point()}.
+Defaults to 21 (hollow circles).}
 
 \item{...}{Additional (unused) arguments.}
 }

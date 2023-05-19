@@ -65,6 +65,8 @@ ce_plot <- function(object,
 #' @param rename_vector A named vector for renaming the methods in the summary.
 #' The values of the vector are the default names and the names given are the
 #' desired names in the output.
+#' @param shape The \code{shape} used for \code{ggplot2::geom_point()}.
+#' Defaults to 21 (hollow circles).
 #' @param ... Additional (unused) arguments.
 #'
 #' @details
@@ -97,6 +99,7 @@ ce_plot.predictNMBsim <- function(object,
                                   show_wtp = TRUE,
                                   methods_order = NULL,
                                   rename_vector,
+                                  shape = 21,
                                   ...) {
   if (missing(ref_col)) {
     stop("'ref_col' must be specified for creating a cost-effectiveness plot.")
@@ -136,7 +139,7 @@ ce_plot.predictNMBsim <- function(object,
 
   p <- p_data %>%
     ggplot2::ggplot(ggplot2::aes(qalys, costs, col = name)) +
-    ggplot2::geom_point(shape = 21) +
+    ggplot2::geom_point(shape = shape) +
     ggplot2::geom_hline(yintercept = 0) +
     ggplot2::geom_vline(xintercept = 0)
 

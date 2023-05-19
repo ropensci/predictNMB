@@ -14,6 +14,8 @@ test_that("ce_plot works", {
   )
   sim_obj <- readRDS(test_path("fixtures", "predictNMBsim_ce_object.rds"))
 
+  expect_error(ce_plot(sim_obj), "'ref_col'")
+
   sim_ce_plot <- ce_plot(sim_obj, ref_col = "all")
   expect_s3_class(sim_ce_plot, "gg")
   vdiffr::expect_doppelganger(
@@ -28,16 +30,22 @@ test_that("ce_plot works", {
     sim_ce_plot
   )
 
+  sim_ce_plot <- ce_plot(sim_obj, ref_col = "none", shape = 19)
+  vdiffr::expect_doppelganger(
+    "ce_plot.predictNMBsim(obj) filled-points",
+    sim_ce_plot
+  )
+  sim_ce_plot <- ce_plot(sim_obj, ref_col = "none", shape = 2)
+  vdiffr::expect_doppelganger(
+    "ce_plot.predictNMBsim(obj) triangles",
+    sim_ce_plot
+  )
+
   sim_ce_plot <- ce_plot(sim_obj, ref_col = "none", wtp = 28000)
   expect_no_message(ce_plot(sim_obj, ref_col = "none", wtp = 28000))
   expect_message(
     ce_plot(sim_obj, ref_col = "none", wtp = 1),
     "misinterpretation"
-  )
-
-  expect_error(
-    ce_plot(sim_obj),
-    "'ref_col' must be specified"
   )
 
   vdiffr::expect_doppelganger(
@@ -61,16 +69,29 @@ test_that("ce_plot works", {
     high_risk_group_treatment_cost = function() rnorm(n = 1, mean = 161, sd = 49)
   )
 
+  sim_obj <- readRDS(test_path("fixtures", "predictNMBsim_object.rds"))
+  expect_error(
+    ce_plot(sim_obj, ref_col = "none"),
+    "cost-effectiveness plot cannot be made"
+  )
+})
+
+test_that("ce_plot works", {
+  sim_obj <- readRDS(test_path("fixtures", "predictNMBsim_object.rds"))
+  expect_error(ce_plot(sim_obj, ref_col = "all"), "did not track the QALYs")
+
+  sim_obj <- readRDS(test_path("fixtures", "predictNMBsim_ce_object.rds"))
+  expect_message(ce_plot(sim_obj, ref_col = "all", wtp = 50), "wtp is stored in predictNMBsim object")
+
   sim_obj <- readRDS(test_path("fixtures", "predictNMBsim_ce_uncertain-wtp_object.rds"))
   expect_message(
     ce_plot(sim_obj, ref_col = "none"),
     "10000 samples"
   )
 
-  sim_obj <- readRDS(test_path("fixtures", "predictNMBsim_object.rds"))
-  expect_error(
-    ce_plot(sim_obj, ref_col = "none"),
-    "cost-effectiveness plot cannot be made"
+  expect_message(
+    ce_plot(sim_obj, ref_col = "none", wtp = 50000),
+    "Using the specified wtp value to draw the cost-effectiveness plane"
   )
 })
 
