@@ -1,5 +1,8 @@
 # predictNMB (development version)
 
+* add `wtp_linetype` argument to `ce_plot()` (and default to `"dashed"`) to 
+  given control to user and differentiate C-E plane from main axes.
+
 # predictNMB 0.2.0
 
 * Track QALYs and intervention costs

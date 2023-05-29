@@ -54,6 +54,16 @@ test_that("ce_plot works", {
   )
 
   vdiffr::expect_doppelganger(
+    "ce_plot.predictNMBsim(obj) solid-WTP-linetype",
+    ce_plot(sim_obj, ref_col = "none", wtp_linetype = "solid")
+  )
+
+  vdiffr::expect_doppelganger(
+    "ce_plot.predictNMBsim(obj) twodash-WTP-linetype",
+    ce_plot(sim_obj, ref_col = "none", wtp_linetype = "twodash")
+  )
+
+  vdiffr::expect_doppelganger(
     "ce_plot.predictNMBsim(obj) methods_reorder",
     ce_plot(
       sim_obj,

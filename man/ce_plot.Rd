@@ -11,6 +11,8 @@ ce_plot(
   show_wtp = TRUE,
   methods_order = NULL,
   rename_vector,
+  shape,
+  wtp_linetype,
   ...
 )
 }
@@ -33,6 +35,12 @@ cutpoint methods.}
 \item{rename_vector}{A named vector for renaming the methods in the summary.
 The values of the vector are the default names and the names given are the
 desired names in the output.}
+
+\item{shape}{The \code{shape} used for \code{ggplot2::geom_point()}.
+Defaults to 21 (hollow circles).}
+
+\item{wtp_linetype}{The \code{linetype} used for \code{ggplot2::geom_abline()}
+when making the WTP/cost-effectiveness plane. Defaults to \code{"dashed"}.}
 
 \item{...}{Additional (unused) arguments.}
 }

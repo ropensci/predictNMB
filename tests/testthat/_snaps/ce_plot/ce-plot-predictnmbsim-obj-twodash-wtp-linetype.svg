@@ -729,7 +729,7 @@
 <circle cx='194.02' cy='408.78' r='1.95' style='stroke-width: 0.71; stroke: #FB61D7;' />
 <line x1='37.69' y1='521.37' x2='617.33' y2='521.37' style='stroke-width: 1.07; stroke-linecap: butt;' />
 <line x1='64.04' y1='545.11' x2='64.04' y2='22.78' style='stroke-width: 1.07; stroke-linecap: butt;' />
-<line x1='-541.96' y1='2607.57' x2='1052.06' y2='-2880.00' style='stroke-width: 1.07; stroke-dasharray: 5.69,5.69; stroke-linecap: butt;' />
+<line x1='-541.96' y1='2607.57' x2='1052.06' y2='-2880.00' style='stroke-width: 1.07; stroke-dasharray: 2.85,2.85,8.54,2.85; stroke-linecap: butt;' />
 <rect x='37.69' y='22.78' width='579.64' height='522.33' style='stroke-width: 1.07; stroke: #333333;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
@@ -772,6 +772,6 @@
 <text x='651.05' y='311.92' style='font-size: 8.80px; font-family: sans;' textLength='59.70px' lengthAdjust='spacingAndGlyphs'>prod sens spec</text>
 <text x='651.05' y='329.20' style='font-size: 8.80px; font-family: sans;' textLength='22.02px' lengthAdjust='spacingAndGlyphs'>roc01</text>
 <text x='651.05' y='346.48' style='font-size: 8.80px; font-family: sans;' textLength='54.80px' lengthAdjust='spacingAndGlyphs'>index of union</text>
-<text x='37.69' y='14.56' style='font-size: 13.20px; font-family: sans;' textLength='195.18px' lengthAdjust='spacingAndGlyphs'>ce_plot.predictNMBsim(obj) none</text>
+<text x='37.69' y='14.56' style='font-size: 13.20px; font-family: sans;' textLength='298.61px' lengthAdjust='spacingAndGlyphs'>ce_plot.predictNMBsim(obj) twodash-WTP-linetype</text>
 </g>
 </svg>

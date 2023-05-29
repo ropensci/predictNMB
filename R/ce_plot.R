@@ -13,6 +13,10 @@
 #' @param rename_vector A named vector for renaming the methods in the summary.
 #' The values of the vector are the default names and the names given are the
 #' desired names in the output.
+#' @param shape The \code{shape} used for \code{ggplot2::geom_point()}.
+#' Defaults to 21 (hollow circles).
+#' @param wtp_linetype The \code{linetype} used for \code{ggplot2::geom_abline()}
+#' when making the WTP/cost-effectiveness plane. Defaults to \code{"dashed"}.
 #' @param ... Additional (unused) arguments.
 #'
 #' @details
@@ -45,6 +49,8 @@ ce_plot <- function(object,
                     show_wtp = TRUE,
                     methods_order = NULL,
                     rename_vector,
+                    shape,
+                    wtp_linetype,
                     ...) {
   UseMethod("ce_plot")
 }
@@ -67,6 +73,8 @@ ce_plot <- function(object,
 #' desired names in the output.
 #' @param shape The \code{shape} used for \code{ggplot2::geom_point()}.
 #' Defaults to 21 (hollow circles).
+#' @param wtp_linetype The \code{linetype} used for \code{ggplot2::geom_abline()}
+#' when making the WTP/cost-effectiveness plane. Defaults to \code{"dashed"}.
 #' @param ... Additional (unused) arguments.
 #'
 #' @details
@@ -100,6 +108,7 @@ ce_plot.predictNMBsim <- function(object,
                                   methods_order = NULL,
                                   rename_vector,
                                   shape = 21,
+                                  wtp_linetype = "dashed",
                                   ...) {
   if (missing(ref_col)) {
     stop("'ref_col' must be specified for creating a cost-effectiveness plot.")
@@ -189,7 +198,8 @@ ce_plot.predictNMBsim <- function(object,
     p <- p +
       ggplot2::geom_abline(
         intercept = 0,
-        slope = wtp
+        slope = wtp,
+        linetype = wtp_linetype
       )
   }
 

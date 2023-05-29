@@ -12,6 +12,7 @@
   methods_order = NULL,
   rename_vector,
   shape = 21,
+  wtp_linetype = "dashed",
   ...
 )
 }
@@ -37,6 +38,9 @@ desired names in the output.}
 
 \item{shape}{The \code{shape} used for \code{ggplot2::geom_point()}.
 Defaults to 21 (hollow circles).}
+
+\item{wtp_linetype}{The \code{linetype} used for \code{ggplot2::geom_abline()}
+when making the WTP/cost-effectiveness plane. Defaults to \code{"dashed"}.}
 
 \item{...}{Additional (unused) arguments.}
 }
