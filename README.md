@@ -16,6 +16,8 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![Status at rOpenSci Software Peer
 Review](https://badges.ropensci.org/566_status.svg)](https://github.com/ropensci/software-review/issues/566)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.05328/status.svg)](https://doi.org/10.21105/joss.05328)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/predictNMB)](https://CRAN.R-project.org/package=predictNMB)
 <!-- badges: end -->
 
 ## Overview
