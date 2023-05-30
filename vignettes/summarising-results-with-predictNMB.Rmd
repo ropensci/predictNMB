@@ -98,7 +98,7 @@ We see both a change to the plot as well as the message produced when the plot i
 
 ### Choosing a y-axis variable
 
-There are three options for the y-axis. The default is the NMB, but you can also visualise the Incremental Net Monetary Benefit (INB) and the selected cutpoints. These are controlled by the `what` argument, which can be any of `c("nmb", "inb", "cutpoints")`. If a vector is used, only the first value will be selected. If you choose to visualise the INB, you must list your chosen reference strategy for the calculation in the `inb_ref_col`. In this case, we use treat all (`"all"`).
+There are three options for the y-axis. The default is the NMB, but you can also visualise the Incremental Net Monetary Benefit (INB) and the selected cutpoints. These are controlled by the `what` argument, which can be any of `c("nmb", "inb", "cutpoints")`. If a vector is used, only the first value will be selected. If you choose to visualise the INB, you must list your chosen reference strategy for the calculation in the `inb_ref_col`. In this case, we use treat-all (`"all"`).
 
 ```{r, message=FALSE}
 autoplot(sim_screen_obj, what = "nmb")
@@ -246,7 +246,7 @@ autoplot(
 
 ### `ce_plot()`
 
-A cost-effectiveness plot may be useful to decision makers deciding between competing alternatives as it shows both the incremental healthcare costs associated with the change as well as the incremental improvement in patient benefit (QALYs). For a detailed explanation on how to interpret cost-effectiveness plots, see [@fenwick2006].
+A cost-effectiveness plot may be useful to decision-makers deciding between competing alternatives as it shows both the incremental healthcare costs associated with the change as well as the incremental improvement in patient benefit (QALYs). For a detailed explanation on how to interpret cost-effectiveness plots, see [@fenwick2006].
 
 For these plots, a reference group must be specified with `ref_col`.
 
@@ -273,7 +273,7 @@ ce_plot(do_nmb_sim_obj, ref_col = "none", show_wtp = FALSE)
 
 # Making tables with predictNMB
 
-To make tables from the same objects as we used for the plots, we instead use `summary()`. This can be applied to either type of results (`screen_simulation_inputs()` or `do_nmb_sim()`). Using the `%>%` operator, we can pass it straight to `flextable()` from the `{flextable}` package that we have already loaded.
+To make tables from the same objects as we used for the plots, we instead use `summary()`. This can be applied to either type of object (`screen_simulation_inputs()` or `do_nmb_sim()`). Using the `%>%` (or `|>`) operator, we can pass it straight to `flextable()` from the `{flextable}` package that we have already loaded.
 
 
 ```{r, eval=FALSE}
@@ -353,13 +353,13 @@ summary(sim_screen_obj)
 summary(sim_screen_obj) %>% flextable()
 ```
 
-The summary table contains the same outputs for both `do_nmb_sim()` and `screen_simulation_inputs()`, but they are arranged slightly differently. Each row in the screen over inputs object is a unique set of inputs. By default, this is trimmed to include only those inputs that vary in our function call — here, `sim_auc` and `event_rate` — by using the `show_full_inputs` argument. By default, only the inputs that vary are shown. However, we can set `show_full_inputs = TRUE` to see more.
+The summary table contains the same outputs for both `do_nmb_sim()` and `screen_simulation_inputs()`, but they are arranged slightly differently. Each row in table for this summary is for a unique set of inputs. By default, this is trimmed to include only those inputs that vary in our function call — here, `sim_auc` and `event_rate` — by using the `show_full_inputs` argument. By default, only the inputs that vary are shown. However, we can set `show_full_inputs = TRUE` to see more.
 
 ```{r, eval=FALSE}
 summary(sim_screen_obj, show_full_inputs = TRUE)
 ```
 
-In this table below, we merge repeated values using `merge_v()` and add the `theme_box()` to make it a bit easier to read. (You can see more about making tables with `{flextable}` [here](https://davidgohel.github.io/flextable/).)
+In the table below, we merge repeated values using `merge_v()` and add the `theme_box()` to make it a bit easier to read. (You can see more about making tables with `{flextable}` [here](https://davidgohel.github.io/flextable/).)
 
 ```{r, echo=FALSE}
 summary(sim_screen_obj, show_full_inputs = TRUE) %>%

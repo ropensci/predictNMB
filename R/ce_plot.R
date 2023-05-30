@@ -118,7 +118,7 @@ ce_plot.predictNMBsim <- function(object,
     stop(
       "This predictNMBsim object did not track the QALYs and costs at each",
       " simulation so a cost-effectiveness plot cannot be made.",
-      " This is likley because the functions used for ",
+      " This is likely because the functions used for ",
       "'fx_nmb_training' and 'fx_nmb_evaluation' were either not made using",
       " 'get_nmb_sampler()' or, if they were, they didn't use 'qalys_lost'",
       " and 'wtp'."

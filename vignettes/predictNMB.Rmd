@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 
 `{predictNMB}` can be used to evaluate existing or hypothetical clinical prediction models based on their Net Monetary Benefit (NMB). This can be relevant to both prognostic and diagnostic models where a cutpoint (AKA, probability threshold) is used to generate predicted classes rather than probabilities. While it is often beneficial in clinical settings to present the user with a predicted probability, it may be helpful to simulate the effect of the decision arising from this probability. For example, in a hospital setting, a user might want to specify the probability threshold for a clinical prediction model that predicts inpatient falls at which best practice suggests providing a fall-prevention intervention over non-treatment as the default strategy. By weighing the NMB of these decisions, users can assess the impact of the model and the suggested threshold prior to implementation.
 
-`{predictNMB}` was born out of related work that investigates cutpoint selection methods which maximise the NMB, and includes several options for inbuilt and user-specified cutpoint selection functions. 
+`{predictNMB}` was born out of related work that investigates cutpoint selection methods that maximise the NMB and includes several options for inbuilt and user-specified cutpoint selection functions. 
 
 ```{r setup}
 library(predictNMB)
@@ -60,7 +60,7 @@ Every time we run this function, we get a new named vector for the NMB associate
 
 In this example function, the value returned for the True Negative (TN) is zero. This may reflect a scenario where patients categorised as low risk are not given any treatment and do not experience the event being predicted (e.g. a fall) so do not have those associated costs either. The False Negative (FN) is the most negative value; this is because this reflects the worst possible outcome: the patient experiences the event and no intervention was provided to reduce its rate or the effect of its associated costs. The True Positive value is similar to the FN, but is not as negative, because the patient received the intervention and this reduced the associated costs, possibly by reducing the rate of the event. These two classifications have uncertainty associated with them since the costs associated with the outcome are uncertain. This is unlike the False Positive (FP), which has a fixed cost of \$20. This may be realistic when there are set costs for providing the intervention. For example, if the intervention is to conduct a falls education session with the patient, this may have an exact, known cost. See the detailed example vignette for further description and an example of how to decide on which values to use.
 
-Since we would expect to use our best estimates, in this case the expected value of the NMB associated with each prediction for an actual model (and not take a random sample from its underlying distributions), we will make a separate function for the purpose of obtaining the cutpoint, separately from the one we used (above) to evaluate it.
+Since we would expect to use our best estimates, in this case, the expected value of the NMB associated with each prediction for an actual model (and not take a random sample from its underlying distributions), we will make a separate function for the purpose of obtaining the cutpoint, separately from the one we used (above) to evaluate it.
 
 We can use the same code to create the function with `get_nmb_sampler()` but use `use_expected_values = TRUE` so that it gives us the expected values for each rather than resampling from the underlying distribution each time it's evaluated.
 
@@ -80,11 +80,11 @@ These inputs can be passed to `screen_simulation_inputs()` under the parameters 
 
 # `do_nmb_sim()`
 
-`do_nmb_sim()` does a single simulation with a set of inputs for the hypothetical model and NMB related functions. For the model, we need to know the sample size for training and evaluation sets, the model's discrimination (Area Under the Receiver Operating Characteristic Curve, also known as the Area Under the Curve, or AUC) and the event rate of the outcome being predicted. To create this model, the specified AUC is transformed to a Cohen's D value [@SalgadoJesúsF.2018Ttau]. A single predictor variable for the negative events are sampled from a standard normal distribution (mean = 0; standard deviation = 1) and the positive events have theirs sampled from a normal distribution with a mean equal to the calculated Cohen's D value and standard deviation of 1. These data are then used to fit a logistic regression model with the single predictor and intercept term.
+`do_nmb_sim()` does a single simulation with a set of inputs for the hypothetical model and NMB-related functions. For the model, we need to know the sample size for training and evaluation sets, the model's discrimination (Area Under the Receiver Operating Characteristic Curve, also known as the Area Under the Curve, or AUC) and the event rate of the outcome being predicted. To create this model, the specified AUC is transformed to a Cohen's D value [@SalgadoJesúsF.2018Ttau]. A single predictor variable for the negative events is sampled from a standard normal distribution (mean = 0; standard deviation = 1) and the positive events have theirs sampled from a normal distribution with a mean equal to the calculated Cohen's D value and standard deviation of 1. These data are then used to fit a logistic regression model with a single predictor and intercept term.
 
 Note that it may take some time to run the simulation. (The one below may take up to a minute, depending on your computer's performance.)
 
-We have used `show_progress = TRUE` so that this progress is displayed but by default this progress bar is not shown.
+We have used `show_progress = TRUE` so that this progress is displayed but, by default, this progress bar is not shown.
 
 ```{r, echo=FALSE}
 nmb_simulation <- readRDS("fixtures/predictNMB-nmb_simulation.rds")
@@ -120,7 +120,7 @@ summary(nmb_simulation$df_result$all)
 ```
 
 
-The simulation under the various cutpoints can be visualised using `autoplot()`. The default is to visualise the distributions of NMB across all (500) simulations. In the plot below, the spread (light blue) shows the variability in results due to repeated simulation. The median is represented with the dark blue line in the center of each distribution. Here, we use `theme_sim()` to reduce clutter on these plots.
+The simulation under the various cutpoints can be visualised using `autoplot()`. The default is to visualise the distributions of NMB across all (500) simulations. In the plot below, the spread (light blue) shows the variability in results due to repeated simulations. The median is represented by the dark blue line in the center of each distribution. Here, we use `theme_sim()` to reduce clutter on these plots.
 
 ```{r}
 autoplot(nmb_simulation) + theme_sim()
@@ -136,7 +136,7 @@ get_inbuilt_cutpoint_methods()
 autoplot(nmb_simulation, methods_order = c("all", "none", "youden")) + theme_sim()
 ```
 
-We can also use this same plotting function to visualise cutpoints or the incremental net monetary benefit (INB) if we have a known reference strategy, in this case treat-all:
+We can also use this same plotting function to visualise cutpoints or the incremental net monetary benefit (INB) if we have a known reference strategy, in this case, treat-all:
 
 ```{r}
 autoplot(nmb_simulation, what = "cutpoints") + theme_sim()
@@ -146,7 +146,7 @@ autoplot(nmb_simulation, what = "cutpoints") + theme_sim()
 autoplot(nmb_simulation, what = "inb", inb_ref_col = "all") + theme_sim()
 ```
 
-Compared with treat-all, every alternative looks better, but treating none or using value-optimising/cost-minimising look the best.
+Compared with treat-all, every alternative looks better, but treating none or using value-optimising/cost-minimising looks the best.
 
 We can compare the NMB for each cutpoint method, as before, by accessing the object directly:
 
@@ -170,7 +170,7 @@ ce_plot(nmb_simulation, ref_col = "all", methods_order = c("all", "none", "youde
 
 # `screen_simulation_inputs()`
 
-We may want to investigate what the relative improvement in NMB is when increasing the model performance (AUC) and compare this to the treat all or treat none strategy. The following function assesses the required performance for the model to outperform a default strategy of treat all or treat none. In this example, cutpoints are selected using the Youden index and the cost-effectiveness approach, which maximises NMB.
+We may want to investigate what the relative improvement in NMB is when increasing the model performance (AUC) and compare this to the treat-all or treat-none strategy. The following function assesses the required performance for the model to outperform a default strategy of treat all or treat none. In this example, cutpoints are selected using the Youden index and the cost-effectiveness approach, which maximises NMB.
 
 To do this, we compare multiple simulations with different inputs using `screen_simulation_inputs()`. This function takes the same inputs as `do_nmb_sim()` but can take a vector of inputs rather than only a single value. Here, we pass vectors for both the `sim_auc` and the `event_rate`.
 
@@ -195,7 +195,7 @@ sim_screen_obj <- screen_simulation_inputs(
 stopCluster(cl)
 ```
 
-For our hypothetical costed outcome, the classification model when the cutpoint is selected by maximising the Youden index, only out-performs the treat-none strategy when the model has a AUC of about 0.9. This is quite high, and may be impossible when the outcome is highly unpredictable. Also, when the event rate is 0.1, rather than 0.2, we are only able the match the treat-none strategy when our model has an AUC of 0.95.
+For our hypothetical costed outcome, the classification model when the cutpoint is selected by maximising the Youden index, only outperforms the treat-none strategy when the model has an AUC of about 0.9. This is quite high and may be impossible when the outcome is highly unpredictable. Also, when the event rate is 0.1, rather than 0.2, we are only able the match the treat-none strategy when our model has an AUC of 0.95.
 
 ```{r}
 autoplot(sim_screen_obj, x_axis_var = "sim_auc", constants = c(event_rate = 0.2))

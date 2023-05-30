@@ -25,13 +25,12 @@ status](https://www.r-pkg.org/badges/version/predictNMB)](https://CRAN.R-project
 predictNMB is a tool to evaluate (hypothetical) clinical prediction
 models based on their estimated Net Monetary Benefit (NMB). It may be
 used by prediction model developers who intend to find out how
-performant their model needs to be to be clinically useful or by those
-in health services deciding whether or not to implement an existing
-model.
+performant their model needs to be clinically useful or by those in
+health services deciding whether or not to implement an existing model.
 
 `{predictNMB}` has two main functions:
 
-- `do_nmb_sim()`: takes user defined inputs for a given prediction model
+- `do_nmb_sim()`: takes user-defined inputs for a given prediction model
   and population, then evaluates the NMB by performing simulations.
 - `screen_simulation_inputs()`: calls `do_nmb_sim()` many times, using a
   range of values for any of its inputs. This is useful for sensitivity
@@ -76,7 +75,7 @@ evaluation separately. These incorporate uncertainty by passing in
 functions that sample values from their underlying distributions. The
 healthcare event leads to about 1 QALY lost, the cost of the treatment
 is about \$800 and the treatment reduces the rate of the event by about
-18%
+18%.
 
 ``` r
 library(predictNMB)
@@ -100,7 +99,7 @@ fx_nmb_evaluation <- get_nmb_sampler(
 
 We can then pass this to the simulation function. Required arguments:
 
-- `n_sims`: number of simulations to run. More simulations take longer,
+- `n_sims`: number of simulations to run. More simulations take longer
   but are more stable.
 - `event_rate`: event incidence rate, or the proportion of patients
   experiencing the event.
@@ -134,7 +133,7 @@ situations under different levels of model performance within our
 specific healthcare setting. We can visualise how this change may affect
 preferences between the model-guided strategy versus a treat-all or
 treat-none strategy — in other words, using the model to determine who
-should get treatment, rather than everyone or no-one.
+should get treatment, rather than everyone or no one.
 
 `autoplot()` can be used on the object returned from this function to
 quickly inspect these trends:
@@ -174,11 +173,11 @@ autoplot(single_sim_obj) + theme_sim()
 <img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 
 For this scenario, when the model has an AUC of 0.9, we can see that the
-NMB is best when using the model-guided decisions. However, decision
-makers may want to visualise these on a cost-effectiveness plot which
-shows the health benefit versus the costs. We can do this using the
-`ce_plot()` function, specifying the treat-none option as the reference
-strategy.
+NMB is best when using the model-guided decisions. However,
+decision-makers may want to visualise these on a cost-effectiveness plot
+which shows the health benefit versus the costs. We can do this using
+the `ce_plot()` function, specifying the treat-none option as the
+reference strategy.
 
 ``` r
 ce_plot(single_sim_obj, ref_col = "none")
@@ -189,7 +188,7 @@ ce_plot(single_sim_obj, ref_col = "none")
 From this plot, we can see that both the treat-all and model-guided
 decision lead to more QALYs than treating nobody (because more patients
 are receiving an effective treatment) but that the treat-all strategy is
-not cost effective according to our cost-effectiveness plane (based on a
+not cost-effective according to our cost-effectiveness plane (based on a
 willingness to pay of \$28,033). Based on this, we would conclude that
 the hypothetical model-guided decision support system would be likely to
 be cost-effective should we be able to develop a model with this level
