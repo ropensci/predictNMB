@@ -12,6 +12,11 @@
   
   * add `add_prop_ce` argument. If `TRUE`, the % of points for that
   cutpoint method is concatenated to the the method name in the figure legend.
+  
+  * outcome costs were incorrectly excluded from the costs used in the 
+  incremental cost axis before. These are now added to the calculations in 
+  `evaluate_cutpoint_cost()` and reflected in the `ce_plot()`. Before, the
+  incremental costs in `ce_plot()` were treatment costs alone.
 
 # predictNMB 0.2.0
 
