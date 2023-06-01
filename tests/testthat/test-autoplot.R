@@ -42,6 +42,23 @@ test_that("predictNMBsim - autoplot method (what) works", {
     "autoplot.predictNMBsim(obj, what = 'inb') default",
     predictNMBsim_inb_plot
   )
+
+  obj <- readRDS(test_path("fixtures", "predictNMBsim_ce_object.rds"))
+  # test qalys plot from predictNMBsim object
+  predictNMBsim_qalys_plot <- autoplot(obj, what = "qalys")
+  expect_s3_class(predictNMBsim_qalys_plot, "gg")
+  vdiffr::expect_doppelganger(
+    "autoplot.predictNMBsim(obj, what = 'qalys') default",
+    predictNMBsim_qalys_plot
+  )
+
+  # test costs plot from predictNMBsim object
+  predictNMBsim_costs_plot <- autoplot(obj, what = "costs")
+  expect_s3_class(predictNMBsim_costs_plot, "gg")
+  vdiffr::expect_doppelganger(
+    "autoplot.predictNMBsim(obj, what = 'costs') default",
+    predictNMBsim_costs_plot
+  )
 })
 
 test_that("predictNMBsim - autoplot method (fill_cols) works", {

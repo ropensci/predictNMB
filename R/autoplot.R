@@ -242,11 +242,7 @@ autoplot.predictNMBsim <- function(object,
     dplyr::ungroup()
 
 
-  x_axis_title <- switch(what,
-    "nmb" = "Net Monetary Benefit ($)",
-    "inb" = "Incremental Net Monetary Benefit ($)",
-    "cutpoints" = "Selected Cutpoint"
-  )
+  x_axis_title <- get_axis_label(what)
 
   if (use_linewidth()) {
     segment_layer <- ggplot2::geom_segment(
@@ -516,21 +512,9 @@ autoplot.predictNMBscreen <- function(object,
     ) %>%
     dplyr::ungroup()
 
-  y_axis_title <- switch(what,
-    "nmb" = "Net Monetary Benefit ($)",
-    "inb" = "Incremental Net Monetary Benefit ($)",
-    "cutpoints" = "Selected Cutpoint"
-  )
+  y_axis_title <- get_axis_label(what)
 
-  x_axis_title <- switch(x_axis_var,
-    "sample_size" = "Training sample size (n)",
-    "n_sims" = "Number of simulations (n)",
-    "n_valid" = "Validation sample size (n)",
-    "sim_auc" = "Model AUC",
-    "event_rate" = "Event rate",
-    "fx_nmb_training" = "NMB Sampling Function (training)",
-    "fx_nmb_evaluation" = "NMB Sampling Function (evaluation)"
-  )
+  x_axis_title <- get_axis_label(x_axis_var)
 
   if (dodge_width == 0) {
     position <- "identity"

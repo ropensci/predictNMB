@@ -26,7 +26,7 @@ a "all" or "none" approach for this.}
 
 \item{wtp}{A \code{numeric}. The willingness to pay value used to create a
 WTP threshold line on the plot (if \code{show_wtp = TRUE}). Defaults to the
-wtp stored in the \code{predictNMBsim} object.}
+WTP stored in the \code{predictNMBsim} object.}
 
 \item{show_wtp}{A \code{logical}. Whether or not to show the willingness to
 pay threshold.}

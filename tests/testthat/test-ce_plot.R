@@ -116,7 +116,7 @@ test_that("ce_plot works with alt WTPs", {
 
   expect_message(
     ce_plot(sim_obj, ref_col = "none", wtp = 50000),
-    "Using the specified wtp value to draw the cost-effectiveness plane"
+    "Using the specified wtp value to draw the WTP line"
   )
 })
 

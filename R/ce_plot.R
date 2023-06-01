@@ -6,7 +6,7 @@
 #' a "all" or "none" approach for this.
 #' @param wtp A \code{numeric}. The willingness to pay value used to create a
 #' WTP threshold line on the plot (if \code{show_wtp = TRUE}). Defaults to the
-#' wtp stored in the \code{predictNMBsim} object.
+#' WTP stored in the \code{predictNMBsim} object.
 #' @param show_wtp A \code{logical}. Whether or not to show the willingness to
 #' pay threshold.
 #' @param methods_order The order (within the legend) to display the
@@ -71,7 +71,7 @@ ce_plot <- function(object,
 #' a "all" or "none" approach for this.
 #' @param wtp A \code{numeric}. The willingness to pay value used to create a
 #' WTP threshold line on the plot (if \code{show_wtp = TRUE}). Defaults to the
-#' wtp stored in the \code{predictNMBsim} object.
+#' WTP stored in the \code{predictNMBsim} object.
 #' @param show_wtp A \code{logical}. Whether or not to show the willingness to
 #' pay threshold.
 #' @param methods_order The order (within the legend) to display the
