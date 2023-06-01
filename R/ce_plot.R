@@ -5,9 +5,10 @@
 #' when calculating the incremental net monetary benefit. Often sensible to use
 #' a "all" or "none" approach for this.
 #' @param wtp A \code{numeric}. The willingness to pay value used to create a
-#' cost-effectiveness plane on the plot (if \code{show_wtp = TRUE}).
+#' WTP threshold line on the plot (if \code{show_wtp = TRUE}). Defaults to the
+#' wtp stored in the \code{predictNMBsim} object.
 #' @param show_wtp A \code{logical}. Whether or not to show the willingness to
-#' pay plane.
+#' pay threshold.
 #' @param methods_order The order (within the legend) to display the
 #' cutpoint methods.
 #' @param rename_vector A named vector for renaming the methods in the summary.
@@ -18,9 +19,9 @@
 #' \code{shape = "cost-effective"} (only applicable when \code{show_wtp = TRUE})
 #' , then the shape will be mapped to that aesthetic.
 #' @param wtp_linetype The \code{linetype} used for \code{ggplot2::geom_abline()}
-#' when making the WTP/cost-effectiveness plane. Defaults to \code{"dashed"}.
+#' when making the WTP. Defaults to \code{"dashed"}.
 #' @param add_prop_ce Whether to append the proportion of simulations for that
-#' method which were cost-effective (beneath the WTP/cost-effectiveness plane)
+#' method which were cost-effective (beneath the WTP threshold)
 #' to their labels in the legend. Only applicable when \code{show_wtp = TRUE}.
 #' @param ... Additional (unused) arguments.
 #'
@@ -69,9 +70,10 @@ ce_plot <- function(object,
 #' when calculating the incremental net monetary benefit. Often sensible to use
 #' a "all" or "none" approach for this.
 #' @param wtp A \code{numeric}. The willingness to pay value used to create a
-#' cost-effectiveness plane on the plot (if \code{show_wtp = TRUE}).
+#' WTP threshold line on the plot (if \code{show_wtp = TRUE}). Defaults to the
+#' wtp stored in the \code{predictNMBsim} object.
 #' @param show_wtp A \code{logical}. Whether or not to show the willingness to
-#' pay plane.
+#' pay threshold.
 #' @param methods_order The order (within the legend) to display the
 #' cutpoint methods.
 #' @param rename_vector A named vector for renaming the methods in the summary.
@@ -82,9 +84,9 @@ ce_plot <- function(object,
 #' \code{shape = "cost-effective"} (only applicable when \code{show_wtp = TRUE})
 #' , then the shape will be mapped to that aesthetic.
 #' @param wtp_linetype The \code{linetype} used for \code{ggplot2::geom_abline()}
-#' when making the WTP/cost-effectiveness plane. Defaults to \code{"dashed"}.
+#' when making the WTP. Defaults to \code{"dashed"}.
 #' @param add_prop_ce Whether to append the proportion of simulations for that
-#' method which were cost-effective (beneath the WTP/cost-effectiveness plane)
+#' method which were cost-effective (beneath the WTP threshold)
 #' to their labels in the legend. Only applicable when \code{show_wtp = TRUE}.
 #' @param ... Additional (unused) arguments.
 #'
@@ -185,7 +187,7 @@ ce_plot.predictNMBsim <- function(object,
       )
       if (!missing(wtp)) {
         message(
-          "Using the specified wtp value to draw the cost-effectiveness plane",
+          "Using the specified wtp value to draw the WTP line",
           " and ignoring the stored wtp.\n\n"
         )
         assertthat::is.number(wtp)

@@ -25,10 +25,11 @@ when calculating the incremental net monetary benefit. Often sensible to use
 a "all" or "none" approach for this.}
 
 \item{wtp}{A \code{numeric}. The willingness to pay value used to create a
-cost-effectiveness plane on the plot (if \code{show_wtp = TRUE}).}
+WTP threshold line on the plot (if \code{show_wtp = TRUE}). Defaults to the
+wtp stored in the \code{predictNMBsim} object.}
 
 \item{show_wtp}{A \code{logical}. Whether or not to show the willingness to
-pay plane.}
+pay threshold.}
 
 \item{methods_order}{The order (within the legend) to display the
 cutpoint methods.}
@@ -43,10 +44,10 @@ Defaults to 21 (hollow circles). If \code{shape = "method"} or
 , then the shape will be mapped to that aesthetic.}
 
 \item{wtp_linetype}{The \code{linetype} used for \code{ggplot2::geom_abline()}
-when making the WTP/cost-effectiveness plane. Defaults to \code{"dashed"}.}
+when making the WTP. Defaults to \code{"dashed"}.}
 
 \item{add_prop_ce}{Whether to append the proportion of simulations for that
-method which were cost-effective (beneath the WTP/cost-effectiveness plane)
+method which were cost-effective (beneath the WTP threshold)
 to their labels in the legend. Only applicable when \code{show_wtp = TRUE}.}
 
 \item{...}{Additional (unused) arguments.}
