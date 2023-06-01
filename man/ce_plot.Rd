@@ -11,8 +11,9 @@ ce_plot(
   show_wtp = TRUE,
   methods_order = NULL,
   rename_vector,
-  shape,
-  wtp_linetype,
+  shape = 21,
+  wtp_linetype = "dashed",
+  add_prop_ce = FALSE,
   ...
 )
 }
@@ -37,10 +38,16 @@ The values of the vector are the default names and the names given are the
 desired names in the output.}
 
 \item{shape}{The \code{shape} used for \code{ggplot2::geom_point()}.
-Defaults to 21 (hollow circles).}
+Defaults to 21 (hollow circles). If \code{shape = "method"} or
+\code{shape = "cost-effective"} (only applicable when \code{show_wtp = TRUE})
+, then the shape will be mapped to that aesthetic.}
 
 \item{wtp_linetype}{The \code{linetype} used for \code{ggplot2::geom_abline()}
 when making the WTP/cost-effectiveness plane. Defaults to \code{"dashed"}.}
+
+\item{add_prop_ce}{Whether to append the proportion of simulations for that
+method which were cost-effective (beneath the WTP/cost-effectiveness plane)
+to their labels in the legend. Only applicable when \code{show_wtp = TRUE}.}
 
 \item{...}{Additional (unused) arguments.}
 }

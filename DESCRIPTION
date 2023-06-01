@@ -51,6 +51,7 @@ Imports:
     magrittr,
     pmsampsize,
     rlang,
+    scales,
     stats,
     tibble,
     tidyr

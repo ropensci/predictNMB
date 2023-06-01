@@ -14,9 +14,14 @@
 #' The values of the vector are the default names and the names given are the
 #' desired names in the output.
 #' @param shape The \code{shape} used for \code{ggplot2::geom_point()}.
-#' Defaults to 21 (hollow circles).
+#' Defaults to 21 (hollow circles). If \code{shape = "method"} or
+#' \code{shape = "cost-effective"} (only applicable when \code{show_wtp = TRUE})
+#' , then the shape will be mapped to that aesthetic.
 #' @param wtp_linetype The \code{linetype} used for \code{ggplot2::geom_abline()}
 #' when making the WTP/cost-effectiveness plane. Defaults to \code{"dashed"}.
+#' @param add_prop_ce Whether to append the proportion of simulations for that
+#' method which were cost-effective (beneath the WTP/cost-effectiveness plane)
+#' to their labels in the legend. Only applicable when \code{show_wtp = TRUE}.
 #' @param ... Additional (unused) arguments.
 #'
 #' @details
@@ -49,8 +54,9 @@ ce_plot <- function(object,
                     show_wtp = TRUE,
                     methods_order = NULL,
                     rename_vector,
-                    shape,
-                    wtp_linetype,
+                    shape = 21,
+                    wtp_linetype = "dashed",
+                    add_prop_ce = FALSE,
                     ...) {
   UseMethod("ce_plot")
 }
@@ -72,9 +78,14 @@ ce_plot <- function(object,
 #' The values of the vector are the default names and the names given are the
 #' desired names in the output.
 #' @param shape The \code{shape} used for \code{ggplot2::geom_point()}.
-#' Defaults to 21 (hollow circles).
+#' Defaults to 21 (hollow circles). If \code{shape = "method"} or
+#' \code{shape = "cost-effective"} (only applicable when \code{show_wtp = TRUE})
+#' , then the shape will be mapped to that aesthetic.
 #' @param wtp_linetype The \code{linetype} used for \code{ggplot2::geom_abline()}
 #' when making the WTP/cost-effectiveness plane. Defaults to \code{"dashed"}.
+#' @param add_prop_ce Whether to append the proportion of simulations for that
+#' method which were cost-effective (beneath the WTP/cost-effectiveness plane)
+#' to their labels in the legend. Only applicable when \code{show_wtp = TRUE}.
 #' @param ... Additional (unused) arguments.
 #'
 #' @details
@@ -109,6 +120,7 @@ ce_plot.predictNMBsim <- function(object,
                                   rename_vector,
                                   shape = 21,
                                   wtp_linetype = "dashed",
+                                  add_prop_ce = FALSE,
                                   ...) {
   if (missing(ref_col)) {
     stop("'ref_col' must be specified for creating a cost-effectiveness plot.")
@@ -148,11 +160,7 @@ ce_plot.predictNMBsim <- function(object,
     dplyr::select(-c(percentile, in_interval)) %>%
     tidyr::pivot_wider(names_from = "type", values_from = "value")
 
-  p <- p_data %>%
-    ggplot2::ggplot(ggplot2::aes(qalys, costs, col = name)) +
-    ggplot2::geom_point(shape = shape) +
-    ggplot2::geom_hline(yintercept = 0) +
-    ggplot2::geom_vline(xintercept = 0)
+  legend_aesthetics <- list(col = "Cutpoint Methods")
 
   if (show_wtp) {
     if (!is.function(attr(object$meta_data$fx_nmb_evaluation, "wtp"))) {
@@ -195,6 +203,55 @@ ce_plot.predictNMBsim <- function(object,
       }
     }
 
+    if (add_prop_ce | shape == "cost-effective") {
+      p_data <- p_data %>%
+        dplyr::mutate(ce = costs < wtp * qalys)
+
+      if (add_prop_ce) {
+        p_data <- p_data %>%
+          dplyr::group_by(name) %>%
+          dplyr::mutate(name = paste0(name, " (", scales::percent(mean(ce)), ")"))
+
+        legend_aesthetics['col'] <- "Cutpoint Methods (cost-effective %)"
+      }
+    }
+  }
+
+  match_shape_and_col_legend <- FALSE
+  if (shape == "method") {
+    p <- p_data %>%
+      ggplot2::ggplot(ggplot2::aes(qalys, costs, col = name, shape = name)) +
+      ggplot2::geom_point() +
+      ggplot2::geom_hline(yintercept = 0) +
+      ggplot2::geom_vline(xintercept = 0)
+
+    if (length(levels(p_data$name)) > 6) {
+      p <- p +
+        ggplot2::scale_shape_manual(values = 1:length(levels(p_data$name)))
+    }
+
+    match_shape_and_col_legend <- TRUE
+
+  } else if (shape == "cost-effective") {
+    stopifnot(show_wtp)
+    p <- p_data %>%
+      dplyr::mutate(ce = costs < wtp * qalys) %>%
+      ggplot2::ggplot(ggplot2::aes(qalys, costs, col = name, shape = ce)) +
+      ggplot2::geom_point() +
+      ggplot2::geom_hline(yintercept = 0) +
+      ggplot2::geom_vline(xintercept = 0)
+
+    legend_aesthetics['shape'] <- "Cost-effective"
+
+  } else {
+    p <- p_data %>%
+      ggplot2::ggplot(ggplot2::aes(qalys, costs, col = name)) +
+      ggplot2::geom_point(shape = shape) +
+      ggplot2::geom_hline(yintercept = 0) +
+      ggplot2::geom_vline(xintercept = 0)
+  }
+
+  if (show_wtp) {
     p <- p +
       ggplot2::geom_abline(
         intercept = 0,
@@ -203,10 +260,22 @@ ce_plot.predictNMBsim <- function(object,
       )
   }
 
-  p +
-    ggplot2::labs(
-      x = "Incremental Effectiveness (Quality-Adjusted Life Years)",
-      y = "Incremental Costs ($)",
-      col = "Cutpoint Methods"
-    )
+  if (match_shape_and_col_legend) {
+    p +
+      ggplot2::labs(
+        x = "Incremental Effectiveness (Quality-Adjusted Life Years)",
+        y = "Incremental Costs ($)",
+        col = legend_aesthetics['col'],
+        shape = legend_aesthetics['col']
+      )
+  } else {
+    p +
+      ggplot2::labs(
+        x = "Incremental Effectiveness (Quality-Adjusted Life Years)",
+        y = "Incremental Costs ($)",
+        col = legend_aesthetics['col'],
+        shape = legend_aesthetics['shape']
+      )
+  }
+
 }

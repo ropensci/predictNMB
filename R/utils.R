@@ -2,7 +2,7 @@ utils::globalVariables(
   c(
     "name", "value", "percentile", "n_sim", "m", "outcome", "count",
     "in_interval", "ymin", "ymax", "method", "small_grid_id", "fx_nmb_both",
-    "qalys", "costs"
+    "qalys", "costs", "ce"
   )
 )
 
