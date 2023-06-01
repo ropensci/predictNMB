@@ -31,7 +31,10 @@ evaluate_cutpoint_cost(
   nmb = c(
     "qalys_lost" = 5,
     "low_risk_group_treatment_cost" = 0,
-    "high_risk_group_treatment_cost" = 0.5
+    "high_risk_group_treatment_cost" = 1,
+    "low_risk_group_treatment_effect" = 0,
+    "high_risk_group_treatment_effect" = 0.3,
+    "outcome_cost" = 10
   )
 )
 }

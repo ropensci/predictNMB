@@ -85,15 +85,24 @@ evaluate_cutpoint_qalys <- function(predicted, actual, pt, nmb) {
 #'   nmb = c(
 #'     "qalys_lost" = 5,
 #'     "low_risk_group_treatment_cost" = 0,
-#'     "high_risk_group_treatment_cost" = 0.5
+#'     "high_risk_group_treatment_cost" = 1,
+#'     "low_risk_group_treatment_effect" = 0,
+#'     "high_risk_group_treatment_effect" = 0.3,
+#'     "outcome_cost" = 10
 #'   )
 #' )
 evaluate_cutpoint_cost <- function(predicted, actual, pt, nmb) {
-  d <- cbind(predicted, actual, NA)
-  colnames(d) <- c("predicted", "actual", "cost")
+  d <- cbind(predicted, actual, NA, 0)
+  colnames(d) <- c("predicted", "actual", "treatment_cost", "outcome_cost")
 
-  d[d[, "predicted"] < pt, "cost"] <- nmb["low_risk_group_treatment_cost"]
-  d[d[, "predicted"] > pt, "cost"] <- nmb["high_risk_group_treatment_cost"]
+  # treatment cost
+  d[d[, "predicted"] < pt, "treatment_cost"] <- nmb["low_risk_group_treatment_cost"]
+  d[d[, "predicted"] > pt, "treatment_cost"] <- nmb["high_risk_group_treatment_cost"]
 
-  mean(d[, "cost"])
+  # outcome cost
+  d[d[, "predicted"] < pt & d[, "actual"] == 1, "outcome_cost"] <- nmb["outcome_cost"] * (1 - nmb["low_risk_group_treatment_effect"])
+  d[d[, "predicted"] > pt & d[, "actual"] == 1, "outcome_cost"] <- nmb["outcome_cost"] * (1 - nmb["high_risk_group_treatment_effect"])
+
+  # return the sum of the treatment cost and outcome cost (to be used in ce_plot())
+  mean(d[, "treatment_cost"] + d[, "outcome_cost"])
 }

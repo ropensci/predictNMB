@@ -79,7 +79,22 @@ test_that("ce_plot works", {
   )
 })
 
-test_that("ce_plot works", {
+
+
+test_that("ce_plot works with separate outcome & qalys * WTP costs", {
+  sim_obj <- readRDS(test_path("fixtures", "predictNMBsim_ce_inc_outcomecost_object.rds"))
+
+  vdiffr::expect_doppelganger(
+    "ce_plot.predictNMBsim(obj) with outcome_cost",
+    ce_plot(
+      sim_obj,
+      ref_col = "all"
+    )
+  )
+})
+
+
+test_that("ce_plot works with alt WTPs", {
   sim_obj <- readRDS(test_path("fixtures", "predictNMBsim_object.rds"))
   expect_error(ce_plot(sim_obj, ref_col = "all"), "did not track the QALYs")
 
@@ -134,3 +149,23 @@ test_that("ce_plot works", {
 #   fx_nmb_training = get_nmb_training, fx_nmb_evaluation = get_nmb_evaluation
 # )
 # saveRDS(predictNMBsim_obj, test_path("fixtures", "predictNMBsim_ce_uncertain-wtp_object.rds"))
+# get_nmb_training <- get_nmb_sampler(
+#   outcome_cost = function() rgamma(1, 100),
+#   qalys_lost = function() rnorm(1, 0.33, 0.03),
+#   wtp = 28033,
+#   high_risk_group_treatment_effect = function() exp(rnorm(n = 1, mean = log(0.58), sd = 0.43)),
+#   high_risk_group_treatment_cost = function() rnorm(n = 1, mean = 161, sd = 49),
+#   use_expected_values = TRUE
+# )
+# get_nmb_evaluation <- get_nmb_sampler(
+#   outcome_cost = function() rgamma(1, 100),
+#   qalys_lost = function() rnorm(1, 0.33, 0.03),
+#   wtp = 28033,
+#   high_risk_group_treatment_effect = function() exp(rnorm(n = 1, mean = log(0.58), sd = 0.43)),
+#   high_risk_group_treatment_cost = function() rnorm(n = 1, mean = 161, sd = 49)
+# )
+# predictNMBsim_obj <- do_nmb_sim(
+#   n_sims = 100, n_valid = 1000, sim_auc = 0.7, event_rate = 0.1,
+#   fx_nmb_training = get_nmb_training, fx_nmb_evaluation = get_nmb_evaluation
+# )
+# saveRDS(predictNMBsim_obj, test_path("fixtures", "predictNMBsim_ce_inc_outcomecost_object.rds"))
