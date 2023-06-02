@@ -29,7 +29,7 @@ x axis. For example, if the simulation screen was used with many values for
 event rate, this could be "event_rate". Defaults to the first detected,
 varied input.}
 
-\item{constants}{Named vector If multiple inputs were screened in this
+\item{constants}{Named vector. If multiple inputs were screened in this
 object, this argument can be used to modify the selected values for all
 those except the input that's varying along the x-axis. See the
 \href{https://docs.ropensci.org/predictNMB/articles/summarising-results-with-predictNMB.html}{summarising methods vignette}.}
@@ -50,7 +50,7 @@ region of the distribution as a thicker line. Defaults to TRUE.}
 \item{plot_line}{\code{logical}. Whether or not to connect the medians of
 the distributions for each method along the x-axis. Defaults to TRUE.}
 
-\item{plot_alpha}{Alpha value for all plot elements. Defaults to 0.5.}
+\item{plot_alpha}{Alpha value (transparency) of all plot elements. Defaults to 0.5.}
 
 \item{dodge_width}{The dodge width of plot elements. Can be used to avoid
 excessive overlap between methods. Defaults to 0.}

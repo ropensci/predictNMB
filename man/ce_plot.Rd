@@ -24,7 +24,7 @@ ce_plot(
 when calculating the incremental net monetary benefit. Often sensible to use
 a "all" or "none" approach for this.}
 
-\item{wtp}{A \code{numeric}. The willingness to pay value used to create a
+\item{wtp}{A \code{numeric}. The willingness to pay (WTP) value used to create a
 WTP threshold line on the plot (if \code{show_wtp = TRUE}). Defaults to the
 WTP stored in the \code{predictNMBsim} object.}
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/do_nmb_sim.R
 \name{do_nmb_sim}
 \alias{do_nmb_sim}
-\title{Do the predictNMB simulation, evaluating the net monetary benefit of the
+\title{Do the predictNMB simulation, evaluating the net monetary benefit (NMB) of the
 simulated model.}
 \usage{
 do_nmb_sim(
@@ -75,7 +75,8 @@ sample. If less than this number are included in sample of size
 The default (\code{NA}) will use the expected value given the
 \code{event_rate} and the \code{sample_size}.}
 
-\item{show_progress}{Logical. Whether to display a progress bar.}
+\item{show_progress}{Logical. Whether to display a progress bar. Requires the
+\code{pbapply} package.}
 
 \item{cl}{A cluster made using \code{parallel::makeCluster()}.
 If a cluster is provided, the simulation will be done in parallel.}
@@ -84,7 +85,7 @@ If a cluster is provided, the simulation will be done in parallel.}
 Returns a \code{predictNMBsim} object.
 }
 \description{
-Do the predictNMB simulation, evaluating the net monetary benefit of the
+Do the predictNMB simulation, evaluating the net monetary benefit (NMB) of the
 simulated model.
 }
 \details{

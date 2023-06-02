@@ -1,4 +1,4 @@
-#' Do the predictNMB simulation, evaluating the net monetary benefit of the
+#' Do the predictNMB simulation, evaluating the net monetary benefit (NMB) of the
 #' simulated model.
 #'
 #' @param sample_size Sample size of training set. If missing, a sample size
@@ -45,7 +45,8 @@
 #' \code{sample_size}, additional samples are added until the \code{min_events} is met.
 #' The default (\code{NA}) will use the expected value given the
 #' \code{event_rate} and the \code{sample_size}.
-#' @param show_progress Logical. Whether to display a progress bar.
+#' @param show_progress Logical. Whether to display a progress bar. Requires the
+#' `pbapply` package.
 #' @param cl A cluster made using \code{parallel::makeCluster()}.
 #' If a cluster is provided, the simulation will be done in parallel.
 #'

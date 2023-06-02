@@ -138,7 +138,7 @@ add_interval <- function(data, conf.level) {
 #' \code{c("grey50", "#ADD8E6")}.
 #' @param median_line_size Size of line used to represent the median of
 #' distribution. Defaults to 2.
-#' @param median_line_alpha Alpha for line used to represent the median of
+#' @param median_line_alpha Alpha (transparency) for line used to represent the median of
 #' distribution. Defaults to 0.5.
 #' @param median_line_col Colour of line used to represent the median of
 #' distribution. Defaults to \code{"black"}.
@@ -307,7 +307,7 @@ theme_sim <- function() {
 #' x axis. For example, if the simulation screen was used with many values for
 #' event rate, this could be "event_rate". Defaults to the first detected,
 #' varied input.
-#' @param constants Named vector If multiple inputs were screened in this
+#' @param constants Named vector. If multiple inputs were screened in this
 #' object, this argument can be used to modify the selected values for all
 #' those except the input that's varying along the x-axis. See the
 #' \href{https://docs.ropensci.org/predictNMB/articles/summarising-results-with-predictNMB.html}{summarising methods vignette}.
@@ -322,7 +322,7 @@ theme_sim <- function() {
 #' region of the distribution as a thicker line. Defaults to TRUE.
 #' @param plot_line \code{logical}. Whether or not to connect the medians of
 #' the distributions for each method along the x-axis. Defaults to TRUE.
-#' @param plot_alpha Alpha value for all plot elements. Defaults to 0.5.
+#' @param plot_alpha Alpha value (transparency) of all plot elements. Defaults to 0.5.
 #' @param dodge_width The dodge width of plot elements. Can be used to avoid
 #' excessive overlap between methods. Defaults to 0.
 #' @param conf.level The confidence level of the interval.

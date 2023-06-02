@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 
 `{predictNMB}` can be used to evaluate existing or hypothetical clinical prediction models based on their Net Monetary Benefit (NMB). This can be relevant to both prognostic and diagnostic models where a cutpoint (AKA, probability threshold) is used to generate predicted classes rather than probabilities. While it is often beneficial in clinical settings to present the user with a predicted probability, it may be helpful to simulate the effect of the decision arising from this probability. For example, in a hospital setting, a user might want to specify the probability threshold for a clinical prediction model that predicts inpatient falls at which best practice suggests providing a fall-prevention intervention over non-treatment as the default strategy. By weighing the NMB of these decisions, users can assess the impact of the model and the suggested threshold prior to implementation.
 
-`{predictNMB}` was born out of related work that investigates cutpoint selection methods that maximise the NMB and includes several options for inbuilt and user-specified cutpoint selection functions. 
+`{predictNMB}` was born out of related work [@parsons2023integrating] that investigates cutpoint selection methods that maximise the NMB and includes several options for inbuilt and user-specified cutpoint selection functions. 
 
 ```{r setup}
 library(predictNMB)

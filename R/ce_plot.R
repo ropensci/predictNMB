@@ -4,7 +4,7 @@
 #' @param ref_col Which cutpoint method to use as the reference strategy
 #' when calculating the incremental net monetary benefit. Often sensible to use
 #' a "all" or "none" approach for this.
-#' @param wtp A \code{numeric}. The willingness to pay value used to create a
+#' @param wtp A \code{numeric}. The willingness to pay (WTP) value used to create a
 #' WTP threshold line on the plot (if \code{show_wtp = TRUE}). Defaults to the
 #' WTP stored in the \code{predictNMBsim} object.
 #' @param show_wtp A \code{logical}. Whether or not to show the willingness to
@@ -69,11 +69,10 @@ ce_plot <- function(object,
 #' @param ref_col Which cutpoint method to use as the reference strategy
 #' when calculating the incremental net monetary benefit. Often sensible to use
 #' a "all" or "none" approach for this.
-#' @param wtp A \code{numeric}. The willingness to pay value used to create a
+#' @param wtp A \code{numeric}. The willingness to pay (WTP) value used to create a
 #' WTP threshold line on the plot (if \code{show_wtp = TRUE}). Defaults to the
 #' WTP stored in the \code{predictNMBsim} object.
-#' @param show_wtp A \code{logical}. Whether or not to show the willingness to
-#' pay threshold.
+#' @param show_wtp A \code{logical}. Whether or not to show the WTP threshold.
 #' @param methods_order The order (within the legend) to display the
 #' cutpoint methods.
 #' @param rename_vector A named vector for renaming the methods in the summary.

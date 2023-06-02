@@ -50,7 +50,7 @@ region, second colour shows the confidence region. Defaults to
 \item{median_line_size}{Size of line used to represent the median of
 distribution. Defaults to 2.}
 
-\item{median_line_alpha}{Alpha for line used to represent the median of
+\item{median_line_alpha}{Alpha (transparency) for line used to represent the median of
 distribution. Defaults to 0.5.}
 
 \item{median_line_col}{Colour of line used to represent the median of

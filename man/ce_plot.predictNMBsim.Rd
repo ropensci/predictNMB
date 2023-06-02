@@ -24,12 +24,11 @@
 when calculating the incremental net monetary benefit. Often sensible to use
 a "all" or "none" approach for this.}
 
-\item{wtp}{A \code{numeric}. The willingness to pay value used to create a
+\item{wtp}{A \code{numeric}. The willingness to pay (WTP) value used to create a
 WTP threshold line on the plot (if \code{show_wtp = TRUE}). Defaults to the
 WTP stored in the \code{predictNMBsim} object.}
 
-\item{show_wtp}{A \code{logical}. Whether or not to show the willingness to
-pay threshold.}
+\item{show_wtp}{A \code{logical}. Whether or not to show the WTP threshold.}
 
 \item{methods_order}{The order (within the legend) to display the
 cutpoint methods.}

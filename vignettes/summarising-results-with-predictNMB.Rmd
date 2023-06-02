@@ -28,7 +28,7 @@ set.seed(42)
 
 This vignette is purely about how to use the `autoplot()` method and `summary()` to visualise and summarise the simulations made using `{predictNMB}`. For an introduction to `{predictNMB}`, please see the [introductory vignette](https://docs.ropensci.org/predictNMB/articles/predictNMB.html).
 
-Firstly, as an example case, we will run `screen_simulation_inputs()`.
+Firstly, as an example case, we will prepare our sampling functions and run `screen_simulation_inputs()`.
 
 ```{r}
 get_nmb_sampler_training <- get_nmb_sampler(
@@ -82,12 +82,12 @@ In this case, we can visualise the impact on NMB for different methods across va
 autoplot(sim_screen_obj, x_axis_var = "sim_auc")
 ```
 
-(To avoid the overlap of points in this second plot, we can specify the `dodge_width` to be non-zero.)
+To avoid the overlap of points in this second plot, which visualises NMB at varying event rates, we can specify the `dodge_width` to be non-zero.
 ```{r}
 autoplot(sim_screen_obj, x_axis_var = "event_rate", dodge_width = 0.002)
 ```
 
-For these plots, one of the screened inputs will be the x-axis variable, but the other will only be displayed at a single level. The default setting will assume the first level, so when we visualise the change in NMB specifying `sim_auc` as the x-axis variable, we only observe this for the case where `event_rate = 0.1`. We can choose to select another level with the `constants` argument. This argument expects a named list containing the values to keep for the screened inputs which are not shown on the x-axis.
+For these plots, one of the screened inputs will be the x-axis variable, but the other will only be displayed at a single level. For example, if we are looking at outcomes over a range of AUC values, the prevalence will be fixed. The default setting for this second input will assume the first level, so when we visualise the change in NMB specifying `sim_auc` as the x-axis variable, we only observe this for the case where `event_rate = 0.1`. We can choose to select another level with the `constants` argument. This argument expects a named list containing the values to keep for the screened inputs which are not shown on the x-axis.
 
 ```{r}
 autoplot(sim_screen_obj, x_axis_var = "sim_auc", constants = list(event_rate = 0.1))
@@ -125,14 +125,12 @@ autoplot(sim_screen_obj, plot_conf_level = FALSE, plot_range = FALSE, plot_line 
 Currently, the lines and dots overlap. We can use `dodge_width` to apply a horizontal dodge for all layers.
 
 ```{r, message=FALSE}
-autoplot(sim_screen_obj)
 autoplot(sim_screen_obj, dodge_width = 0.01)
 ```
 
 The cutpoint methods can be renamed or removed. To rename them, pass a named vector to the `rename_vector` argument. The names of the vector are the new names and the values are the names you wish to replace.
 
 ```{r, message=FALSE}
-autoplot(sim_screen_obj)
 autoplot(
   sim_screen_obj,
   rename_vector = c("Treat All" = "all", 
@@ -145,7 +143,6 @@ autoplot(
 You can reorder the methods by passing the order as the `methods_order` argument. Also note that this will remove all methods which aren't included, and it will factor the names AFTER it has renamed them. So, if you are both renaming and re-ordering, you must provide the updated names when you order them:
 
 ```{r, message=FALSE}
-autoplot(sim_screen_obj)
 autoplot(sim_screen_obj, methods_order = c("all", "none"))
 autoplot(
   sim_screen_obj,
@@ -160,7 +157,6 @@ autoplot(
 The transparency of all layers can be controlled with `plot_alpha`.
 
 ```{r, message=FALSE}
-autoplot(sim_screen_obj)
 autoplot(sim_screen_obj, plot_alpha = 0.2)
 autoplot(sim_screen_obj, plot_alpha = 1)
 ```
@@ -248,18 +244,18 @@ autoplot(
 
 A cost-effectiveness plot may be useful to decision-makers deciding between competing alternatives as it shows both the incremental healthcare costs associated with the change as well as the incremental improvement in patient benefit (QALYs). For a detailed explanation on how to interpret cost-effectiveness plots, see [@fenwick2006].
 
-For these plots, a reference group must be specified with `ref_col`.
+For these plots, a reference group must be specified with `ref_col`. In this example, the reference group is to treat none.
 
 ```{r}
 ce_plot(do_nmb_sim_obj, ref_col = "none")
 ```
 
-Similarly to `autoplot()`, the methods can be selected and renamed using `methods_order` and `rename_vector`. The diagonal line is the cost-effectiveness plane and this is based on the willingness to pay. In this example, it was \$28033 and is stored within the `predictNMBsim` object via the `fx_nmb_evaluation` function that was originally used.
+Similarly to `autoplot()`, the methods can be selected and renamed using `methods_order` and `rename_vector`. The diagonal line is the cost-effectiveness plane and this is based on the willingness to pay. In this example, it was \$28033 and is stored within the `predictNMBsim` object via the `fx_nmb_evaluation` function that was originally used. Simulations underneath the cost-effectiveness plane are deemed cost-effective.
 
 ```{r}
 attr(do_nmb_sim_obj$meta_data$fx_nmb_evaluation, "wtp")
 ```
-The WTP can be adjusted using the WTP argument but it is not advisable to use a different value to what was used in the initial simulations. 
+The WTP can be adjusted using the WTP argument but it is not advisable to use a different value to what was used in the initial simulations because the plotted WTP will be different to the simulation objects. If a different WTP value should be investigated, it is advisable to re-run the simulations again as `do_nmb_sim` objects.
 
 ```{r}
 ce_plot(do_nmb_sim_obj, ref_col = "none", wtp = 100000)
@@ -271,12 +267,12 @@ The line can be removed by using `show_wtp = FALSE`.
 ce_plot(do_nmb_sim_obj, ref_col = "none", show_wtp = FALSE)
 ```
 
-The `shape` argument controls the shape aesthetic in `geom_point()`. It can also be mapped to whether the point is "cost-effective" (falls beneath the cost-effectiveness plane/WTP line) or the cutpoint "method".
+The `shape` argument controls the shape aesthetic in `geom_point()`. It can also be mapped to whether the point is "cost-effective" (falls beneath the cost-effectiveness plane/WTP line) or the cutpoint "method", and the proportion of cost-effective simulations can be added to the methods section of the legend if `add_prop_ce = TRUE`. For the sake of demonstration, we'll change the WTP line for the "cost-effective" shape input.
 ```{r}
-ce_plot(do_nmb_sim_obj, ref_col = "none", shape = 15)
-ce_plot(do_nmb_sim_obj, ref_col = "none", shape = "square")
-ce_plot(do_nmb_sim_obj, ref_col = "none", shape = "cost-effective")
-ce_plot(do_nmb_sim_obj, ref_col = "none", shape = "method")
+ce_plot(do_nmb_sim_obj, ref_col = "none", shape = 15, add_prop_ce = TRUE)
+ce_plot(do_nmb_sim_obj, ref_col = "none", shape = "square", add_prop_ce = TRUE)
+ce_plot(do_nmb_sim_obj, ref_col = "none", shape = "cost-effective", wtp = 80000, add_prop_ce = TRUE)
+ce_plot(do_nmb_sim_obj, ref_col = "none", shape = "method", add_prop_ce = TRUE)
 ```
 
 If you want the method to be mapped to shape but not colour, then, just as with any `ggplot` object, you can adjust the values on the returned plot with `ggplot2::scale_color_manual()`.
