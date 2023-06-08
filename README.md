@@ -18,6 +18,8 @@ Review](https://badges.ropensci.org/566_status.svg)](https://github.com/ropensci
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.05328/status.svg)](https://doi.org/10.21105/joss.05328)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/predictNMB)](https://CRAN.R-project.org/package=predictNMB)
+[![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/last-month/predictNMB)](https://www.r-pkg.org/pkg/predictNMB)
 <!-- badges: end -->
 
 ## Overview
@@ -198,7 +200,6 @@ of discrimination for this specific healthcare problem/context.
 
 ``` r
 citation("predictNMB")
-#> 
 #> To cite predictNMB in publications use:
 #> 
 #>   Parsons et al., (2023). predictNMB: An R package to estimate if or
